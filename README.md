@@ -1,47 +1,22 @@
-# Panzer-Battery-Gauge-VB6
+# Panzer-Weather-Gauge-VB6
 
-A FOSS Battery Gauge VB6 WoW64 Widget for Reactos, XP, Win7, 8 and 10/11+.
+A FOSS Weather Gauge VB6 WoW64 Widget for Reactos, XP, Win7, 8 and 10/11+.
 
-My current VB6/RC6 PSD program being finished now, 90% complete, only awaiting addition of smooth rotation to the Battery pointer, testing on laptops, testing on Windows XP and Win7 32bit and some multi-monitor checking, completion of the CHM help file and the creation of the setup.exe. This Panzer widget is based upon the Yahoo widget of the same visual design and very similar operation.
+My current VB6/RC6 PSD program being finished now, 90% complete, only awaiting addition of smooth rotation to the Weather pointer, testing on laptops, testing on Windows XP and Win7 32bit and some multi-monitor checking, completion of the CHM help file and the creation of the setup.exe. This Panzer widget is based upon the Yahoo widget of the same visual design and very similar operation.
 
 Why VB6? Well, with a 64 bit, modern-language improvement upgrade on the way with 100% compatible TwinBasic coupled with support for transparent PNGs via RC/Cairo, VB6 code has an amazing future.
 
 ![vb6-logo-350](https://github.com/yereverluvinunclebert/Panzer-RAM-Gauge-VB6/assets/2788342/2f60380d-29f5-4737-8392-e7d747c61f25)
 
 I created as a variation of the previous gauges I had previously created for the World of Tanks and War Thunder
-communities. The Panzer Battery Gauge widget is an attractive dieselpunk VB6 widget for your desktop.
+communities. The Panzer Weather Gauge widget is an attractive dieselpunk VB6 widget for your desktop.
 Functional and gorgeous at the same time. The graphics are my own, I took original inspiration from a clock face by Italo Fortana combining it with an aircraft gauge surround. It is all my code with some help from the chaps at VBForums (credits given).
 
-The Panzer Battery Gauge VB6 is a useful utility displaying the Battery usage of your system in a dieselpunk fashion on your desktop. This Widget is a moveable widget that you can move anywhere around the desktop as you require. The battery data is extracted via an API and also from the WMI data repository. The gauge extracts the temperature data from that repository and displays it via a pointer on the gauge on the desktop.
+The Panzer Weather Gauge VB6 is a useful utility displaying the Weather usage of your system in a dieselpunk fashion on your desktop. This Widget is a moveable widget that you can move anywhere around the desktop as you require. The Weather data is extracted via an API and also from the WMI data repository. The gauge extracts the temperature data from that repository and displays it via a pointer on the gauge on the desktop.
 
 These are the pertinent bits:
 
-API first
-
-    Private Declare Function GetSystemPowerStatus Lib "kernel32" (lpSystemPowerStatus As SYSTEM_POWER_STATUS) As Long
-
-    Private Type SYSTEM_POWER_STATUS
-        	ACLineStatus As Byte
-        	BatteryFlag As Byte
-        	BatteryLifePercent As Byte
-        	Reserved1 As Byte
-        	BatteryLifeTime As Long
-        	BatteryFullLifeTime As Long
-    End Type
-
-    Battery_Usage_Percent = BatteryStatus.BatteryLifePercent
-
-WMI
-
-    Set objSWbemLocator = CreateObject("WbemScripting.SWbemLocator")
-    Set objSWbemServices = objSWbemLocator.ConnectServer(strComputer, "root\cimv2")
-    Set colItems = objSWbemServices.ExecQuery("SELECT * FROM Win32_Battery")
-
-    For Each objItem In colItems
-        result = "Battery: " & objItem.Name & vbCrLf
-        result = result + "Voltage: " & objItem.DesignVoltage & " Millivolts " & vbCrLf 'millivolts
-        result = result + "Estimated Run Time Remaining: " & objItem.EstimatedRunTime & " mins. " & vbCrLf
-    Next
+XML stuff here:
 
 Hope the above is useful to anyone else building system metric utilities using VB6/VBS/VBA.
 
@@ -220,9 +195,7 @@ Project References:
     VisualBasic Runtime Objects and Procedures
     VisualBasic Objects and Procedures
     OLE Automation
-
-Microsoft WMI Scripting V1.2 Library wbemdisp.tlb
-vbRichClient6 - RC6Widgets (RC6Widgets.DLL) - RC6 (RC6.DLL)
+    vbRichClient6 - RC6Widgets (RC6Widgets.DLL) - RC6 (RC6.DLL)
 
 LICENCE AGREEMENTS:
 
