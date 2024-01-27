@@ -1,0 +1,17 @@
+modMain = 26, 26, 779, 653, 
+cfTemperature = 42, 12, 965, 641, 
+modRegFree = 0, 0, 0, 0, C
+cwOverlay = 52, 52, 975, 681, 
+frmTimer = 0, 0, 0, 0, C, 52, 52, 975, 681, C
+modTooltips = 0, 0, 0, 0, C
+Module1 = 26, 26, 949, 655, 
+Module2 = 0, 0, 0, 0, C
+cwAbout = 0, 0, 0, 0, C
+cfMain = 0, 0, 0, 0, C
+cwHelp = 0, 0, 0, 0, C
+panzerPrefs = 0, 0, 923, 629, , 104, 104, 1027, 733, C
+menuForm = 0, 0, 0, 0, C, 130, 130, 1053, 759, C
+cwLicence = 0, 0, 0, 0, C
+frmMessage = 0, 0, 0, 0, C, 156, 156, 1079, 785, C
+modResize = 0, 0, 0, 0, C
+cwAlphaImg = 0, 0, 0, 0, C
