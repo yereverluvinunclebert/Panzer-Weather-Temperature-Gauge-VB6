@@ -1,8 +1,8 @@
-# Panzer-Weather-Gauge-VB6
+# Panzer-Weather-Gauges-VB6
 
-A FOSS Weather Gauge VB6 WoW64 Widget for Reactos, XP, Win7, 8 and 10/11+.
+A FOSS Weather Gauges VB6 WoW64 Widget for Reactos, XP, Win7, 8 and 10/11+.
 
-My current VB6/RC6 PSD program being finished now, 90% complete, only awaiting addition of smooth rotation to the Weather pointer, testing on laptops, testing on Windows XP and Win7 32bit and some multi-monitor checking, completion of the CHM help file and the creation of the setup.exe. This Panzer widget is based upon the Yahoo widget of the same visual design and very similar operation.
+My current VB6/RC6 PSD program being finished now, 10% complete, awaiting a lot of work to get the thing functioning, four additional gauges, two sub-forms, addition of smooth rotation to the Weather pointers, testing on laptops, testing on Windows XP and Win7 32bit and some multi-monitor checking, completion of the CHM help file and the creation of the setup.exe. This Panzer widget is based upon the Yahoo widget of the same visual design and very similar operation.
 
 Why VB6? Well, with a 64 bit, modern-language improvement upgrade on the way with 100% compatible TwinBasic coupled with support for transparent PNGs via RC/Cairo, VB6 code has an amazing future.
 
@@ -12,7 +12,7 @@ I created as a variation of the previous gauges I had previously created for the
 communities. The Panzer Weather Gauge widget is an attractive dieselpunk VB6 widget for your desktop.
 Functional and gorgeous at the same time. The graphics are my own, I took original inspiration from a clock face by Italo Fortana combining it with an aircraft gauge surround. It is all my code with some help from the chaps at VBForums (credits given).
 
-The Panzer Weather Gauge VB6 is a useful utility displaying the Weather usage of your system in a dieselpunk fashion on your desktop. This Widget is a moveable widget that you can move anywhere around the desktop as you require. The Weather data is extracted via an API and also from the WMI data repository. The gauge extracts the temperature data from that repository and displays it via a pointer on the gauge on the desktop.
+The Panzer Weather Gauge VB6 is a useful utility displaying the Weather your chosen locality in a dieselpunk fashion on your desktop. This Widget is a moveable widget that you can move anywhere around the desktop as you require. The Weather data is extracted via an XML request to aviation.gov. The program extracts the temperature abnd barometric data from that XML and displays it via analogue pointers on several desktop gauges.
 
 These are the pertinent bits:
 
