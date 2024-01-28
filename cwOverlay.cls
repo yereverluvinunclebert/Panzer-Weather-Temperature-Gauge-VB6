@@ -39,6 +39,7 @@ Private SDeg As Double
 Private temperaturePercent As Long
 Private temperatureTotalTimeLeft As Single
 'Private TemperatureDetails As String
+Private temperatureVal  As Long
 
 '------------------------------------------------------ ENDS
 
@@ -543,7 +544,7 @@ End Sub
 '---------------------------------------------------------------------------------------
 '
 Private Sub W_Paint(CC As RC6.cCairoContext, ByVal xAbs As Single, ByVal yAbs As Single, ByVal dx_Aligned As Single, ByVal dy_Aligned As Single, UserObj As Object)
-    Dim I As Long: I = 0
+    Dim i As Long: i = 0
     Dim Arr As Variant
     Dim Key As String: Key = vbNullString
     Dim Pat As cCairoPattern
@@ -569,9 +570,9 @@ Private Sub W_Paint(CC As RC6.cCairoContext, ByVal xAbs As Single, ByVal yAbs As
     txtTemperaturePercent = CStr(Int(temperaturePercent))
     txtTemperaturetotal = CStr(Int(temperatureTotalTimeLeft))
 
-    For I = 0 To cCollOverlayImages.count - 1 ' this is the ExcludedPaths collection populated in cfTemperature by duplicating collPSDNonUIElements.
-      Arr = cCollOverlayImages.ItemByIndex(I)
-      Key = cCollOverlayImages.KeyByIndex(I)
+    For i = 0 To cCollOverlayImages.Count - 1 ' this is the ExcludedPaths collection populated in cfTemperature by duplicating collPSDNonUIElements.
+      Arr = cCollOverlayImages.ItemByIndex(i)
+      Key = cCollOverlayImages.KeyByIndex(i)
       
       If IsArray(Arr) Then
              CC.Save
@@ -707,17 +708,13 @@ End Sub
 ' Date: 13/01/2024
 ' ----------------------------------------------------------------
 Private Sub obtainTemperature()
-    Dim thisACLineStatus As String: thisACLineStatus = vbNullString
 
     On Error GoTo obtainTemperature_Error
-    
-        temperatureTotalTimeLeft = fTemperature_Total_Left
 
-        mTemperatureDetails = fTemperatureString
-        temperaturePercent = fTemperature_Usage_Percent(thisACLineStatus)
+        temperaturePercent = fTemperature_Usage_Percent()
         SDeg = (temperaturePercent * 3) + 30
 
-        mTemperatureDetails = mTemperatureDetails & vbCrLf & thisACLineStatus
+        mTemperatureDetails = mTemperatureDetails & vbCrLf
         
         Call getData
         W.Parent.Refresh
@@ -739,13 +736,11 @@ End Sub
 ' Author: https://www.tek-tips.com/userinfo.cfm?member=Hypetia
 ' Date: 09/01/2024
 ' ----------------------------------------------------------------
-Private Function fTemperature_Usage_Percent(ByRef thisACLineStatus As String) As Integer
+Private Function fTemperature_Usage_Percent() As Integer
     
     On Error GoTo fTemperature_Usage_Percent_Error
     
-    thisACLineStatus = "Mains AC Input Switched OFF."
-    
-        fTemperature_Usage_Percent = 0
+        fTemperature_Usage_Percent = temperatureVal
 
     
     On Error GoTo 0
@@ -757,69 +752,7 @@ fTemperature_Usage_Percent_Error:
 
 End Function
 
-' ----------------------------------------------------------------
-' Procedure Name: fTemperature_Total_Left
-' Purpose:
-' Procedure Kind: Function
-' Procedure Access: Private
-' Return Type: String
-' Author: https://www.tek-tips.com/userinfo.cfm?member=Hypetia
-' Date: 09/01/2024
-' ----------------------------------------------------------------
-Private Function fTemperature_Total_Left() As Single
 
-    Dim temperatureDischargeTime As Double
-    
-    On Error GoTo fTemperature_Total_Left_Error
-    
-
-        fTemperature_Total_Left = 0
-      
-    On Error GoTo 0
-    Exit Function
-
-fTemperature_Total_Left_Error:
-
-    MsgBox "Error " & Err.Number & " (" & Err.Description & ") in procedure fTemperature_Total_Left, line " & Erl & "."
-
-End Function
-
-'
-
-' ----------------------------------------------------------------
-' Procedure Name: temperatureString
-' Purpose: Obtains the names of all the Temperatures from the system
-' Procedure Kind: func
-' Procedure Access: public
-' Author: beededea
-' Date: 13/01/2024
-' ----------------------------------------------------------------
-Private Function fTemperatureString() As String
-    
-    Dim strComputer As String: strComputer = vbNullString
-    Dim objSWbemLocator As Object
-    Dim objSWbemServices As Object
-    Dim colItems As Object
-    Dim objItem As Object
-    Dim result As String: result = vbNullString
-    Dim estimatedTime As String: estimatedTime = vbNullString
-    
-    On Error GoTo getGblTemperatureArray_Error
-    
-    strComputer = "."  ' localhost
-    result = "No temperature installed."
-    
-        
-    fTemperatureString = result ' return
-    
-    On Error GoTo 0
-    Exit Function
-
-getGblTemperatureArray_Error:
-
-    MsgBox "Error " & Err.Number & " (" & Err.Description & ") in procedure getGblTemperatureArray, line " & Erl & "."
-
-End Function
 
 
 
@@ -849,8 +782,6 @@ Private Sub getData()
     'MsgBox myMSXML.responseText
     tmrXML.Enabled = True
     
-    'https://aviationweather.gov/api/data/dataserver?requestType=retrieve&dataSource=metars&stationString=EGSH&hoursBeforeNow=6&format=xml&mostRecent=true
-    
     On Error GoTo 0
     Exit Sub
 
@@ -859,13 +790,6 @@ getData_Error:
     MsgBox "Error " & Err.Number & " (" & Err.Description & ") in procedure getData, line " & Erl & "."
 
 End Sub
-
-
-
-
-
-
-
 
     
 '---------------------------------------------------------------------------------------
@@ -884,8 +808,8 @@ Private Sub tmrXML_Timer()
 
         tmrXML.Enabled = False
         
-        'MsgBox myMSXML.responseText
-        Debug.Print myMSXML.responseText
+        'If debugFlg = 1 Then
+'        Debug.Print myMSXML.responseText
         Call myStatusProc
         
     End If
@@ -911,10 +835,8 @@ End Sub
 Private Sub myStatusProc()
 
     Dim vals0 As Integer
-    Dim pressureVal As Single
-    Dim temperatureVal  As Single
-    Dim humidityVal  As Single
-    
+    Dim pressureVal As Long
+    Dim humidityVal  As Long
     
     Dim theDate As Date: theDate = #1/1/2000 12:00:00 PM#
     Dim secsDif As Integer
@@ -936,8 +858,13 @@ Private Sub myStatusProc()
     Dim visibility_statute_mi As String: visibility_statute_mi = vbNullString
     Dim metar_items As String: metar_items = vbNullString
     Dim current_node As String: current_node = vbNullString
-    Dim sky_condition_items As String: sky_condition_items = vbNullString
-
+    Dim sky_condition_items(3) As String
+    Dim sky_condition As String
+    Dim counter As Integer
+    Dim tmpSky_condition As String
+    Dim strPressureVal As String
+    Dim humidity As Long
+    
     Dim cloud_base_ft_agl() As String
     Dim sky_cover() As String
     
@@ -945,25 +872,35 @@ Private Sub myStatusProc()
     Dim objxmldoc As New MSXML2.DOMDocument
     Dim node As MSXML2.IXMLDOMNode
     
+    Dim answer As VbMsgBoxResult
+    Dim answerMsg  As String
+    
+    
     On Error GoTo myStatusProc_Error
     
+    debugFlg = 1
+    
+    objxmldoc.async = True
     objxmldoc.LoadXML (myMSXML.responseText)
     
     ' get the values from the XML data response, the num results should be non-zero
     Set nodeList = objxmldoc.selectNodes("response/data/METAR")
-    
     num_results = nodeList.length
     
     If num_results = 0 Then ' And Preferences.msgboxPref.value = "enabled" Then
-      'The source weather feed is currently producing no valid data.
       'MsgBox ("No valid data for  " + (Int(Preferences.intervalValuePref.value / 60)) + " mins.")
+        If answer = vbNo Then
+            answer = vbYes
+            answerMsg = "The source weather feed is currently producing no valid data for " & panzerPrefs.sliSamplingInterval.Value & " secs."
+            answer = msgBoxA(answerMsg, vbOKOnly, "Poll Warning", True, "myStatusProcPollingWarning")
+        End If
       Exit Sub ' Return
     End If
-    
+
     If Not nodeList Is Nothing Then
          For Each node In nodeList
          
-            On Error Resume Next
+            On Error Resume Next ' prevents errors being generated from optionally present nodes.
            
            ' get the values from the XML data and return strings - the easy stuff first
             
@@ -997,13 +934,45 @@ Private Sub myStatusProc()
             visibility_statute_mi = node.selectSingleNode("visibility_statute_mi").Text
             If debugFlg = 1 Then Debug.Print ("%myStatusProc - visibility_statute_mi " + visibility_statute_mi)
         
-            ' the On Error Resume Next is for the next two nasty items that may/may not appear in the returned XML
+            ' the On Error Resume Next above is for the next two optional items that may/may not appear in the returned XML
             
             wx_string = node.selectSingleNode("wx_string").Text
             If debugFlg = 1 Then Debug.Print ("%myStatusProc - wx_string " + wx_string)
         
             precip_in = node.selectSingleNode("precip_in").Text
             If debugFlg = 1 Then Debug.Print ("%myStatusProc - precip_in " + precip_in)
+            
+            'the first and lowest cloudbase is the one that really counts, there could be as many as three sky cover readings
+            
+            sky_condition_items(counter) = node.selectSingleNode("sky_condition").Attributes.getNamedItem("sky_cover").Text
+            If debugFlg = 1 Then Debug.Print ("%myStatusProc - sky_condition " + sky_condition_items(counter))
+        
+            'first attempt to test for another sky_cover attribute
+            tmpSky_condition = node.selectSingleNode("sky_condition").Attributes.getNamedItem("sky_cover").Text
+            If tmpSky_condition <> sky_condition_items(counter) Then
+                If debugFlg = 1 Then Debug.Print ("%myStatusProc - sky_condition " + tmpSky_condition)
+                counter = counter + 1
+                sky_condition_items(counter) = tmpSky_condition
+                cloud_base_ft_agl(counter) = node.selectSingleNode("sky_condition").Attributes.getNamedItem("cloud_base_ft_agl").Text
+                
+            End If
+            
+            'second attempt to test for another sky_cover attribute
+            tmpSky_condition = node.selectSingleNode("sky_condition").Attributes.getNamedItem("sky_cover").Text
+            If tmpSky_condition <> sky_condition_items(counter) Then
+                If debugFlg = 1 Then Debug.Print ("%myStatusProc - sky_condition " + tmpSky_condition)
+                counter = counter + 1
+                sky_condition_items(counter) = tmpSky_condition
+                cloud_base_ft_agl(counter) = node.selectSingleNode("sky_condition").Attributes.getNamedItem("cloud_base_ft_agl").Text
+            End If
+            
+            tmpSky_condition = node.selectSingleNode("sky_condition").Attributes.getNamedItem("sky_cover").Text
+            If tmpSky_condition <> sky_condition_items(counter) Then
+                If debugFlg = 1 Then Debug.Print ("%myStatusProc - sky_condition " + tmpSky_condition)
+                counter = counter + 1
+                sky_condition_items(counter) = tmpSky_condition
+                cloud_base_ft_agl(counter) = node.selectSingleNode("sky_condition").Attributes.getNamedItem("cloud_base_ft_agl").Text
+            End If
             
             On Error GoTo myStatusProc_Error
             
@@ -1012,71 +981,36 @@ Private Sub myStatusProc()
       
     'if the station id returned is null then assume the weather information is missing for an unknown reason.
     If (station_id = "") Then
-        If debugFlg = 1 Then Debug.Print ("%myStatusProc - missing station_id ")
-        Dim answer As VbMsgBoxResult
-        'answer = MsgBox("Rather weird - The supplied ICAO code " + Preferences.icao.value + " does not seem to providing any valid data, please select another.")
-        'If (answer = 1) Then
-          'searchWindowVisible()
-        'End If
+        If debugFlg = 1 Then Debug.Print ("%myStatusProc - station_id does not seem to providing any valid data, please select another.")
+        
+        If answer = vbNo Then
+            answer = vbYes
+            answerMsg = "Rather weird - The supplied ICAO code station_id does not seem to providing any valid data, please select another."""
+            answer = msgBoxA(answerMsg, vbOKOnly, "Polling Warning", True, "myStatusProcStation_id")
+        End If
+        ' Preferences.icao.value
     End If
 
-
-
-
-
-
- 
-
-
-
-'    ' this is the routine that will determine if there is more than one sky attribute
-'    dim metar_items = returnedXML.evaluate("/response/data/METAR") 'read in the metar data into an array
-'    dim current_node = metar_items.item(0) ' this gets <METAR> group where the metar data resides
-'    dim sky_condition_items = current_node.evaluate("sky_condition") 'get the sky_condition from the METAR group
-'
-'    dim cloud_base_ft_agl = new Array()
-'    dim sky_cover = new Array()  ' this should clear the array each time it is called.
-'    dim counter = 0
-'
-'    If (sky_condition_items <> Null) Then
-'        while (counter < sky_condition_items.length) {
-'                    current_node = sky_condition_items.Item(counter)
-'                    sky_cover(counter) = current_node.Evaluate("string(attribute::" + "sky_cover" + ")")
-'                    cloud_base_ft_agl(counter) = current_node.Evaluate("string(attribute::" + "cloud_base_ft_agl" + ")")
-'                    counter = counter + 1
-'        Wend
-'    End If
-
-'    'the first and lowest cloudbase is the one that really counts, there could be as many as three sky cover readings
-'    if debugFlg = 1 then debug.print ("%myStatusProc - sky_cover 1 "+ sky_cover(0))
-'    if debugFlg = 1 then debug.print ("%myStatusProc - cloud_base_ft_agl 1 "+ cloud_base_ft_agl(0))
-'    if (debug = 1 and  sky_cover(1) <> undefined) then debug.print ("%myStatusProc - sky_cover 2 "+ sky_cover(1))
-'    if (debug = 1 and  sky_cover(1) <> undefined) then debug.print ("%myStatusProc - cloud_base_ft_agl 2 "+ cloud_base_ft_agl(1))
-'
-
-'
-'    ' get pressure
+    ' get pressure
     pressureVal = altim_in_hg * 25.3999
     vals0 = Val(pressureVal)
     pressureVal = Math.Round(vals0)
 '    setPres(pressureVal, preferences.animationpref.value)
-    pressureVal = Str$(pressureVal) & "(" + Str$(Math.Round(1.3333 * vals0)) + ")"
-    If debugFlg = 1 Then Debug.Print ("%myStatusProc - Pressure = " + pressureVal)
+
+    strPressureVal = Str$(pressureVal) & "(" & CStr(Round(1.3333 * vals0)) & ")"
+    If debugFlg = 1 Then Debug.Print ("%myStatusProc - Pressure = " & strPressureVal)
 '    setManual(preferences.lastPres.value, preferences.animationpref.value)
 '
 '    ' rotate the outer hand to show the data has just been captured
 '    rotateHand()
 '
 '    ' set temperature
-    temperatureVal = temp_c
-'    setTemp (val(temperatureVal))
+    temperatureVal = Val(temp_c)
 '
 '    'calculate humidity
-    Dim humidity As Double
-    'humidity = Math.Round(100 * Math.pow((112 - (0.1 * temp_c) + dewpoint_c) / (112 + (0.9 * temp_c)), 8))
-    If debugFlg = 1 Then Debug.Print ("%myStatusProc - humidity " + humidity)
+    humidity = Round(100 * (((112 - (0.1 * temp_c) + dewpoint_c) / (112 + (0.9 * temp_c))) ^ 8))
+    If debugFlg = 1 Then Debug.Print ("%myStatusProc - humidity " + CStr(humidity))
     humidityVal = humidity
-'    setHumidityPointer(val(humidityVal), true)
 '
 '    'decode the visibility when a cloud cover field found
 '    skyClarity = get_cloud_cover(sky_cover)
