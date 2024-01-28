@@ -708,16 +708,37 @@ End Sub
 ' Date: 13/01/2024
 ' ----------------------------------------------------------------
 Private Sub obtainTemperature()
-
+        
+    Dim min  As Integer: min = -50
+    Dim max  As Integer: max = 70
+    Dim angle As Integer: angle = 0
+    
     On Error GoTo obtainTemperature_Error
 
-        temperaturePercent = fTemperature_Usage_Percent()
-        SDeg = (temperaturePercent * 3) + 30
+    Call getData
+    
+    If (PzGTemperatureScale = "1") Then
+        temperatureVal = temperatureVal * 1.8 + 32
+        min = -45
+        max = 135
 
-        mTemperatureDetails = mTemperatureDetails & vbCrLf
+        If debugFlg = 1 Then Debug.Print "%setTemp - " & CStr(temperatureVal) & " F"
         
-        Call getData
-        W.Parent.Refresh
+    Else
+
+        If debugFlg = 1 Then Debug.Print ("%setTemp - " & CStr(temperatureVal) & " C")
+    
+    End If
+
+    SDeg = (temperatureVal - min) / (max - min) * 360
+    
+    'SDeg = (temperaturePercent * 3) + 30
+
+    mTemperatureDetails = mTemperatureDetails & vbCrLf
+        
+    
+    W.Parent.Refresh
+    
     On Error GoTo 0
     Exit Sub
 
@@ -727,30 +748,7 @@ obtainTemperature_Error:
 
 End Sub
 
-' ----------------------------------------------------------------
-' Procedure Name: fTemperature_Usage_Percent
-' Purpose:
-' Procedure Kind: Function
-' Procedure Access: Private
-' Return Type: Integer
-' Author: https://www.tek-tips.com/userinfo.cfm?member=Hypetia
-' Date: 09/01/2024
-' ----------------------------------------------------------------
-Private Function fTemperature_Usage_Percent() As Integer
-    
-    On Error GoTo fTemperature_Usage_Percent_Error
-    
-        fTemperature_Usage_Percent = temperatureVal
 
-    
-    On Error GoTo 0
-    Exit Function
-
-fTemperature_Usage_Percent_Error:
-
-    MsgBox "Error " & Err.Number & " (" & Err.Description & ") in procedure fTemperature_Usage_Percent, line " & Erl & "."
-
-End Function
 
 
 
@@ -771,7 +769,7 @@ Private Sub getData()
     
     On Error GoTo getData_Error
     
-    location = "EGSH"
+    location = PzGIcao '"EGSH"
     thisURL = "https://aviationweather.gov/api/data/dataserver?requestType=retrieve&dataSource=metars&stationString=" & location & "&hoursBeforeNow=6&format=xml&mostRecent=true"
 
     Set myMSXML = CreateObject("Microsoft.XmlHttp")
@@ -888,7 +886,6 @@ Private Sub myStatusProc()
     num_results = nodeList.length
     
     If num_results = 0 Then ' And Preferences.msgboxPref.value = "enabled" Then
-      'MsgBox ("No valid data for  " + (Int(Preferences.intervalValuePref.value / 60)) + " mins.")
         If answer = vbNo Then
             answer = vbYes
             answerMsg = "The source weather feed is currently producing no valid data for " & panzerPrefs.sliSamplingInterval.Value & " secs."
@@ -985,24 +982,18 @@ Private Sub myStatusProc()
         
         If answer = vbNo Then
             answer = vbYes
-            answerMsg = "Rather weird - The supplied ICAO code station_id does not seem to providing any valid data, please select another."""
+            answerMsg = "Rather weird - The supplied ICAO code " & panzerPrefs.txtIcao.Text & " does not seem to providing any valid data, please select another."""
             answer = msgBoxA(answerMsg, vbOKOnly, "Polling Warning", True, "myStatusProcStation_id")
         End If
-        ' Preferences.icao.value
+        
     End If
 
     ' get pressure
     pressureVal = altim_in_hg * 25.3999
     vals0 = Val(pressureVal)
     pressureVal = Math.Round(vals0)
-'    setPres(pressureVal, preferences.animationpref.value)
-
     strPressureVal = Str$(pressureVal) & "(" & CStr(Round(1.3333 * vals0)) & ")"
     If debugFlg = 1 Then Debug.Print ("%myStatusProc - Pressure = " & strPressureVal)
-'    setManual(preferences.lastPres.value, preferences.animationpref.value)
-'
-'    ' rotate the outer hand to show the data has just been captured
-'    rotateHand()
 '
 '    ' set temperature
     temperatureVal = Val(temp_c)

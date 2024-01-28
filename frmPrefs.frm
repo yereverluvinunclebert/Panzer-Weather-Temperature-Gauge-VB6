@@ -17,7 +17,7 @@ Begin VB.Form panzerPrefs
    Begin VB.Frame fraGeneral 
       Caption         =   "General"
       ForeColor       =   &H80000008&
-      Height          =   5220
+      Height          =   5670
       Left            =   75
       TabIndex        =   50
       Top             =   1200
@@ -25,11 +25,20 @@ Begin VB.Form panzerPrefs
       Width           =   7995
       Begin VB.Frame fraGeneralInner 
          BorderStyle     =   0  'None
-         Height          =   4725
+         Height          =   5130
          Left            =   465
          TabIndex        =   51
          Top             =   300
          Width           =   6750
+         Begin VB.TextBox txtIcao 
+            Height          =   315
+            Left            =   2010
+            Locked          =   -1  'True
+            TabIndex        =   164
+            Text            =   "EGSH"
+            Top             =   2745
+            Width           =   1395
+         End
          Begin VB.ComboBox cmbTemperatureScale 
             Height          =   315
             ItemData        =   "frmPrefs.frx":10CA
@@ -65,7 +74,7 @@ Begin VB.Form panzerPrefs
             Left            =   1995
             TabIndex        =   93
             ToolTipText     =   "Check this box to enable the automatic start of the program when Windows is started."
-            Top             =   4050
+            Top             =   4680
             Width           =   4020
          End
          Begin vb6projectCCRSlider.Slider sliSamplingInterval 
@@ -73,7 +82,7 @@ Begin VB.Form panzerPrefs
             Left            =   1890
             TabIndex        =   155
             ToolTipText     =   "Setting the sampling interval affects the frequency of the pointer updates."
-            Top             =   2685
+            Top             =   3315
             Width           =   3870
             _ExtentX        =   6826
             _ExtentY        =   688
@@ -81,6 +90,15 @@ Begin VB.Form panzerPrefs
             Max             =   30
             Value           =   20
             SelStart        =   20
+         End
+         Begin VB.Label lblGeneral 
+            Caption         =   "ICAO Station ID :"
+            Height          =   255
+            Index           =   1
+            Left            =   585
+            TabIndex        =   165
+            Top             =   2805
+            Width           =   1545
          End
          Begin VB.Label lblGeneral 
             Caption         =   "Temperature Scale :"
@@ -106,7 +124,7 @@ Begin VB.Form panzerPrefs
             Index           =   14
             Left            =   2025
             TabIndex        =   160
-            Top             =   3465
+            Top             =   4095
             Width           =   3810
          End
          Begin VB.Label lblWindowLevel 
@@ -115,7 +133,7 @@ Begin VB.Form panzerPrefs
             Index           =   13
             Left            =   495
             TabIndex        =   159
-            Top             =   2745
+            Top             =   3375
             Width           =   1410
          End
          Begin VB.Label lblWindowLevel 
@@ -124,7 +142,7 @@ Begin VB.Form panzerPrefs
             Index           =   12
             Left            =   3615
             TabIndex        =   158
-            Top             =   3150
+            Top             =   3780
             Width           =   840
          End
          Begin VB.Label lblWindowLevel 
@@ -133,7 +151,7 @@ Begin VB.Form panzerPrefs
             Index           =   11
             Left            =   5385
             TabIndex        =   157
-            Top             =   3150
+            Top             =   3780
             Width           =   405
          End
          Begin VB.Label lblWindowLevel 
@@ -142,7 +160,7 @@ Begin VB.Form panzerPrefs
             Index           =   10
             Left            =   2070
             TabIndex        =   156
-            Top             =   3150
+            Top             =   3780
             Width           =   345
          End
          Begin VB.Label lblGeneral 
@@ -179,7 +197,7 @@ Begin VB.Form panzerPrefs
             Left            =   960
             TabIndex        =   94
             Tag             =   "lblRefreshInterval"
-            Top             =   4170
+            Top             =   4800
             Width           =   1740
          End
          Begin VB.Label lblGeneral 
@@ -3249,7 +3267,7 @@ Private Sub btnSave_Click()
     PzGGaugeFunctions = LTrim$(Str$(chkGaugeFunctions.Value))
     PzGStartup = LTrim$(Str$(chkGenStartup.Value))
     
-    'PzGFaceSwitchPref = cmbkelvinfaceSwitchPref.List(cmbkelvinfaceSwitchPref.ListIndex)
+    PzGIcao = txtIcao.Text
 
     
     PzGSmoothSecondHand = cmbTickSwitchPref.ListIndex
@@ -3329,8 +3347,8 @@ Private Sub btnSave_Click()
         sPutINISetting "Software\PzTemperatureGauge", "smoothSecondHand", PzGSmoothSecondHand, PzGSettingsFile
         sPutINISetting "Software\PzTemperatureGauge", "samplingInterval", PzGSamplingInterval, PzGSettingsFile
         
-        sPutINISetting "Software\PzStorageGauge", "temperatureScale", PzGTemperatureScale, PzGSettingsFile
-        'sPutINISetting "Software\PzTemperatureGauge", "kelvinfaceSwitchPref", PzGFaceSwitchPref, PzGSettingsFile
+        sPutINISetting "Software\PzTemperatureGauge", "temperatureScale", PzGTemperatureScale, PzGSettingsFile
+        sPutINISetting "Software\PzTemperatureGauge", "icao", PzGIcao, PzGSettingsFile
 
         
         sPutINISetting "Software\PzTemperatureGauge", "aspectHidden", PzGAspectHidden, PzGSettingsFile
@@ -3576,6 +3594,8 @@ Private Sub adjustPrefsControls()
     cmbTemperatureScale.ListIndex = Val(PzGTemperatureScale)
  
     sliSamplingInterval = Val(PzGSamplingInterval)
+    
+    txtIcao.Text = PzGIcao
     
     ' configuration tab
    
@@ -5409,7 +5429,7 @@ Private Sub setframeHeights()
             Call SaveSizes(panzerPrefs, prefsControlPositions(), prefsCurrentWidth, prefsCurrentHeight)
         'End If
     Else
-        fraGeneral.Height = 5293
+        fraGeneral.Height = 5749
         fraConfig.Height = 6632
         fraSounds.Height = 1992
         fraPosition.Height = 7544

@@ -293,7 +293,7 @@ Public PzGGaugeFunctions As String
 Public PzGSmoothSecondHand As String
 Public PzGSamplingInterval As String
 Public PzGTemperatureScale As String
-'Public PzGFaceSwitchPref As String
+Public PzGIcao As String
 
 
 ' config
@@ -2766,9 +2766,9 @@ Public Function ArrayString(ParamArray tokens()) As String()
     On Error GoTo ArrayString_Error
 
     ReDim Arr(UBound(tokens)) As String
-    Dim I As Long
-    For I = 0 To UBound(tokens)
-        Arr(I) = tokens(I)
+    Dim i As Long
+    For i = 0 To UBound(tokens)
+        Arr(i) = tokens(i)
     Next
     ArrayString = Arr
 

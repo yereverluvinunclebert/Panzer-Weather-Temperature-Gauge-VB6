@@ -229,10 +229,7 @@ Private Sub initialiseGlobalVars()
     PzGGaugeFunctions = vbNullString
     PzGSmoothSecondHand = vbNullString
     PzGSamplingInterval = vbNullString
-    
-        
-
-'    PzGFaceSwitchPref = vbNullString
+    PzGIcao = vbNullString
 
 
     ' config
@@ -419,7 +416,7 @@ Public Sub adjustMainControls()
     
 '    overlayWidget.ZoomDirection = PzGScrollWheelDirection
 
-'PzGFaceSwitchPref
+'   PzGIcao
 
     If PzGGaugeFunctions = "1" Then
         overlayWidget.Ticking = True
@@ -684,10 +681,7 @@ Public Sub validateInputs()
         If PzGSmoothSecondHand = vbNullString Then PzGSmoothSecondHand = "0"
         If PzGSamplingInterval = vbNullString Then PzGSamplingInterval = "3"
         If PzGTemperatureScale = vbNullString Then PzGTemperatureScale = "0"
-        
- 
- 
-        'If PzGFaceSwitchPref = vbNullString Then PzGFaceSwitchPref = "0"
+        If PzGIcao = vbNullString Then PzGIcao = "EGSH"
 
 
         ' Configuration
