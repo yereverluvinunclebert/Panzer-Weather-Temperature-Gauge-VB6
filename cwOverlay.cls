@@ -54,6 +54,7 @@ Private mSamplingInterval As String ' property SamplingInterval
 Private mThisFace As Integer             ' property mThisFace
 
 Private myMSXML As MSXML2.XMLHTTP
+Private weHaveData As Boolean
 
 '---------------------------------------------------------------------------------------
 ' Procedure : Class_Initialize
@@ -709,32 +710,35 @@ End Sub
 ' ----------------------------------------------------------------
 Private Sub obtainTemperature()
         
-    Dim min  As Integer: min = -50
-    Dim max  As Integer: max = 70
+    Dim min  As Integer: min = -30
+    Dim max  As Integer: max = 50
     Dim angle As Integer: angle = 0
+    Dim StrTemperatureVal As String
     
     On Error GoTo obtainTemperature_Error
 
     Call getData
     
     If (PzGTemperatureScale = "1") Then
-        temperatureVal = temperatureVal * 1.8 + 32
+        StrTemperatureVal = CStr(temperatureVal * 1.8 + 32)
         min = -45
         max = 135
 
-        If debugFlg = 1 Then Debug.Print "%setTemp - " & CStr(temperatureVal) & " F"
+        If debugFlg = 1 Then Debug.Print "%setTemp - " & StrTemperatureVal & " F"
         
     Else
-
-        If debugFlg = 1 Then Debug.Print ("%setTemp - " & CStr(temperatureVal) & " C")
+        StrTemperatureVal = CStr(temperatureVal)
+        If debugFlg = 1 Then Debug.Print ("%setTemp - " & StrTemperatureVal & " C")
     
     End If
 
-    SDeg = (temperatureVal - min) / (max - min) * 360
+    If weHaveData = True Then
+        SDeg = (temperatureVal - min) / (max - min) * 360
+    Else
+        SDeg = 30
+    End If
     
-    'SDeg = (temperaturePercent * 3) + 30
-
-    mTemperatureDetails = mTemperatureDetails & vbCrLf
+    'mTemperatureDetails = mTemperatureDetails & vbCrLf
         
     
     W.Parent.Refresh
@@ -756,7 +760,7 @@ End Sub
 
 ' ----------------------------------------------------------------
 ' Procedure Name: getData
-' Purpose: this function gets data from the chosen location  Requires a reference to Microsoft XML library
+' Purpose: this function obtains data from the chosen location using an httpXMLrequest. Requires a reference to Microsoft XML library.
 ' Procedure Kind: Sub
 ' Procedure Access: Private
 ' Author: beededea
@@ -766,18 +770,19 @@ Private Sub getData()
 
     Dim location As String: location = vbNullString
     Dim thisURL As String: thisURL = vbNullString
+    Dim thisFile As String: thisFile = vbNullString
     
     On Error GoTo getData_Error
     
-    location = PzGIcao '"EGSH"
-    thisURL = "https://aviationweather.gov/api/data/dataserver?requestType=retrieve&dataSource=metars&stationString=" & location & "&hoursBeforeNow=6&format=xml&mostRecent=true"
-
+    location = PzGIcao ' eg. "EGSH"
+    thisURL = "https:'aviationweather.gov/api/data/dataserver?requestType=retrieve&dataSource=metars&stationString=" & location & "&hoursBeforeNow=6&format=xml&mostRecent=true"
+    thisFile = "E:\vb6\Panzer-Weather-Gauges-VB6\test.xml"
     Set myMSXML = CreateObject("Microsoft.XmlHttp")
-    myMSXML.open "POST", thisURL, True
+    'myMSXML.open "POST", thisURL, True
+    myMSXML.open "POST", thisFile, True
     myMSXML.setRequestHeader "Content-Type", "application/x-www-form-urlencoded"
     myMSXML.setRequestHeader "User-Agent", "Firefox 3.6.4"
     myMSXML.send "param1=value2&param2=value2"
-    'MsgBox myMSXML.responseText
     tmrXML.Enabled = True
     
     On Error GoTo 0
@@ -806,8 +811,7 @@ Private Sub tmrXML_Timer()
 
         tmrXML.Enabled = False
         
-        'If debugFlg = 1 Then
-'        Debug.Print myMSXML.responseText
+        If debugFlg = 1 Then Debug.Print myMSXML.responseText
         Call myStatusProc
         
     End If
@@ -858,21 +862,30 @@ Private Sub myStatusProc()
     Dim current_node As String: current_node = vbNullString
     Dim sky_condition_items(3) As String
     Dim sky_condition As String
-    Dim counter As Integer
+    Dim attributeCounter As Integer
     Dim tmpSky_condition As String
     Dim strPressureVal As String
     Dim humidity As Long
+    Dim skyClarity As String
     
-    Dim cloud_base_ft_agl() As String
+    Dim cloud_base_ft_agl(3) As String
     Dim sky_cover() As String
+    Dim sky_condition_items_length As Integer
+    Dim sky_condition_attributes_length As Integer
+    Dim testNodeName As String
+    Dim testNodeValue As String
     
     Dim nodeList As MSXML2.IXMLDOMNodeList
     Dim objxmldoc As New MSXML2.DOMDocument
     Dim node As MSXML2.IXMLDOMNode
     
+    Dim MetarNode As MSXML2.IXMLDOMNode
+    Dim SkyCondition As MSXML2.IXMLDOMNode
+    Dim SkyConditions As MSXML2.IXMLDOMNodeList
+
     Dim answer As VbMsgBoxResult
     Dim answerMsg  As String
-    
+    Dim i As Integer
     
     On Error GoTo myStatusProc_Error
     
@@ -885,13 +898,16 @@ Private Sub myStatusProc()
     Set nodeList = objxmldoc.selectNodes("response/data/METAR")
     num_results = nodeList.length
     
+    Set MetarNode = objxmldoc.selectSingleNode("response/data/METAR") ' There's only the one METAR node
+    
     If num_results = 0 Then ' And Preferences.msgboxPref.value = "enabled" Then
         If answer = vbNo Then
             answer = vbYes
             answerMsg = "The source weather feed is currently producing no valid data for " & panzerPrefs.sliSamplingInterval.Value & " secs."
             answer = msgBoxA(answerMsg, vbOKOnly, "Poll Warning", True, "myStatusProcPollingWarning")
         End If
-      Exit Sub ' Return
+        weHaveData = False
+        Exit Sub ' Return
     End If
 
     If Not nodeList Is Nothing Then
@@ -939,42 +955,37 @@ Private Sub myStatusProc()
             precip_in = node.selectSingleNode("precip_in").Text
             If debugFlg = 1 Then Debug.Print ("%myStatusProc - precip_in " + precip_in)
             
-            'the first and lowest cloudbase is the one that really counts, there could be as many as three sky cover readings
+            'the first and lowest cloudbase is the one that really counts, there could be as many as three sky cover reading
             
-            sky_condition_items(counter) = node.selectSingleNode("sky_condition").Attributes.getNamedItem("sky_cover").Text
-            If debugFlg = 1 Then Debug.Print ("%myStatusProc - sky_condition " + sky_condition_items(counter))
-        
-            'first attempt to test for another sky_cover attribute
-            tmpSky_condition = node.selectSingleNode("sky_condition").Attributes.getNamedItem("sky_cover").Text
-            If tmpSky_condition <> sky_condition_items(counter) Then
-                If debugFlg = 1 Then Debug.Print ("%myStatusProc - sky_condition " + tmpSky_condition)
-                counter = counter + 1
-                sky_condition_items(counter) = tmpSky_condition
-                cloud_base_ft_agl(counter) = node.selectSingleNode("sky_condition").Attributes.getNamedItem("cloud_base_ft_agl").Text
-                
+            Set SkyConditions = MetarNode.selectNodes("sky_condition") ' Get all the sky_condition nodes under METAR
+            If Not SkyConditions Is Nothing Then
+                For Each SkyCondition In SkyConditions
+                    sky_condition_attributes_length = SkyCondition.Attributes.length  ' no of Attributes
+                    If Not sky_condition_attributes_length = 0 Then
+                        attributeCounter = 0 ' sky_cover
+                        testNodeName = SkyCondition.Attributes(attributeCounter).nodeName
+                        testNodeValue = SkyCondition.Attributes(attributeCounter).nodeValue
+                            
+                        attributeCounter = 1 ' cloud_base_ft_agl
+                        testNodeName = SkyCondition.Attributes(attributeCounter).nodeName
+                        testNodeValue = SkyCondition.Attributes(attributeCounter).nodeValue
+                        
+                        If testNodeName = "sky_cover" Then sky_condition_items(attributeCounter) = testNodeValue
+                        If testNodeName = "cloud_base_ft_agl" Then cloud_base_ft_agl(attributeCounter) = testNodeValue
+                            
+                    End If
+                    If debugFlg = 1 Then Debug.Print ("%myStatusProc - sky_condition, sky_cover " + sky_condition_items(attributeCounter))
+                    If debugFlg = 1 Then Debug.Print ("%myStatusProc - sky_condition, cloud_base_ft_agl " + cloud_base_ft_agl(attributeCounter))
+                Next
             End If
-            
-            'second attempt to test for another sky_cover attribute
-            tmpSky_condition = node.selectSingleNode("sky_condition").Attributes.getNamedItem("sky_cover").Text
-            If tmpSky_condition <> sky_condition_items(counter) Then
-                If debugFlg = 1 Then Debug.Print ("%myStatusProc - sky_condition " + tmpSky_condition)
-                counter = counter + 1
-                sky_condition_items(counter) = tmpSky_condition
-                cloud_base_ft_agl(counter) = node.selectSingleNode("sky_condition").Attributes.getNamedItem("cloud_base_ft_agl").Text
-            End If
-            
-            tmpSky_condition = node.selectSingleNode("sky_condition").Attributes.getNamedItem("sky_cover").Text
-            If tmpSky_condition <> sky_condition_items(counter) Then
-                If debugFlg = 1 Then Debug.Print ("%myStatusProc - sky_condition " + tmpSky_condition)
-                counter = counter + 1
-                sky_condition_items(counter) = tmpSky_condition
-                cloud_base_ft_agl(counter) = node.selectSingleNode("sky_condition").Attributes.getNamedItem("cloud_base_ft_agl").Text
-            End If
-            
             On Error GoTo myStatusProc_Error
-            
-         Next node
-    End If
+          Next node
+   End If
+               
+   'Cleanup
+   Set nodeList = Nothing
+   Set SkyConditions = Nothing
+    
       
     'if the station id returned is null then assume the weather information is missing for an unknown reason.
     If (station_id = "") Then
@@ -984,6 +995,8 @@ Private Sub myStatusProc()
             answer = vbYes
             answerMsg = "Rather weird - The supplied ICAO code " & panzerPrefs.txtIcao.Text & " does not seem to providing any valid data, please select another."""
             answer = msgBoxA(answerMsg, vbOKOnly, "Polling Warning", True, "myStatusProcStation_id")
+            weHaveData = False
+            Exit Sub ' return
         End If
         
     End If
@@ -1004,7 +1017,7 @@ Private Sub myStatusProc()
     humidityVal = humidity
 '
 '    'decode the visibility when a cloud cover field found
-'    skyClarity = get_cloud_cover(sky_cover)
+    skyClarity = get_cloud_cover(sky_condition_items)
 '    If (cloud_base_ft_agl <> 0) Then
 '        if (preferences.imperialMetricPref.value = "metric") then
 '            ' change the string to metric measurements
@@ -1033,6 +1046,7 @@ Private Sub myStatusProc()
 '    usableObsTime = stringToDate(initialObsTime)
 
 
+    weHaveData = True
     
     On Error GoTo 0
     Exit Sub
@@ -1042,3 +1056,57 @@ myStatusProc_Error:
     MsgBox "Error " & Err.Number & " (" & Err.Description & ") in procedure myStatusProc, line " & Erl & "."
 
 End Sub
+
+
+' ----------------------------------------------------------------
+' Procedure Name: get_cloud_cover
+' Purpose: function to decode cloud cover information into a text form
+' Procedure Kind: Function
+' Procedure Access: Public
+' Parameter sky_cover (String):
+' Return Type: String
+' Author: beededea
+' Date: 29/01/2024
+'
+' Decodes cloud cover information.
+' Format is SKC or CLR for clear skies, or cccnnn where ccc = 3-letter
+' code and nnn = altitude of cloud layer in hundreds of feet. 'VV' seems
+' to be used for very low cloud layers. (Other conversion factor:
+' 1 m = 3.28084 ft)
+' FEW = 1 or 2 eighths cover; SCT = 3 or 4 eighths cover; BKN = 5, 6 or 7 eighths cover & OVC = 8/8 cover
+' ----------------------------------------------------------------
+Function get_cloud_cover(ByRef sky_cover() As String) As String
+    Dim skyClarity: skyClarity = ""
+   
+    On Error GoTo get_cloud_cover_Error
+
+    If (sky_cover(0) = "SKC") Then skyClarity = "clear_skies"
+    If (sky_cover(0) = "CLR") Then skyClarity = "clear_skies"
+    If (sky_cover(0) = "FEW") Then skyClarity = "partly_cloudy"
+    If (sky_cover(0) = "SCT") Then skyClarity = "scattered_clouds"
+    If (sky_cover(0) = "BKN") Then skyClarity = "mostly_cloudy"
+    If (sky_cover(0) = "OVC") Then skyClarity = "overcast"
+    If (sky_cover(0) = "VV ") Then skyClarity = "vertical_visibility"
+    If (sky_cover(0) = "CAVOK ") Then skyClarity = "ceiling_and_visibility_OK"
+
+'    (1) there are no clouds below 5000 feet above aerodrome level (AAL) or minimum sector altitude (whichever is higher) and no cumulonimbus or towering cumulus (2) visibility is at least 10 kilometres (6 statute miles) or more and (3) no current or forecast significant weather such as precipitation, thunderstorms, shallow fog or low drifting snow
+
+    If (sky_cover(1) = "FEW" And Not sky_cover(0) = sky_cover(1)) Then skyClarity = skyClarity & " + " & "_partly_cloudy"
+    If (sky_cover(1) = "SCT" And Not sky_cover(0) = sky_cover(1)) Then skyClarity = skyClarity & " + " & "_scattered_clouds"
+    If (sky_cover(1) = "BKN" And Not sky_cover(0) = sky_cover(1)) Then skyClarity = skyClarity & " + " & "_mostly_cloudy"
+    If (sky_cover(1) = "OVC" And Not sky_cover(0) = sky_cover(1)) Then skyClarity = skyClarity & " + " & "_overcast"
+
+    If (debugFlg = 1) Then Debug.Print ("%get_cloud_cover - part " & skyClarity)
+    get_cloud_cover = skyClarity 'return skyClarity
+    
+    On Error GoTo 0
+    Exit Function
+
+get_cloud_cover_Error:
+
+    MsgBox "Error " & Err.Number & " (" & Err.Description & ") in procedure get_cloud_cover, line " & Erl & "."
+
+End Function
+
+
+
