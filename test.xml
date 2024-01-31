@@ -22,8 +22,8 @@
       <quality_control_flags>
         <auto>TRUE</auto>
       </quality_control_flags>
-      <sky_condition sky_cover="OVC" cloud_base_ft_agl="800" />
-      <sky_condition sky_cover="OVX" cloud_base_ft_agl="1200" />
+      <sky_condition sky_cover="BKN" cloud_base_ft_agl="800" />
+      <sky_condition sky_cover="SCT" cloud_base_ft_agl="1200" />
       <flight_category>IFR</flight_category>
       <metar_type>METAR</metar_type>
       <elevation_m>21</elevation_m>

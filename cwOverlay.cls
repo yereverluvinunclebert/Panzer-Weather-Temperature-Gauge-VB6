@@ -67,6 +67,9 @@ Private Sub Class_Initialize()
     Dim intervalValue As Integer: intervalValue = 0
     
     On Error GoTo Class_Initialize_Error
+    
+    Dim SunriseSunset As cwSunriseSunset
+    Set SunriseSunset = New cwSunriseSunset
 
     Set W = Cairo.WidgetBase
         W.BackColor = -1  'we don't use any BackColor here, transparent
@@ -775,11 +778,11 @@ Private Sub getData()
     On Error GoTo getData_Error
     
     location = PzGIcao ' eg. "EGSH"
-    thisURL = "https:'aviationweather.gov/api/data/dataserver?requestType=retrieve&dataSource=metars&stationString=" & location & "&hoursBeforeNow=6&format=xml&mostRecent=true"
+    thisURL = "https://aviationweather.gov/api/data/dataserver?requestType=retrieve&dataSource=metars&stationString=" & location & "&hoursBeforeNow=6&format=xml&mostRecent=true"
     thisFile = "E:\vb6\Panzer-Weather-Gauges-VB6\test.xml"
     Set myMSXML = CreateObject("Microsoft.XmlHttp")
-    'myMSXML.open "POST", thisURL, True
-    myMSXML.open "POST", thisFile, True
+    myMSXML.open "POST", thisURL, True
+    'myMSXML.open "POST", thisFile, True
     myMSXML.setRequestHeader "Content-Type", "application/x-www-form-urlencoded"
     myMSXML.setRequestHeader "User-Agent", "Firefox 3.6.4"
     myMSXML.send "param1=value2&param2=value2"
@@ -836,11 +839,10 @@ End Sub
 ' ----------------------------------------------------------------
 Private Sub myStatusProc()
 
-    Dim vals0 As Integer
-    Dim pressureVal As Long
+
     Dim humidityVal  As Long
-    
-    Dim theDate As Date: theDate = #1/1/2000 12:00:00 PM#
+    Dim pressureVal As Long
+    Dim TheDate As Date: TheDate = #1/1/2000 12:00:00 PM#
     Dim secsDif As Integer
     Dim difString As String: difString = vbNullString
     Dim returnedString As String: returnedString = vbNullString
@@ -853,27 +855,36 @@ Private Sub myStatusProc()
     Dim dewpoint_c As String: dewpoint_c = vbNullString
     Dim wind_dir_degrees As String: wind_dir_degrees = vbNullString
     Dim wind_speed_kt As String: wind_speed_kt = vbNullString
-    Dim latitude As String: latitude = vbNullString
-    Dim longitude As String: longitude = vbNullString
+    Dim Latitude As String: Latitude = vbNullString
+    Dim Longitude As String: Longitude = vbNullString
     Dim wx_string As String: wx_string = vbNullString
     Dim precip_in As String: precip_in = vbNullString
     Dim visibility_statute_mi As String: visibility_statute_mi = vbNullString
     Dim metar_items As String: metar_items = vbNullString
     Dim current_node As String: current_node = vbNullString
-    Dim sky_condition_items(3) As String
+    Dim sky_condition_items() As String
     Dim sky_condition As String
     Dim attributeCounter As Integer
+    Dim SkyConditionCounter As Integer
+    Dim locationDayNight As Boolean
+    
     Dim tmpSky_condition As String
-    Dim strPressureVal As String
     Dim humidity As Long
     Dim skyClarity As String
     
-    Dim cloud_base_ft_agl(3) As String
+    Dim cloud_base_mt_agl As Integer
+    Dim baseCloud As Integer
+    Dim skyClarityString As String
+    
+    Dim cloud_base_ft_agl() As String
     Dim sky_cover() As String
     Dim sky_condition_items_length As Integer
     Dim sky_condition_attributes_length As Integer
-    Dim testNodeName As String
-    Dim testNodeValue As String
+    Dim skyNodeName As String
+    Dim cloudNodeName As String
+    Dim skyNodeValue As String
+    Dim cloudNodeValue As String
+    Dim uboundSkyConditions As Integer
     
     Dim nodeList As MSXML2.IXMLDOMNodeList
     Dim objxmldoc As New MSXML2.DOMDocument
@@ -938,11 +949,11 @@ Private Sub myStatusProc()
             wind_speed_kt = node.selectSingleNode("wind_speed_kt").Text
             If debugFlg = 1 Then Debug.Print ("%myStatusProc - wind_speed_kt " + wind_speed_kt)
         
-            latitude = node.selectSingleNode("latitude").Text
-            If debugFlg = 1 Then Debug.Print ("%myStatusProc - latitude " + latitude)
+            Latitude = node.selectSingleNode("latitude").Text
+            If debugFlg = 1 Then Debug.Print ("%myStatusProc - latitude " + Latitude)
         
-            longitude = node.selectSingleNode("longitude").Text
-            If debugFlg = 1 Then Debug.Print ("%myStatusProc - longitude " + longitude)
+            Longitude = node.selectSingleNode("longitude").Text
+            If debugFlg = 1 Then Debug.Print ("%myStatusProc - longitude " + Longitude)
             
             visibility_statute_mi = node.selectSingleNode("visibility_statute_mi").Text
             If debugFlg = 1 Then Debug.Print ("%myStatusProc - visibility_statute_mi " + visibility_statute_mi)
@@ -959,23 +970,30 @@ Private Sub myStatusProc()
             
             Set SkyConditions = MetarNode.selectNodes("sky_condition") ' Get all the sky_condition nodes under METAR
             If Not SkyConditions Is Nothing Then
+                uboundSkyConditions = SkyConditions.length - 1
+                ReDim sky_condition_items(uboundSkyConditions)
+                ReDim cloud_base_ft_agl(uboundSkyConditions)
+                SkyConditionCounter = 0
+                
                 For Each SkyCondition In SkyConditions
                     sky_condition_attributes_length = SkyCondition.Attributes.length  ' no of Attributes
                     If Not sky_condition_attributes_length = 0 Then
                         attributeCounter = 0 ' sky_cover
-                        testNodeName = SkyCondition.Attributes(attributeCounter).nodeName
-                        testNodeValue = SkyCondition.Attributes(attributeCounter).nodeValue
+                        skyNodeName = SkyCondition.Attributes(attributeCounter).nodeName
+                        skyNodeValue = SkyCondition.Attributes(attributeCounter).nodeValue
                             
-                        attributeCounter = 1 ' cloud_base_ft_agl
-                        testNodeName = SkyCondition.Attributes(attributeCounter).nodeName
-                        testNodeValue = SkyCondition.Attributes(attributeCounter).nodeValue
+                        sky_condition_items(SkyConditionCounter) = skyNodeValue
                         
-                        If testNodeName = "sky_cover" Then sky_condition_items(attributeCounter) = testNodeValue
-                        If testNodeName = "cloud_base_ft_agl" Then cloud_base_ft_agl(attributeCounter) = testNodeValue
+                        attributeCounter = 1 ' cloud_base_ft_agl
+                        cloudNodeName = SkyCondition.Attributes(attributeCounter).nodeName
+                        cloudNodeValue = SkyCondition.Attributes(attributeCounter).nodeValue
+                        
+                        cloud_base_ft_agl(SkyConditionCounter) = cloudNodeValue
                             
                     End If
                     If debugFlg = 1 Then Debug.Print ("%myStatusProc - sky_condition, sky_cover " + sky_condition_items(attributeCounter))
                     If debugFlg = 1 Then Debug.Print ("%myStatusProc - sky_condition, cloud_base_ft_agl " + cloud_base_ft_agl(attributeCounter))
+                    SkyConditionCounter = SkyConditionCounter + 1
                 Next
             End If
             On Error GoTo myStatusProc_Error
@@ -1000,37 +1018,27 @@ Private Sub myStatusProc()
         End If
         
     End If
-
+    
     ' get pressure
-    pressureVal = altim_in_hg * 25.3999
-    vals0 = Val(pressureVal)
-    pressureVal = Math.Round(vals0)
-    strPressureVal = Str$(pressureVal) & "(" & CStr(Round(1.3333 * vals0)) & ")"
-    If debugFlg = 1 Then Debug.Print ("%myStatusProc - Pressure = " & strPressureVal)
-'
-'    ' set temperature
+    pressureVal = fGetPressure(altim_in_hg)
+
+    ' set temperature
     temperatureVal = Val(temp_c)
-'
-'    'calculate humidity
-    humidity = Round(100 * (((112 - (0.1 * temp_c) + dewpoint_c) / (112 + (0.9 * temp_c))) ^ 8))
-    If debugFlg = 1 Then Debug.Print ("%myStatusProc - humidity " + CStr(humidity))
-    humidityVal = humidity
-'
-'    'decode the visibility when a cloud cover field found
-    skyClarity = get_cloud_cover(sky_condition_items)
-'    If (cloud_base_ft_agl <> 0) Then
-'        if (preferences.imperialMetricPref.value = "metric") then
-'            ' change the string to metric measurements
-'            dim cloud_base_mt_agl = int(cloud_base_ft_agl * 0.3048 )
-'            skyClarityString = skyClarity + " at " + cloud_base_mt_agl + " metres."
-'         else {
-'            skyClarityString = skyClarity + " at " + cloud_base_ft_agl + " ft."
-'        End If
-'    End If
-'    if debugFlg = 1 then debug.print("%myStatusProc - skyClarityString " + skyClarityString)
-'
+
+    ' calculate humidity
+    humidityVal = fGetHumidity(temp_c, dewpoint_c)
+
+    ' decode the visibility when a cloud cover field found
+    skyClarity = get_cloud_cover(sky_condition_items())
+
+    ' decode the base cloud from the upperbound of the cloud array but only if the array is populated
+    If (Not cloud_base_ft_agl) = -1 Then baseCloud = cloud_base_ft_agl(UBound(cloud_base_ft_agl))
+    
+    ' add the base cloud to the visibility string
+    skyClarityString = fAddBaseCloudToSkyClarity(baseCloud, skyClarity)
+
 '    ' get the current decimalTime and use it to test for sunrise or sunset
-'    dim locationDayNight = new SunriseSunset(theDate.getYear(), theDate.getMonth(), theDate.getDay(), latitude , longitude  )
+'    locationDayNight = new SunriseSunset(theDate.getYear(), theDate.getMonth(), theDate.getDay(), latitude , longitude  )
 '    dim decimalTime = theDate.getHours() + ( theDate.getMinutes()/ 60)
 '    if debugFlg = 1 then debug.print ("%myStatusProc - decimalTime "+ decimalTime)
 '    dim isDay = locationDayNight.isDaylight(decimalTime)
@@ -1075,27 +1083,28 @@ End Sub
 ' 1 m = 3.28084 ft)
 ' FEW = 1 or 2 eighths cover; SCT = 3 or 4 eighths cover; BKN = 5, 6 or 7 eighths cover & OVC = 8/8 cover
 ' ----------------------------------------------------------------
-Function get_cloud_cover(ByRef sky_cover() As String) As String
+Function get_cloud_cover(ByRef sky_condition_items() As String) As String
     Dim skyClarity: skyClarity = ""
    
     On Error GoTo get_cloud_cover_Error
 
-    If (sky_cover(0) = "SKC") Then skyClarity = "clear_skies"
-    If (sky_cover(0) = "CLR") Then skyClarity = "clear_skies"
-    If (sky_cover(0) = "FEW") Then skyClarity = "partly_cloudy"
-    If (sky_cover(0) = "SCT") Then skyClarity = "scattered_clouds"
-    If (sky_cover(0) = "BKN") Then skyClarity = "mostly_cloudy"
-    If (sky_cover(0) = "OVC") Then skyClarity = "overcast"
-    If (sky_cover(0) = "VV ") Then skyClarity = "vertical_visibility"
-    If (sky_cover(0) = "CAVOK ") Then skyClarity = "ceiling_and_visibility_OK"
+    If (sky_condition_items(0) = "SKC") Then skyClarity = "clear_skies"
+    If (sky_condition_items(0) = "CLR") Then skyClarity = "clear_skies"
+    If (sky_condition_items(0) = "FEW") Then skyClarity = "partly_cloudy"
+    If (sky_condition_items(0) = "SCT") Then skyClarity = "scattered_clouds"
+    If (sky_condition_items(0) = "BKN") Then skyClarity = "mostly_cloudy"
+    If (sky_condition_items(0) = "OVC") Then skyClarity = "overcast"
+    If (sky_condition_items(0) = "VV ") Then skyClarity = "vertical_visibility"
+    If (sky_condition_items(0) = "CAVOK ") Then skyClarity = "ceiling_and_visibility_OK"
 
 '    (1) there are no clouds below 5000 feet above aerodrome level (AAL) or minimum sector altitude (whichever is higher) and no cumulonimbus or towering cumulus (2) visibility is at least 10 kilometres (6 statute miles) or more and (3) no current or forecast significant weather such as precipitation, thunderstorms, shallow fog or low drifting snow
 
-    If (sky_cover(1) = "FEW" And Not sky_cover(0) = sky_cover(1)) Then skyClarity = skyClarity & " + " & "_partly_cloudy"
-    If (sky_cover(1) = "SCT" And Not sky_cover(0) = sky_cover(1)) Then skyClarity = skyClarity & " + " & "_scattered_clouds"
-    If (sky_cover(1) = "BKN" And Not sky_cover(0) = sky_cover(1)) Then skyClarity = skyClarity & " + " & "_mostly_cloudy"
-    If (sky_cover(1) = "OVC" And Not sky_cover(0) = sky_cover(1)) Then skyClarity = skyClarity & " + " & "_overcast"
-
+    If (Not sky_condition_items) = -1 Then
+        If (sky_condition_items(1) = "FEW" And Not sky_condition_items(0) = sky_condition_items(1)) Then skyClarity = skyClarity & " + " & "partly cloudy"
+        If (sky_condition_items(1) = "SCT" And Not sky_condition_items(0) = sky_condition_items(1)) Then skyClarity = skyClarity & " + " & "scattered clouds"
+        If (sky_condition_items(1) = "BKN" And Not sky_condition_items(0) = sky_condition_items(1)) Then skyClarity = skyClarity & " + " & "mostly cloudy"
+        If (sky_condition_items(1) = "OVC" And Not sky_condition_items(0) = sky_condition_items(1)) Then skyClarity = skyClarity & " + " & "overcast"
+    End If
     If (debugFlg = 1) Then Debug.Print ("%get_cloud_cover - part " & skyClarity)
     get_cloud_cover = skyClarity 'return skyClarity
     
@@ -1109,4 +1118,108 @@ get_cloud_cover_Error:
 End Function
 
 
+' ----------------------------------------------------------------
+' Procedure Name: fGetPressure
+' Purpose:
+' Procedure Kind: Function
+' Procedure Access: Public
+' Parameter altim_in_hg (String):
+' Return Type: Integer
+' Author: beededea
+' Date: 29/01/2024
+' ----------------------------------------------------------------
+Function fGetPressure(altim_in_hg As String) As Integer
 
+    On Error GoTo fGetPressure_Error
+    Dim vals0 As Integer
+    Dim pressureVal As Double
+    Dim strPressureVal As String
+    
+    pressureVal = Round(CDbl(altim_in_hg) * 25.3999)
+    strPressureVal = Str$(pressureVal) & "(" & CStr(Round(1.3333 * pressureVal)) & ")"
+    
+    If debugFlg = 1 Then Debug.Print ("%myStatusProc - Pressure = " & strPressureVal)
+
+    fGetPressure = pressureVal
+    
+    
+    On Error GoTo 0
+    Exit Function
+
+fGetPressure_Error:
+
+    MsgBox "Error " & Err.Number & " (" & Err.Description & ") in procedure fGetPressure, line " & Erl & "."
+
+End Function
+
+
+' ----------------------------------------------------------------
+' Procedure Name: fGetHumidity
+' Purpose: calculate humidity
+' Procedure Kind: Function
+' Procedure Access: Public
+' Parameter temp_c ():
+' Parameter dewpoint_c ():
+' Author: beededea
+' Date: 29/01/2024
+' ----------------------------------------------------------------
+Function fGetHumidity(temp_c, dewpoint_c)
+
+    Dim humidity As Long
+
+    On Error GoTo fGetHumidity_Error
+    
+    humidity = Round(100 * (((112 - (0.1 * CInt(temp_c)) + CInt(dewpoint_c)) / (112 + (0.9 * CInt(temp_c)))) ^ 8))
+    If debugFlg = 1 Then Debug.Print ("%myStatusProc - humidity " + CStr(humidity))
+    
+    fGetHumidity = humidity
+    
+    On Error GoTo 0
+    Exit Function
+
+fGetHumidity_Error:
+
+    MsgBox "Error " & Err.Number & " (" & Err.Description & ") in procedure fGetHumidity, line " & Erl & "."
+
+End Function
+
+
+
+    '
+' ----------------------------------------------------------------
+' Procedure Name: fAddBaseCloudToSkyClarity
+' Purpose: add the base cloud to the visibility string
+' Procedure Kind: Function
+' Procedure Access: Public
+' Parameter baseCloud (Integer):
+' Parameter skyClarity (String):
+' Author: beededea
+' Date: 30/01/2024
+' ----------------------------------------------------------------
+Function fAddBaseCloudToSkyClarity(ByVal baseCloud As Integer, ByVal skyClarity As String)
+    Dim skyClarityString As String
+    
+    On Error GoTo fAddBaseCloudToSkyClarity_Error
+
+    If (baseCloud <> 0) Then
+'        If (panzerPrefs.imperialMetricPref.Value = "metric") Then
+'            ' change the string to metric measurements
+'            baseCloud = Int(baseCloud * 0.3048)
+'            skyClarityString = skyClarity + " at " + baseCloud + " metres."
+'        Else
+            skyClarityString = skyClarity + " at " + CStr(baseCloud) + " ft."
+        End If
+'    End If
+    If debugFlg = 1 Then Debug.Print ("%myStatusProc - skyClarityString " + skyClarityString)
+
+    fAddBaseCloudToSkyClarity = skyClarityString
+    
+    On Error GoTo 0
+    Exit Function
+
+fAddBaseCloudToSkyClarity_Error:
+
+    MsgBox "Error " & Err.Number & " (" & Err.Description & ") in procedure fAddBaseCloudToSkyClarity, line " & Erl & "."
+
+End Function
+    
