@@ -299,19 +299,19 @@ utcDayLet_Error:
     MsgBox "Error " & Err.Number & " (" & Err.Description & ") in Property utcDay of Class Module cwOverlay"
 End Property
 'SunriseSunset.prototype =
-Private Function thisSin(deg)
-    thisSin = sin(deg * pi / 180)
+Private Function thisSin(deg) As Double
+    thisSin = Sin(deg * pi / 180)
 End Function
-Private Function thisCos(deg)
-    thisCos = cos(deg * pi / 180)
+Private Function thisCos(deg) As Double
+    thisCos = Cos(deg * pi / 180)
 End Function
-Private Function thisTan(deg)
-    thisTan = tan(deg * pi / 180)
+Private Function thisTan(deg) As Double
+    thisTan = Tan(deg * pi / 180)
 End Function
-Private Function thisAsin(x)
+Private Function thisAsin(x) As Double
     thisAsin = Atn(x / Sqr(-x * x + 1))
 End Function
-Private Function thisAcos(x)
+Private Function thisAcos(x) As Double
     'thisAcos = thisAsin(x) + pi / 2
     If (x >= 0) Then
         thisAcos = 2 * Atn(Sqr((1 - x) / (1 + x)))
@@ -319,18 +319,18 @@ Private Function thisAcos(x)
         thisAcos = pi - 2 * Atn(Sqr((1 + x) / (1 - x)))
     End If
 End Function
-Private Function thisAtan(x)
+Private Function thisAtan(x) As Double
     thisAtan = (180 / pi) * Atn(x)
 End Function
 '1. first calculate the day of the year
-Private Function getDOY()
+Private Function getDOY() As Integer
     Dim N1 As Long
     Dim N2 As Long
     Dim N3 As Long
     Dim N As Long
     
-    thisMonth = fUtcMonth(month(Now), True)
-    thisYear = year(Now)
+    thisMonth = fUtcMonth(Month(Now), True)
+    thisYear = Year(Now)
     Day = fDayOfTheWeek_I(Now())
 
     N1 = Fix(275 * thisMonth / 9)
@@ -342,7 +342,7 @@ Private Function getDOY()
 
 End Function
 '2. convert the longitude to hour value and calculate an approximate time
-Private Function approximateTime()
+Private Function approximateTime() As Integer
     Dim doy As String
     doy = getDOY()
     If (rising) Then
@@ -352,13 +352,14 @@ Private Function approximateTime()
     End If
 End Function
 '3. calculate the Sun's mean anomaly
-Private Function meanAnomaly()
+Private Function meanAnomaly() As Double
+
     Dim T As Double '= This.approximateTime()
     T = approximateTime()
     meanAnomaly = (0.9856 * T) - 3.289 'return
 End Function
 '4. calculate the Sun's true longitude
-Private Function trueLongitude()
+Private Function trueLongitude() As Double
     Dim M As Double '= This.meanAnomaly()
     
     M = meanAnomaly()
@@ -367,7 +368,7 @@ Private Function trueLongitude()
 End Function
 
 '5a. calculate the Sun's right ascension
-Private Function rightAscension()
+Private Function rightAscension() As Double
     longi = trueLongitude()
     RA = thisAtan(0.91764 * thisTan(longi))
     RA = RA Mod 360
@@ -381,8 +382,9 @@ Private Function rightAscension()
 
     rightAscension = RA 'return
 End Function
+
 ' 6. calculate the Sun's declination
- Private Function sinDec() As Double
+Private Function sinDec() As Double
     longi = trueLongitude()
     sinDec = 0.39782 * thisSin(longi) ' return
 End Function
@@ -391,8 +393,9 @@ Private Function cosDec()
     cosDec = thisCos(thisAsin(sinDec())) 'return
 End Function
 '7a. calculate the Sun's local hour angle
-Private Function localMeanTime(ByRef returnSunString As String)
-     cosH = (thisCos(zenith) - (sinDec() * thisSin(Latitude)))
+Private Function localMeanTime(ByRef returnSunString As String) As Double
+    Dim T As Double '= This.approximateTime()
+    cosH = (thisCos(zenith) - (sinDec() * thisSin(Latitude)))
 
      If (cosH > 1) Then
          returnSunString = "the sun never rises on this location (on the specified date)"
@@ -418,23 +421,24 @@ Private Function localMeanTime(ByRef returnSunString As String)
     End If
 End Function
 
-Private Function hoursRange()
-    hoursRange (H + 24) Mod 24 'return
+Private Function hoursRange(UT As String) As Integer
+    hoursRange = (H + 24) Mod 24 'return
 End Function
 
-Private Function UTCTime()
+Private Function UTCTime() As Integer
     Dim returnSunString As String
+    Dim T As Double '= This.approximateTime()
     T = localMeanTime(returnSunString)
     UT = T - lnghour
     UTCTime = hoursRange(UT) 'return
 End Function
 
-Private Function sunriseUtcHours()
+Private Function sunriseUtcHours() As Date
     rising = True
     sunriseUtcHours = UTCTime()
 End Function
 
-Private Function sunsetUtcHours()
+Private Function sunsetUtcHours() As Date
     rising = False
     sunsetUtcHours = UTCTime() 'return
 End Function
@@ -491,7 +495,7 @@ Private Function fUtcMonth(ByVal thisMonth As String, ByVal utcFlag As Boolean) 
     ''Debug.Print ("%DST func fUtcMonth")
     ''Debug.Print ("%DST-I thisMonth " & thisMonth)
     
-    fUtcMonth = month(CDate(thisMonth & "/1/2000"))
+    fUtcMonth = Month(CDate(thisMonth & "/1/2000"))
     If utcFlag = True Then fUtcMonth = fUtcMonth - 1 ' convert 'normal month starting number of 1 to starting with 0 UTC
 
     If fUtcMonth < 0 Or fUtcMonth > 11 Then

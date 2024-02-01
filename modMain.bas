@@ -985,8 +985,8 @@ Private Sub loadExcludePathCollection()
         .Add Empty, "bigreflection"     'all reflections
         .Add Empty, "windowreflection"
 
-        .Add Empty, "greenlamptrue"
-        .Add Empty, "greenlampfalse"
+        .Add Empty, "bluelamptrue"
+        .Add Empty, "bluelampfalse"
 
         .Add Empty, "redlamptrue"
         .Add Empty, "redlampfalse"

@@ -36,7 +36,7 @@ Private WithEvents tmrXML As cTimer
 Attribute tmrXML.VB_VarHelpID = -1
 
 Private SDeg As Double
-Private temperaturePercent As Long
+Private thisTemperature As Long
 Private temperatureTotalTimeLeft As Single
 'Private TemperatureDetails As String
 Private temperatureVal  As Long
@@ -68,7 +68,7 @@ Private Sub Class_Initialize()
     
     On Error GoTo Class_Initialize_Error
     
-    Dim SunriseSunset As cwSunriseSunset
+    Dim SunriseSunset As cwSunriseSunset 'unitialised declaration
     Set SunriseSunset = New cwSunriseSunset
 
     Set W = Cairo.WidgetBase
@@ -548,19 +548,21 @@ End Sub
 '---------------------------------------------------------------------------------------
 '
 Private Sub W_Paint(CC As RC6.cCairoContext, ByVal xAbs As Single, ByVal yAbs As Single, ByVal dx_Aligned As Single, ByVal dy_Aligned As Single, UserObj As Object)
-    Dim i As Long: i = 0
+    Dim I As Long: I = 0
     Dim Arr As Variant
     Dim Key As String: Key = vbNullString
     Dim Pat As cCairoPattern
     Dim txtTemperaturetotal As String: txtTemperaturetotal = vbNullString
-    Dim txtTemperaturePercent As String: txtTemperaturePercent = vbNullString
+    Dim txtThisTemperature As String: txtThisTemperature = vbNullString
     Dim textDrawn As Boolean:   textDrawn = False
     Dim someOpacity As Double: someOpacity = 0
     Dim cream As String: cream = vbNullString
     
-    cream = RGB(235, 217, 179) ' cannot create a constant from an RGB value
-   
+    Dim scaleString As String: scaleString = vbNullString
+       
     On Error GoTo W_Paint_Error
+    
+    cream = RGB(235, 217, 179) ' cannot create a constant from an RGB value
     
     'set some Font- and ForeColor-Properties and draw some Text on the Widget
     W.FontName = "arial"
@@ -571,12 +573,15 @@ Private Sub W_Paint(CC As RC6.cCairoContext, ByVal xAbs As Single, ByVal yAbs As
     W.Refresh
     someOpacity = (Val(mThisOpacity) / 100) * 0.75
     
-    txtTemperaturePercent = CStr(Int(temperaturePercent))
+    txtThisTemperature = CStr(Int(thisTemperature))
     txtTemperaturetotal = CStr(Int(temperatureTotalTimeLeft))
+    
 
-    For i = 0 To cCollOverlayImages.Count - 1 ' this is the ExcludedPaths collection populated in cfTemperature by duplicating collPSDNonUIElements.
-      Arr = cCollOverlayImages.ItemByIndex(i)
-      Key = cCollOverlayImages.KeyByIndex(i)
+
+
+    For I = 0 To cCollOverlayImages.Count - 1 ' this is the ExcludedPaths collection populated in cfTemperature by duplicating collPSDNonUIElements.
+      Arr = cCollOverlayImages.ItemByIndex(I)
+      Key = cCollOverlayImages.KeyByIndex(I)
       
       If IsArray(Arr) Then
              CC.Save
@@ -609,28 +614,28 @@ Private Sub W_Paint(CC As RC6.cCairoContext, ByVal xAbs As Single, ByVal yAbs As
         
                 Case "redlamptrue"
                     
-                    If temperaturePercent <= 20 And mOnACPower = False Then
+                    If thisTemperature >= 34 And mOnACPower = False Then
                         Set Pat.Matrix = Pat.Matrix.TranslateCoords(-Arr(0), -Arr(1)) 'shift the Pattern via the original X,Y PSD-Offsets (stored in Arr(0) and Arr(1))
                         CC.Paint Arr(2), Pat 'render the Pattern
                     End If
                     
                  Case "redlampfalse"
                     
-                    If temperaturePercent > 20 Or mOnACPower = True Then
+                    If thisTemperature < 34 Or mOnACPower = True Then
                         Set Pat.Matrix = Pat.Matrix.TranslateCoords(-Arr(0), -Arr(1))
                         CC.Paint Arr(2), Pat ' render the Pattern
                     End If
                                         
-                 Case "greenlamptrue"
+                 Case "bluelamptrue"
                     
-                    If temperaturePercent <= 20 And mOnACPower = False Then
+                    If thisTemperature <= 0 And mOnACPower = False Then
                         Set Pat.Matrix = Pat.Matrix.TranslateCoords(-Arr(0), -Arr(1)) 'shift the Pattern via the original X,Y PSD-Offsets (stored in Arr(0) and Arr(1))
                         CC.Paint Arr(2), Pat 'render the Pattern
                     End If
                     
-                 Case "greenlampfalse"
+                 Case "bluelampfalse"
                     
-                    If temperaturePercent > 20 Or mOnACPower = True Then
+                    If thisTemperature > 0 Or mOnACPower = True Then
                         Set Pat.Matrix = Pat.Matrix.TranslateCoords(-Arr(0), -Arr(1))
                         CC.Paint Arr(2), Pat ' render the Pattern
                     End If
@@ -638,9 +643,24 @@ Private Sub W_Paint(CC As RC6.cCairoContext, ByVal xAbs As Single, ByVal yAbs As
 
                  Case "secondshadow", "secondhand"
                     
+                     If mThisFace = "0" Then
+                         scaleString = "C"
+                         txtThisTemperature = CStr(thisTemperature)
+                         
+                     ElseIf mThisFace = "1" Then
+                    
+                         scaleString = "F"
+                         txtThisTemperature = Str$(convertToFahrenheit(thisTemperature))
+                    
+                     ElseIf mThisFace = "2" Then
+                         scaleString = "K"
+
+                         txtThisTemperature = Str$(convertToKelvin(thisTemperature))
+                     End If
+                     
                      ' draw the date and day in the windows just once to retain opacity
-                    CC.DrawText 265, 103, 200, 200, txtTemperaturePercent, , , 2, True, , someOpacity
-                    CC.DrawText 455, 297, 200, 200, txtTemperaturetotal, , , 2, True, , someOpacity
+                    CC.DrawText 265, 103, 200, 200, txtThisTemperature, , , 2, True, , someOpacity
+                    CC.DrawText 459, 297, 200, 200, scaleString, , , 2, True, , someOpacity
                     textDrawn = True
                     
                     Set Pat.Matrix = Pat.Matrix.TranslateCoords(11, 246) 'shift to the "rotation-point" within the Pattern
@@ -896,7 +916,7 @@ Private Sub myStatusProc()
 
     Dim answer As VbMsgBoxResult
     Dim answerMsg  As String
-    Dim i As Integer
+    Dim I As Integer
     
     On Error GoTo myStatusProc_Error
     
@@ -1054,6 +1074,8 @@ Private Sub myStatusProc()
 '    usableObsTime = stringToDate(initialObsTime)
 
 
+    thisTemperature = temp_c
+    
     weHaveData = True
     
     On Error GoTo 0
@@ -1223,3 +1245,56 @@ fAddBaseCloudToSkyClarity_Error:
 
 End Function
     
+
+' ----------------------------------------------------------------
+' Procedure Name: convertToFahrenheit
+' Purpose: convert temps from C to F values here to match scale setting
+' Procedure Kind: Function
+' Procedure Access: Private
+' Parameter t ():
+' Author: beededea
+' Date: 17/01/2024
+' ----------------------------------------------------------------
+Private Function convertToFahrenheit(t)
+    Dim newT As Integer
+    
+    On Error GoTo convertToFahrenheit_Error
+    
+    newT = Math.Round(1.8 * t + 32)
+    convertToFahrenheit = newT
+    
+    On Error GoTo 0
+    Exit Function
+
+convertToFahrenheit_Error:
+
+    MsgBox "Error " & Err.Number & " (" & Err.Description & ") in procedure convertToFahrenheit, line " & Erl & "."
+
+End Function
+
+
+' ----------------------------------------------------------------
+' Procedure Name: convertToKelvin
+' Purpose: convert temps from C to F values here to match scale setting
+' Procedure Kind: Function
+' Procedure Access: Private
+' Parameter t ():
+' Author: beededea
+' Date: 17/01/2024
+' ----------------------------------------------------------------
+Private Function convertToKelvin(t)
+    Dim newT As Integer
+    
+    On Error GoTo convertToKelvin_Error
+    
+    'newT = Math.Round(1.8 * t + 32)
+    convertToKelvin = t
+    
+    On Error GoTo 0
+    Exit Function
+
+convertToKelvin_Error:
+
+    MsgBox "Error " & Err.Number & " (" & Err.Description & ") in procedure convertToKelvin, line " & Erl & "."
+
+End Function
