@@ -35,9 +35,16 @@ command of your choice. The widget takes command line-style commands for
 windows. Mouse hover over the widget and press CTRL+mousewheel up/down to resize. It works well on Windows XP
 to Windows 11.
 
+It takes the weather data from forecasts provided by airports and airfields. If you 
+can find an airfield nearby that has an ICAO code then using this it will supply local 
+weather data. You enter your local town name and if it has an airfield then it 
+will have a forecast. The data feed is provided by Aviation Weather GOV - 
+
+	aviationweather.gov/  
+
 ![panzer-weather-help](https://github.com/yereverluvinunclebert/Panzer-Weather-Widget/assets/2788342/23582667-4a0d-4719-b6a0-b1a1407ccf7f)
 
-The Panzer Battery Gauge VB6 gauge is Beta-grade software, under development, not yet
+The Panzer weather Gauge VB6 gauge is Beta-grade software, under development, not yet
 ready to use on a production system - use at your own risk.
 
 This version was developed on Windows 7 using 32 bit VisualBasic 6 as a FOSS
