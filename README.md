@@ -16,11 +16,7 @@ Functional and gorgeous at the same time. The graphics are my own, I took origin
 
 The Panzer Weather Gauge VB6 is a useful utility displaying the Weather your chosen locality in a dieselpunk fashion on your desktop. This Widget is a moveable widget that you can move anywhere around the desktop as you require. The Weather data is extracted via an XML request to aviation.gov. The program extracts the temperature abnd barometric data from that XML and displays it via analogue pointers on several desktop gauges.
 
-These are the pertinent bits:
-
-XML stuff here:
-
-Hope the above is useful to anyone else building system metric utilities using VB6/VBS/VBA.
+Hope the code is useful to anyone else building system metric utilities using VB6/VBS/VBA.
 
 ![weather-icon-01](https://github.com/yereverluvinunclebert/Panzer-Weather-Widget/assets/2788342/ff953574-718b-47d1-84af-b425771a7db1)
 
