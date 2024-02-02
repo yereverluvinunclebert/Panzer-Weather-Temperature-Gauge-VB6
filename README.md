@@ -219,6 +219,7 @@ original artist using my name or one of my pseudonyms and a link to my site.
 With regard to the commercial use of incorporated images, permission and a
 licence would need to be obtained from the original owner and creator, ie. me.
 
-![about](https://github.com/yereverluvinunclebert/Panzer-Battery-Gauge-VB6/assets/2788342/d0bcdc88-8c68-49a1-8f00-d1371ad6bca6)
+
+![about](https://github.com/yereverluvinunclebert/Panzer-Weather-Gauges-VB6/assets/2788342/d36355ff-0289-4145-b9bf-641aad58041e)
 
 ![Panzer-CPU-Gauge-onDesktop](https://github.com/yereverluvinunclebert/Panzer-RAM-Gauge-VB6/assets/2788342/6dc97b14-9954-4f8c-a775-5657b2aeec85)
