@@ -30,7 +30,7 @@ This widget can be increased in size, animation speed can be changed,
 opacity/transparency may be set as to the users discretion. The widget can
 also be made to hide for a pre-determined period.
 
-![battery-gauge-image](https://github.com/yereverluvinunclebert/Panzer-Battery-Gauge-VB6/assets/2788342/2f4a7cf6-fce5-46c6-9ee3-9be05609651f)
+![panzer-temperature-icon](https://github.com/yereverluvinunclebert/Panzer-Weather-Widget/assets/2788342/f4b3b246-c895-4458-ab29-57a5f84e0d26)
 
 Right clicking will bring up a menu of options. Double-clicking on the widget will cause a personalised Windows application to
 fire up. The first time you run it there will be no assigned function and so it
@@ -69,7 +69,7 @@ contribute.
 
 BUILD: The program runs without any Microsoft plugins.
 
-![panzer-temperature-icon](https://github.com/yereverluvinunclebert/Panzer-Weather-Widget/assets/2788342/f4b3b246-c895-4458-ab29-57a5f84e0d26)
+
 
 Built using: VB6, MZ-TOOLS 3.0, VBAdvance, CodeHelp Core IDE Extender
 Framework 2.2 & Rubberduck 2.4.1, RichClient 6
