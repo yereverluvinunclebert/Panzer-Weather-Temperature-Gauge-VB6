@@ -2,7 +2,7 @@
 
 A FOSS Weather Gauges VB6 WoW64 Widget for Reactos, XP, Win7, 8 and 10/11+.
 
-My current VB6/RC6 PSD program being finished now, 10% complete, awaiting a lot of work to get the thing functioning, four additional gauges, two sub-forms, addition of smooth rotation to the Weather pointers, testing on laptops, testing on Windows XP and Win7 32bit and some multi-monitor checking, completion of the CHM help file and the creation of the setup.exe. This Panzer widget is based upon the Yahoo widget of the same visual design and very similar operation.
+My current VB6/RC6 PSD program being finished now, 12% complete, awaiting a lot of work to get the thing functioning, generatging sunrise/sunset times, four additional gauges, two sub-forms, addition of smooth rotation to the Weather pointers, testing on laptops, testing on Windows XP and Win7 32bit and some multi-monitor checking, completion of the CHM help file and the creation of the setup.exe. This Panzer widget is based upon the Yahoo widget of the same visual design and very similar operation.
 
 Why VB6? Well, with a 64 bit, modern-language improvement upgrade on the way with 100% compatible TwinBasic coupled with support for transparent PNGs via RC/Cairo, VB6 code has an amazing future.
 
@@ -12,6 +12,8 @@ I created as a variation of the previous gauges I had previously created for the
 communities. The Panzer Weather Gauge widget is an attractive dieselpunk VB6 widget for your desktop.
 Functional and gorgeous at the same time. The graphics are my own, I took original inspiration from a clock face by Italo Fortana combining it with an aircraft gauge surround. It is all my code with some help from the chaps at VBForums (credits given).
 
+![panzerWeather650](https://github.com/yereverluvinunclebert/Panzer-Weather-Widget/assets/2788342/73c299e9-b8f6-422d-9a95-5f70a16183e3)
+
 The Panzer Weather Gauge VB6 is a useful utility displaying the Weather your chosen locality in a dieselpunk fashion on your desktop. This Widget is a moveable widget that you can move anywhere around the desktop as you require. The Weather data is extracted via an XML request to aviation.gov. The program extracts the temperature abnd barometric data from that XML and displays it via analogue pointers on several desktop gauges.
 
 These are the pertinent bits:
@@ -20,7 +22,9 @@ XML stuff here:
 
 Hope the above is useful to anyone else building system metric utilities using VB6/VBS/VBA.
 
-![panzer-battery-ywidget-disp](https://github.com/yereverluvinunclebert/Panzer-Battery-Gauge-VB6/assets/2788342/46134280-8694-4931-a6b8-a7e091b1fb9d)
+![weather-icon-01](https://github.com/yereverluvinunclebert/Panzer-Weather-Widget/assets/2788342/ff953574-718b-47d1-84af-b425771a7db1)
+
+![background](https://github.com/yereverluvinunclebert/Panzer-Weather-Widget/assets/2788342/07b0c7b4-a4e9-4b6c-89d3-fde55b0b735b)
 
 This widget can be increased in size, animation speed can be changed,
 opacity/transparency may be set as to the users discretion. The widget can
@@ -35,7 +39,7 @@ command of your choice. The widget takes command line-style commands for
 windows. Mouse hover over the widget and press CTRL+mousewheel up/down to resize. It works well on Windows XP
 to Windows 11.
 
-![panzer-batterygauge-help-65](https://github.com/yereverluvinunclebert/Panzer-Battery-Gauge-VB6/assets/2788342/53935c85-27d6-4e5a-bcee-006253ed25c8)
+![panzer-weather-help](https://github.com/yereverluvinunclebert/Panzer-Weather-Widget/assets/2788342/23582667-4a0d-4719-b6a0-b1a1407ccf7f)
 
 The Panzer Battery Gauge VB6 gauge is Beta-grade software, under development, not yet
 ready to use on a production system - use at your own risk.
@@ -61,9 +65,11 @@ I do hope you enjoy using this utility and others. Your own software
 enhancements and contributions will be gratefully received if you choose to
 contribute.
 
-![BATTERY-GAUGE-001](https://github.com/yereverluvinunclebert/Panzer-Battery-Gauge-VB6/assets/2788342/351d7888-fe50-42f7-a687-37d7cb6ba0a4)
+![panzer-weather-gauges](https://github.com/yereverluvinunclebert/Panzer-Weather-Widget/assets/2788342/9d1fb5ee-0e4e-467a-a337-36fd2fa9bc64)
 
 BUILD: The program runs without any Microsoft plugins.
+
+![panzer-temperature-icon](https://github.com/yereverluvinunclebert/Panzer-Weather-Widget/assets/2788342/f4b3b246-c895-4458-ab29-57a5f84e0d26)
 
 Built using: VB6, MZ-TOOLS 3.0, VBAdvance, CodeHelp Core IDE Extender
 Framework 2.2 & Rubberduck 2.4.1, RichClient 6
@@ -121,6 +127,8 @@ Elroy on VB forums for the balloon tooltips
 
 Harry Whitfield for his quality testing, brain stimulation and being an
 unwitting source of inspiration.
+
+![panzer-clipboard-help](https://github.com/yereverluvinunclebert/Panzer-Weather-Widget/assets/2788342/91ef78ab-c7c6-4836-a9b1-d01e78014116)
 
 Dependencies:
 
@@ -196,6 +204,9 @@ Project References:
     VisualBasic Objects and Procedures
     OLE Automation
     vbRichClient6 - RC6Widgets (RC6Widgets.DLL) - RC6 (RC6.DLL)
+
+
+![weather](https://github.com/yereverluvinunclebert/Panzer-Weather-Widget/assets/2788342/4ab9945b-f460-43c9-b2d2-92a0643c50d0)    
 
 LICENCE AGREEMENTS:
 
