@@ -489,7 +489,7 @@ End Property
 '             For this Overlay-Widget alone, we make everything "fully click-through"
 '---------------------------------------------------------------------------------------------
 '
-Private Sub W_HitTest(ByVal x As Single, ByVal y As Single, HitResultHit As Boolean) 'ensure ClickThrough-behaviour in ImagePixels which are "fully Alpha"
+Private Sub W_HitTest(ByVal x As Single, ByVal Y As Single, HitResultHit As Boolean) 'ensure ClickThrough-behaviour in ImagePixels which are "fully Alpha"
    On Error GoTo W_HitTest_Error
 
    HitResultHit = False
@@ -1016,8 +1016,10 @@ Private Sub myStatusProc()
 
 '    ' get the current decimalTime and use it to test for sunrise or sunset
 '    locationDayNight = new SunriseSunset(theDate.getYear(), theDate.getMonth(), theDate.getDay(), latitude , longitude  )
+
 '    dim decimalTime = theDate.getHours() + ( theDate.getMinutes()/ 60)
 '    if debugFlg = 1 then debug.print ("%myStatusProc - decimalTime "+ decimalTime)
+
 '    dim isDay = locationDayNight.isDaylight(decimalTime)
 '    if debugFlg = 1 then debug.print("%myStatusProc - daylight " + isDay)
 '
@@ -1212,12 +1214,12 @@ End Function
 ' Author: beededea
 ' Date: 17/01/2024
 ' ----------------------------------------------------------------
-Private Function convertToFahrenheit(t)
+Private Function convertToFahrenheit(T)
     Dim newT As Integer
     
     On Error GoTo convertToFahrenheit_Error
     
-    newT = Math.Round(1.8 * t + 32)
+    newT = Math.Round(1.8 * T + 32)
     convertToFahrenheit = newT
     
     On Error GoTo 0
@@ -1239,14 +1241,14 @@ End Function
 ' Author: beededea
 ' Date: 17/01/2024
 ' ----------------------------------------------------------------
-Private Function convertToKelvin(t) As Integer
+Private Function convertToKelvin(T) As Integer
     Dim newT As Double
     
     On Error GoTo convertToKelvin_Error
     
     Const KELVIN_CELSIUS_DIFF As Double = 273.15
     
-    newT = KELVIN_CELSIUS_DIFF + t
+    newT = KELVIN_CELSIUS_DIFF + T
 
     convertToKelvin = Fix(newT)
     

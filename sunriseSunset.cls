@@ -41,10 +41,6 @@ Option Explicit
 Private thisMonth As String
 Private thisYear As String
 Private thisDay As String
-
-'private  doy = This.fGetDOY()
-
-
 Private longi As Double
 Private H As Double
 Private T As Double
@@ -52,10 +48,7 @@ Private UT As Double
 Private RA As Double
 Private Lquadrant As Double
 Private RAquadrant As Double
-
 Private cosH As Double
-'private  UT = T - This.lngHour
-'private  sunriseHours = this.sunriseUtcHours()
 Private sunsetHours
 Private zenith As Double
 Private rising As Boolean
@@ -76,57 +69,51 @@ Private rightAscension As Double
 Private approximateTime As Double
 Private returnSunString As String
 
-
-'    locationDayNight = new SunriseSunset(theDate.getYear(), theDate.getMonth(), theDate.getDay(), latitude , longitude  )
-
-'Private Function SunriseSunset(ByVal FullYear, fUtcMonth, utcDay, latitude, longitude)
+' ----------------------------------------------------------------
+' Procedure Name: Class_Initialize
+' Purpose:
+' Procedure Kind: Constructor (Initialize)
+' Procedure Access: Private
+' Author: beededea
+' Date: 12/02/2024
+' ----------------------------------------------------------------
 Private Sub Class_Initialize()
-
-    Dim decimalTime As Double
-    Dim ret As Double
-    Dim sunriseHours  As Double
-    Dim sunsetHours  As Double
+    Dim decimalTime As Double: decimalTime = 0
+    Dim ret As Double: ret = 0
+    Dim sunriseHours  As Double: sunriseHours = 0
+    Dim sunsetHours  As Double: sunsetHours = 0
     Dim isDaylight  As Boolean
     
+    On Error GoTo Class_Initialize_Error
+
     zenith = 90 + 50 / 60 '   offical      = 90 degrees 50'
-                        '   civil        = 96 degrees
-                        '   nautical     = 102 degrees
-                        '   astronomical = 108 degrees
+                          '   civil        = 96 degrees
+                          '   nautical     = 102 degrees
+                          '   astronomical = 108 degrees
     mLongitude = 1.283
     mLatitude = 52.676 ' we will obtain these from the feed
     
+    debugFlg = 0
+    
     rising = True ' set to true for sunrise
     Call calcSunPosition(ret)
-    sunriseHours = localmeantime2(sunDeclination, cosDec, rightAscension, approximateTime, returnSunString) '32.333
+    sunriseHours = getLocalMeanTime(sunDeclination, cosDec, rightAscension, approximateTime, returnSunString)
     
     rising = False ' set to false for sunset
     Call calcSunPosition(ret)
-    sunsetHours = localmeantime2(sunDeclination, cosDec, rightAscension, approximateTime, returnSunString)
+    sunsetHours = getLocalMeanTime(sunDeclination, cosDec, rightAscension, approximateTime, returnSunString)
 
-    Debug.Print (">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> sunriseHours " & sunriseHours)
-    Debug.Print (">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> sunsetHours " & sunsetHours)
+    Debug.Print (" sunriseHours " & sunriseHours)
+    Debug.Print (" sunsetHours " & sunsetHours)
     
     isDaylight = testIsDaylight(sunsetHours, sunriseHours)
     
-    '1. first calculate the day of the year
-    'Call fGetDOY(Date)
-    '2. convert the longitude to hour value and calculate an approximate time
-    'Call approximateTime
-    '3. calculate the Sun's mean anomaly
-    'Call meanAnomaly
-    '4. calculate the Sun's true longitude
-    'Call trueLongitude
-    '5a. calculate the Sun's right ascension
-    'Call rightAscension
-    '5b. right ascension value needs to be in the same quadrant as L
-    '5c. right ascension value needs to be converted into hours
-    '6. calculate the Sun's declination
-    'Call fsunDeclination
-    '7a. calculate the Sun's local hour angle
-    'Call localMeanTime
-    '7b. finish calculating H and convert into hours
-    '8. calculate local mean time of rising/setting
-    '9. adjust back to UTC
+    On Error GoTo 0
+    Exit Sub
+
+Class_Initialize_Error:
+
+    MsgBox "Error " & Err.Number & " (" & Err.Description & ") in procedure Class_Initialize, line " & Erl & "."
 
 End Sub
 
@@ -346,7 +333,7 @@ End Function
 Public Function Asn(x)
 ' x is double
 ' Equivalent of spreadsheet Asin(x)
-Asn = 2 * Atn(x / (1 + Sqr(1 - x * x))) ' Asn is double
+    Asn = 2 * Atn(x / (1 + Sqr(1 - x * x))) ' Asn is double
 End Function
 
 Private Function thisAtan(x) As Double
@@ -355,7 +342,7 @@ Private Function thisAtan(x) As Double
 End Function
 ' ----------------------------------------------------------------
 ' Procedure Name: calcSunPosition
-' Purpose:
+' Purpose: determines the Sun's declination and position, run once for sunrise and again for sunset
 ' Procedure Kind: Function
 ' Procedure Access: Private
 ' Parameter returnHours (Double):
@@ -364,49 +351,53 @@ End Function
 ' Date: 12/02/2024
 ' ----------------------------------------------------------------
 Private Function calcSunPosition(ByRef returnHours As Double) As Boolean
+
+    Dim N1 As Integer: N1 = 0
+    Dim N2 As Integer: N2 = 0
+    Dim N3 As Integer: N3 = 0
+    Dim N As Integer: N = 0
+    Dim dateinput As Date: dateinput = #1/1/2000 12:00:00 PM#
+    Dim meanAnomaly As Double: meanAnomaly = 0
+    Dim trueLongitude As Double: trueLongitude = 0
+    Dim returnSunString  As String: returnSunString = vbNullString
+    Dim localMeanTime  As Double: localMeanTime = 0
+    Dim UTCTime  As Double: UTCTime = 0
+    Dim T As Double: T = 0
+    Dim M As Double: M = 0
+    
     On Error GoTo calcSunPosition_Error
-
     
-    Dim N1 As Integer
-    Dim N2 As Integer
-    Dim N3 As Integer
-    Dim N As Integer
-    Dim dateinput As Date
-    'Dim approximateTime As Double
-    Dim meanAnomaly As Double
-    Dim trueLongitude As Double
-    'Dim rightAscension As Double
-    'Dim sunDeclination As Double
-    'Dim cosDec As Double
-    Dim returnSunString  As String
-    Dim localMeanTime  As Double
-    Dim UTCTime  As Double
-
     dateinput = Date
-    
     thisMonth = Month(dateinput) - 1
     thisYear = Year(dateinput) - 1900
     thisDay = fUtcDayOfWeek(dateinput)
     
-    Debug.Print ("************************************************************")
+    '7b. finish calculating H and convert into hours
+    '8. calculate local mean time of rising/setting
+    '9. adjust back to UTC
     
-    Debug.Print ("%SFN-O latitude " & Latitude)
-    Debug.Print ("%SFN-O longitude " & Longitude)
-    Debug.Print ("%SFN-I year " & thisYear)
-    Debug.Print ("%SFN-I month " & thisMonth)
-    Debug.Print ("%SFN-I day " & thisDay)
+    If debugFlg = 1 Then Debug.Print ("************************************************************")
+    If debugFlg = 1 Then Debug.Print ("%SFN-O latitude " & Latitude)
+    If debugFlg = 1 Then Debug.Print ("%SFN-O longitude " & Longitude)
+    If debugFlg = 1 Then Debug.Print ("%SFN-I year " & thisYear)
+    If debugFlg = 1 Then Debug.Print ("%SFN-I month " & thisMonth)
+    If debugFlg = 1 Then Debug.Print ("%SFN-I day " & thisDay)
+    
+    ' calculate the day of the year
         
     N1 = Fix(275 * thisMonth / 9)
-    Debug.Print ("%SFN-I N1 " & N1)
+    If debugFlg = 1 Then Debug.Print ("%SFN-I N1 " & N1)
     
     N2 = Fix((thisMonth + 9) / 12)
-    Debug.Print ("%SFN-I N2 " & N2)
+    If debugFlg = 1 Then Debug.Print ("%SFN-I N2 " & N2)
     
     N3 = (1 + Fix((thisYear - 4 * Fix(thisYear / 4) + 2) / 3))
-    Debug.Print ("%SFN-I N3 " & N3)
+    If debugFlg = 1 Then Debug.Print ("%SFN-I N3 " & N3)
     
     N = N1 - (N2 * N3) + Val(thisDay) - 30
-    Debug.Print ("%SFN-I N " & N)
+    If debugFlg = 1 Then Debug.Print ("%SFN-I N " & N)
+    
+    ' convert the longitude to hour value and calculate an approximate time
     
     lnghour = mLongitude / 15
     If (rising) Then
@@ -414,15 +405,15 @@ Private Function calcSunPosition(ByRef returnHours As Double) As Boolean
     Else
         approximateTime = N + ((18 - lnghour) / 24) 'return
     End If
-    Debug.Print ("%SFN-I approximateTime " & approximateTime)
+    If debugFlg = 1 Then Debug.Print ("%SFN-I approximateTime " & approximateTime)
 
+    ' calculate the Sun's mean anomaly
 
-    Dim T As Double
     T = approximateTime
     meanAnomaly = (0.9856 * T) - 3.289 'return
-    Debug.Print ("%SFN-I meanAnomaly " & meanAnomaly)
+    If debugFlg = 1 Then Debug.Print ("%SFN-I meanAnomaly " & meanAnomaly)
     
-    Dim M As Double
+    ' calculate the Sun's true longitude
     
     M = meanAnomaly
     longi = M + (1.916 * thisSin(M)) + (0.02 * thisSin(2 * M)) + 282.634
@@ -434,7 +425,9 @@ Private Function calcSunPosition(ByRef returnHours As Double) As Boolean
     End If
     trueLongitude = longi 'Mod 360 'return
 
-    Debug.Print ("%SFN-I trueLongitude " & trueLongitude)
+    If debugFlg = 1 Then Debug.Print ("%SFN-I trueLongitude " & trueLongitude)
+    
+    ' calculate the Sun's right ascension
     
     RA = (1 / to_rad) * Atn(0.91764 * Tan(to_rad * trueLongitude)) 'ra  = double
     If (RA < 0) Then
@@ -443,31 +436,31 @@ Private Function calcSunPosition(ByRef returnHours As Double) As Boolean
        RA = RA - 360
     End If
 
-    ' right ascension value needs to be in the same quadrant as longi
+    ' right ascension value needs to be in the same quadrant as trueLongitude
     Lquadrant = (Fix(trueLongitude / 90)) * 90
     RAquadrant = (Fix(RA / 90)) * 90
     RA = RA + (Lquadrant - RAquadrant)
+    
     ' right ascension value needs to be converted into hours
     RA = RA / 15
 
     rightAscension = RA 'return
-    Debug.Print ("%SFN-I rightAscension " & rightAscension)
+    If debugFlg = 1 Then Debug.Print ("%SFN-I rightAscension " & rightAscension)
     
     'longi = trueLongitude()
     'sunDeclination = 0.39782 * thisSin(trueLongitude)
     
+    ' calculate the Sun's declination
+    
     sunDeclination = 0.39782 * Sin(to_rad * trueLongitude)
     
-    Debug.Print ("%SFN-I sunDeclination " & sunDeclination)
-    
     'cosDec = Cos(thisAsin(sunDeclination))
-    
     cosDec = Cos(Asn(sunDeclination))
-    
-    Debug.Print ("%SFN-I cosDec " & cosDec)
         
-   
-    Debug.Print ("************************************************************")
+    If debugFlg = 1 Then Debug.Print ("%SFN-I sunDeclination " & sunDeclination)
+    If debugFlg = 1 Then Debug.Print ("%SFN-I cosDec " & cosDec)
+    
+    If debugFlg = 1 Then Debug.Print ("************************************************************")
 
     On Error GoTo 0
     Exit Function
@@ -494,9 +487,10 @@ End Function
 ' Date: 12/02/2024
 ' ----------------------------------------------------------------
 Private Function testIsDaylight(ByVal sunsetHours As Double, ByRef sunriseHours As Double) As Boolean
-    Dim utcCurrentHours As Double
+    Dim utcCurrentHours As Double: utcCurrentHours = 0
     
     On Error GoTo testIsDaylight_Error
+    
     ' decimal time
     utcCurrentHours = Hour(Now) + (Minute(Now) / 60)
                 
@@ -532,7 +526,7 @@ testIsDaylight_Error:
 End Function
 
 ' ----------------------------------------------------------------
-' Procedure Name: localmeantime2
+' Procedure Name: getLocalMeanTime
 ' Purpose:
 ' Procedure Kind: Function
 ' Procedure Access: Private
@@ -546,69 +540,74 @@ End Function
 ' Author: beededea
 ' Date: 12/02/2024
 ' ----------------------------------------------------------------
-Private Function localmeantime2(ByVal sunDeclination As Double, ByVal cosDec As Double, ByVal rightAscension As Double, ByVal approximateTime As Double, ByRef returnSunString As String) As Double
-    On Error GoTo localmeantime2_Error
-     If rising Then Debug.Print ("%SFN-I localmeantime2 <<<<<<<<<<<<<<<<<<<<<<<<<<<<<< STARTS ")
-
-    '7a. calculate the Sun's local hour angle
-     Dim Tt As Double
+Private Function getLocalMeanTime(ByVal sunDeclination As Double, ByVal cosDec As Double, ByVal rightAscension As Double, ByVal approximateTime As Double, ByRef returnSunString As String) As Double
+     Dim Tt As Double: Tt = 0
      
-     'cosH = (thisCos(zenith) - (sunDeclination() * thisSin(mLatitude)))
+     On Error GoTo getLocalMeanTime_Error
+    
+     If debugFlg = 1 And rising Then Debug.Print ("%SFN-I getLocalMeanTime <<<<<<<<<<<<<<<<<<<<<<<<<<<<<< STARTS ")
+
+     ' calculate the Sun's local hour angle
+     
+     ' cosH = (thisCos(zenith) - (sunDeclination() * thisSin(mLatitude)))
      cosH = (Cos(to_rad * zenith) - (sunDeclination * Sin(to_rad * mLatitude)) / (cosDec * Cos(to_rad * mLatitude)))
-     '     -1.45438976515809E-02            -0.213797236617717                      0.592568806464951
-     If rising Then Debug.Print ("%SFN-I localmeantime2 cosH = " & cosH)
+     If debugFlg = 1 And rising Then Debug.Print ("%SFN-I getLocalMeanTime cosH = " & cosH)
      
      If (cosH > 1) Then
          returnSunString = "the sun never rises on this location (on the specified date)"
-         localmeantime2 = 0
+         getLocalMeanTime = -1
      ElseIf (cosH < -1) Then
          returnSunString = "the sun never sets on this location (on the specified date)"
-         localmeantime2 = 0
+         getLocalMeanTime = -2
      Else
-         '7b. finish calculating H and convert into hours
-         If rising Then Debug.Print ("%SFN-I localmeantime2 rising = " & rising)
+     
+         'finish calculating H and convert into hours
+         
+         If debugFlg = 1 And rising Then Debug.Print ("%SFN-I getLocalMeanTime rising = " & rising)
          If rising Then
              H = 360 - thisAcos(cosH)
              'H = 360 - (1 / to_rad) * thisAcos(cosH)
          Else
              H = thisAcos(cosH)
          End If
-         If rising Then Debug.Print ("%SFN-I localmeantime2 H = " & H)
+         If debugFlg = 1 And rising Then Debug.Print ("%SFN-I getLocalMeanTime H = " & H)
 
          H = H / 15
-         If rising Then Debug.Print ("%SFN-I localmeantime2 H = H / 15 = " & H)
+         If debugFlg = 1 And rising Then Debug.Print ("%SFN-I getLocalMeanTime H = H / 15 = " & H)
          
          RA = rightAscension
-         If rising Then Debug.Print ("%SFN-I localmeantime2 RA = " & RA)
+         If debugFlg = 1 And rising Then Debug.Print ("%SFN-I getLocalMeanTime RA = " & RA)
          
          T = approximateTime
-         If rising Then Debug.Print ("%SFN-I localmeantime2 t = " & T)
+         If debugFlg = 1 And rising Then Debug.Print ("%SFN-I getLocalMeanTime t = " & T)
          
-         '8. calculate local mean time of rising/setting
+         'calculate local mean time of rising/setting
+         
          Tt = H + RA - (0.06571 * T) - 6.622
-         If rising Then Debug.Print ("%SFN-I localmeantime2 Tt = " & Tt)
          
-         localmeantime2 = Tt 'return
+         If debugFlg = 1 And rising Then Debug.Print ("%SFN-I getLocalMeanTime Tt = " & Tt)
+         
+         getLocalMeanTime = Tt 'return
     End If
     
     ' adjust back to UTC
-    UT = localmeantime2 - lnghour
+    UT = getLocalMeanTime - lnghour
     If (UT < 0) Then
        UT = UT + 24
     ElseIf (UT >= 24) Then
        UT = UT - 24
     End If
-    localmeantime2 = UT
+    getLocalMeanTime = UT
     
-    If rising Then Debug.Print ("%SFN-I localmeantime2  = " & localmeantime2)
-    'Debug.Print ("%SFN-I localmeantime2 <<<<<<<<<<<<<<<<<<<<<<<<<<<<<< ENDS ")
+    If debugFlg = 1 And rising Then Debug.Print ("%SFN-I getLocalMeanTime  = " & getLocalMeanTime)
+    'Debug.Print ("%SFN-I getLocalMeanTime <<<<<<<<<<<<<<<<<<<<<<<<<<<<<< ENDS ")
     
     On Error GoTo 0
     Exit Function
 
-localmeantime2_Error:
+getLocalMeanTime_Error:
 
-    MsgBox "Error " & Err.Number & " (" & Err.Description & ") in procedure localmeantime2, line " & Erl & "."
+    MsgBox "Error " & Err.Number & " (" & Err.Description & ") in procedure getLocalMeanTime, line " & Erl & "."
 
 End Function
 ' ----------------------------------------------------------------
@@ -624,28 +623,7 @@ End Function
 Private Function thisAcos(x As Double) As Double
 
     On Error GoTo thisAcos_Error
-    'thisAcos = (180 / pi) * acos(x)
-    'thisAcos = thisAsin(x) + pi / 2
-'    If (x >= 0) Then
-'        thisAcos = 2 * Atn(Sqr((1 - x) / (1 + x)))
-'    Else
-'        thisAcos = pi - 2 * Atn(Sqr((1 + x) / (1 - x)))
-'    End If
     
-
-    Select Case x
-        Case -1
-            thisAcos = 4 * Atn(1)
-             
-        Case 0:
-            thisAcos = 2 * Atn(1)
-             
-        Case 1:
-            thisAcos = 0
-             
-        Case Else:
-            thisAcos = Atn(-x / Sqr(-x * x + 1)) + 2 * Atn(1)
-    End Select
     thisAcos = (180 / pi) * thisAcos
     
     'Debug.Print ("%SRS-O thisAcos " & thisAcos)
@@ -735,226 +713,3 @@ fUtcDayOfWeek_Error:
     MsgBox "Error " & Err.Number & " (" & Err.Description & ") in procedure fUtcDayOfWeek, line " & Erl & "."
 
 End Function
-
-
-'Private Function fHoursRange(H As Double) As Double
-'    fHoursRange = (H + 24) Mod 24 'return
-'    Debug.Print (">>>>>>>>>>>>>>>>> %SRS-O fHoursRange " & fHoursRange)
-'End Function
-
-'Private Function fsunriseUtcHours() As Double
-'    rising = True
-'    fsunriseUtcHours = fUTCTime()
-'    Debug.Print ("%SRS-O fSunriseUtcHours " & fsunriseUtcHours)
-'End Function
-'
-'Private Function fsunsetUtcHours() As Double
-'    rising = False
-'    fsunsetUtcHours = fUTCTime() 'return
-'    Debug.Print ("%SRS-O fsunsetUtcHours " & fsunsetUtcHours)
-'End Function
-'
-'' utcCurrentHours is the time that you would like to test for daylight, in hours, at UTC
-'' For example, to test if it's daylight in Tokyo (GMT+9) at 10:30am, pass in
-'' utcCurrentHours=1.5, which corresponds to 1:30am UTC.
-'Private Function isDaylight(ByVal utcCurrentHours As Double, ByRef returnHours As Double) As Boolean
-'    Dim sunriseHours As Double
-'    Dim sunsetHours As Double
-'
-'    Debug.Print ("%SRS-O isDaylight (decimal time )" & utcCurrentHours)
-'
-'    sunriseHours = fSunriseUtcHours()
-'    sunsetHours = sunsetUtcHours()
-'
-'    If (sunsetHours < sunriseHours) Then
-'        ' Either the sunrise or sunset time is for tomorrow
-'        If (utcCurrentHours > sunriseHours) Then
-'            isDaylight = True 'return
-'        ElseIf (utcCurrentHours < sunsetHours) Then
-'            isDaylight = True 'return
-'        Else
-'            isDaylight = False 'return
-'        End If
-'    End If
-'
-'    If (utcCurrentHours >= sunriseHours) Then
-'        returnHours = utcCurrentHours < sunsetHours
-'    End If
-'    isDaylight = False 'return
-'    Debug.Print ("%SRS-O isDaylight " & isDaylight)
-'
-'End Function
-
-
-
-
-
-'Public Function fDayOfTheWeek_I(TheDate As Date) As Integer
-'  fDayOfTheWeek_I = Format(TheDate, "w") - 1
-'  Debug.Print ("%SRS-O fDayOfTheWeek_I " & fDayOfTheWeek_I)
-'
-'End Function
-
-
-
-
-'Private Function fUTCTime() As Double
-'    Dim returnSunString As String
-'    Dim T As Double '= This.approximateTime()
-'    T = fLocalMeanTime(returnSunString)
-'    UT = T - lnghour
-'    fUTCTime = fHoursRange(UT) 'return
-'    Debug.Print ("%SRS-O fUTCTime " & fUTCTime)
-'End Function
-
-'Private Function fSunriseUtcHours() As Double
-'    rising = True
-'    fSunriseUtcHours = UTCTime()
-'    Debug.Print ("%SRS-O fSunriseUtcHours " & fSunriseUtcHours)
-'End Function
-'
-'Private Function sunsetUtcHours() As Double
-'    rising = False
-'    sunsetUtcHours = UTCTime() 'return
-'    Debug.Print ("%SRS-O sunsetUtcHours " & sunsetUtcHours)
-'End Function
-
-'Private Function sunriseLocalHours(gmt)
-'    sunriseLocalHours = fHoursRange(gmt + fSunriseUtcHours())
-'    Debug.Print ("%SRS-O sunriseLocalHours " & sunriseLocalHours)
-'End Function
-'
-'Private Function sunsetLocalHours(gmt)
-'    sunsetLocalHours = fHoursRange(gmt + sunsetUtcHours())
-'    Debug.Print ("%SRS-O sunsetLocalHours " & sunsetLocalHours)
-'End Function
-''1. first calculate the day of the year
-'    Private Function fGetDOY(dateinput As Date) As Integer
-'        Dim N1 As Integer
-'        Dim N2 As Integer
-'        Dim N3 As Integer
-'        Dim N As Integer
-'
-'        thisMonth = Month(dateinput) - 1
-'        thisYear = Year(dateinput) - 1900
-'        thisDay = fUtcDayOfWeek(dateinput)
-'
-'        Debug.Print ("%SRS-O year " & thisYear)
-'        Debug.Print ("%SRS-O month " & thisMonth)
-'        Debug.Print ("%SRS-O day " & thisDay)
-'
-'        N1 = Fix(275 * thisMonth / 9)
-'        Debug.Print ("%SRS-O N1 " & N1)
-'
-'        N2 = Fix((thisMonth + 9) / 12)
-'        Debug.Print ("%SRS-O N2 " & N2)
-'
-'        N3 = (1 + Fix((thisYear - 4 * Fix(thisYear / 4) + 2) / 3))
-'        Debug.Print ("%SRS-O N3 " & N3)
-'
-'        N = N1 - (N2 * N3) + Val(thisDay) - 30
-'
-'        fGetDOY = N 'return
-'
-'        Debug.Print ("%SRS-O fGetDOY " & fGetDOY)
-'    End Function
-'''2. convert the longitude to hour value and calculate an approximate time
-'Private Function fapproximateTime() As Double
-'    Dim doy As Integer
-'    doy = fGetDOY(Date)
-'
-'    lnghour = mLongitude / 15
-'    If (rising) Then
-'        fapproximateTime = doy + ((6 - lnghour) / 24) 'return
-'    Else
-'        fapproximateTime = doy + ((18 - lnghour) / 24) 'return
-'    End If
-'    Debug.Print ("%SRS-O fapproximateTime " & fapproximateTime)
-'End Function
-''3. calculate the Sun's mean anomaly
-'Private Function fmeanAnomaly() As Double
-'
-'    Dim T As Double
-'    T = fapproximateTime()
-'    fmeanAnomaly = (0.9856 * T) - 3.289 'return
-'    Debug.Print ("%SRS-O fmeanAnomaly " & fmeanAnomaly)
-'End Function
-''4. calculate the Sun's true longitude
-'Private Function ftrueLongitude() As Double
-'    Dim M As Double
-'
-'    M = fmeanAnomaly()
-'    longi = M + (1.916 * thisSin(M)) + (0.02 * thisSin(2 * M)) + 282.634
-'    ftrueLongitude = longi 'Mod 360 'return
-'    Debug.Print ("%SRS-O ftrueLongitude " & ftrueLongitude)
-'End Function
-''
-'''5a. calculate the Sun's right ascension
-'Private Function frightAscension() As Double
-'    longi = ftrueLongitude()
-'    'RA = (1 / to_rad) * thisAtan(0.91764 * thisTan(longi))
-'    RA = (1 / to_rad) * Atn(0.91764 * Tan(to_rad * longi)) 'ra  = double
-'    If (RA < 0) Then
-'       RA = RA + 360
-'    ElseIf (RA >= 360) Then
-'       RA = RA - 360
-'    End If
-'
-'    ' right ascension value needs to be in the same quadrant as longi
-'    Lquadrant = (Fix(longi / 90)) * 90
-'    RAquadrant = (Int(RA / 90)) * 90
-'    RA = RA + (Lquadrant - RAquadrant)
-'    ' right ascension value needs to be converted into hours
-'    RA = RA / 15
-'
-'    frightAscension = RA 'return
-'    Debug.Print ("%SRS-O frightAscension " & frightAscension)
-'End Function
-''
-'' 6. calculate the Sun's declination
-'Private Function fsunDeclination() As Double
-'    longi = ftrueLongitude()
-'    fsunDeclination = 0.39782 * thisSin(longi) ' return
-'    'Debug.Print ("%SRS-O fsunDeclination " & fsunDeclination)
-'End Function
-'
-'Private Function fcosDec()
-'    fcosDec = Cos(thisAsin(fsunDeclination())) 'return
-'    'Debug.Print ("%SRS-O fCosDec " & fCosDec)
-'End Function
-''7a. calculate the Sun's local hour angle
-'Private Function fLocalMeanTime(ByRef returnSunString As String) As Double
-'    Dim T As Double '= This.approximateTime()
-'    'cosH = (thisCos(zenith) - (fsunDeclination() * thisSin(mLatitude)))
-'
-'    cosH = (Cos(to_rad * zenith) - (fsunDeclination() * Sin(to_rad * mLatitude)) / (fcosDec * Cos(to_rad * mLatitude)))
-'    '     -1.45438976515809E-02            -0.213797236617717                      0.592568806464951
-'
-'    Debug.Print ("%SRS-O fLocalMeanTime cosH " & cosH)
-'
-'    'cosH = (Cos(to_rad * zenith) - (sinDec * Sin(to_rad * Lat))) / (fCosDec * Cos(to_rad * Lat))
-'
-'     If (cosH > 1) Then
-'         returnSunString = "the sun never rises on this location (on the specified date)"
-'         fLocalMeanTime = 0
-'     ElseIf (cosH < -1) Then
-'         returnSunString = "the sun never sets on this location (on the specified date)"
-'         fLocalMeanTime = 0
-'     Else
-'         '7b. finish calculating H and convert into hours
-'         If rising Then
-'             H = 360 - (1 / to_rad) * thisAcos(cosH)
-'         Else
-'             thisAcos (cosH)
-'         End If
-'         H = H / 15
-'         RA = frightAscension()
-'         T = fapproximateTime()
-'
-'         '8. calculate local mean time of rising/setting
-'         T = H + RA - (0.06571 * T) - 6.622
-'
-'         fLocalMeanTime = T 'return
-'    End If
-'    Debug.Print ("%SRS-O fLocalMeanTime " & fLocalMeanTime)
-'End Function
