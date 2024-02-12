@@ -2287,6 +2287,11 @@ Public Sub makeProgramPreferencesAvailable()
         
         Call readPrefsPosition
         Call panzerPrefs.positionPrefsMonitor
+    Else
+        panzerPrefs.Show  ' show it again
+        panzerPrefs.SetFocus
+
+    
     End If
     
 
@@ -2766,9 +2771,9 @@ Public Function ArrayString(ParamArray tokens()) As String()
     On Error GoTo ArrayString_Error
 
     ReDim Arr(UBound(tokens)) As String
-    Dim i As Long
-    For i = 0 To UBound(tokens)
-        Arr(i) = tokens(i)
+    Dim I As Long
+    For I = 0 To UBound(tokens)
+        Arr(I) = tokens(I)
     Next
     ArrayString = Arr
 

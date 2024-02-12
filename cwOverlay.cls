@@ -47,7 +47,7 @@ Private mTicking As Boolean ' property Ticking
 Private mSmoothSecondHand As Boolean ' property SmoothSecondHand
 Private mLocked As Boolean ' property Locked
 Private mTemperatureDetails As String ' property
-Private mOnACPower As Boolean ' property
+
 Private mHidden As Boolean ' property Hidden
 Private mThisOpacity As String ' property ThisOpacity
 Private mSamplingInterval As String ' property SamplingInterval
@@ -431,44 +431,7 @@ TemperatureDetailsLet_Error:
 End Property
 
 
-'---------------------------------------------------------------------------------------
-' Property : OnACpower
-' Author    : beededea
-' Date      : 17/05/2023
-' Purpose   :
-'---------------------------------------------------------------------------------------
-'
-Public Property Get OnACpower() As String
-   On Error GoTo OnACpowerGet_Error
 
-   OnACpower = mOnACPower
-
-   On Error GoTo 0
-   Exit Property
-
-OnACpowerGet_Error:
-
-    MsgBox "Error " & Err.Number & " (" & Err.Description & ") in Property OnACpower of Class Module cwOverlay"
-End Property
-'---------------------------------------------------------------------------------------
-' Property  : OnACpower
-' Author    : beededea
-' Date      : 17/05/2023
-' Purpose   :
-'---------------------------------------------------------------------------------------
-'
-Public Property Let OnACpower(ByVal newValue As String)
-   On Error GoTo OnACpowerLet_Error
-
-   If mOnACPower <> newValue Then mOnACPower = newValue Else Exit Property
-
-   On Error GoTo 0
-   Exit Property
-
-OnACpowerLet_Error:
-
-    MsgBox "Error " & Err.Number & " (" & Err.Description & ") in Property OnACpower of Class Module cwOverlay"
-End Property
 
 '---------------------------------------------------------------------------------------
 ' Property  : Hidden
@@ -556,6 +519,7 @@ Private Sub W_Paint(CC As RC6.cCairoContext, ByVal xAbs As Single, ByVal yAbs As
     Dim txtThisTemperature As String: txtThisTemperature = vbNullString
     Dim textDrawn As Boolean:   textDrawn = False
     Dim someOpacity As Double: someOpacity = 0
+    Dim boxLeft As Integer: boxLeft = 0
     Dim cream As String: cream = vbNullString
     
     Dim scaleString As String: scaleString = vbNullString
@@ -567,7 +531,7 @@ Private Sub W_Paint(CC As RC6.cCairoContext, ByVal xAbs As Single, ByVal yAbs As
     'set some Font- and ForeColor-Properties and draw some Text on the Widget
     W.FontName = "arial"
     W.ForeColor = cream
-    W.FontSize = 17
+    W.FontSize = 16
     W.FontBold = True
     W.SelectFontSettingsInto CC
     W.Refresh
@@ -614,28 +578,28 @@ Private Sub W_Paint(CC As RC6.cCairoContext, ByVal xAbs As Single, ByVal yAbs As
         
                 Case "redlamptrue"
                     
-                    If thisTemperature >= 34 And mOnACPower = False Then
+                    If thisTemperature >= 34 Then
                         Set Pat.Matrix = Pat.Matrix.TranslateCoords(-Arr(0), -Arr(1)) 'shift the Pattern via the original X,Y PSD-Offsets (stored in Arr(0) and Arr(1))
                         CC.Paint Arr(2), Pat 'render the Pattern
                     End If
                     
                  Case "redlampfalse"
                     
-                    If thisTemperature < 34 Or mOnACPower = True Then
+                    If thisTemperature < 34 Then
                         Set Pat.Matrix = Pat.Matrix.TranslateCoords(-Arr(0), -Arr(1))
                         CC.Paint Arr(2), Pat ' render the Pattern
                     End If
                                         
                  Case "bluelamptrue"
                     
-                    If thisTemperature <= 0 And mOnACPower = False Then
+                    If thisTemperature <= 0 Then
                         Set Pat.Matrix = Pat.Matrix.TranslateCoords(-Arr(0), -Arr(1)) 'shift the Pattern via the original X,Y PSD-Offsets (stored in Arr(0) and Arr(1))
                         CC.Paint Arr(2), Pat 'render the Pattern
                     End If
                     
                  Case "bluelampfalse"
                     
-                    If thisTemperature > 0 Or mOnACPower = True Then
+                    If thisTemperature > 0 Then
                         Set Pat.Matrix = Pat.Matrix.TranslateCoords(-Arr(0), -Arr(1))
                         CC.Paint Arr(2), Pat ' render the Pattern
                     End If
@@ -650,16 +614,23 @@ Private Sub W_Paint(CC As RC6.cCairoContext, ByVal xAbs As Single, ByVal yAbs As
                      ElseIf mThisFace = "1" Then
                     
                          scaleString = "F"
-                         txtThisTemperature = Str$(convertToFahrenheit(thisTemperature))
+                         txtThisTemperature = CStr(convertToFahrenheit(thisTemperature))
                     
                      ElseIf mThisFace = "2" Then
                          scaleString = "K"
 
-                         txtThisTemperature = Str$(convertToKelvin(thisTemperature))
+                         txtThisTemperature = CStr(convertToKelvin(thisTemperature))
                      End If
                      
+                    If Val(txtThisTemperature) >= 100 Then
+                        boxLeft = 260
+                    Else
+                        boxLeft = 265
+                    End If
+                    
+                     
                      ' draw the date and day in the windows just once to retain opacity
-                    CC.DrawText 265, 103, 200, 200, txtThisTemperature, , , 2, True, , someOpacity
+                    CC.DrawText boxLeft, 103, 200, 200, txtThisTemperature, , , 2, True, , someOpacity
                     CC.DrawText 459, 297, 200, 200, scaleString, , , 2, True, , someOpacity
                     textDrawn = True
                     
@@ -735,35 +706,21 @@ Private Sub obtainTemperature()
         
     Dim min  As Integer: min = -30
     Dim max  As Integer: max = 50
-    Dim angle As Integer: angle = 0
     Dim StrTemperatureVal As String
     
     On Error GoTo obtainTemperature_Error
 
     Call getData
-    
-    If (PzGTemperatureScale = "1") Then
-        StrTemperatureVal = CStr(temperatureVal * 1.8 + 32)
-        min = -45
-        max = 135
 
-        If debugFlg = 1 Then Debug.Print "%setTemp - " & StrTemperatureVal & " F"
-        
-    Else
-        StrTemperatureVal = CStr(temperatureVal)
-        If debugFlg = 1 Then Debug.Print ("%setTemp - " & StrTemperatureVal & " C")
+    min = -30
+    max = 50
     
-    End If
-
     If weHaveData = True Then
         SDeg = (temperatureVal - min) / (max - min) * 360
     Else
         SDeg = 30
     End If
-    
-    'mTemperatureDetails = mTemperatureDetails & vbCrLf
-        
-    
+      
     W.Parent.Refresh
     
     On Error GoTo 0
@@ -1282,13 +1239,16 @@ End Function
 ' Author: beededea
 ' Date: 17/01/2024
 ' ----------------------------------------------------------------
-Private Function convertToKelvin(t)
-    Dim newT As Integer
+Private Function convertToKelvin(t) As Integer
+    Dim newT As Double
     
     On Error GoTo convertToKelvin_Error
     
-    'newT = Math.Round(1.8 * t + 32)
-    convertToKelvin = t
+    Const KELVIN_CELSIUS_DIFF As Double = 273.15
+    
+    newT = KELVIN_CELSIUS_DIFF + t
+
+    convertToKelvin = Fix(newT)
     
     On Error GoTo 0
     Exit Function
