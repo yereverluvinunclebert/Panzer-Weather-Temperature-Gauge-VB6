@@ -41,33 +41,28 @@ Option Explicit
 Private thisMonth As String
 Private thisYear As String
 Private thisDay As String
-Private longi As Double
-Private H As Double
-Private T As Double
-Private UT As Double
-Private RA As Double
-Private Lquadrant As Double
-Private RAquadrant As Double
-Private cosH As Double
-Private sunsetHours
-Private zenith As Double
-Private rising As Boolean
+
 Private lnghour As Double
-
-Const pi As Double = 3.14159265358979
-Const to_rad  As Double = pi / 180
-
-Private mLatitude As Double
-Private mLongitude As Double
-Private mFullYear As String
-Private mUtcMonth As String
-Private mUtcDay As String
-
 Private sunDeclination As Double
 Private cosDec As Double
 Private rightAscension As Double
 Private approximateTime As Double
 Private returnSunString As String
+
+Const pi As Double = 3.14159265358979
+Const to_rad  As Double = pi / 180
+Const zenith  As Double = 90 + 50 / 60 '   offical      = 90 degrees 50'
+                          '   civil        = 96 degrees
+                          '   nautical     = 102 degrees
+                          '   astronomical = 108 degrees
+Private mLatitude As Double
+Private mLongitude As Double
+Private mFullYear As String
+Private mUtcMonth As String
+Private mUtcDay As String
+Private mIsDayLight As Boolean
+
+
 
 ' ----------------------------------------------------------------
 ' Procedure Name: Class_Initialize
@@ -78,35 +73,15 @@ Private returnSunString As String
 ' Date: 12/02/2024
 ' ----------------------------------------------------------------
 Private Sub Class_Initialize()
-    Dim decimalTime As Double: decimalTime = 0
-    Dim ret As Double: ret = 0
-    Dim sunriseHours  As Double: sunriseHours = 0
-    Dim sunsetHours  As Double: sunsetHours = 0
-    Dim isDaylight  As Boolean
+
     
     On Error GoTo Class_Initialize_Error
 
-    zenith = 90 + 50 / 60 '   offical      = 90 degrees 50'
-                          '   civil        = 96 degrees
-                          '   nautical     = 102 degrees
-                          '   astronomical = 108 degrees
     mLongitude = 1.283
     mLatitude = 52.676 ' we will obtain these from the feed
     
     debugFlg = 0
-    
-    rising = True ' set to true for sunrise
-    Call calcSunPosition(ret)
-    sunriseHours = getLocalMeanTime(sunDeclination, cosDec, rightAscension, approximateTime, returnSunString)
-    
-    rising = False ' set to false for sunset
-    Call calcSunPosition(ret)
-    sunsetHours = getLocalMeanTime(sunDeclination, cosDec, rightAscension, approximateTime, returnSunString)
 
-    Debug.Print (" sunriseHours " & sunriseHours)
-    Debug.Print (" sunsetHours " & sunsetHours)
-    
-    isDaylight = testIsDaylight(sunsetHours, sunriseHours)
     
     On Error GoTo 0
     Exit Sub
@@ -116,6 +91,61 @@ Class_Initialize_Error:
     MsgBox "Error " & Err.Number & " (" & Err.Description & ") in procedure Class_Initialize, line " & Erl & "."
 
 End Sub
+'---------------------------------------------------------------------------------------
+' Property : isDayLight
+' Author    : beededea
+' Date      : 17/05/2023
+' Purpose   :
+'---------------------------------------------------------------------------------------
+'
+Public Property Get isDayLight() As Boolean
+    Dim ret As Double: ret = 0
+    Dim sunriseHours  As Double: sunriseHours = 0
+    Dim sunsetHours  As Double: sunsetHours = 0
+
+    On Error GoTo isDayLightGet_Error
+
+    ' set to true for sunrise
+    Call calcSunPosition(True, Date, ret)
+    sunriseHours = getLocalMeanTime(True, lnghour, sunDeclination, cosDec, rightAscension, approximateTime, returnSunString)
+    
+    ' set to false for sunset
+    Call calcSunPosition(False, Date, ret)
+    sunsetHours = getLocalMeanTime(False, lnghour, sunDeclination, cosDec, rightAscension, approximateTime, returnSunString)
+
+    Debug.Print (" sunriseHours " & sunriseHours)
+    Debug.Print (" sunsetHours " & sunsetHours)
+    
+    isDayLight = testIsDaylight(sunsetHours, sunriseHours)
+    
+    mIsDayLight = isDayLight
+
+   On Error GoTo 0
+   Exit Property
+
+isDayLightGet_Error:
+
+    MsgBox "Error " & Err.Number & " (" & Err.Description & ") in Property isDayLight of Class Module cwSunriseSunset"
+End Property
+'---------------------------------------------------------------------------------------
+' Property  : isDayLight
+' Author    : beededea
+' Date      : 17/05/2023
+' Purpose   :
+'---------------------------------------------------------------------------------------
+'
+Public Property Let isDayLight(ByVal newValue As Boolean)
+   On Error GoTo isDayLightLet_Error
+
+   If mIsDayLight <> newValue Then mIsDayLight = newValue Else Exit Property
+
+   On Error GoTo 0
+   Exit Property
+
+isDayLightLet_Error:
+
+    MsgBox "Error " & Err.Number & " (" & Err.Description & ") in Property isDayLight of Class Module cwSunriseSunset"
+End Property
 
 
 '---------------------------------------------------------------------------------------
@@ -135,7 +165,7 @@ Public Property Get Latitude() As String
 
 LatitudeGet_Error:
 
-    MsgBox "Error " & Err.Number & " (" & Err.Description & ") in Property Latitude of Class Module cwOverlay"
+    MsgBox "Error " & Err.Number & " (" & Err.Description & ") in Property Latitude of Class Module cwSunriseSunset"
 End Property
 '---------------------------------------------------------------------------------------
 ' Property  : Latitude
@@ -154,7 +184,7 @@ Public Property Let Latitude(ByVal newValue As String)
 
 LatitudeLet_Error:
 
-    MsgBox "Error " & Err.Number & " (" & Err.Description & ") in Property Latitude of Class Module cwOverlay"
+    MsgBox "Error " & Err.Number & " (" & Err.Description & ") in Property Latitude of Class Module cwSunriseSunset"
 End Property
 
 '---------------------------------------------------------------------------------------
@@ -174,7 +204,7 @@ Public Property Get Longitude() As String
 
 LongitudeGet_Error:
 
-    MsgBox "Error " & Err.Number & " (" & Err.Description & ") in Property Longitude of Class Module cwOverlay"
+    MsgBox "Error " & Err.Number & " (" & Err.Description & ") in Property Longitude of Class Module cwSunriseSunset"
 End Property
 '---------------------------------------------------------------------------------------
 ' Property  : Longitude
@@ -193,7 +223,7 @@ Public Property Let Longitude(ByVal newValue As String)
 
 LongitudeLet_Error:
 
-    MsgBox "Error " & Err.Number & " (" & Err.Description & ") in Property Longitude of Class Module cwOverlay"
+    MsgBox "Error " & Err.Number & " (" & Err.Description & ") in Property Longitude of Class Module cwSunriseSunset"
 End Property
 
 '---------------------------------------------------------------------------------------
@@ -213,7 +243,7 @@ Public Property Get FullYear() As String
 
 FullYearGet_Error:
 
-    MsgBox "Error " & Err.Number & " (" & Err.Description & ") in Property FullYear of Class Module cwOverlay"
+    MsgBox "Error " & Err.Number & " (" & Err.Description & ") in Property FullYear of Class Module cwSunriseSunset"
 End Property
 '---------------------------------------------------------------------------------------
 ' Property  : FullYear
@@ -232,7 +262,7 @@ Public Property Let FullYear(ByVal newValue As String)
 
 FullYearLet_Error:
 
-    MsgBox "Error " & Err.Number & " (" & Err.Description & ") in Property FullYear of Class Module cwOverlay"
+    MsgBox "Error " & Err.Number & " (" & Err.Description & ") in Property FullYear of Class Module cwSunriseSunset"
 End Property
 
 '---------------------------------------------------------------------------------------
@@ -252,7 +282,7 @@ Public Property Get UtcMonth() As String
 
 UtcMonthGet_Error:
 
-    MsgBox "Error " & Err.Number & " (" & Err.Description & ") in Property UtcMonth of Class Module cwOverlay"
+    MsgBox "Error " & Err.Number & " (" & Err.Description & ") in Property UtcMonth of Class Module cwSunriseSunset"
 End Property
 '---------------------------------------------------------------------------------------
 ' Property  : UtcMonth
@@ -271,7 +301,7 @@ Public Property Let UtcMonth(ByVal newValue As String)
 
 UtcMonthLet_Error:
 
-    MsgBox "Error " & Err.Number & " (" & Err.Description & ") in Property UtcMonth of Class Module cwOverlay"
+    MsgBox "Error " & Err.Number & " (" & Err.Description & ") in Property UtcMonth of Class Module cwSunriseSunset"
 End Property
 
 '---------------------------------------------------------------------------------------
@@ -291,7 +321,7 @@ Public Property Get utcDay() As String
 
 utcDayGet_Error:
 
-    MsgBox "Error " & Err.Number & " (" & Err.Description & ") in Property utcDay of Class Module cwOverlay"
+    MsgBox "Error " & Err.Number & " (" & Err.Description & ") in Property utcDay of Class Module cwSunriseSunset"
 End Property
 '---------------------------------------------------------------------------------------
 ' Property  : utcDay
@@ -310,9 +340,9 @@ Public Property Let utcDay(ByVal newValue As String)
 
 utcDayLet_Error:
 
-    MsgBox "Error " & Err.Number & " (" & Err.Description & ") in Property utcDay of Class Module cwOverlay"
+    MsgBox "Error " & Err.Number & " (" & Err.Description & ") in Property utcDay of Class Module cwSunriseSunset"
 End Property
-'SunriseSunset.prototype =
+
 Private Function thisSin(deg) As Double
     thisSin = Sin(deg * pi / 180)
     'Debug.Print ("%SRS-O thisSin " & thisSin)
@@ -350,13 +380,15 @@ End Function
 ' Author: beededea
 ' Date: 12/02/2024
 ' ----------------------------------------------------------------
-Private Function calcSunPosition(ByRef returnHours As Double) As Boolean
+Private Function calcSunPosition(ByVal rising As Boolean, ByVal dateInput As Date, ByRef returnHours As Double) As Boolean
 
     Dim N1 As Integer: N1 = 0
     Dim N2 As Integer: N2 = 0
     Dim N3 As Integer: N3 = 0
     Dim N As Integer: N = 0
-    Dim dateinput As Date: dateinput = #1/1/2000 12:00:00 PM#
+    Dim H As Double
+    Dim RA As Double
+    'Dim dateInput As Date: dateInput = #1/1/2000 12:00:00 PM#
     Dim meanAnomaly As Double: meanAnomaly = 0
     Dim trueLongitude As Double: trueLongitude = 0
     Dim returnSunString  As String: returnSunString = vbNullString
@@ -364,17 +396,19 @@ Private Function calcSunPosition(ByRef returnHours As Double) As Boolean
     Dim UTCTime  As Double: UTCTime = 0
     Dim T As Double: T = 0
     Dim M As Double: M = 0
+    Dim Lquadrant As Double
+    Dim RAquadrant As Double
+    Dim longi As Double
     
     On Error GoTo calcSunPosition_Error
     
-    dateinput = Date
-    thisMonth = Month(dateinput) - 1
-    thisYear = Year(dateinput) - 1900
-    thisDay = fUtcDayOfWeek(dateinput)
+        
+    debugFlg = 1
     
-    '7b. finish calculating H and convert into hours
-    '8. calculate local mean time of rising/setting
-    '9. adjust back to UTC
+    dateInput = Date
+    thisMonth = Month(dateInput) - 1
+    thisYear = Year(dateInput) - 1900
+    thisDay = fUtcDayOfWeek(dateInput)
     
     If debugFlg = 1 Then Debug.Print ("************************************************************")
     If debugFlg = 1 Then Debug.Print ("%SFN-O latitude " & Latitude)
@@ -540,10 +574,15 @@ End Function
 ' Author: beededea
 ' Date: 12/02/2024
 ' ----------------------------------------------------------------
-Private Function getLocalMeanTime(ByVal sunDeclination As Double, ByVal cosDec As Double, ByVal rightAscension As Double, ByVal approximateTime As Double, ByRef returnSunString As String) As Double
-     Dim Tt As Double: Tt = 0
-     
-     On Error GoTo getLocalMeanTime_Error
+Private Function getLocalMeanTime(ByVal rising As Boolean, ByVal lnghour As Double, ByVal sunDeclination As Double, ByVal cosDec As Double, ByVal rightAscension As Double, ByVal approximateTime As Double, ByRef returnSunString As String) As Double
+    Dim Tt As Double: Tt = 0
+    Dim T As Double: T = 0
+    Dim H As Double
+    Dim UT As Double
+    Dim RA As Double
+    Dim cosH As Double
+    
+    On Error GoTo getLocalMeanTime_Error
     
      If debugFlg = 1 And rising Then Debug.Print ("%SFN-I getLocalMeanTime <<<<<<<<<<<<<<<<<<<<<<<<<<<<<< STARTS ")
 

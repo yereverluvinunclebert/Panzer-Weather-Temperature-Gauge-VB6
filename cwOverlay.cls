@@ -68,8 +68,8 @@ Private Sub Class_Initialize()
     
     On Error GoTo Class_Initialize_Error
     
-    Dim SunriseSunset As cwSunriseSunset 'unitialised declaration
-    Set SunriseSunset = New cwSunriseSunset
+    'Dim sunriseSunset As cwSunriseSunset 'unitialised declaration
+    Set sunriseSunset = New cwSunriseSunset
 
     Set W = Cairo.WidgetBase
         W.BackColor = -1  'we don't use any BackColor here, transparent
@@ -1014,9 +1014,19 @@ Private Sub myStatusProc()
     ' add the base cloud to the visibility string
     skyClarityString = fAddBaseCloudToSkyClarity(baseCloud, skyClarity)
 
+    
 '    ' get the current decimalTime and use it to test for sunrise or sunset
-'    locationDayNight = new SunriseSunset(theDate.getYear(), theDate.getMonth(), theDate.getDay(), latitude , longitude  )
-
+    'locationDayNight = SunriseSunset(TheDate.getYear(), TheDate.getMonth(), TheDate.getDay(), Latitude, Longitude)
+    
+    'mLongitude = 1.283
+    'mLatitude = 52.676
+    ' we will obtain these from the feed
+    sunriseSunset.Longitude = Longitude
+    sunriseSunset.Latitude = Latitude
+    Dim isDay As Boolean
+    isDay = sunriseSunset.isDayLight
+    ', Longitude)
+    
 '    dim decimalTime = theDate.getHours() + ( theDate.getMinutes()/ 60)
 '    if debugFlg = 1 then debug.print ("%myStatusProc - decimalTime "+ decimalTime)
 
