@@ -447,14 +447,14 @@ Private Sub tickbutton_mouseDown(ByRef Sender As Object)
    
     On Error GoTo tickbutton_mouseDown_Error
         
-    If overlayWidget.SmoothSecondHand = True Then
-        overlayWidget.SmoothSecondHand = False
+    If overlayWidget.pointerAnimate = True Then
+        overlayWidget.pointerAnimate = False
         Sender.Widget.Alpha = Val(PzGOpacity) / 100
-        PzGSmoothSecondHand = "0"
+        PzGPointerAnimate = "0"
     Else
-        overlayWidget.SmoothSecondHand = True
+        overlayWidget.pointerAnimate = True
         Sender.Widget.Alpha = 0 ' sender is the referring control
-        PzGSmoothSecondHand = "1"
+        PzGPointerAnimate = "1"
         
     End If
     Sender.Widget.Refresh ' this removes the delay in the Button depressing
@@ -464,8 +464,9 @@ Private Sub tickbutton_mouseDown(ByRef Sender As Object)
         PlaySound App.path & "\resources\sounds\" & fileToPlay, ByVal 0&, SND_FILENAME Or SND_ASYNC
     End If
     
-    sPutINISetting "Software\PzTemperatureGauge", "smoothSecondHand", PzGSmoothSecondHand, PzGSettingsFile
-    
+    sPutINISetting "Software\PzTemperatureGauge", "pointerAnimate", PzGPointerAnimate, PzGSettingsFile
+    panzerPrefs.cmbTickSwitchPref.ListIndex = Val(PzGPointerAnimate)
+        
    On Error GoTo 0
    Exit Sub
 

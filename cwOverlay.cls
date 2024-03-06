@@ -30,21 +30,31 @@ Public cyPerc As Single
 
 Private WithEvents W As cWidgetBase
 Attribute W.VB_VarHelpID = -1
-Private WithEvents tmrClock As cTimer
-Attribute tmrClock.VB_VarHelpID = -1
-Private WithEvents tmrXML As cTimer
-Attribute tmrXML.VB_VarHelpID = -1
+Private WithEvents tmrSampler As cTimer
+Attribute tmrSampler.VB_VarHelpID = -1
+Private WithEvents tmrAsyncResponse As cTimer
+Attribute tmrAsyncResponse.VB_VarHelpID = -1
+Private WithEvents tmrAnimator As cTimer
+Attribute tmrAnimator.VB_VarHelpID = -1
 
 Private SDeg As Double
 Private thisTemperature As Long
 Private temperatureTotalTimeLeft As Single
 'Private TemperatureDetails As String
-Private temperatureVal  As Long
+Private TemperatureVal  As Long
+
+Private oldSDeg As Double
+Private newSDeg As Double
+Private animationQuanta As Double
+Private animationAmount As Double
+Private animationDivisions As Integer
+Private animationInterval As Integer
+Private animateCCW As Boolean
 
 '------------------------------------------------------ ENDS
 
 Private mTicking As Boolean ' property Ticking
-Private mSmoothSecondHand As Boolean ' property SmoothSecondHand
+Private mPointerAnimate As Boolean ' property PointerAnimate
 Private mLocked As Boolean ' property Locked
 Private mTemperatureDetails As String ' property
 
@@ -64,7 +74,6 @@ Private weHaveData As Boolean
 '---------------------------------------------------------------------------------------
 '
 Private Sub Class_Initialize()
-    Dim intervalValue As Integer: intervalValue = 0
     
     On Error GoTo Class_Initialize_Error
     
@@ -75,13 +84,17 @@ Private Sub Class_Initialize()
         W.BackColor = -1  'we don't use any BackColor here, transparent
         W.ImplementsHitTest = True 'when at False, no HitTest-Event would be triggered
                     
-    intervalValue = 5000
-
-    Set tmrClock = Nothing
-    Set tmrClock = New_c.Timer(100, mTicking)
-
-    Set tmrXML = Nothing
-    Set tmrXML = New_c.Timer(100, False)
+    Set tmrSampler = Nothing
+    Set tmrSampler = New_c.Timer(100, mTicking) ' first interval is 1/10th of a second, don't change it, triggers an immediate run. Correct sampling interval read later
+    
+    animationDivisions = 12
+    animationInterval = 40
+    
+    Set tmrAnimator = Nothing
+    Set tmrAnimator = New_c.Timer(animationInterval, False)
+ 
+    Set tmrAsyncResponse = Nothing
+    Set tmrAsyncResponse = New_c.Timer(100, False)
     
    On Error GoTo 0
    Exit Sub
@@ -164,15 +177,9 @@ Public Property Let Ticking(ByVal newValue As Boolean)
     If mTicking <> newValue Then mTicking = newValue Else Exit Property
     
     If mTicking Then
-'        If mSmoothSecondHand Then
-'            'intervalValue = 100
-'        Else
-'            'intervalValue = 500
-'        End If
-
-        tmrClock.Enabled = True
+        tmrSampler.Enabled = True
     Else
-        tmrClock.Enabled = False
+        tmrSampler.Enabled = False
     End If
 
    On Error GoTo 0
@@ -294,7 +301,13 @@ Public Property Let samplingInterval(ByVal newValue As String)
 
     If mSamplingInterval <> newValue Then mSamplingInterval = newValue Else Exit Property
     
-    Call obtainTemperature
+    If tmrSampler.Interval = 100 Then Call getData ' allows first early run
+    'If tmrSampler.Interval = 100 Then Call tmrSampler_Timer ' allows first early run
+    
+    tmrSampler.Interval = Val(mSamplingInterval) * 1000
+'    If mPointerAnimate = True Then
+'        If tmrSampler.Interval = 1000 Then tmrSampler.Interval = 1200 ' take into account the animator
+'    End If
     
     On Error GoTo 0
     Exit Property
@@ -304,51 +317,42 @@ samplingIntervalLet_Error:
     MsgBox "Error " & Err.Number & " (" & Err.Description & ") in Property samplingInterval of Class Module cwOverlay"
 End Property
 '---------------------------------------------------------------------------------------
-' Property : SmoothSecondHand
+' Property : pointerAnimate
 ' Author    : beededea
 ' Date      : 17/05/2023
 ' Purpose   :
 '---------------------------------------------------------------------------------------
 '
-Public Property Get SmoothSecondHand() As Boolean
-   On Error GoTo SmoothSecondHandGet_Error
+Public Property Get pointerAnimate() As Boolean
+   On Error GoTo pointerAnimateGet_Error
 
-    SmoothSecondHand = mSmoothSecondHand
+    pointerAnimate = mPointerAnimate
 
    On Error GoTo 0
    Exit Property
 
-SmoothSecondHandGet_Error:
+pointerAnimateGet_Error:
 
-    MsgBox "Error " & Err.Number & " (" & Err.Description & ") in Property SmoothSecondHand of Class Module cwOverlay"
+    MsgBox "Error " & Err.Number & " (" & Err.Description & ") in Property pointerAnimate of Class Module cwOverlay"
 End Property
 '---------------------------------------------------------------------------------------
-' Property  : SmoothSecondHand
+' Property  : pointerAnimate
 ' Author    :
 ' Date      : 09/05/2023
 ' Purpose   :
 '---------------------------------------------------------------------------------------
 '
-Public Property Let SmoothSecondHand(ByVal newValue As Boolean)
-    Dim intervalValue As Integer: intervalValue = 0
-    On Error GoTo SmoothSecondHandLet_Error
+Public Property Let pointerAnimate(ByVal newValue As Boolean)
+    On Error GoTo pointerAnimateLet_Error
 
-    If mSmoothSecondHand <> newValue Then mSmoothSecondHand = newValue Else Exit Property
-    
-    If mSmoothSecondHand Then
-        intervalValue = 100
-    Else
-        intervalValue = 500
-    End If
-            
-    tmrClock.Interval = intervalValue
+    If mPointerAnimate <> newValue Then mPointerAnimate = newValue Else Exit Property
     
    On Error GoTo 0
    Exit Property
 
-SmoothSecondHandLet_Error:
+pointerAnimateLet_Error:
 
-    MsgBox "Error " & Err.Number & " (" & Err.Description & ") in Property SmoothSecondHand of Class Module cwOverlay"
+    MsgBox "Error " & Err.Number & " (" & Err.Description & ") in Property pointerAnimate of Class Module cwOverlay"
 End Property
 
 '---------------------------------------------------------------------------------------
@@ -489,7 +493,7 @@ End Property
 '             For this Overlay-Widget alone, we make everything "fully click-through"
 '---------------------------------------------------------------------------------------------
 '
-Private Sub W_HitTest(ByVal x As Single, ByVal Y As Single, HitResultHit As Boolean) 'ensure ClickThrough-behaviour in ImagePixels which are "fully Alpha"
+Private Sub W_HitTest(ByVal x As Single, ByVal y As Single, HitResultHit As Boolean) 'ensure ClickThrough-behaviour in ImagePixels which are "fully Alpha"
    On Error GoTo W_HitTest_Error
 
    HitResultHit = False
@@ -660,38 +664,127 @@ W_Paint_Error:
     MsgBox "Error " & Err.Number & " (" & Err.Description & ") in procedure W_Paint of Class Module cwOverlay"
 End Sub
  
- 
+    
+'---------------------------------------------------------------------------------------
+' Procedure : tmrAnimator_Timer
+' Author    :
+' Date      : 30/07/2023
+' Purpose   : animate timer, once every few (40) milliseconds
+'---------------------------------------------------------------------------------------
+'
+Private Sub tmrAnimator_Timer()
+    
+    On Error GoTo tmrAnimator_Timer_Error
+    '
+    ' move the pointer using SDeg
+    '
+    animationAmount = animationAmount + animationQuanta
+
+    If animateCCW = True Then
+        If SDeg > newSDeg Then
+            SDeg = oldSDeg - animationAmount
+        Else
+            tmrAnimator.Enabled = False ' when the animation is complete then stop the animator
+            animationAmount = 0
+            Exit Sub
+        End If
+    Else
+        If SDeg < newSDeg Then
+            SDeg = oldSDeg + animationAmount
+        Else
+            tmrAnimator.Enabled = False
+            animationAmount = 0
+            Exit Sub
+        End If
+    End If
+
+    W.Parent.Refresh
+
+   On Error GoTo 0
+   Exit Sub
+
+tmrAnimator_Timer_Error:
+
+    MsgBox "Error " & Err.Number & " (" & Err.Description & ") in procedure tmrAnimator_Timer of Class Module cwOverlay"
+End Sub
+
+  
+
 
     
 '---------------------------------------------------------------------------------------
-' Procedure : tmrClock_Timer
+' Procedure : postProcessing
 ' Author    :
 ' Date      : 30/07/2023
 ' Purpose   :
 '---------------------------------------------------------------------------------------
 '
-Private Sub tmrClock_Timer()
+Private Sub postProcessing()
+    Dim degDiff As Double: degDiff = 0
+    Dim min  As Integer: min = -30
+    Dim max  As Integer: max = 50
     
-    On Error GoTo tmrClock_Timer_Error
-    
-    tmrClock.Interval = Val(PzGSamplingInterval) * 1000
+    On Error GoTo postProcessing_Error
 
-'    If mSmoothSecondHand = True Then
-
-'    Else
-
-        Call obtainTemperature
+    If mPointerAnimate = True Then
+        If tmrAnimator.Enabled = False Then
         
-'    End If
+            ' oldSDeg stored
+            oldSDeg = SDeg
+                    
+            ' obtain the new temperature amount
+        
+            min = -30
+            max = 50
+            
+            ' calculate the new cpu amount in degrees
+            If weHaveData = True Then
+                newSDeg = (TemperatureVal - min) / (max - min) * 360
+            Else
+                newSDeg = 30
+            End If
+                        
+            If oldSDeg = newSDeg Then Exit Sub
+            
+            ' calculate the difference
+            degDiff = newSDeg - oldSDeg
+            
+            ' if the result is negative animate CCW
+            If degDiff < 0 Then
+                animateCCW = True
+            Else
+                animateCCW = False
+            End If
+            
+            Select Case degDiff
+                Case Is <= 5
+                    animationDivisions = 4
+                Case Is <= 10
+                    animationDivisions = 8
+                Case Is > 10
+                    animationDivisions = 16
+                Case Is > 20
+                    animationDivisions = 24
+            End Select
+            
+            ' divide that by 24 (one second duration)
+            animationQuanta = Abs(degDiff / animationDivisions)
+            
+            tmrAnimator.Enabled = True
+            
+        End If
+    Else
+        Call obtainTemperature
+    End If
     
-
+    W.Parent.Refresh
 
    On Error GoTo 0
    Exit Sub
 
-tmrClock_Timer_Error:
+postProcessing_Error:
 
-    MsgBox "Error " & Err.Number & " (" & Err.Description & ") in procedure tmrClock_Timer of Class Module cwOverlay"
+    MsgBox "Error " & Err.Number & " (" & Err.Description & ") in procedure postProcessing of Class Module cwOverlay"
 End Sub
 
 ' ----------------------------------------------------------------
@@ -706,17 +799,14 @@ Private Sub obtainTemperature()
         
     Dim min  As Integer: min = -30
     Dim max  As Integer: max = 50
-    Dim StrTemperatureVal As String
     
     On Error GoTo obtainTemperature_Error
-
-    Call getData
 
     min = -30
     max = 50
     
     If weHaveData = True Then
-        SDeg = (temperatureVal - min) / (max - min) * 360
+        SDeg = (TemperatureVal - min) / (max - min) * 360
     Else
         SDeg = 30
     End If
@@ -732,8 +822,27 @@ obtainTemperature_Error:
 
 End Sub
 
+    
+'---------------------------------------------------------------------------------------
+' Procedure : tmrSampler_Timer
+' Author    :
+' Date      : 30/07/2023
+' Purpose   :
+'---------------------------------------------------------------------------------------
+'
+Private Sub tmrSampler_Timer()
+    
+    On Error GoTo tmrSampler_Timer_Error
+    
+    Call getData
 
+   On Error GoTo 0
+   Exit Sub
 
+tmrSampler_Timer_Error:
+
+    MsgBox "Error " & Err.Number & " (" & Err.Description & ") in procedure tmrSampler_Timer of Class Module cwOverlay"
+End Sub
 
 
 
@@ -763,7 +872,8 @@ Private Sub getData()
     myMSXML.setRequestHeader "Content-Type", "application/x-www-form-urlencoded"
     myMSXML.setRequestHeader "User-Agent", "Firefox 3.6.4"
     myMSXML.send "param1=value2&param2=value2"
-    tmrXML.Enabled = True
+    
+    tmrAsyncResponse.Enabled = True
     
     On Error GoTo 0
     Exit Sub
@@ -776,20 +886,18 @@ End Sub
 
     
 '---------------------------------------------------------------------------------------
-' Procedure : tmrXML_Timer
+' Procedure : tmrSampler_Timer
 ' Author    :
 ' Date      : 30/07/2023
 ' Purpose   :
 '---------------------------------------------------------------------------------------
 '
-Private Sub tmrXML_Timer()
+Private Sub tmrAsyncResponse_Timer()
     
-    On Error GoTo tmrXML_Timer_Error
+    On Error GoTo tmrSampler_Timer_Error
     
     Debug.Print myMSXML.readyState
     If myMSXML.readyState = 4 Then ' asynchronous xml request complete
-
-        tmrXML.Enabled = False
         
         If debugFlg = 1 Then Debug.Print myMSXML.responseText
         Call myStatusProc
@@ -799,9 +907,9 @@ Private Sub tmrXML_Timer()
    On Error GoTo 0
    Exit Sub
 
-tmrXML_Timer_Error:
+tmrSampler_Timer_Error:
 
-    MsgBox "Error " & Err.Number & " (" & Err.Description & ") in procedure tmrClock_Timer of Class Module cwOverlay"
+    MsgBox "Error " & Err.Number & " (" & Err.Description & ") in procedure tmrSampler_Timer of Class Module cwOverlay"
 End Sub
 
 
@@ -1000,7 +1108,7 @@ Private Sub myStatusProc()
     pressureVal = fGetPressure(altim_in_hg)
 
     ' set temperature
-    temperatureVal = Val(temp_c)
+    TemperatureVal = Val(temp_c)
 
     ' calculate humidity
     humidityVal = fGetHumidity(temp_c, dewpoint_c)
@@ -1046,6 +1154,8 @@ Private Sub myStatusProc()
     thisTemperature = temp_c
     
     weHaveData = True
+    
+    Call postProcessing
     
     On Error GoTo 0
     Exit Sub
@@ -1129,7 +1239,7 @@ Function fGetPressure(altim_in_hg As String) As Integer
     pressureVal = Round(CDbl(altim_in_hg) * 25.3999)
     strPressureVal = Str$(pressureVal) & "(" & CStr(Round(1.3333 * pressureVal)) & ")"
     
-    If debugFlg = 1 Then Debug.Print ("%myStatusProc - Pressure = " & strPressureVal)
+    If debugFlg = 1 Then Debug.Print ("fGetPressure - Pressure = " & strPressureVal)
 
     fGetPressure = pressureVal
     
@@ -1161,7 +1271,7 @@ Function fGetHumidity(temp_c, dewpoint_c)
     On Error GoTo fGetHumidity_Error
     
     humidity = Round(100 * (((112 - (0.1 * CInt(temp_c)) + CInt(dewpoint_c)) / (112 + (0.9 * CInt(temp_c)))) ^ 8))
-    If debugFlg = 1 Then Debug.Print ("%myStatusProc - humidity " + CStr(humidity))
+    If debugFlg = 1 Then Debug.Print ("fGetHumidity - humidity " + CStr(humidity))
     
     fGetHumidity = humidity
     
@@ -1201,7 +1311,7 @@ Function fAddBaseCloudToSkyClarity(ByVal baseCloud As Integer, ByVal skyClarity 
             skyClarityString = skyClarity + " at " + CStr(baseCloud) + " ft."
         End If
 '    End If
-    If debugFlg = 1 Then Debug.Print ("%myStatusProc - skyClarityString " + skyClarityString)
+    If debugFlg = 1 Then Debug.Print ("fAddBaseCloudToSkyClarity - skyClarityString " + skyClarityString)
 
     fAddBaseCloudToSkyClarity = skyClarityString
     

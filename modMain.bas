@@ -6,7 +6,7 @@ Option Explicit
 
 '------------------------------------------------------ STARTS
 ' for SetWindowPos z-ordering
-Public Declare Function SetWindowPos Lib "user32" (ByVal hwnd As Long, ByVal hWndInsertAfter As Long, ByVal x As Long, ByVal Y As Long, ByVal cx As Long, ByVal cy As Long, ByVal wFlags As Long) As Long
+Public Declare Function SetWindowPos Lib "user32" (ByVal hwnd As Long, ByVal hWndInsertAfter As Long, ByVal x As Long, ByVal y As Long, ByVal cx As Long, ByVal cy As Long, ByVal wFlags As Long) As Long
 
 Public Const HWND_TOP As Long = 0 ' for SetWindowPos z-ordering
 Public Const HWND_TOPMOST As Long = -1
@@ -229,7 +229,7 @@ Private Sub initialiseGlobalVars()
     ' general
     PzGStartup = vbNullString
     PzGGaugeFunctions = vbNullString
-    PzGSmoothSecondHand = vbNullString
+    PzGPointerAnimate = vbNullString
     PzGSamplingInterval = vbNullString
     PzGIcao = vbNullString
 
@@ -495,11 +495,11 @@ Public Sub adjustMainControls()
 
     End With
     
-    If PzGSmoothSecondHand = "0" Then
-        overlayWidget.SmoothSecondHand = False
+    If PzGPointerAnimate = "0" Then
+        overlayWidget.pointerAnimate = False
         fTemperature.temperatureGaugeForm.Widgets("housing/tickbutton").Widget.Alpha = Val(PzGOpacity) / 100
     Else
-        overlayWidget.SmoothSecondHand = True
+        overlayWidget.pointerAnimate = True
         fTemperature.temperatureGaugeForm.Widgets("housing/tickbutton").Widget.Alpha = 0
     End If
         
@@ -579,7 +579,7 @@ Public Sub readSettingsFile(ByVal location As String, ByVal PzGSettingsFile As S
         ' general
         PzGStartup = fGetINISetting(location, "startup", PzGSettingsFile)
         PzGGaugeFunctions = fGetINISetting(location, "gaugeFunctions", PzGSettingsFile)
-        PzGSmoothSecondHand = fGetINISetting(location, "smoothSecondHand", PzGSettingsFile)
+        PzGPointerAnimate = fGetINISetting(location, "pointerAnimate", PzGSettingsFile)
         PzGSamplingInterval = fGetINISetting(location, "samplingInterval", PzGSettingsFile)
         PzGTemperatureScale = fGetINISetting(location, "temperatureScale", PzGSettingsFile)
 
@@ -680,7 +680,7 @@ Public Sub validateInputs()
         If PzGGaugeFunctions = vbNullString Then PzGGaugeFunctions = "1" ' always turn
 '        If PzGAnimationInterval = vbNullString Then PzGAnimationInterval = "130"
         If PzGStartup = vbNullString Then PzGStartup = "1"
-        If PzGSmoothSecondHand = vbNullString Then PzGSmoothSecondHand = "0"
+        If PzGPointerAnimate = vbNullString Then PzGPointerAnimate = "0"
         If PzGSamplingInterval = vbNullString Then PzGSamplingInterval = "3"
         If PzGTemperatureScale = vbNullString Then PzGTemperatureScale = "0"
         If PzGIcao = vbNullString Then PzGIcao = "EGSH"

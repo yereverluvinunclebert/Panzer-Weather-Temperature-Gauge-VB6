@@ -290,7 +290,7 @@ Private Const VER_PLATFORM_WIN32_NT As Long = 2
 Public PzGStartup As String
 Public PzGGaugeFunctions As String
 'Public PzGAnimationInterval As String
-Public PzGSmoothSecondHand As String
+Public PzGPointerAnimate As String
 Public PzGSamplingInterval As String
 Public PzGTemperatureScale As String
 Public PzGIcao As String
