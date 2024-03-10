@@ -2,7 +2,7 @@
 
 A FOSS Weather Gauges VB6 WoW64 Widget for Reactos, XP, Win7, 8 and 10/11+.
 
-My current VB6/RC6 PSD program being finished now, 12% complete, awaiting a lot of work to get the thing functioning, generatging sunrise/sunset times, four additional gauges, two sub-forms, addition of smooth rotation to the Weather pointers, testing on laptops, testing on Windows XP and Win7 32bit and some multi-monitor checking, completion of the CHM help file and the creation of the setup.exe. This Panzer widget is based upon the Yahoo widget of the same visual design and very similar operation.
+My current VB6/RC6 PSD program being finished now, 80% complete on a single gauge, awaiting a lot of work to get the the weather suite functioning, generating sunrise/sunset times, four additional gauges, two sub-forms, testing on laptops, testing on Windows XP and Win7 32bit and some multi-monitor checking, completion of the CHM help file and the creation of the setup.exe. This Panzer widget is based upon the Yahoo widget of the same visual design and very similar operation.
 
 Why VB6? Well, with a 64 bit, modern-language improvement upgrade on the way with 100% compatible TwinBasic coupled with support for transparent PNGs via RC/Cairo, VB6 code has an amazing future.
 
