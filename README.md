@@ -1,20 +1,22 @@
 # Panzer-Weather-Temperature-Gauge-VB6
 
-A FOSS Weather Gauges VB6 WoW64 Widget for Reactos, XP, Win7, 8 and 10/11+.
+A FOSS Weather Temperature Gauge VB6 WoW64 Widget for Reactos, XP, Win7, 8 and 10/11+.
 
-My current VB6/RC6 PSD program being finished now, 80% complete on a single gauge, awaiting a lot of work to get the the weather suite functioning, generating sunrise/sunset times, four additional gauges, two sub-forms, testing on laptops, testing on Windows XP and Win7 32bit and some multi-monitor checking, completion of the CHM help file and the creation of the setup.exe. This Panzer widget is based upon the Yahoo widget of the same visual design and very similar operation.
+My current VB6/RC6 PSD program being finished now, 80% complete now on a single gauge only, awaiting a lot of work to get the full weather suite functioning, generating sunrise/sunset times, four additional gauges as separate binaries, text information sub-form, source selector form, preference forms for each, testing on laptops, testing on Windows XP and Win7 32bit and some multi-monitor checking, completion of the CHM help file and the creation of the setup.exe. Quite a lot to do.
+
+This Panzer widget is based upon the Yahoo widget of the same visual design and very similar operation.
 
 Why VB6? Well, with a 64 bit, modern-language improvement upgrade on the way with 100% compatible TwinBasic coupled with support for transparent PNGs via RC/Cairo, VB6 code has an amazing future.
 
 ![vb6-logo-350](https://github.com/yereverluvinunclebert/Panzer-RAM-Gauge-VB6/assets/2788342/2f60380d-29f5-4737-8392-e7d747c61f25)
 
 I created as a variation of the previous gauges I had previously created for the World of Tanks and War Thunder
-communities. The Panzer Weather Gauge widget is an attractive dieselpunk VB6 widget for your desktop.
+communities. The Panzer Weather Temperature Gauge widget is an attractive dieselpunk VB6 widget for your desktop.
 Functional and gorgeous at the same time. The graphics are my own, I took original inspiration from a clock face by Italo Fortana combining it with an aircraft gauge surround. It is all my code with some help from the chaps at VBForums (credits given).
 
 ![panzerWeather650](https://github.com/yereverluvinunclebert/Panzer-Weather-Widget/assets/2788342/73c299e9-b8f6-422d-9a95-5f70a16183e3)
 
-The Panzer Weather Gauge VB6 is a useful utility displaying the Weather your chosen locality in a dieselpunk fashion on your desktop. This Widget is a moveable widget that you can move anywhere around the desktop as you require. The Weather data is extracted via an XML request to aviation.gov. The program extracts the temperature abnd barometric data from that XML and displays it via analogue pointers on several desktop gauges.
+The Panzer Weather Temperature Gauge VB6 is a useful utility displaying the Weather your chosen locality in a dieselpunk fashion on your desktop. This Widget is a moveable widget that you can move anywhere around the desktop as you require. The Weather data is extracted via an XML request to aviation.gov. The program extracts the temperature abnd barometric data from that XML and displays it via analogue pointers on several desktop gauges.
 
 Hope the code is useful to anyone else building system metric utilities using VB6/VBS/VBA.
 
@@ -44,7 +46,7 @@ will have a forecast. The data feed is provided by Aviation Weather GOV -
 
 ![panzer-weather-help](https://github.com/yereverluvinunclebert/Panzer-Weather-Widget/assets/2788342/23582667-4a0d-4719-b6a0-b1a1407ccf7f)
 
-The Panzer weather Gauge VB6 gauge is Beta-grade software, under development, not yet
+The Panzer Weather Temperature Gauge VB6 gauge is Beta-grade software, under development, not yet
 ready to use on a production system - use at your own risk.
 
 This version was developed on Windows 7 using 32 bit VisualBasic 6 as a FOSS
