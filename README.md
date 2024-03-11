@@ -1,4 +1,4 @@
-# Panzer-Weather-Gauges-VB6
+# Panzer-Weather-Temperature-Gauge-VB6
 
 A FOSS Weather Gauges VB6 WoW64 Widget for Reactos, XP, Win7, 8 and 10/11+.
 
