@@ -948,27 +948,27 @@ Private Sub myStatusProc()
     Dim metar_items As String: metar_items = vbNullString
     Dim current_node As String: current_node = vbNullString
     Dim sky_condition_items() As String
-    Dim sky_condition As String
+    Dim sky_condition As String: sky_condition = vbNullString
     Dim attributeCounter As Integer
     Dim SkyConditionCounter As Integer
     Dim locationDayNight As Boolean
     
-    Dim tmpSky_condition As String
-    Dim humidity As Long
-    Dim skyClarity As String
+    Dim tmpSky_condition As String: tmpSky_condition = vbNullString
+    Dim humidity As Long: humidity = 0
+    Dim skyClarity As String: skyClarity = vbNullString
     
     Dim cloud_base_mt_agl As Integer
     Dim baseCloud As Integer
-    Dim skyClarityString As String
+    Dim skyClarityString As String: skyClarityString = vbNullString
     
     Dim cloud_base_ft_agl() As String
     Dim sky_cover() As String
     Dim sky_condition_items_length As Integer
     Dim sky_condition_attributes_length As Integer
-    Dim skyNodeName As String
-    Dim cloudNodeName As String
-    Dim skyNodeValue As String
-    Dim cloudNodeValue As String
+    Dim skyNodeName As String: skyNodeName = vbNullString
+    Dim cloudNodeName As String: cloudNodeName = vbNullString
+    Dim skyNodeValue As String: skyNodeValue = vbNullString
+    Dim cloudNodeValue As String: cloudNodeValue = vbNullString
     Dim uboundSkyConditions As Integer
     
     Dim nodeList As MSXML2.IXMLDOMNodeList
@@ -980,8 +980,10 @@ Private Sub myStatusProc()
     Dim SkyConditions As MSXML2.IXMLDOMNodeList
 
     Dim answer As VbMsgBoxResult
-    Dim answerMsg  As String
-    Dim I As Integer
+    Dim answerMsg  As String: answerMsg = vbNullString
+    Dim I As Integer: I = 0
+    Dim isDay As Boolean: isDay = False
+
     
     On Error GoTo myStatusProc_Error
     
@@ -1057,6 +1059,7 @@ Private Sub myStatusProc()
             If Not SkyConditions Is Nothing Then
                 uboundSkyConditions = SkyConditions.length - 1
                 ReDim sky_condition_items(uboundSkyConditions)
+                ReDim sky_cover(uboundSkyConditions)
                 ReDim cloud_base_ft_agl(uboundSkyConditions)
                 SkyConditionCounter = 0
                 
@@ -1068,6 +1071,7 @@ Private Sub myStatusProc()
                         skyNodeValue = SkyCondition.Attributes(attributeCounter).nodeValue
                             
                         sky_condition_items(SkyConditionCounter) = skyNodeValue
+                        sky_cover(SkyConditionCounter) = skyNodeValue
                         
                         attributeCounter = 1 ' cloud_base_ft_agl
                         cloudNodeName = SkyCondition.Attributes(attributeCounter).nodeName
@@ -1121,30 +1125,17 @@ Private Sub myStatusProc()
     
     ' add the base cloud to the visibility string
     skyClarityString = fAddBaseCloudToSkyClarity(baseCloud, skyClarity)
-
     
-'    ' get the current decimalTime and use it to test for sunrise or sunset
-    'locationDayNight = SunriseSunset(TheDate.getYear(), TheDate.getMonth(), TheDate.getDay(), Latitude, Longitude)
-    
-    'mLongitude = 1.283
-    'mLatitude = 52.676
-    ' we will obtain these from the feed
+    ' get the current decimalTime and use it to test for sunrise or sunset
     sunriseSunset.Longitude = Longitude
     sunriseSunset.Latitude = Latitude
-    Dim isDay As Boolean
     isDay = sunriseSunset.isDayLight
-    ', Longitude)
-    
-'    dim decimalTime = theDate.getHours() + ( theDate.getMinutes()/ 60)
-'    if debugFlg = 1 then debug.print ("%myStatusProc - decimalTime "+ decimalTime)
+    If debugFlg = 1 Then Debug.Print ("%myStatusProc - daylight " & isDay)
 
-'    dim isDay = locationDayNight.isDaylight(decimalTime)
-'    if debugFlg = 1 then debug.print("%myStatusProc - daylight " + isDay)
-'
 '    'wx_string = "+FG" 'testing string
 '
-'    ' set the general weather conditions into the icon displayed
-'    determineWeatherConditionIcon(wx_string, sky_cover, isDay)
+    ' set the general weather conditions into the icon displayed
+    Call determineWeatherConditionIcon(skyClarity, wx_string, sky_cover(), isDay)
 '
 '    ' get the observation time string
 '    dim initialObsTime = observation_time.substr(0,10) + " " + observation_time.substr(11,8)
@@ -1339,7 +1330,7 @@ Private Function convertToFahrenheit(T)
     
     On Error GoTo convertToFahrenheit_Error
     
-    newT = Math.Round(1.8 * T + 32)
+    newT = Round(1.8 * T + 32)
     convertToFahrenheit = newT
     
     On Error GoTo 0
@@ -1380,3 +1371,458 @@ convertToKelvin_Error:
     MsgBox "Error " & Err.Number & " (" & Err.Description & ") in procedure convertToKelvin, line " & Erl & "."
 
 End Function
+
+
+
+'================
+' this function sets the hover over tooltip
+'================
+Private Function setHoverTooltip(wind_dir_degrees, wind_speed_kt, precip_in, difString, wx_string)
+
+            Dim force As String
+            Dim tooltipString As String
+            Dim TemperatureVal As Long
+            
+            'compassDirection = degToCompass(wind_dir_degrees)
+
+            'force = beaufortConversion(wind_speed_kt)
+
+            'tooltipString = " " & usableObsTime & " " & " " & PzGIcao & " "
+            'tooltipString = tooltipString & icaoLocation1 & ", " & icaoLocation2 & ", " & icaoLocation3 & " " & vbCrLf
+
+'            If (Preferences.barometerScalePref.Value = "millibars") Then
+'                tooltipString = tooltipString & "Pressure" & ": " & Int(pressureValue * 1.33322) & " mb " & vbCrLf
+'             ElseIf (Preferences.barometerScalePref.Value = "hg") Then
+'                tooltipString = tooltipString & "Pressure" & ": " & Int(pressureValue / 25.399999704976) & " inHg " & vbCrLf
+'             ElseIf (Preferences.barometerScalePref.Value = "hpa") Then
+'                tooltipString = tooltipString & "Pressure" & ": " & Int(pressureValue * 1.33322) & " hpa " & vbCrLf
+'             ElseIf (Preferences.barometerScalePref.Value = "mmhg") Then
+'                tooltipString = tooltipString & "Pressure" & ": " & pressureValue & " mmHg " & vbCrLf
+'            End If
+
+'            If (Preferences.tempUnit.Value = "fahrenheit") Then
+'                TemperatureVal = temperatureValue * 1.8 & 32
+'                tooltipString = tooltipString & "Temperature" & ": " & Round(TemperatureVal).toFixed(2) & " F " & vbCrLf
+'            End If
+'            If (Preferences.tempUnit.Value = "celsius") Then
+'                tooltipString = tooltipString & "Temperature" & ": " & Round(temperatureValue).toFixed(2) & " C " & vbCrLf
+'            End If
+'            If (Preferences.tempUnit.Value = "kelvin") Then
+'                tooltipString = tooltipString & "Temperature" & ": " & Round(Int(temperatureValue & 273.15)).toFixed(2) & " K " & vbCrLf
+'                tooltipString = tooltipString & "Humidity" & ": " & humidityValue & " % " & " " & skyClarityString & " " & vbCrLf
+'            End If
+'            If (Preferences.windUnit.Value = "knots") Then
+'                    tooltipString = tooltipString & "wind_speed_is" & " " & wind_speed_kt & " knots, "
+'            Else
+'                tooltipString = tooltipString & "wind_speed_is" & " " & Int(wind_speed_kt * 0.51444) & " m/sec, "
+'                tooltipString = tooltipString & "strength_force" & " " & force & ", " & "direction" & " " & compassDirection
+'            End If
+'            If (precip_in <> 0) Then
+'               tooltipString = tooltipString & " " & "precipitation_is" & " " & precip_in & " inches"
+'
+'
+'            Var wx_str = getMetarDescription(wx_string)    ' get the interpreted wx string data
+'            If (wx_str <> "") Then
+'               tooltipString = tooltipString & "  " & wx_str & "  " & vbCrLf
+'
+'            'weatherText.data = String(tooltipString)
+'
+'            humidityBackground.ToolTip = tooltipString
+'
+'            ' save the tooltip value so it can be used during the regular timed 60 second tooltip updates.
+'            Preferences.lastTooltip.Value = humidityBackground.ToolTip
+'            humidityBackground.ToolTip = humidityBackground.ToolTip & " " & difString
+'            humidityBackground.ToolTip = humidityBackground.ToolTip & "  " & "Double_tap_on_me_to_get_new_weather"
+'            thermometerBackground.ToolTip = humidityBackground.ToolTip
+'            anemometerBackground.ToolTip = humidityBackground.ToolTip
+'            weatherIconGaugeBackground.ToolTip = humidityBackground.ToolTip
+'            barometerBackground.ToolTip = humidityBackground.ToolTip
+
+'========
+End Function
+'========
+
+
+
+
+' ----------------------------------------------------------------
+' Procedure Name: determineWeatherConditionIcon
+' Purpose: function to decode_weather when a wx field found and set the icon accordingly
+' Procedure Kind: Function
+' Procedure Access: Private
+' Parameter thisSkyClarity (String):
+' Parameter thisWxString (String):
+' Parameter sky_cover (String):
+' Parameter thisIsDay (Boolean):
+' Return Type: String, ByVal thisIsDay As Boolean)
+' Author: beededea
+' Date: 14/03/2024
+' ----------------------------------------------------------------
+Private Function determineWeatherConditionIcon(ByVal thisSkyClarity As String, ByVal thisWxString As String, ByRef sky_cover() As String, ByVal thisIsDay As Boolean)
+    On Error GoTo determineWeatherConditionIcon_Error
+   'thisWxString = "+PRFG" 'testing string
+   'sky_cover(0) = "BKN"
+
+   Dim wSeverity As String: wSeverity = vbNullString
+   Dim wModifier As String: wModifier = vbNullString
+   Dim skycover1 As String: skycover1 = vbNullString
+   Dim skycover2 As String: skycover2 = vbNullString
+   Dim skycover3 As String: skycover3 = vbNullString
+   Dim presentConditions As String: presentConditions = vbNullString
+   Dim weatherIconSrc As String: weatherIconSrc = vbNullString
+   Dim showersIconSrc As String: showersIconSrc = vbNullString
+   Dim fogIconSrc As String: fogIconSrc = vbNullString
+   Dim windIconSrc As String: windIconSrc = vbNullString
+   Dim exoticIconSrc As String: exoticIconSrc = vbNullString
+   Dim iconSrc As String: iconSrc = vbNullString
+   Dim weatherType As String: weatherType = vbNullString
+   Dim precedingSrc As String: precedingSrc = vbNullString
+   Dim followingSrc As String: followingSrc = vbNullString
+
+    
+   If UBound(sky_cover()) >= 0 Then
+        If (sky_cover(0) = "SKC") Then skycover1 = "SKC"
+        If (sky_cover(0) = "CLR") Then skycover1 = "CLR"
+        If (sky_cover(0) = "FEW") Then skycover1 = "FEW"
+        If (sky_cover(0) = "SCT") Then skycover1 = "SCT"
+        If (sky_cover(0) = "BKN") Then skycover1 = "BKN"
+        If (sky_cover(0) = "OVC") Then skycover1 = "OVC"
+        If (sky_cover(0) = "VV ") Then skycover1 = "VV "
+        If (sky_cover(0) = "CAVOK") Then skycover1 = "CAVOK"
+    End If
+        
+   If UBound(sky_cover()) >= 1 Then
+        If (sky_cover(1) = "SKC") Then skycover2 = "SKC"
+        If (sky_cover(1) = "CLR") Then skycover2 = "CLR"
+        If (sky_cover(1) = "FEW") Then skycover2 = "FEW"
+        If (sky_cover(1) = "SCT") Then skycover2 = "SCT"
+        If (sky_cover(1) = "BKN") Then skycover2 = "BKN"
+        If (sky_cover(1) = "OVC") Then skycover2 = "OVC"
+        If (sky_cover(1) = "VV ") Then skycover2 = "VV "
+        If (sky_cover(1) = "CAVOK") Then skycover2 = "CAVOK"
+    End If
+    
+   If UBound(sky_cover()) >= 2 Then
+        If (sky_cover(2) = "SKC") Then skycover3 = "SKC"
+        If (sky_cover(2) = "CLR") Then skycover3 = "CLR"
+        If (sky_cover(2) = "FEW") Then skycover3 = "FEW"
+        If (sky_cover(2) = "SCT") Then skycover3 = "SCT"
+        If (sky_cover(2) = "BKN") Then skycover3 = "BKN"
+        If (sky_cover(2) = "OVC") Then skycover3 = "OVC"
+        If (sky_cover(2) = "VV ") Then skycover3 = "VV "
+        If (sky_cover(2) = "CAVOK") Then skycover3 = "CAVOK"
+    End If
+
+   If (debugFlg = 1) Then Debug.Print ("%determineWeatherCondition - sky_cover " & sky_cover(0))
+
+    If InStr(thisWxString, "-") <> 0 Then
+        wSeverity = "light"
+    ElseIf InStr(thisWxString, "+") <> 0 Then
+        wSeverity = "heavy"
+    Else
+        wSeverity = "medium"  ' moderate conditions have no descriptor
+    End If
+
+   If (debugFlg = 1) Then Debug.Print ("%determineWeatherCondition - thisWxString " & thisWxString)
+   If (debugFlg = 1) Then Debug.Print ("%determineWeatherCondition - wSeverity " & wSeverity)
+   If InStr(thisWxString, "UP") <> 0 Then presentConditions = presentConditions & "unknown "
+
+   'in the absence of a weather code assume clear sky
+   'var presentConditions = "clear and sunny"
+   weatherIconSrc = "0cloud.png"
+
+   'determine the weather type,
+   If (InStr(thisWxString, "MI") <> 0) Then
+     wModifier = wModifier & "shallow "
+   End If
+   If (InStr(thisWxString, "PR") <> 0) Then
+     wModifier = wModifier & "partial "
+   End If
+   If (InStr(thisWxString, "DZ") <> 0) Then
+     wModifier = wModifier & "drizzle "
+   End If
+   If (InStr(thisWxString, "BC") <> 0) Then
+     wModifier = wModifier & "patches of "
+   End If
+   If (InStr(thisWxString, "DR") <> 0) Then
+     wModifier = wModifier & "drifting "
+   End If
+   If (InStr(thisWxString, "BL") <> 0) Then
+     wModifier = wModifier & "blowing "
+   End If
+   If (InStr(thisWxString, "SH") <> 0) Then
+     wModifier = wModifier & "showers "
+   End If
+   If (InStr(thisWxString, "VC") <> 0) Then
+     '"nearby "
+     wModifier = wModifier & "nearby "
+   End If
+   If (InStr(thisWxString, "FZ") <> 0) Then
+     '"freezing "
+     wModifier = wModifier & "freezing "
+   End If
+
+   ' FEW = 1 or 2 eighths cover SCT = 3 or 4 eighths cover BKN = 5, 6 or 7 eighths cover & OVC = 8/8 cover
+
+   'use the cloud code to determine cloud cover
+    If (skycover1 = "SKC" Or skycover2 = "SKC" Or skycover3 = "SKC") Then thisSkyClarity = "Clear skies"       ' default clear
+    If (skycover1 = "CLR" Or skycover2 = "CLR" Or skycover3 = "CLR") Then thisSkyClarity = "Clear skies"       ' default
+    If (skycover1 = "VV " Or skycover2 = "VV " Or skycover3 = "VV ") Then thisSkyClarity = "Vertical visibility"          ' default
+    If (skycover1 = "CAVOK" Or skycover2 = "CAVOK" Or skycover3 = "CAVOK") Then thisSkyClarity = "Ceiling and visibility OK"          ' default
+
+    If (skycover1 = "FEW" Or skycover2 = "FEW" Or skycover3 = "FEW") Then
+      'Partly cloudy"
+      weatherIconSrc = "1cloud_norain.png"
+    End If
+    If (skycover1 = "SCT" Or skycover2 = "SCT" Or skycover3 = "SCT") Then
+      'Scattered clouds"
+      weatherIconSrc = "2cloud_norain.png"
+    End If
+    If (skycover1 = "BKN" Or skycover2 = "BKN" Or skycover3 = "BKN") Then
+      'Mostly cloudy"
+      weatherIconSrc = "3cloud_norain.png"
+    End If
+    If (skycover1 = "OVC" Or skycover2 = "OVC" Or skycover3 = "OVC") Then
+      'Overcast"
+      weatherIconSrc = "4cloud_norain.png"
+    End If
+
+
+   'type of weather - snow
+   If (InStr(thisWxString, "SN") <> 0 Or InStr(thisWxString, "SG") <> 0) Then
+
+       If (wSeverity = "light") Then
+          If (skycover1 = "SCT" Or skycover2 = "SCT" Or skycover3 = "SCT") Then
+             'Scattered clouds"
+             weatherIconSrc = "1cloud_lightsnow.png" 'default
+          End If
+          If (skycover1 = "BKN" Or skycover2 = "BKN" Or skycover3 = "BKN") Then
+            'Mostly cloudy"
+            weatherIconSrc = "2cloud_lightsnow.png"
+          End If
+          If (skycover1 = "OVC" Or skycover2 = "OVC" Or skycover3 = "OVC") Then
+            'Mostly cloudy"
+            weatherIconSrc = "4cloud_lightsnow.png"
+          End If
+       End If
+       If (wSeverity = "medium") Then
+          If (skycover1 = "SCT" Or skycover2 = "SCT" Or skycover3 = "SCT") Then
+            'Scattered clouds"
+            weatherIconSrc = "2cloud_snow.png"
+          End If
+          If (skycover1 = "BKN" Or skycover2 = "BKN" Or skycover3 = "BKN") Then
+            'Mostly cloudy"
+            weatherIconSrc = "2cloud_snow.png"
+          End If
+          If (skycover1 = "OVC" Or skycover2 = "OVC" Or skycover3 = "OVC") Then
+            'Overcast"
+            weatherIconSrc = "3cloud_snow.png"
+          End If
+       End If
+       If (wSeverity = "heavy") Then
+            weatherIconSrc = "4cloud_heavysnow.png"
+       End If
+   End If
+
+   ' no need to take the cloud into account, always cloudy with hail
+   weatherType = "none"
+   If (InStr(thisWxString, "IC") <> 0) Then
+     '"ice crystals "
+     weatherType = "hail"
+   End If
+   If (InStr(thisWxString, "PE") <> 0) Then
+     '"ice pellets "
+     weatherType = "hail"
+   End If
+   If (InStr(thisWxString, "GR") <> 0) Then
+     '"hail "
+     weatherType = "hail"
+   End If
+   If (InStr(thisWxString, "GS") <> 0) Then
+     '"small hail "
+     weatherType = "hail"
+   End If ' and/or snow pellets
+
+   'type of weather - hail
+   If (weatherType = "hail") Then
+       If (wSeverity = "light") Then
+          weatherIconSrc = "2cloud_hail.png" 'default
+          If (skycover1 = "OVC" Or skycover2 = "OVC" Or skycover3 = "OVC") Then
+            'Mostly cloudy"
+            weatherIconSrc = "4cloud_lighthail.png"
+          End If
+       End If
+       If (wSeverity = "medium") Then
+          If ((skycover1 = "SCT" Or skycover2 = "SCT" Or skycover3 = "SCT") Or (skycover1 = "BKN" Or skycover2 = "BKN" Or skycover3 = "BKN")) Then
+            'Scattered clouds"
+            weatherIconSrc = "2cloud_hail.png"
+          End If
+          If (skycover1 = "OVC" Or skycover2 = "OVC" Or skycover3 = "OVC") Then
+            'Mostly cloudy"
+            weatherIconSrc = "3cloud_hail.png"
+          End If
+       End If
+       If (wSeverity = "heavy") Then
+            weatherIconSrc = "4cloud_heavyhail.png"
+       End If
+   End If
+
+    ' this caters for the event when there are showers indicated but no associated rain code
+    ' it is strange but it quite often occurs...
+    If (InStr(thisWxString, "SH") <> 0 And InStr(thisWxString, "SN") = 0 And InStr(thisWxString, "SG") = 0 And weatherType <> "hail") Then
+         'if no RAin code nor hail or snow but showers indicated then just assume rain...
+         showersIconSrc = "Resources/images/icons_metar/day/" & "showers.png"
+     Else
+        showersIconSrc = vbNullString
+    End If
+
+   'type of weather - rain
+   If (InStr(thisWxString, "RA") <> 0) Then
+       wSeverity = "light" ' default
+     '"rain "
+       If (wSeverity = "light") Then
+          If (skycover1 = "FEW" Or skycover2 = "FEW" Or skycover3 = "FEW") Then
+            'Partly cloudy"
+            weatherIconSrc = "1cloud_lightrain.png"
+          End If
+          If (skycover1 = "SCT" Or skycover2 = "SCT" Or skycover3 = "SCT") Then
+            'Scattered clouds"
+            weatherIconSrc = "2cloud_lightrain.png"
+          End If
+          If (skycover1 = "BKN" Or skycover2 = "BKN" Or skycover3 = "BKN") Then
+            'Mostly cloudy"
+            weatherIconSrc = "3cloud_lightrain.png"
+          End If
+          If (skycover1 = "OVC" Or skycover2 = "OVC" Or skycover3 = "OVC") Then
+            'Overcast"
+            weatherIconSrc = "4cloud_lightrain.png"
+          End If
+       End If
+       If (wSeverity = "medium") Then
+          If (skycover1 = "FEW" Or skycover2 = "FEW" Or skycover3 = "FEW") Then
+            'Partly cloudy"
+            weatherIconSrc = "1cloud_modrain.png"
+          End If
+          If (skycover1 = "SCT" Or skycover2 = "SCT" Or skycover3 = "SCT") Then
+            'Scattered clouds"
+            weatherIconSrc = "2cloud_modrain.png"
+          End If
+          If (skycover1 = "BKN" Or skycover2 = "BKN" Or skycover3 = "BKN") Then
+            'Mostly cloudy"
+            weatherIconSrc = "3cloud_modrain.png"
+          End If
+          If (skycover1 = "OVC" Or skycover2 = "OVC" Or skycover3 = "OVC") Then
+            'Overcast"
+            weatherIconSrc = "4cloud_modrain.png"
+          End If
+       End If
+       If (wSeverity = "heavy") Then
+          If (skycover1 = "FEW" Or skycover2 = "FEW" Or skycover3 = "FEW") Then
+            'Partly cloudy"
+            weatherIconSrc = "1cloud_heavyrain.png"
+          End If
+          If (skycover1 = "SCT" Or skycover2 = "SCT" Or skycover3 = "SCT") Then
+            'Scattered clouds"
+            weatherIconSrc = "2cloud_heavyrain.png"
+          End If
+          If (skycover1 = "BKN" Or skycover2 = "BKN" Or skycover3 = "BKN") Then
+            'Mostly cloudy"
+            weatherIconSrc = "3cloud_heavyrain.png"
+          End If
+          If (skycover1 = "OVC" Or skycover2 = "OVC" Or skycover3 = "OVC") Then
+            'Overcast"
+            weatherIconSrc = "4cloud_heavyrain.png"
+          End If
+       End If
+
+       If (InStr(thisWxString, "TS") <> 0) Then
+            wModifier = wModifier & "thunderstorm "
+            weatherIconSrc = "4cloud_heavyrain.png"
+       End If
+   End If
+
+   fogIconSrc = vbNullString    'default
+   If (InStr(thisWxString, "BR") <> 0 Or InStr(thisWxString, "FG") <> 0) Then
+     '"fog " or "mist"
+     If (wSeverity = "light") Then
+          fogIconSrc = "Resources/images/icons_metar/day/" & "1_fog.png" 'night or day makes no difference
+       End If
+       If (wSeverity = "medium") Then
+          fogIconSrc = "Resources/images/icons_metar/day/" & "2_fog.png"
+       End If
+       If (wSeverity = "heavy") Then
+          fogIconSrc = "Resources/images/icons_metar/day/" & "3_fog.png"
+       End If
+   End If
+
+   'windIconSrc= "Resources/images/icons_metar/night/windy03.png"   'default
+   If (InStr(thisWxString, "SQ") <> 0) Then
+     '"strong winds "
+     windIconSrc = "Resources/images/icons_metar/day/" & "windy03.png"
+   End If
+
+   exoticIconSrc = vbNullString   'default
+   'exotic types - we have no icons for any of these
+   If (InStr(thisWxString, "FU") <> 0) Then
+      exoticIconSrc = "Resources/images/icons_metar/day/" & "smoke.png"
+      '"smoke "
+   End If
+   If (InStr(thisWxString, "VA") <> 0) Then
+     '"volcanic ash "
+      exoticIconSrc = "Resources/images/icons_metar/day/" & "volcano.png"
+   End If
+   If (InStr(thisWxString, "DU") <> 0) Then
+     '"widespread dust "endif
+      exoticIconSrc = "Resources/images/icons_metar/day/" & "dust.png"
+   End If
+   If (InStr(thisWxString, "SA") <> 0) Then
+     '"sand "endif
+      exoticIconSrc = "Resources/images/icons_metar/day/" & "sand.png"
+   End If
+   If (InStr(thisWxString, "HZ") <> 0) Then
+     '"haze "endif
+      exoticIconSrc = "Resources/images/icons_metar/day/" & "haze.png"
+   End If
+   If (InStr(thisWxString, "PY") <> 0) Then
+     '"spray "endif
+      exoticIconSrc = "Resources/images/icons_metar/day/" & "spray.png"
+   End If
+   If (InStr(thisWxString, "PO") <> 0) Then
+     '"dustdevils "endif
+      exoticIconSrc = "Resources/images/icons_metar/day/" & "dustdevil.png"
+   End If
+   If (InStr(thisWxString, "FC") <> 0) Then
+     '"tornado "endif
+      exoticIconSrc = "Resources/images/icons_metar/day/" & "tornado.png"
+   End If
+   If (InStr(thisWxString, "SS") <> 0) Then
+     '"sandstorm/duststorm "endif
+      exoticIconSrc = "Resources/images/icons_metar/day/" & "duststorm.png"
+   End If
+
+    If (weatherIconSrc <> vbNullString) Then
+      If (thisIsDay = True) Then
+         iconSrc = "Resources/images/icons_metar/day/" & weatherIconSrc
+         weatherIconSrc = iconSrc
+         precedingSrc = iconSrc
+         followingSrc = iconSrc
+      Else
+         iconSrc = "Resources/images/icons_metar/night/n_" & weatherIconSrc
+         weatherIconSrc = iconSrc
+         precedingSrc = iconSrc
+         followingSrc = iconSrc
+      End If
+     Else
+      weatherIconSrc = "Resources/images/globe.png"
+    End If
+    If (debugFlg = 1) Then Debug.Print ("%determineWeatherCondition - iconSrc " & iconSrc)
+
+    On Error GoTo 0
+    Exit Function
+
+determineWeatherConditionIcon_Error:
+
+    MsgBox "Error " & Err.Number & " (" & Err.Description & ") in procedure determineWeatherConditionIcon, line " & Erl & "."
+
+End Function
+

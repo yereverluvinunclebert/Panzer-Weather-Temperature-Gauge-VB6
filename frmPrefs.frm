@@ -2,7 +2,7 @@ VERSION 5.00
 Object = "{BCE37951-37DF-4D69-A8A3-2CFABEE7B3CC}#1.0#0"; "CCRSlider.ocx"
 Begin VB.Form panzerPrefs 
    AutoRedraw      =   -1  'True
-   Caption         =   "Panzer Weather Gauge Preferences"
+   Caption         =   "Panzer Weather Temperature Gauge Preferences"
    ClientHeight    =   10545
    ClientLeft      =   60
    ClientTop       =   510
@@ -69,7 +69,7 @@ Begin VB.Form panzerPrefs
             Width           =   3720
          End
          Begin VB.CheckBox chkGenStartup 
-            Caption         =   "Run the Battery Widget at Windows Startup "
+            Caption         =   "Run the Temperature Widget at Windows Startup "
             Height          =   465
             Left            =   2010
             TabIndex        =   93

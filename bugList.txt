@@ -1,14 +1,16 @@
 DONE
 
-lamps
-pointer
-help
-help CHM
+' lamps - done
+' pointer - done
+
+' smooth pointer - flick/smooth - done
 
 TODO
 
-' smooth pointer - flick/smooth
+' determineWeatherConditionIcon - wip - needs to return several values for icon types, perhaps split
 
+' help  -
+' help CHM -
 
 ' add second monitor - wip find cable!
 
