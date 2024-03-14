@@ -713,18 +713,18 @@ End Sub
 
     
 '---------------------------------------------------------------------------------------
-' Procedure : postProcessing
+' Procedure : calcAnimationData
 ' Author    :
 ' Date      : 30/07/2023
 ' Purpose   :
 '---------------------------------------------------------------------------------------
 '
-Private Sub postProcessing()
+Private Sub calcAnimationData()
     Dim degDiff As Double: degDiff = 0
     Dim min  As Integer: min = -30
     Dim max  As Integer: max = 50
     
-    On Error GoTo postProcessing_Error
+    On Error GoTo calcAnimationData_Error
 
     If mPointerAnimate = True Then
         If tmrAnimator.Enabled = False Then
@@ -782,9 +782,9 @@ Private Sub postProcessing()
    On Error GoTo 0
    Exit Sub
 
-postProcessing_Error:
+calcAnimationData_Error:
 
-    MsgBox "Error " & Err.Number & " (" & Err.Description & ") in procedure postProcessing of Class Module cwOverlay"
+    MsgBox "Error " & Err.Number & " (" & Err.Description & ") in procedure calcAnimationData of Class Module cwOverlay"
 End Sub
 
 ' ----------------------------------------------------------------
@@ -928,7 +928,7 @@ Private Sub myStatusProc()
     Dim humidityVal  As Long
     Dim pressureVal As Long
     Dim TheDate As Date: TheDate = #1/1/2000 12:00:00 PM#
-    Dim secsDif As Integer
+    Dim secsDif As Integer: secsDif = 0
     Dim difString As String: difString = vbNullString
     Dim returnedString As String: returnedString = vbNullString
     Dim data1 As String: data1 = vbNullString
@@ -983,7 +983,9 @@ Private Sub myStatusProc()
     Dim answerMsg  As String: answerMsg = vbNullString
     Dim I As Integer: I = 0
     Dim isDay As Boolean: isDay = False
-
+    
+    Dim initialObsTime As String: initialObsTime = vbNullString
+    Dim usableObsTime As Date: usableObsTime = #1/1/2000 12:00:00 PM#
     
     On Error GoTo myStatusProc_Error
     
@@ -1138,15 +1140,38 @@ Private Sub myStatusProc()
     Call determineWeatherConditionIcon(skyClarity, wx_string, sky_cover(), isDay)
 '
 '    ' get the observation time string
-'    dim initialObsTime = observation_time.substr(0,10) + " " + observation_time.substr(11,8)
-'    usableObsTime = stringToDate(initialObsTime)
+    initialObsTime = Left$(observation_time, 10) & " " & Mid$(observation_time, 12, 8)
+    usableObsTime = CDate(initialObsTime)
 
+
+'    'set the mini clock to show the observation time
+'    theClock.displayTime(usableObsTime); ' we don't yet have a mini clock
+
+    ' get the current time string and compare
+    TheDate = Now
+    secsDif = Int(DateDiff("s", TheDate, usableObsTime))
+
+    ' format the interval for display in the tooltip
+    difString = nice_format_interval(secsDif)
+
+    ' store the last updated value in the settings
+'    preferences.lastUpdated.value = usableObsTime.getTime()
+'    if (debugFlg === 1) { print("%myStatusProc - difString " + difString)}
+
+'    humidityBackground.Tooltip = " "
+
+'    ' set the hover over tooltips
+'    setHoverTooltip(wind_dir_degrees, wind_speed_kt, precip_in, difString, wx_string)
+'
+'    setIconTooltip(wx_string, sky_cover)
+'
+'     busyStop()
 
     thisTemperature = temp_c
     
     weHaveData = True
     
-    Call postProcessing
+    Call calcAnimationData
     
     On Error GoTo 0
     Exit Sub
@@ -1156,6 +1181,55 @@ myStatusProc_Error:
     MsgBox "Error " & Err.Number & " (" & Err.Description & ") in procedure myStatusProc, line " & Erl & "."
 
 End Sub
+
+
+'====================================================================================
+' this function provides a text version of when the data was last collected
+'====================================================================================
+Function nice_format_interval(duration As Integer) As String
+    Dim hours As Integer: hours = 0
+    Dim minutes As Integer: minutes = 0
+    Dim res As String: res = vbNullString
+    
+    duration = Abs(duration)
+    hours = Int(duration / 3600)
+    minutes = Int((duration - hours * 3600) / 60)
+    
+    If hours > 72 Then
+        'print("%Update " & String(hours) & " hours and " & String(minutes) & " minutes ago");
+        nice_format_interval = "No recent data available" & "!"
+        Exit Function
+    End If
+    If hours > 0 Then
+        res = "Updated"
+        If hours = 1 Then
+            res = res & " " & "one hour"
+        Else
+            res = res & " " & Str$(hours) & " " & "hours"
+        End If
+        If minutes = 1 Then
+            res = res & " " & "and one minute"
+        ElseIf minutes > 1 Then
+            res = res & " " & "and" & " " & Str$(minutes) & " " & "minutes"
+        End If
+        nice_format_interval = res & " " & "ago"
+        Exit Function
+    End If
+    If minutes > 0 Then
+        If minutes = 1 Then
+            nice_format_interval = "Updated one minute ago"
+            Exit Function
+        End If
+        nice_format_interval = "Updated" & " " & Str$(minutes) & " " & "minutes ago"
+        Exit Function
+    End If
+    If duration = 1 Then
+        nice_format_interval = "Updated one second ago"
+        Exit Function
+    End If
+    nice_format_interval = "Updated" & " " & Str$(duration) & " " & "seconds ago"
+    Exit Function
+End Function
 
 
 ' ----------------------------------------------------------------
