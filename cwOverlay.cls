@@ -1095,7 +1095,6 @@ Private Sub myStatusProc()
    Set nodeList = Nothing
    Set SkyConditions = Nothing
     
-      
     'if the station id returned is null then assume the weather information is missing for an unknown reason.
     If (station_id = "") Then
         If debugFlg = 1 Then Debug.Print ("%myStatusProc - station_id does not seem to providing any valid data, please select another.")
@@ -1107,7 +1106,6 @@ Private Sub myStatusProc()
             weHaveData = False
             Exit Sub ' return
         End If
-        
     End If
     
     ' get pressure
@@ -1143,7 +1141,6 @@ Private Sub myStatusProc()
     initialObsTime = Left$(observation_time, 10) & " " & Mid$(observation_time, 12, 8)
     usableObsTime = CDate(initialObsTime)
 
-
 '    'set the mini clock to show the observation time
 '    theClock.displayTime(usableObsTime); ' we don't yet have a mini clock
 
@@ -1155,9 +1152,9 @@ Private Sub myStatusProc()
     difString = nice_format_interval(secsDif)
 
     ' store the last updated value in the settings
-'    preferences.lastUpdated.value = usableObsTime.getTime()
-'    if (debugFlg === 1) { print("%myStatusProc - difString " + difString)}
-
+    'PzGLastUpdated = usableObsTime
+    If (debugFlg = 1) Then Debug.Print ("%myStatusProc - difString " & difString)
+    
 '    humidityBackground.Tooltip = " "
 
 '    ' set the hover over tooltips
@@ -1183,10 +1180,18 @@ myStatusProc_Error:
 End Sub
 
 
-'====================================================================================
-' this function provides a text version of when the data was last collected
-'====================================================================================
+' ----------------------------------------------------------------
+' Procedure Name: nice_format_interval
+' Purpose: this function provides a text version of when the data was last collected
+' Procedure Kind: Function
+' Procedure Access: Public
+' Parameter duration (Integer):
+' Return Type: String
+' Author: beededea
+' Date: 15/03/2024
+' ----------------------------------------------------------------
 Function nice_format_interval(duration As Integer) As String
+    On Error GoTo nice_format_interval_Error
     Dim hours As Integer: hours = 0
     Dim minutes As Integer: minutes = 0
     Dim res As String: res = vbNullString
@@ -1229,6 +1234,14 @@ Function nice_format_interval(duration As Integer) As String
     End If
     nice_format_interval = "Updated" & " " & Str$(duration) & " " & "seconds ago"
     Exit Function
+    
+    On Error GoTo 0
+    Exit Function
+
+nice_format_interval_Error:
+
+    MsgBox "Error " & Err.Number & " (" & Err.Description & ") in procedure nice_format_interval, line " & Erl & "."
+
 End Function
 
 
@@ -1900,3 +1913,171 @@ determineWeatherConditionIcon_Error:
 
 End Function
 
+' ----------------------------------------------------------------
+' Procedure Name: getMetarDescription
+' Purpose:
+' Procedure Kind: Function
+' Procedure Access: Public
+' Parameter wx_string (String):
+' Return Type: String
+' Author: beededea
+' Date: 15/03/2024
+' ----------------------------------------------------------------
+Function getMetarDescription(wx_string As String) As String
+    On Error GoTo getMetarDescription_Error
+    Dim presentConditions As String: presentConditions = ""
+    Dim wSeverity As String: wSeverity = ""
+    Dim wModifier As String: wModifier = ""
+    
+    If InStr(wx_string, "UP") <> 0 Then
+        presentConditions = presentConditions + "unknown "
+    End If
+    'in the absence of a weather code assume clear sky
+    'Dim presentConditions As String = "clear and sunny"
+    'weatherVal = "0cloud.png" <<<<
+    'determine the strength of the weather type, light, medium, heavy or very heavy
+    
+    If InStr(wx_string, "MI") <> 0 Then
+        wModifier = wModifier + "shallow"
+    End If
+    If InStr(wx_string, "PR") <> 0 Then
+        wModifier = wModifier + "partial"
+    End If
+    If InStr(wx_string, "DZ") <> 0 Then
+        wModifier = wModifier + "drizzle"
+    End If
+    If InStr(wx_string, "BC") <> 0 Then
+        wModifier = wModifier + "patches of"
+    End If
+    If InStr(wx_string, "DR") <> 0 Then
+        wModifier = wModifier + "drifting"
+    End If
+    If InStr(wx_string, "BL") <> 0 Then
+        wModifier = wModifier + "blowing"
+    End If
+    If InStr(wx_string, "SH") <> 0 Then
+        wModifier = wModifier + "showers"
+    End If
+    If InStr(wx_string, "VC") <> 0 Then
+        'presentConditions = presentConditions +  "nearby "
+        wModifier = wModifier + "in_the_vicinity"
+    End If
+    If InStr(wx_string, "FZ") <> 0 Then
+        'presentConditions = presentConditions +  "freezing "
+        wModifier = wModifier + "freezing"
+    End If
+    If InStr(wx_string, "TS") <> 0 Then
+        wModifier = wModifier + "thunderstorm"
+    End If
+    If wModifier <> "" Then
+        presentConditions = wModifier
+    End If
+    
+    If InStr(wx_string, "-") <> 0 Then
+        wSeverity = "light" & " "
+    ElseIf InStr(wx_string, "+") <> 0 Then
+        wSeverity = "heavy" & " "
+    Else
+        wSeverity = "" ' moderate conditions have no descriptor
+    End If
+    
+    If InStr(wx_string, "-") = 0 Or InStr(wx_string, "+") = 0 Then
+        presentConditions = presentConditions + wSeverity
+        If debugFlg = 1 Then
+            Debug.Print ("%getMetarDescription - wSeverity " & wSeverity)
+        End If
+    End If
+    
+    If InStr(wx_string, "RA") <> 0 Then
+        presentConditions = presentConditions + "rain" & " "
+    End If
+    
+    If InStr(wx_string, "SN") <> 0 Then
+        presentConditions = presentConditions + "snow" & " "
+    End If
+    
+    If InStr(wx_string, "SG") <> 0 Then
+        presentConditions = presentConditions + "snow_grains" & " "
+    End If
+    
+    If InStr(wx_string, "IC") <> 0 Then
+        presentConditions = presentConditions + "ice_crystals" & " "
+    End If
+    
+    If InStr(wx_string, "PE") <> 0 Then
+        presentConditions = presentConditions + "ice_pellets" & " "
+    End If
+    
+    If InStr(wx_string, "GR") <> 0 Then
+        presentConditions = presentConditions + "hail" & " "
+    End If
+    
+    If InStr(wx_string, "GS") <> 0 Then
+        presentConditions = presentConditions + "small_hail" & " "
+    End If
+    
+    If InStr(wx_string, "UP") <> 0 Then
+        presentConditions = presentConditions + "unknown" & " "
+    End If
+    
+    If InStr(wx_string, "BR") <> 0 Then
+        presentConditions = presentConditions + "mist" & " "
+    End If
+    
+    If InStr(wx_string, "FG") <> 0 Then
+        presentConditions = presentConditions + "fog" & " "
+    End If
+    
+    If InStr(wx_string, "FU") <> 0 Then
+        presentConditions = presentConditions + "smoke" & " "
+    End If
+    
+    If InStr(wx_string, "VA") <> 0 Then
+        presentConditions = presentConditions + "volcanic_ash" & " "
+    End If
+    
+    If InStr(wx_string, "DU") <> 0 Then
+        presentConditions = presentConditions + "widespread_dust" & " "
+    End If
+    
+    If InStr(wx_string, "SA") <> 0 Then
+        presentConditions = presentConditions + "sand" & " "
+    End If
+    
+    If InStr(wx_string, "HZ") <> 0 Then
+        presentConditions = presentConditions + "haze" & " "
+    End If
+    
+    If InStr(wx_string, "PY") <> 0 Then
+        presentConditions = presentConditions + "spray" & " "
+    End If
+    
+    If InStr(wx_string, "PO") <> 0 Then
+        presentConditions = presentConditions + "dustdevils" & " "
+    End If
+    
+    If InStr(wx_string, "SQ") <> 0 Then
+        presentConditions = presentConditions + "strong_winds" & " "
+    End If
+    
+    If InStr(wx_string, "FC") <> 0 Then
+        presentConditions = presentConditions + "tornado" & " "
+    End If
+    
+    If InStr(wx_string, "SS") <> 0 Then
+        presentConditions = presentConditions + "sandstorm_duststorm" & " "
+    End If
+    
+    If debugFlg = 1 And presentConditions <> "" Then
+        Debug.Print ("%getMetarDescription - presentConditions " & presentConditions)
+    End If
+
+    
+    On Error GoTo 0
+    Exit Function
+
+getMetarDescription_Error:
+
+    MsgBox "Error " & Err.Number & " (" & Err.Description & ") in procedure getMetarDescription, line " & Erl & "."
+
+End Function
