@@ -6,8 +6,8 @@ DONE
 ' smooth pointer - flick/smooth - done
 
 TODO
-
-' determineWeatherConditionIcon - wip - needs to return several values for icon types, perhaps split
+' progressing through myStatusProc
+'             determineWeatherConditionIcon - wip - needs to return several values for icon types, perhaps split
 
 ' help  -
 ' help CHM -

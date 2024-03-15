@@ -304,7 +304,7 @@ Public Property Let samplingInterval(ByVal newValue As String)
     If tmrSampler.Interval = 100 Then Call getData ' allows first early run
     'If tmrSampler.Interval = 100 Then Call tmrSampler_Timer ' allows first early run
     
-    tmrSampler.Interval = Val(mSamplingInterval) * 1000
+    tmrSampler.Interval = val(mSamplingInterval) * 1000
 '    If mPointerAnimate = True Then
 '        If tmrSampler.Interval = 1000 Then tmrSampler.Interval = 1200 ' take into account the animator
 '    End If
@@ -516,7 +516,7 @@ End Sub
 '
 Private Sub W_Paint(CC As RC6.cCairoContext, ByVal xAbs As Single, ByVal yAbs As Single, ByVal dx_Aligned As Single, ByVal dy_Aligned As Single, UserObj As Object)
     Dim I As Long: I = 0
-    Dim Arr As Variant
+    Dim arr As Variant
     Dim Key As String: Key = vbNullString
     Dim Pat As cCairoPattern
     Dim txtTemperaturetotal As String: txtTemperaturetotal = vbNullString
@@ -539,7 +539,7 @@ Private Sub W_Paint(CC As RC6.cCairoContext, ByVal xAbs As Single, ByVal yAbs As
     W.FontBold = True
     W.SelectFontSettingsInto CC
     W.Refresh
-    someOpacity = (Val(mThisOpacity) / 100) * 0.75
+    someOpacity = (val(mThisOpacity) / 100) * 0.75
     
     txtThisTemperature = CStr(Int(thisTemperature))
     txtTemperaturetotal = CStr(Int(temperatureTotalTimeLeft))
@@ -548,10 +548,10 @@ Private Sub W_Paint(CC As RC6.cCairoContext, ByVal xAbs As Single, ByVal yAbs As
 
 
     For I = 0 To cCollOverlayImages.Count - 1 ' this is the ExcludedPaths collection populated in cfTemperature by duplicating collPSDNonUIElements.
-      Arr = cCollOverlayImages.ItemByIndex(I)
+      arr = cCollOverlayImages.ItemByIndex(I)
       Key = cCollOverlayImages.KeyByIndex(I)
       
-      If IsArray(Arr) Then
+      If IsArray(arr) Then
              CC.Save
              'derive a Pattern-Obj from each retrieved ImageList-Surface-reference
              Set Pat = Cairo.ImageList(Key).CreateSurfacePattern
@@ -562,50 +562,50 @@ Private Sub W_Paint(CC As RC6.cCairoContext, ByVal xAbs As Single, ByVal yAbs As
                  Case "centigradeface"
                     
                     If mThisFace = 0 Then
-                        Set Pat.Matrix = Pat.Matrix.TranslateCoords(-Arr(0), -Arr(1))
-                        CC.Paint Arr(2), Pat ' render the Pattern
+                        Set Pat.Matrix = Pat.Matrix.TranslateCoords(-arr(0), -arr(1))
+                        CC.Paint arr(2), Pat ' render the Pattern
                     End If
                  
                  Case "fahrenheitface"
                     
                     If mThisFace = 1 Then
-                        Set Pat.Matrix = Pat.Matrix.TranslateCoords(-Arr(0), -Arr(1)) 'shift the Pattern via the original X,Y PSD-Offsets (stored in Arr(0) and Arr(1))
-                        CC.Paint Arr(2), Pat 'render the Pattern
+                        Set Pat.Matrix = Pat.Matrix.TranslateCoords(-arr(0), -arr(1)) 'shift the Pattern via the original X,Y PSD-Offsets (stored in Arr(0) and Arr(1))
+                        CC.Paint arr(2), Pat 'render the Pattern
                     End If
                  
                  Case "kelvinface"
                     
                     If mThisFace = 2 Then
-                        Set Pat.Matrix = Pat.Matrix.TranslateCoords(-Arr(0), -Arr(1)) 'shift the Pattern via the original X,Y PSD-Offsets (stored in Arr(0) and Arr(1))
-                        CC.Paint Arr(2), Pat 'render the Pattern
+                        Set Pat.Matrix = Pat.Matrix.TranslateCoords(-arr(0), -arr(1)) 'shift the Pattern via the original X,Y PSD-Offsets (stored in Arr(0) and Arr(1))
+                        CC.Paint arr(2), Pat 'render the Pattern
                     End If
         
                 Case "redlamptrue"
                     
                     If thisTemperature >= 34 Then
-                        Set Pat.Matrix = Pat.Matrix.TranslateCoords(-Arr(0), -Arr(1)) 'shift the Pattern via the original X,Y PSD-Offsets (stored in Arr(0) and Arr(1))
-                        CC.Paint Arr(2), Pat 'render the Pattern
+                        Set Pat.Matrix = Pat.Matrix.TranslateCoords(-arr(0), -arr(1)) 'shift the Pattern via the original X,Y PSD-Offsets (stored in Arr(0) and Arr(1))
+                        CC.Paint arr(2), Pat 'render the Pattern
                     End If
                     
                  Case "redlampfalse"
                     
                     If thisTemperature < 34 Then
-                        Set Pat.Matrix = Pat.Matrix.TranslateCoords(-Arr(0), -Arr(1))
-                        CC.Paint Arr(2), Pat ' render the Pattern
+                        Set Pat.Matrix = Pat.Matrix.TranslateCoords(-arr(0), -arr(1))
+                        CC.Paint arr(2), Pat ' render the Pattern
                     End If
                                         
                  Case "bluelamptrue"
                     
                     If thisTemperature <= 0 Then
-                        Set Pat.Matrix = Pat.Matrix.TranslateCoords(-Arr(0), -Arr(1)) 'shift the Pattern via the original X,Y PSD-Offsets (stored in Arr(0) and Arr(1))
-                        CC.Paint Arr(2), Pat 'render the Pattern
+                        Set Pat.Matrix = Pat.Matrix.TranslateCoords(-arr(0), -arr(1)) 'shift the Pattern via the original X,Y PSD-Offsets (stored in Arr(0) and Arr(1))
+                        CC.Paint arr(2), Pat 'render the Pattern
                     End If
                     
                  Case "bluelampfalse"
                     
                     If thisTemperature > 0 Then
-                        Set Pat.Matrix = Pat.Matrix.TranslateCoords(-Arr(0), -Arr(1))
-                        CC.Paint Arr(2), Pat ' render the Pattern
+                        Set Pat.Matrix = Pat.Matrix.TranslateCoords(-arr(0), -arr(1))
+                        CC.Paint arr(2), Pat ' render the Pattern
                     End If
                     
 
@@ -626,7 +626,7 @@ Private Sub W_Paint(CC As RC6.cCairoContext, ByVal xAbs As Single, ByVal yAbs As
                          txtThisTemperature = CStr(convertToKelvin(thisTemperature))
                      End If
                      
-                    If Val(txtThisTemperature) >= 100 Then
+                    If val(txtThisTemperature) >= 100 Then
                         boxLeft = 260
                     Else
                         boxLeft = 265
@@ -642,13 +642,13 @@ Private Sub W_Paint(CC As RC6.cCairoContext, ByVal xAbs As Single, ByVal yAbs As
                     CC.TranslateDrawings W.Width * cxPerc, W.Height * cyPerc 'shift to the center-point of the Overlay-Widget-area
                     
                     CC.RotateDrawingsDeg SDeg
-                    CC.Paint Arr(2), Pat 'render the Pattern with the current PSD-LayerAlpha, present in Arr(2)
+                    CC.Paint arr(2), Pat 'render the Pattern with the current PSD-LayerAlpha, present in Arr(2)
                     
                     
                  Case Else 'plain output for everything else ... this includes the reflection-layers,
                      
-                    Set Pat.Matrix = Pat.Matrix.TranslateCoords(-Arr(0), -Arr(1))
-                    CC.Paint Arr(2), Pat 'render the Pattern
+                    Set Pat.Matrix = Pat.Matrix.TranslateCoords(-arr(0), -arr(1))
+                    CC.Paint arr(2), Pat 'render the Pattern
                    
              End Select
              
@@ -1112,7 +1112,7 @@ Private Sub myStatusProc()
     pressureVal = fGetPressure(altim_in_hg)
 
     ' set temperature
-    TemperatureVal = Val(temp_c)
+    TemperatureVal = val(temp_c)
 
     ' calculate humidity
     humidityVal = fGetHumidity(temp_c, dewpoint_c)
@@ -1158,7 +1158,7 @@ Private Sub myStatusProc()
 '    humidityBackground.Tooltip = " "
 
 '    ' set the hover over tooltips
-'    setHoverTooltip(wind_dir_degrees, wind_speed_kt, precip_in, difString, wx_string)
+    Call setHoverTooltip(wind_dir_degrees, wind_speed_kt, precip_in, difString, wx_string)
 '
 '    setIconTooltip(wx_string, sky_cover)
 '
@@ -1412,7 +1412,7 @@ End Function
 ' Author: beededea
 ' Date: 17/01/2024
 ' ----------------------------------------------------------------
-Private Function convertToFahrenheit(T)
+Private Function convertToFahrenheit(ByVal T As Integer)
     Dim newT As Integer
     
     On Error GoTo convertToFahrenheit_Error
@@ -1439,7 +1439,7 @@ End Function
 ' Author: beededea
 ' Date: 17/01/2024
 ' ----------------------------------------------------------------
-Private Function convertToKelvin(T) As Integer
+Private Function convertToKelvin(ByVal T As Integer) As Integer
     Dim newT As Double
     
     On Error GoTo convertToKelvin_Error
@@ -1461,18 +1461,168 @@ End Function
 
 
 
+' ----------------------------------------------------------------
+' Procedure Name: degToCompass
+' Purpose:
+' Procedure Kind: Function
+' Procedure Access: Public
+' Parameter num (Integer):
+' Return Type: String
+' Author: beededea
+' Date: 15/03/2024
+' ----------------------------------------------------------------
+Function degToCompass(ByVal num As String) As String
+    On Error GoTo degToCompass_Error
+    Dim val As Integer: val = 0
+    Dim thisArray As Variant ' using variant to populate the array all in one go as per .js and TwinBasic, will allow easy conversion later
+    Dim compassDirection As String: compassDirection = vbNullString
+    
+    thisArray = Array("N", "NNE", "NE", "ENE", "E", "ESE", "SE", "SSE", "S", "SSW", "SW", "WSW", "W", "WNW", "NW", "NNW")
+    
+    val = CInt((num / 22.5) + 0.5)
+    compassDirection = thisArray(val Mod 16)
+    degToCompass = compassDirection
+    
+    On Error GoTo 0
+    Exit Function
+
+degToCompass_Error:
+
+    MsgBox "Error " & Err.Number & " (" & Err.Description & ") in procedure degToCompass, line " & Erl & "."
+
+End Function
+
+
+' ----------------------------------------------------------------
+' Procedure Name: beaufortConversion
+' Purpose:
+' Procedure Kind: Sub
+' Procedure Access: Public
+' Parameter wind_speed_kt (Integer):
+' Author: beededea
+' Date: 15/03/2024
+' ----------------------------------------------------------------
+Function beaufortConversion(ByVal wind_speed_kt As Integer)
+    Dim windIconSrc As String: windIconSrc = vbNullString
+    Dim windIconToolTip As String: windIconToolTip = vbNullString
+    Dim force As Integer: force = 0
+
+    On Error GoTo beaufortConversion_Error
+    windIconSrc = ""
+    windIconToolTip = ""
+    
+    ' Beaufort Scales (Wind Speed)
+    If wind_speed_kt < 1 Then
+        force = 0 ' Calm    Sea like a mirror.
+        windIconSrc = ""
+    End If
+    If wind_speed_kt >= 1 And wind_speed_kt <= 3 Then
+        force = 1 ' 1 1-3   Light air   Ripples only.
+    End If
+    If wind_speed_kt >= 4 And wind_speed_kt <= 6 Then
+        force = 2 ' 4-6 Light breeze    Small wavelets (0.2 m). Crests have a glassy appearance.
+    End If
+    If wind_speed_kt >= 7 And wind_speed_kt <= 10 Then
+        force = 3 ' 7-10  Gentle breeze     Large wavelets (0.6 m), crests begin to break.
+    End If
+    If wind_speed_kt >= 11 And wind_speed_kt <= 16 Then
+        force = 4 ' 11-16  Moderate breeze  Small waves (1 m), some whitecaps
+        windIconSrc = "Resources/images/icons_metar/night/" & "windy01.png"
+        windIconToolTip = "Moderate breeze " & "force " & force
+    End If
+    If wind_speed_kt >= 17 And wind_speed_kt <= 21 Then
+        force = 5 '  17-21 Fresh breeze
+        windIconSrc = "Resources/images/icons_metar/night/" & "windy02.png"
+        windIconToolTip = "Fresh breeze " & "force " & force
+    End If
+    If wind_speed_kt >= 22 And wind_speed_kt <= 27 Then
+        force = 6 ' 22-27 Strong breeze
+        windIconSrc = "Resources/images/icons_metar/night/" & "windy03.png"
+        windIconToolTip = "Strong Wind " & "force " & force
+    End If
+    If wind_speed_kt >= 28 And wind_speed_kt <= 33 Then
+        force = 7 ' 28-33 Near gale
+        windIconSrc = "Resources/images/icons_metar/night/" & "windy04.png"
+        windIconToolTip = "Near gale " & "force " & force
+    End If
+    If wind_speed_kt >= 34 And wind_speed_kt <= 40 Then
+        force = 8 ' 34-40 Gale
+        windIconToolTip = "Gale " & "force " & force
+        windIconSrc = "Resources/images/icons_metar/night/" & "windy05.png"
+    End If
+    
+    If wind_speed_kt >= 41 And wind_speed_kt <= 47 Then
+        force = 9 ' 41-47 Strong gale
+        windIconToolTip = "Strong gale " & "force " & force
+        windIconSrc = "Resources/images/icons_metar/night/" & "windy05.png"
+    End If
+    If wind_speed_kt >= 48 And wind_speed_kt <= 55 Then
+        force = 10 ' 48-55 Storm
+        windIconToolTip = "Storm " & "force " & force
+        windIconSrc = "Resources/images/icons_metar/night/" & "windy05.png"
+    End If
+    If wind_speed_kt >= 56 And wind_speed_kt <= 63 Then
+        force = 11 ' 56-63 Violent storm
+        windIconToolTip = "Violent storm " & "force " & force
+        windIconSrc = "Resources/images/icons_metar/night/" & "windy05.png"
+    End If
+    If wind_speed_kt >= 64 And wind_speed_kt <= 79 Then
+        force = 12 ' 64+ Hurricane
+        windIconToolTip = "Hurricane " & "force " & force
+        windIconSrc = "Resources/images/icons_metar/night/" & "windy05.png"
+    End If
+    If wind_speed_kt >= 80 And wind_speed_kt <= 88 Then
+        force = 13 ' 80+ Typhoon
+        windIconToolTip = "Typhoon " & "force " & force
+        windIconSrc = "Resources/images/icons_metar/night/" & "windy05.png"
+    End If
+    If wind_speed_kt >= 89 And wind_speed_kt <= 98 Then
+        force = 14 ' 80+ Typhoon
+        windIconToolTip = "Typhoon " & "force " & force
+        windIconSrc = "Resources/images/icons_metar/night/" & "windy05.png"
+    End If
+    If wind_speed_kt >= 99 And wind_speed_kt <= 107 Then
+        force = 15 ' 80+ Typhoon
+        windIconToolTip = "Typhoon " & "force " & force
+        windIconSrc = "Resources/images/icons_metar/night/" & "windy05.png"
+    End If
+    If wind_speed_kt >= 108 And wind_speed_kt <= 117 Then
+        force = 16 ' 80+ Severe Typhoon
+        windIconToolTip = "Severe Typhoon " & "force " & force
+        windIconSrc = "Resources/images/icons_metar/night/" & "windy05.png"
+    End If
+    If wind_speed_kt >= 118 Then
+       force = 17 ' 80+ Severe Typhoon
+       windIconToolTip = "Severe Typhoon " & "force " & force
+       windIconSrc = "Resources/images/icons_metar/night/" + "windy05.png"
+     End If
+     'windIcon.Visible = True
+     'windIcon.ZOrder = 50
+    
+     beaufortConversion = force
+    
+    On Error GoTo 0
+    Exit Function
+
+beaufortConversion_Error:
+
+    MsgBox "Error " & Err.Number & " (" & Err.Description & ") in procedure beaufortConversion, line " & Erl & "."
+
+End Function
+
 '================
 ' this function sets the hover over tooltip
 '================
-Private Function setHoverTooltip(wind_dir_degrees, wind_speed_kt, precip_in, difString, wx_string)
+Private Function setHoverTooltip(ByVal wind_dir_degrees As String, ByVal wind_speed_kt As String, ByVal precip_inByVal As String, difString As String, ByVal wx_string As String)
 
-            Dim force As String
-            Dim tooltipString As String
-            Dim TemperatureVal As Long
+            Dim force As String: force = vbNullString
+            Dim tooltipString As String: tooltipString = vbNullString
+            Dim compassDirection As String: compassDirection = vbNullString
+            Dim TemperatureVal As Long: TemperatureVal = 0
             
-            'compassDirection = degToCompass(wind_dir_degrees)
+            compassDirection = degToCompass(val(wind_dir_degrees))
 
-            'force = beaufortConversion(wind_speed_kt)
+            force = Str$(beaufortConversion(wind_speed_kt))
 
             'tooltipString = " " & usableObsTime & " " & " " & PzGIcao & " "
             'tooltipString = tooltipString & icaoLocation1 & ", " & icaoLocation2 & ", " & icaoLocation3 & " " & vbCrLf
@@ -1615,7 +1765,7 @@ Private Function determineWeatherConditionIcon(ByVal thisSkyClarity As String, B
    If InStr(thisWxString, "UP") <> 0 Then presentConditions = presentConditions & "unknown "
 
    'in the absence of a weather code assume clear sky
-   'var presentConditions = "clear and sunny"
+   ' "clear and sunny"
    weatherIconSrc = "0cloud.png"
 
    'determine the weather type,
@@ -1924,50 +2074,49 @@ End Function
 ' Date: 15/03/2024
 ' ----------------------------------------------------------------
 Function getMetarDescription(wx_string As String) As String
-    On Error GoTo getMetarDescription_Error
     Dim presentConditions As String: presentConditions = ""
     Dim wSeverity As String: wSeverity = ""
     Dim wModifier As String: wModifier = ""
+
+    On Error GoTo getMetarDescription_Error
     
     If InStr(wx_string, "UP") <> 0 Then
         presentConditions = presentConditions + "unknown "
     End If
-    'in the absence of a weather code assume clear sky
-    'Dim presentConditions As String = "clear and sunny"
-    'weatherVal = "0cloud.png" <<<<
+    
     'determine the strength of the weather type, light, medium, heavy or very heavy
     
     If InStr(wx_string, "MI") <> 0 Then
-        wModifier = wModifier + "shallow"
+        wModifier = wModifier & "shallow"
     End If
     If InStr(wx_string, "PR") <> 0 Then
-        wModifier = wModifier + "partial"
+        wModifier = wModifier & "partial"
     End If
     If InStr(wx_string, "DZ") <> 0 Then
-        wModifier = wModifier + "drizzle"
+        wModifier = wModifier & "drizzle"
     End If
     If InStr(wx_string, "BC") <> 0 Then
-        wModifier = wModifier + "patches of"
+        wModifier = wModifier & "patches of"
     End If
     If InStr(wx_string, "DR") <> 0 Then
-        wModifier = wModifier + "drifting"
+        wModifier = wModifier & "drifting"
     End If
     If InStr(wx_string, "BL") <> 0 Then
-        wModifier = wModifier + "blowing"
+        wModifier = wModifier & "blowing"
     End If
     If InStr(wx_string, "SH") <> 0 Then
-        wModifier = wModifier + "showers"
+        wModifier = wModifier & "showers"
     End If
     If InStr(wx_string, "VC") <> 0 Then
-        'presentConditions = presentConditions +  "nearby "
-        wModifier = wModifier + "in_the_vicinity"
+        'presentConditions = presentConditions &  "nearby "
+        wModifier = wModifier & "in_the_vicinity"
     End If
     If InStr(wx_string, "FZ") <> 0 Then
-        'presentConditions = presentConditions +  "freezing "
-        wModifier = wModifier + "freezing"
+        'presentConditions = presentConditions &  "freezing "
+        wModifier = wModifier & "freezing"
     End If
     If InStr(wx_string, "TS") <> 0 Then
-        wModifier = wModifier + "thunderstorm"
+        wModifier = wModifier & "thunderstorm"
     End If
     If wModifier <> "" Then
         presentConditions = wModifier
@@ -1982,90 +2131,90 @@ Function getMetarDescription(wx_string As String) As String
     End If
     
     If InStr(wx_string, "-") = 0 Or InStr(wx_string, "+") = 0 Then
-        presentConditions = presentConditions + wSeverity
+        presentConditions = presentConditions & wSeverity
         If debugFlg = 1 Then
             Debug.Print ("%getMetarDescription - wSeverity " & wSeverity)
         End If
     End If
     
     If InStr(wx_string, "RA") <> 0 Then
-        presentConditions = presentConditions + "rain" & " "
+        presentConditions = presentConditions & "rain" & " "
     End If
     
     If InStr(wx_string, "SN") <> 0 Then
-        presentConditions = presentConditions + "snow" & " "
+        presentConditions = presentConditions & "snow" & " "
     End If
     
     If InStr(wx_string, "SG") <> 0 Then
-        presentConditions = presentConditions + "snow_grains" & " "
+        presentConditions = presentConditions & "snow_grains" & " "
     End If
     
     If InStr(wx_string, "IC") <> 0 Then
-        presentConditions = presentConditions + "ice_crystals" & " "
+        presentConditions = presentConditions & "ice_crystals" & " "
     End If
     
     If InStr(wx_string, "PE") <> 0 Then
-        presentConditions = presentConditions + "ice_pellets" & " "
+        presentConditions = presentConditions & "ice_pellets" & " "
     End If
     
     If InStr(wx_string, "GR") <> 0 Then
-        presentConditions = presentConditions + "hail" & " "
+        presentConditions = presentConditions & "hail" & " "
     End If
     
     If InStr(wx_string, "GS") <> 0 Then
-        presentConditions = presentConditions + "small_hail" & " "
+        presentConditions = presentConditions & "small_hail" & " "
     End If
     
     If InStr(wx_string, "UP") <> 0 Then
-        presentConditions = presentConditions + "unknown" & " "
+        presentConditions = presentConditions & "unknown" & " "
     End If
     
     If InStr(wx_string, "BR") <> 0 Then
-        presentConditions = presentConditions + "mist" & " "
+        presentConditions = presentConditions & "mist" & " "
     End If
     
     If InStr(wx_string, "FG") <> 0 Then
-        presentConditions = presentConditions + "fog" & " "
+        presentConditions = presentConditions & "fog" & " "
     End If
     
     If InStr(wx_string, "FU") <> 0 Then
-        presentConditions = presentConditions + "smoke" & " "
+        presentConditions = presentConditions & "smoke" & " "
     End If
     
     If InStr(wx_string, "VA") <> 0 Then
-        presentConditions = presentConditions + "volcanic_ash" & " "
+        presentConditions = presentConditions & "volcanic_ash" & " "
     End If
     
     If InStr(wx_string, "DU") <> 0 Then
-        presentConditions = presentConditions + "widespread_dust" & " "
+        presentConditions = presentConditions & "widespread_dust" & " "
     End If
     
     If InStr(wx_string, "SA") <> 0 Then
-        presentConditions = presentConditions + "sand" & " "
+        presentConditions = presentConditions & "sand" & " "
     End If
     
     If InStr(wx_string, "HZ") <> 0 Then
-        presentConditions = presentConditions + "haze" & " "
+        presentConditions = presentConditions & "haze" & " "
     End If
     
     If InStr(wx_string, "PY") <> 0 Then
-        presentConditions = presentConditions + "spray" & " "
+        presentConditions = presentConditions & "spray" & " "
     End If
     
     If InStr(wx_string, "PO") <> 0 Then
-        presentConditions = presentConditions + "dustdevils" & " "
+        presentConditions = presentConditions & "dustdevils" & " "
     End If
     
     If InStr(wx_string, "SQ") <> 0 Then
-        presentConditions = presentConditions + "strong_winds" & " "
+        presentConditions = presentConditions & "strong_winds" & " "
     End If
     
     If InStr(wx_string, "FC") <> 0 Then
-        presentConditions = presentConditions + "tornado" & " "
+        presentConditions = presentConditions & "tornado" & " "
     End If
     
     If InStr(wx_string, "SS") <> 0 Then
-        presentConditions = presentConditions + "sandstorm_duststorm" & " "
+        presentConditions = presentConditions & "sandstorm_duststorm" & " "
     End If
     
     If debugFlg = 1 And presentConditions <> "" Then
