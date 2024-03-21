@@ -987,7 +987,13 @@ Private Sub myStatusProc()
     Dim initialObsTime As String: initialObsTime = vbNullString
     Dim usableObsTime As Date: usableObsTime = #1/1/2000 12:00:00 PM#
     
-    Dim thisToolTip As String: thisToolTip = vbNullString
+    Dim thisTooltip As String: thisTooltip = vbNullString
+    Dim humidityBackgroundToolTip As String: humidityBackgroundToolTip = vbNullString
+    Dim thermometerBackgroundToolTip As String: humidityBackgroundToolTip = vbNullString
+    Dim anemometerBackgroundToolTip As String: humidityBackgroundToolTip = vbNullString
+    Dim weatherIconGaugeBackgroundToolTip As String: humidityBackgroundToolTip = vbNullString
+    Dim barometerBackgroundToolTip As String: humidityBackgroundToolTip = vbNullString
+    Dim weatherIconToolTip As String: weatherIconToolTip = vbNullString
     
     On Error GoTo myStatusProc_Error
     
@@ -1146,7 +1152,7 @@ Private Sub myStatusProc()
     usableObsTime = CDate(initialObsTime)
 
 '    'set the mini clock to show the observation time
-'    theClock.displayTime(usableObsTime); ' we don't yet have a mini clock
+'    theClock.displayTime(usableObsTime) ' we don't yet have a mini clock
 
     ' get the current time string and compare
     TheDate = Now
@@ -1159,28 +1165,31 @@ Private Sub myStatusProc()
     PzGLastUpdated = usableObsTime
     If (debugFlg = 1) Then Debug.Print ("%myStatusProc - difString " & difString)
 
-'    ' set the hover over tooltips on the gauges
-    thisToolTip = setHoverTooltip(skyClarityString, humidityValue, temperatureValue, pressureValue, usableObsTime, wind_dir_degrees, wind_speed_kt, precip_in, difString, wx_string)
+    ' set the hover over tooltips on the gauges
+    thisTooltip = setHoverTooltip(skyClarityString, humidityValue, temperatureValue, pressureValue, usableObsTime, wind_dir_degrees, wind_speed_kt, precip_in, difString, wx_string)
 
 '    'weatherText.data = String(thisToolTip)
-'    humidityBackground.ToolTip = thisToolTip
-'
-'    ' save the tooltip value so it can be used during the regular timed 60 second tooltip updates.
-'    Preferences.lastTooltip.Value = humidityBackground.ToolTip
-'    humidityBackground.ToolTip = humidityBackground.ToolTip & " " & difString
-'    humidityBackground.ToolTip = humidityBackground.ToolTip & "  " & "Double_tap_on_me_to_get_new_weather"
-'    thermometerBackground.ToolTip = humidityBackground.ToolTip
-'    anemometerBackground.ToolTip = humidityBackground.ToolTip
-'    weatherIconGaugeBackground.ToolTip = humidityBackground.ToolTip
-'    barometerBackground.ToolTip = humidityBackground.ToolTip
 
+    ' save the tooltip value so it can be used during the regular timed 60 second tooltip updates.
+    'Preferences.lastTooltip.Value = humidityBackgroundToolTip
+    
+    humidityBackgroundToolTip = thisTooltip & vbCrLf & difString & vbCrLf & "Double tap on me to get new weather"
+    thermometerBackgroundToolTip = humidityBackgroundToolTip
+    anemometerBackgroundToolTip = humidityBackgroundToolTip
+    weatherIconGaugeBackgroundToolTip = humidityBackgroundToolTip
+    barometerBackgroundToolTip = humidityBackgroundToolTip
 
-'    setIconTooltip(wx_string, sky_cover)
-'
+    weatherIconToolTip = setIconTooltip(wx_string, sky_condition_items())
+    
+    If (weatherIconToolTip = "") Then
+        weatherIconToolTip = humidityBackgroundToolTip
+    End If
+    
+    mTemperatureDetails = humidityBackgroundToolTip
+
 '     busyStop()
 
     thisTemperature = temp_c
-    
     weHaveData = True
     
     Call calcAnimationData
@@ -1193,6 +1202,45 @@ myStatusProc_Error:
     MsgBox "Error " & Err.Number & " (" & Err.Description & ") in procedure myStatusProc, line " & Erl & "."
 
 End Sub
+
+
+
+' ----------------------------------------------------------------
+' Procedure Name: setIconTooltip
+' Purpose: function to set the mainweather icon tooltip according to two sources
+' Procedure Kind: function
+' Procedure Access: Private
+' Parameter wx_string ():
+' Parameter sky_cover ():
+' Author: beededea
+' Date: 21/03/2024
+' ----------------------------------------------------------------
+Private Function setIconTooltip(ByVal wx_string As String, ByRef sky_condition_items() As String) As String
+    Dim thisTooltip As String: thisTooltip = vbNullString
+    
+    On Error GoTo setIconTooltip_Error
+    
+    'firstly, try the wx_string
+    If wx_string <> "" Then thisTooltip = getMetarDescription(wx_string)
+    
+    If (thisTooltip = "") Then
+      ' if no wx_string use the cloud cover or lack of it
+      thisTooltip = get_cloud_cover(sky_condition_items())
+    End If
+
+    If (debugFlg = 1) Then Debug.Print ("%setIconTooltip - thisTooltip " & thisTooltip)
+    
+    setIconTooltip = thisTooltip ' return
+    
+    On Error GoTo 0
+    Exit Function
+
+setIconTooltip_Error:
+
+    MsgBox "Error " & Err.Number & " (" & Err.Description & ") in procedure setIconTooltip, line " & Erl & "."
+
+End Function
+
 
 
 ' ----------------------------------------------------------------
@@ -1216,7 +1264,7 @@ Function nice_format_interval(duration As Integer) As String
     minutes = Int((duration - hours * 3600) / 60)
     
     If hours > 72 Then
-        'print("%Update " & String(hours) & " hours and " & String(minutes) & " minutes ago");
+        'print("%Update " & String(hours) & " hours and " & String(minutes) & " minutes ago")
         nice_format_interval = "No recent data available" & "!"
         Exit Function ' return
     End If
@@ -1275,7 +1323,7 @@ End Function
 ' code and nnn = altitude of cloud layer in hundreds of feet. 'VV' seems
 ' to be used for very low cloud layers. (Other conversion factor:
 ' 1 m = 3.28084 ft)
-' FEW = 1 or 2 eighths cover; SCT = 3 or 4 eighths cover; BKN = 5, 6 or 7 eighths cover & OVC = 8/8 cover
+' FEW = 1 or 2 eighths cover SCT = 3 or 4 eighths cover BKN = 5, 6 or 7 eighths cover & OVC = 8/8 cover
 ' ----------------------------------------------------------------
 Function get_cloud_cover(ByRef sky_condition_items() As String) As String
     Dim skyClarity: skyClarity = ""
@@ -1690,18 +1738,20 @@ Private Function setHoverTooltip(ByVal skyClarityString As String, ByVal humidit
     
     If PzGTemperatureScale = "2" Then '"kelvin"
         tooltipString = tooltipString & "Temperature" & ": " & Round(Int(temperatureValue + 273.15), 2) & " K " & vbCrLf
-        tooltipString = tooltipString & "Humidity" & ": " & humidityValue & " % " & " " & skyClarityString & " " & vbCrLf
     End If
     
+    tooltipString = tooltipString & "Humidity" & ": " & humidityValue & " % " & " " & skyClarityString & " " & vbCrLf
+   
     If PzGWindSpeedScale = "0" Then  ' knots
-        tooltipString = tooltipString & "wind_speed_is" & " " & wind_speed_kt & " knots, "
+        tooltipString = tooltipString & "wind speed is" & " " & wind_speed_kt & " knots, "
     Else
-        tooltipString = tooltipString & "wind_speed_is" & " " & Int(wind_speed_kt * 0.51444) & " m/sec, "
-        tooltipString = tooltipString & "strength_force" & " " & force & ", " & "direction" & " " & compassDirection
+        tooltipString = tooltipString & "wind speed is" & " " & Int(wind_speed_kt * 0.51444) & " m/sec, "
     End If
 
+    tooltipString = tooltipString & "strength force" & " " & force & ", " & "direction" & " " & compassDirection
+
     If (precip_in <> vbNullString) Then
-       tooltipString = tooltipString & " " & "precipitation_is" & " " & precip_in & " inches"
+       tooltipString = tooltipString & " " & "precipitation is" & " " & precip_in & " inches"
     End If
 
     If (wx_string <> "") Then
@@ -1720,7 +1770,7 @@ setHoverTooltip_Error:
     MsgBox "Error " & Err.Number & " (" & Err.Description & ") in procedure setHoverTooltip, line " & Erl & "."
 
 End Function
-'========
+
 
 
 
