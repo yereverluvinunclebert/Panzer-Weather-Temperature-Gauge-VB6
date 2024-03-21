@@ -17,7 +17,7 @@ Begin VB.Form panzerPrefs
    Begin VB.Frame fraGeneral 
       Caption         =   "General"
       ForeColor       =   &H80000008&
-      Height          =   5475
+      Height          =   8775
       Left            =   75
       TabIndex        =   50
       Top             =   1200
@@ -25,28 +25,58 @@ Begin VB.Form panzerPrefs
       Width           =   7995
       Begin VB.Frame fraGeneralInner 
          BorderStyle     =   0  'None
-         Height          =   4950
-         Left            =   465
+         Height          =   8070
+         Left            =   480
          TabIndex        =   51
          Top             =   300
-         Width           =   6750
+         Width           =   7215
+         Begin VB.ComboBox cmbMetricImperial 
+            Height          =   315
+            ItemData        =   "frmPrefs.frx":10CA
+            Left            =   2010
+            List            =   "frmPrefs.frx":10CC
+            Style           =   2  'Dropdown List
+            TabIndex        =   170
+            Top             =   4200
+            Width           =   1740
+         End
+         Begin VB.ComboBox cmbWindSpeedScale 
+            Height          =   315
+            ItemData        =   "frmPrefs.frx":10CE
+            Left            =   2010
+            List            =   "frmPrefs.frx":10D0
+            Style           =   2  'Dropdown List
+            TabIndex        =   168
+            Top             =   3690
+            Width           =   1740
+         End
+         Begin VB.ComboBox cmbPressureScale 
+            Height          =   315
+            ItemData        =   "frmPrefs.frx":10D2
+            Left            =   2010
+            List            =   "frmPrefs.frx":10D4
+            Style           =   2  'Dropdown List
+            TabIndex        =   166
+            Top             =   3150
+            Width           =   1740
+         End
          Begin VB.TextBox txtIcao 
             Height          =   315
             Left            =   2010
             Locked          =   -1  'True
             TabIndex        =   164
             Text            =   "EGSH"
-            Top             =   2745
-            Width           =   1395
+            Top             =   2025
+            Width           =   1680
          End
          Begin VB.ComboBox cmbTemperatureScale 
             Height          =   315
-            ItemData        =   "frmPrefs.frx":10CA
+            ItemData        =   "frmPrefs.frx":10D6
             Left            =   2010
-            List            =   "frmPrefs.frx":10CC
+            List            =   "frmPrefs.frx":10D8
             Style           =   2  'Dropdown List
             TabIndex        =   161
-            Top             =   2115
+            Top             =   2580
             Width           =   1740
          End
          Begin VB.CheckBox chkGaugeFunctions 
@@ -60,13 +90,13 @@ Begin VB.Form panzerPrefs
          End
          Begin VB.ComboBox cmbTickSwitchPref 
             Height          =   315
-            ItemData        =   "frmPrefs.frx":10CE
+            ItemData        =   "frmPrefs.frx":10DA
             Left            =   2010
-            List            =   "frmPrefs.frx":10D0
+            List            =   "frmPrefs.frx":10DC
             Style           =   2  'Dropdown List
             TabIndex        =   145
             Top             =   975
-            Width           =   3720
+            Width           =   1710
          End
          Begin VB.CheckBox chkGenStartup 
             Caption         =   "Run the Temperature Widget at Windows Startup "
@@ -74,7 +104,7 @@ Begin VB.Form panzerPrefs
             Left            =   2010
             TabIndex        =   93
             ToolTipText     =   "Check this box to enable the automatic start of the program when Windows is started."
-            Top             =   4425
+            Top             =   7080
             Width           =   4020
          End
          Begin vb6projectCCRSlider.Slider sliSamplingInterval 
@@ -82,7 +112,7 @@ Begin VB.Form panzerPrefs
             Left            =   1890
             TabIndex        =   155
             ToolTipText     =   "Setting the sampling interval affects the frequency of the pointer updates."
-            Top             =   3315
+            Top             =   5700
             Width           =   3870
             _ExtentX        =   6826
             _ExtentY        =   688
@@ -93,21 +123,78 @@ Begin VB.Form panzerPrefs
             SelStart        =   60
          End
          Begin VB.Label lblGeneral 
+            Caption         =   "The Wind Speed Scale"
+            Height          =   480
+            Index           =   14
+            Left            =   3885
+            TabIndex        =   174
+            Top             =   3750
+            Width           =   2610
+         End
+         Begin VB.Label lblGeneral 
+            Caption         =   "The Air Pressure Scale"
+            Height          =   480
+            Index           =   13
+            Left            =   3885
+            TabIndex        =   173
+            Top             =   3195
+            Width           =   2610
+         End
+         Begin VB.Label lblGeneral 
+            Caption         =   $"frmPrefs.frx":10DE
+            Height          =   1005
+            Index           =   12
+            Left            =   2025
+            TabIndex        =   172
+            Top             =   4680
+            Width           =   3555
+         End
+         Begin VB.Label lblGeneral 
+            Alignment       =   1  'Right Justify
+            Caption         =   "Metric or Imperial :"
+            Height          =   480
+            Index           =   8
+            Left            =   255
+            TabIndex        =   171
+            Top             =   4230
+            Width           =   1545
+         End
+         Begin VB.Label lblGeneral 
+            Alignment       =   1  'Right Justify
+            Caption         =   "Anemometer :"
+            Height          =   480
+            Index           =   7
+            Left            =   255
+            TabIndex        =   169
+            Top             =   3720
+            Width           =   1545
+         End
+         Begin VB.Label lblGeneral 
+            Alignment       =   1  'Right Justify
+            Caption         =   "Barometer :"
+            Height          =   345
+            Index           =   4
+            Left            =   255
+            TabIndex        =   167
+            Top             =   3180
+            Width           =   1545
+         End
+         Begin VB.Label lblGeneral 
             Caption         =   "ICAO Station ID :"
             Height          =   255
             Index           =   1
             Left            =   585
             TabIndex        =   165
-            Top             =   2805
+            Top             =   2085
             Width           =   1545
          End
          Begin VB.Label lblGeneral 
-            Caption         =   "Temperature Scale :"
+            Caption         =   "Temperature :"
             Height          =   480
             Index           =   5
-            Left            =   360
+            Left            =   810
             TabIndex        =   163
-            Top             =   2175
+            Top             =   2640
             Width           =   1545
          End
          Begin VB.Label lblGeneral 
@@ -116,8 +203,8 @@ Begin VB.Form panzerPrefs
             Index           =   10
             Left            =   3855
             TabIndex        =   162
-            Top             =   2100
-            Width           =   1965
+            Top             =   2625
+            Width           =   2610
          End
          Begin VB.Label lblWindowLevel 
             Caption         =   "Adjust to determine gauge sampling frequency.*"
@@ -125,7 +212,7 @@ Begin VB.Form panzerPrefs
             Index           =   14
             Left            =   2100
             TabIndex        =   160
-            Top             =   4080
+            Top             =   6465
             Width           =   3810
          End
          Begin VB.Label lblWindowLevel 
@@ -134,7 +221,7 @@ Begin VB.Form panzerPrefs
             Index           =   13
             Left            =   495
             TabIndex        =   159
-            Top             =   3375
+            Top             =   5760
             Width           =   1410
          End
          Begin VB.Label lblWindowLevel 
@@ -143,7 +230,7 @@ Begin VB.Form panzerPrefs
             Index           =   12
             Left            =   3615
             TabIndex        =   158
-            Top             =   3780
+            Top             =   6165
             Width           =   840
          End
          Begin VB.Label lblWindowLevel 
@@ -152,7 +239,7 @@ Begin VB.Form panzerPrefs
             Index           =   11
             Left            =   5385
             TabIndex        =   157
-            Top             =   3780
+            Top             =   6165
             Width           =   405
          End
          Begin VB.Label lblWindowLevel 
@@ -161,7 +248,7 @@ Begin VB.Form panzerPrefs
             Index           =   10
             Left            =   2070
             TabIndex        =   156
-            Top             =   3780
+            Top             =   6165
             Width           =   345
          End
          Begin VB.Label lblGeneral 
@@ -198,7 +285,7 @@ Begin VB.Form panzerPrefs
             Left            =   975
             TabIndex        =   94
             Tag             =   "lblRefreshInterval"
-            Top             =   4545
+            Top             =   7200
             Width           =   1740
          End
          Begin VB.Label lblGeneral 
@@ -238,7 +325,7 @@ Begin VB.Form panzerPrefs
          MultiLine       =   -1  'True
          ScrollBars      =   2  'Vertical
          TabIndex        =   114
-         Text            =   "frmPrefs.frx":10D2
+         Text            =   "frmPrefs.frx":118C
          Top             =   2205
          Width           =   8010
       End
@@ -727,7 +814,7 @@ Begin VB.Form panzerPrefs
             Width           =   2115
          End
          Begin VB.Label lblPosition 
-            Caption         =   $"frmPrefs.frx":2089
+            Caption         =   $"frmPrefs.frx":2143
             Height          =   3435
             Index           =   12
             Left            =   5145
@@ -747,7 +834,7 @@ Begin VB.Form panzerPrefs
             Width           =   2040
          End
          Begin VB.Label lblPosition 
-            Caption         =   $"frmPrefs.frx":225B
+            Caption         =   $"frmPrefs.frx":2315
             Height          =   705
             Index           =   10
             Left            =   2250
@@ -767,7 +854,7 @@ Begin VB.Form panzerPrefs
             Width           =   2355
          End
          Begin VB.Label lblPosition 
-            Caption         =   $"frmPrefs.frx":22FA
+            Caption         =   $"frmPrefs.frx":23B4
             Height          =   3045
             Index           =   6
             Left            =   2265
@@ -829,7 +916,7 @@ Begin VB.Form panzerPrefs
                Width           =   3660
             End
             Begin VB.Label lblGitHub 
-               Caption         =   $"frmPrefs.frx":249F
+               Caption         =   $"frmPrefs.frx":2559
                ForeColor       =   &H8000000D&
                Height          =   915
                Left            =   1560
@@ -839,7 +926,7 @@ Begin VB.Form panzerPrefs
                Width           =   4935
             End
             Begin VB.Label lblDebug 
-               Caption         =   $"frmPrefs.frx":2538
+               Caption         =   $"frmPrefs.frx":25F2
                Height          =   930
                Index           =   9
                Left            =   1545
@@ -886,9 +973,9 @@ Begin VB.Form panzerPrefs
          End
          Begin VB.ComboBox cmbDebug 
             Height          =   315
-            ItemData        =   "frmPrefs.frx":25DC
+            ItemData        =   "frmPrefs.frx":2696
             Left            =   1530
-            List            =   "frmPrefs.frx":25DE
+            List            =   "frmPrefs.frx":2698
             Style           =   2  'Dropdown List
             TabIndex        =   54
             ToolTipText     =   "Choose to set debug mode."
@@ -974,7 +1061,7 @@ Begin VB.Form panzerPrefs
       Begin VB.Image imgDevelopment 
          Height          =   600
          Left            =   150
-         Picture         =   "frmPrefs.frx":25E0
+         Picture         =   "frmPrefs.frx":269A
          Stretch         =   -1  'True
          Top             =   225
          Width           =   600
@@ -982,7 +1069,7 @@ Begin VB.Form panzerPrefs
       Begin VB.Image imgDevelopmentClicked 
          Height          =   600
          Left            =   160
-         Picture         =   "frmPrefs.frx":2B98
+         Picture         =   "frmPrefs.frx":2C52
          Stretch         =   -1  'True
          Top             =   225
          Width           =   600
@@ -1082,7 +1169,7 @@ Begin VB.Form panzerPrefs
             Width           =   2400
          End
          Begin VB.Label lblFontsTab 
-            Caption         =   $"frmPrefs.frx":2F1E
+            Caption         =   $"frmPrefs.frx":2FD8
             Height          =   1710
             Index           =   0
             Left            =   1725
@@ -1168,7 +1255,7 @@ Begin VB.Form panzerPrefs
       Begin VB.Image imgAbout 
          Height          =   600
          Left            =   160
-         Picture         =   "frmPrefs.frx":305C
+         Picture         =   "frmPrefs.frx":3116
          Stretch         =   -1  'True
          Top             =   225
          Width           =   600
@@ -1176,7 +1263,7 @@ Begin VB.Form panzerPrefs
       Begin VB.Image imgAboutClicked 
          Height          =   600
          Left            =   160
-         Picture         =   "frmPrefs.frx":35E4
+         Picture         =   "frmPrefs.frx":369E
          Stretch         =   -1  'True
          Top             =   225
          Width           =   600
@@ -1201,7 +1288,7 @@ Begin VB.Form panzerPrefs
       Begin VB.Image imgConfig 
          Height          =   600
          Left            =   165
-         Picture         =   "frmPrefs.frx":3ACF
+         Picture         =   "frmPrefs.frx":3B89
          Stretch         =   -1  'True
          Top             =   225
          Width           =   600
@@ -1209,7 +1296,7 @@ Begin VB.Form panzerPrefs
       Begin VB.Image imgConfigClicked 
          Height          =   600
          Left            =   165
-         Picture         =   "frmPrefs.frx":40AE
+         Picture         =   "frmPrefs.frx":4168
          Stretch         =   -1  'True
          Top             =   225
          Width           =   600
@@ -1234,7 +1321,7 @@ Begin VB.Form panzerPrefs
       Begin VB.Image imgPosition 
          Height          =   600
          Left            =   160
-         Picture         =   "frmPrefs.frx":45B3
+         Picture         =   "frmPrefs.frx":466D
          Stretch         =   -1  'True
          Top             =   225
          Width           =   600
@@ -1242,7 +1329,7 @@ Begin VB.Form panzerPrefs
       Begin VB.Image imgPositionClicked 
          Height          =   600
          Left            =   160
-         Picture         =   "frmPrefs.frx":4B84
+         Picture         =   "frmPrefs.frx":4C3E
          Stretch         =   -1  'True
          Top             =   225
          Width           =   600
@@ -1287,7 +1374,7 @@ Begin VB.Form panzerPrefs
       Begin VB.Image imgSounds 
          Height          =   600
          Left            =   160
-         Picture         =   "frmPrefs.frx":4F22
+         Picture         =   "frmPrefs.frx":4FDC
          Stretch         =   -1  'True
          Top             =   225
          Width           =   600
@@ -1295,7 +1382,7 @@ Begin VB.Form panzerPrefs
       Begin VB.Image imgSoundsClicked 
          Height          =   600
          Left            =   160
-         Picture         =   "frmPrefs.frx":54E1
+         Picture         =   "frmPrefs.frx":559B
          Stretch         =   -1  'True
          Top             =   225
          Width           =   600
@@ -1335,7 +1422,7 @@ Begin VB.Form panzerPrefs
       Begin VB.Image imgWindow 
          Height          =   600
          Left            =   160
-         Picture         =   "frmPrefs.frx":59B1
+         Picture         =   "frmPrefs.frx":5A6B
          Stretch         =   -1  'True
          Top             =   225
          Width           =   600
@@ -1343,7 +1430,7 @@ Begin VB.Form panzerPrefs
       Begin VB.Image imgWindowClicked 
          Height          =   600
          Left            =   160
-         Picture         =   "frmPrefs.frx":5E7B
+         Picture         =   "frmPrefs.frx":5F35
          Stretch         =   -1  'True
          Top             =   225
          Width           =   600
@@ -1367,7 +1454,7 @@ Begin VB.Form panzerPrefs
       Begin VB.Image imgFonts 
          Height          =   600
          Left            =   180
-         Picture         =   "frmPrefs.frx":6227
+         Picture         =   "frmPrefs.frx":62E1
          Stretch         =   -1  'True
          Top             =   195
          Width           =   600
@@ -1375,7 +1462,7 @@ Begin VB.Form panzerPrefs
       Begin VB.Image imgFontsClicked 
          Height          =   600
          Left            =   180
-         Picture         =   "frmPrefs.frx":677D
+         Picture         =   "frmPrefs.frx":6837
          Stretch         =   -1  'True
          Top             =   195
          Width           =   600
@@ -1390,7 +1477,7 @@ Begin VB.Form panzerPrefs
       Begin VB.Image imgGeneral 
          Height          =   600
          Left            =   180
-         Picture         =   "frmPrefs.frx":6C16
+         Picture         =   "frmPrefs.frx":6CD0
          Stretch         =   -1  'True
          Top             =   225
          Width           =   600
@@ -1505,7 +1592,7 @@ Begin VB.Form panzerPrefs
                Width           =   720
             End
             Begin VB.Label lblWindowLevel 
-               Caption         =   $"frmPrefs.frx":7080
+               Caption         =   $"frmPrefs.frx":713A
                Height          =   975
                Index           =   1
                Left            =   855
@@ -1704,7 +1791,7 @@ Begin VB.Form panzerPrefs
             SelStart        =   5
          End
          Begin VB.Label lblConfiguration 
-            Caption         =   $"frmPrefs.frx":7123
+            Caption         =   $"frmPrefs.frx":71DD
             Height          =   930
             Index           =   0
             Left            =   1980
@@ -2096,6 +2183,54 @@ Private gblAllowSizeChangeFlg As Boolean
 
 
 ' ----------------------------------------------------------------
+' Procedure Name: cmbMetricImperial_Click
+' Purpose:
+' Procedure Kind: Sub
+' Procedure Access: Private
+' Author: beededea
+' Date: 20/03/2024
+' ----------------------------------------------------------------
+Private Sub cmbMetricImperial_Click()
+    On Error GoTo cmbMetricImperial_Click_Error
+    
+    btnSave.Enabled = True ' enable the save button
+    PzGWindSpeedScale = LTrim$(Str$(cmbWindSpeedScale.ListIndex))
+    sPutINISetting "Software\PzTemperatureGauge", "metricImperial", PzGMetricImperial, PzGSettingsFile
+    
+    On Error GoTo 0
+    Exit Sub
+
+cmbMetricImperial_Click_Error:
+
+    MsgBox "Error " & Err.Number & " (" & Err.Description & ") in procedure cmbMetricImperial_Click, line " & Erl & "."
+
+End Sub
+
+' ----------------------------------------------------------------
+' Procedure Name: cmbPressureScale_Click
+' Purpose:
+' Procedure Kind: Sub
+' Procedure Access: Private
+' Author: beededea
+' Date: 19/03/2024
+' ----------------------------------------------------------------
+Private Sub cmbPressureScale_Click()
+    On Error GoTo cmbPressureScale_Click_Error
+    
+    btnSave.Enabled = True ' enable the save button
+    PzGPressureScale = LTrim$(Str$(cmbPressureScale.ListIndex))
+    sPutINISetting "Software\PzTemperatureGauge", "pressureScale", PzGPressureScale, PzGSettingsFile
+    
+    On Error GoTo 0
+    Exit Sub
+
+cmbPressureScale_Click_Error:
+
+    MsgBox "Error " & Err.Number & " (" & Err.Description & ") in procedure cmbPressureScale_Click, line " & Erl & "."
+
+End Sub
+
+' ----------------------------------------------------------------
 ' Procedure Name: cmbTemperatureScale_Click
 ' Purpose:
 ' Procedure Kind: Sub
@@ -2107,7 +2242,7 @@ Private Sub cmbTemperatureScale_Click()
     
     On Error GoTo cmbTemperatureScale_Click_Error
     btnSave.Enabled = True ' enable the save button
-    PzGTemperatureScale = Str$(cmbTemperatureScale.ListIndex)
+    PzGTemperatureScale = LTrim$(Str$(cmbTemperatureScale.ListIndex))
     sPutINISetting "Software\PzTemperatureGauge", "temperatureScale", PzGTemperatureScale, PzGSettingsFile
     
     overlayWidget.thisFace = cmbTemperatureScale.ListIndex
@@ -2118,6 +2253,30 @@ Private Sub cmbTemperatureScale_Click()
 cmbTemperatureScale_Click_Error:
 
     MsgBox "Error " & Err.Number & " (" & Err.Description & ") in procedure cmbTemperatureScale_Click, line " & Erl & "."
+
+End Sub
+
+' ----------------------------------------------------------------
+' Procedure Name: cmbWindSpeedScale_Click
+' Purpose:
+' Procedure Kind: Sub
+' Procedure Access: Private
+' Author: beededea
+' Date: 19/03/2024
+' ----------------------------------------------------------------
+Private Sub cmbWindSpeedScale_Click()
+    
+    On Error GoTo cmbWindSpeedScale_Click_Error
+    btnSave.Enabled = True ' enable the save button
+    PzGWindSpeedScale = LTrim$(Str$(cmbWindSpeedScale.ListIndex))
+    sPutINISetting "Software\PzTemperatureGauge", "windSpeedScale", PzGWindSpeedScale, PzGSettingsFile
+    
+    On Error GoTo 0
+    Exit Sub
+
+cmbWindSpeedScale_Click_Error:
+
+    MsgBox "Error " & Err.Number & " (" & Err.Description & ") in procedure cmbWindSpeedScale_Click, line " & Erl & "."
 
 End Sub
 
@@ -2262,11 +2421,11 @@ Public Sub positionPrefsMonitor()
     On Error GoTo positionPrefsMonitor_Error
     
     If PzGDpiAwareness = "1" Then
-        formLeftTwips = Val(PzGFormHighDpiXPosTwips)
-        formTopTwips = Val(PzGFormHighDpiYPosTwips)
+        formLeftTwips = val(PzGFormHighDpiXPosTwips)
+        formTopTwips = val(PzGFormHighDpiYPosTwips)
     Else
-        formLeftTwips = Val(PzGFormLowDpiXPosTwips)
-        formTopTwips = Val(PzGFormLowDpiYPosTwips)
+        formLeftTwips = val(PzGFormLowDpiXPosTwips)
+        formTopTwips = val(PzGFormLowDpiYPosTwips)
     End If
     
     If formLeftTwips = 0 Then
@@ -3274,6 +3433,12 @@ Private Sub btnSave_Click()
     PzGPointerAnimate = cmbTickSwitchPref.ListIndex
     PzGSamplingInterval = LTrim$(Str$(sliSamplingInterval.Value))
     PzGTemperatureScale = cmbTemperatureScale.ListIndex
+    PzGPressureScale = cmbPressureScale.ListIndex
+    PzGMetricImperial = cmbMetricImperial.ListIndex
+    
+    
+    
+    'PzGWindSpeedScale = cmbWindSpeedScale.ListIndex
     
     ' sounds
     PzGEnableSounds = LTrim$(Str$(chkEnableSounds.Value))
@@ -3349,6 +3514,10 @@ Private Sub btnSave_Click()
         sPutINISetting "Software\PzTemperatureGauge", "samplingInterval", PzGSamplingInterval, PzGSettingsFile
         
         sPutINISetting "Software\PzTemperatureGauge", "temperatureScale", PzGTemperatureScale, PzGSettingsFile
+        sPutINISetting "Software\PzTemperatureGauge", "pressureScale", PzGPressureScale, PzGSettingsFile
+        sPutINISetting "Software\PzTemperatureGauge", "windSpeedScale", PzGWindSpeedScale, PzGSettingsFile
+        sPutINISetting "Software\PzTemperatureGauge", "metricImperial", PzGMetricImperial, PzGSettingsFile
+        
         sPutINISetting "Software\PzTemperatureGauge", "icao", PzGIcao, PzGSettingsFile
 
         
@@ -3390,7 +3559,7 @@ Private Sub btnSave_Click()
         
         sPutINISetting "Software\PzTemperatureGauge", "clockLowDpiXPos", PzGClockLowDpiXPos, PzGSettingsFile
         sPutINISetting "Software\PzTemperatureGauge", "clockLowDpiYPos", PzGClockLowDpiYPos, PzGSettingsFile
-        
+        sPutINISetting "Software\PzTemperatureGauge", "lastUpdated", PzGLastUpdated, PzGSettingsFile
 
         'save the values from the Text Items
 
@@ -3505,9 +3674,9 @@ Private Sub btnPrefsFont_Click()
     ' PzGClockFont
     
     If PzGDpiAwareness = "1" Then
-        fntSize = Val(PzGPrefsFontSizeHighDPI)
+        fntSize = val(PzGPrefsFontSizeHighDPI)
     Else
-        fntSize = Val(PzGPrefsFontSizeLowDPI)
+        fntSize = val(PzGPrefsFontSizeLowDPI)
     End If
     
     If fntSize = 0 Then fntSize = 8
@@ -3576,8 +3745,8 @@ Private Sub adjustPrefsControls()
     On Error GoTo adjustPrefsControls_Error
             
     ' general tab
-    chkGaugeFunctions.Value = Val(PzGGaugeFunctions)
-    chkGenStartup.Value = Val(PzGStartup)
+    chkGaugeFunctions.Value = val(PzGGaugeFunctions)
+    chkGenStartup.Value = val(PzGStartup)
 '
 '    txtBias.Visible = False
 '    lblGeneral(1).Visible = False
@@ -3590,11 +3759,14 @@ Private Sub adjustPrefsControls()
         
     'txtBias.Text = tzDelta
 
-    cmbTickSwitchPref.ListIndex = Val(PzGPointerAnimate)
+    cmbTickSwitchPref.ListIndex = val(PzGPointerAnimate)
     
-    cmbTemperatureScale.ListIndex = Val(PzGTemperatureScale)
+    cmbTemperatureScale.ListIndex = val(PzGTemperatureScale)
+    cmbPressureScale.ListIndex = val(PzGPressureScale)
+    cmbWindSpeedScale.ListIndex = val(PzGWindSpeedScale)
+    cmbMetricImperial.ListIndex = val(PzGMetricImperial)
  
-    sliSamplingInterval = Val(PzGSamplingInterval)
+    sliSamplingInterval = val(PzGSamplingInterval)
     
     txtIcao.Text = PzGIcao
     
@@ -3602,24 +3774,24 @@ Private Sub adjustPrefsControls()
    
     ' check whether the size has been previously altered via ctrl+mousewheel on the widget
     sliGaugeSizeOldValue = sliGaugeSize.Value
-    sliGaugeSize.Value = Val(PzGGaugeSize)
+    sliGaugeSize.Value = val(PzGGaugeSize)
     If sliGaugeSize.Value <> sliGaugeSizeOldValue Then
         btnSave.Visible = True
     End If
     
-    cmbScrollWheelDirection.ListIndex = Val(PzGScrollWheelDirection)
-    chkEnableTooltips.Value = Val(PzGEnableTooltips)
-    chkEnableBalloonTooltips.Value = Val(PzGEnableBalloonTooltips)
-    chkShowTaskbar.Value = Val(PzGShowTaskbar)
-    chkDpiAwareness.Value = Val(PzGDpiAwareness)
+    cmbScrollWheelDirection.ListIndex = val(PzGScrollWheelDirection)
+    chkEnableTooltips.Value = val(PzGEnableTooltips)
+    chkEnableBalloonTooltips.Value = val(PzGEnableBalloonTooltips)
+    chkShowTaskbar.Value = val(PzGShowTaskbar)
+    chkDpiAwareness.Value = val(PzGDpiAwareness)
     
-    chkEnablePrefsTooltips.Value = Val(PzGEnablePrefsTooltips)
+    chkEnablePrefsTooltips.Value = val(PzGEnablePrefsTooltips)
     
     ' sounds tab
-    chkEnableSounds.Value = Val(PzGEnableSounds)
+    chkEnableSounds.Value = val(PzGEnableSounds)
     
     ' development
-    cmbDebug.ListIndex = Val(PzGDebug)
+    cmbDebug.ListIndex = val(PzGDebug)
     txtDblClickCommand.Text = PzGDblClickCommand
     txtOpenFile.Text = PzGOpenFile
     txtDefaultEditor.Text = PzGDefaultEditor
@@ -3628,18 +3800,18 @@ Private Sub adjustPrefsControls()
     If PzGPrefsFont <> vbNullString Then
         txtPrefsFont.Text = PzGPrefsFont
         If PzGDpiAwareness = "1" Then
-            Call changeFormFont(panzerPrefs, PzGPrefsFont, Val(PzGPrefsFontSizeHighDPI), fntWeight, fntStyle, PzGPrefsFontItalics, PzGPrefsFontColour)
+            Call changeFormFont(panzerPrefs, PzGPrefsFont, val(PzGPrefsFontSizeHighDPI), fntWeight, fntStyle, PzGPrefsFontItalics, PzGPrefsFontColour)
             txtPrefsFontSize.Text = PzGPrefsFontSizeHighDPI
         Else
-            Call changeFormFont(panzerPrefs, PzGPrefsFont, Val(PzGPrefsFontSizeLowDPI), fntWeight, fntStyle, PzGPrefsFontItalics, PzGPrefsFontColour)
+            Call changeFormFont(panzerPrefs, PzGPrefsFont, val(PzGPrefsFontSizeLowDPI), fntWeight, fntStyle, PzGPrefsFontItalics, PzGPrefsFontColour)
             txtPrefsFontSize.Text = PzGPrefsFontSizeLowDPI
         End If
     End If
     
     
     ' position tab
-    cmbAspectHidden.ListIndex = Val(PzGAspectHidden)
-    cmbWidgetPosition.ListIndex = Val(PzGWidgetPosition)
+    cmbAspectHidden.ListIndex = val(PzGAspectHidden)
+    cmbWidgetPosition.ListIndex = val(PzGWidgetPosition)
         
     If PzGPreventDragging = "1" Then
         If aspectRatio = "landscape" Then
@@ -3666,20 +3838,20 @@ Private Sub adjustPrefsControls()
     End If
     
     'cmbWidgetLandscape
-    cmbWidgetLandscape.ListIndex = Val(PzGWidgetLandscape)
-    cmbWidgetPortrait.ListIndex = Val(PzGWidgetPortrait)
+    cmbWidgetLandscape.ListIndex = val(PzGWidgetLandscape)
+    cmbWidgetPortrait.ListIndex = val(PzGWidgetPortrait)
     txtLandscapeHoffset.Text = PzGLandscapeFormHoffset
     txtLandscapeVoffset.Text = PzGLandscapeFormVoffset
     txtPortraitHoffset.Text = PzGPortraitHoffset
     txtPortraitYoffset.Text = PzGPortraitYoffset
 
     ' Windows tab
-    cmbWindowLevel.ListIndex = Val(PzGWindowLevel)
-    chkIgnoreMouse.Value = Val(PzGIgnoreMouse)
-    chkPreventDragging.Value = Val(PzGPreventDragging)
-    sliOpacity.Value = Val(PzGOpacity)
-    chkWidgetHidden.Value = Val(PzGWidgetHidden)
-    cmbHidingTime.ListIndex = Val(PzGHidingTime)
+    cmbWindowLevel.ListIndex = val(PzGWindowLevel)
+    chkIgnoreMouse.Value = val(PzGIgnoreMouse)
+    chkPreventDragging.Value = val(PzGPreventDragging)
+    sliOpacity.Value = val(PzGOpacity)
+    chkWidgetHidden.Value = val(PzGWidgetHidden)
+    cmbHidingTime.ListIndex = val(PzGHidingTime)
     
         
    On Error GoTo 0
@@ -3773,6 +3945,25 @@ Private Sub populatePrefsComboBoxes()
     cmbTemperatureScale.ItemData(1) = 1
     cmbTemperatureScale.AddItem "kelvin", 2
     cmbTemperatureScale.ItemData(2) = 2
+
+    cmbPressureScale.AddItem "millibars", 0
+    cmbPressureScale.ItemData(0) = 0
+    cmbPressureScale.AddItem "inches of mercury (hg)", 1
+    cmbPressureScale.ItemData(1) = 1
+    cmbPressureScale.AddItem "mm of mercury (mmhg)", 2
+    cmbPressureScale.ItemData(2) = 2
+    cmbPressureScale.AddItem "hectoPascals", 3
+    cmbPressureScale.ItemData(2) = 3
+
+    cmbWindSpeedScale.AddItem "knots", 0
+    cmbWindSpeedScale.ItemData(0) = 0
+    cmbWindSpeedScale.AddItem "metres", 1
+    cmbWindSpeedScale.ItemData(1) = 1
+    
+    cmbMetricImperial.AddItem "Imperial", 0
+    cmbMetricImperial.ItemData(0) = 0
+    cmbMetricImperial.AddItem "Metric", 1
+    cmbMetricImperial.ItemData(1) = 1
 
     On Error GoTo 0
     Exit Sub
@@ -4172,6 +4363,8 @@ End Sub
 Private Sub imgGeneral_MouseUp(Button As Integer, Shift As Integer, x As Single, y As Single)
     Call picButtonMouseUpEvent("general", imgGeneral, imgGeneralClicked, fraGeneral, fraGeneralButton) ' was imgGeneralMouseUpEvent
 End Sub
+
+
 
 
 
@@ -4620,6 +4813,11 @@ Public Sub setPrefsTooltips()
         chkDpiAwareness.ToolTipText = " Check the box to make the program DPI aware. RESTART required."
         chkEnablePrefsTooltips.ToolTipText = "Check the box to enable tooltips for all controls in the preferences utility"
         btnResetMessages.ToolTipText = "This button restores the pop-up messages to their original visible state."
+        
+        cmbTemperatureScale.ToolTipText = "Select the temperature unit. The default is the celsius scale, the alternatives are fahrenheit and kelvin."
+        cmbPressureScale.ToolTipText = "Select the scale you are familiar with."
+        cmbWindSpeedScale.ToolTipText = "Select the anemometer unit of scale. The default is the knots scale, the alternative is metres/sec."
+        cmbMetricImperial.ToolTipText = "Select metric or imperial with regard to cloud cover ONLY."
     Else
         imgConfig.ToolTipText = vbNullString
         imgConfigClicked.ToolTipText = vbNullString
@@ -4692,6 +4890,8 @@ Public Sub setPrefsTooltips()
         chkDpiAwareness.ToolTipText = vbNullString
         chkEnablePrefsTooltips.ToolTipText = vbNullString
         btnResetMessages.ToolTipText = vbNullString
+        
+        cmbMetricImperial.ToolTipText = vbNullString
     End If
 
    On Error GoTo 0
@@ -5436,7 +5636,7 @@ Private Sub setframeHeights()
             Call SaveSizes(panzerPrefs, prefsControlPositions(), prefsCurrentWidth, prefsCurrentHeight)
         'End If
     Else
-        fraGeneral.Height = 5749
+        fraGeneral.Height = 8899
         fraConfig.Height = 6632
         fraSounds.Height = 1992
         fraPosition.Height = 7544
@@ -5972,11 +6172,11 @@ Public Sub setPrefsFormZordering()
 
    On Error GoTo setPrefsFormZordering_Error
 
-    If Val(PzGWindowLevel) = 0 Then
+    If val(PzGWindowLevel) = 0 Then
         Call SetWindowPos(Me.hwnd, HWND_BOTTOM, 0&, 0&, 0&, 0&, OnTopFlags)
-    ElseIf Val(PzGWindowLevel) = 1 Then
+    ElseIf val(PzGWindowLevel) = 1 Then
         Call SetWindowPos(Me.hwnd, HWND_TOP, 0&, 0&, 0&, 0&, OnTopFlags)
-    ElseIf Val(PzGWindowLevel) = 2 Then
+    ElseIf val(PzGWindowLevel) = 2 Then
         Call SetWindowPos(Me.hwnd, HWND_TOPMOST, 0&, 0&, 0&, 0&, OnTopFlags)
     End If
 

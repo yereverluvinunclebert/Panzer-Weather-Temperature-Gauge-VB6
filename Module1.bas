@@ -293,6 +293,10 @@ Public PzGGaugeFunctions As String
 Public PzGPointerAnimate As String
 Public PzGSamplingInterval As String
 Public PzGTemperatureScale As String
+Public PzGPressureScale As String
+Public PzGWindSpeedScale As String
+Public PzGMetricImperial As String
+
 Public PzGIcao As String
 
 
@@ -368,6 +372,8 @@ Public PzGFormHighDpiYPosTwips As String
 
 Public PzGFormLowDpiXPosTwips As String
 Public PzGFormLowDpiYPosTwips As String
+
+Public PzGLastUpdated As String
 
 
 '------------------------------------------------------ ENDS
@@ -1259,7 +1265,7 @@ Public Sub changeFont(ByVal frm As Form, ByVal fntNow As Boolean, ByRef fntFont 
 '    End If
     
     If fntFont <> vbNullString And fntNow = True Then
-        Call changeFormFont(frm, fntFont, Val(fntSize), fntWeight, fntStyle, fntItalics, fntColour)
+        Call changeFormFont(frm, fntFont, val(fntSize), fntWeight, fntStyle, fntItalics, fntColour)
     End If
     
    On Error GoTo 0
@@ -1807,7 +1813,7 @@ Public Sub ChangeToolTipWidgetDefaultSettings(ByRef My_Widget As cWidgetBase)
     With My_Widget
     
         .FontName = PzGClockFont
-        .FontSize = Val(PzGPrefsFontSizeLowDPI)
+        .FontSize = val(PzGPrefsFontSizeLowDPI)
     
     End With
 
@@ -1838,11 +1844,11 @@ Public Sub makeVisibleFormElements()
     'NOTE that when you position a widget you are positioning the form it is drawn upon.
 
     If PzGDpiAwareness = "1" Then
-        formLeftPixels = Val(PzGClockHighDpiXPos)
-        formTopPixels = Val(PzGClockHighDpiYPos)
+        formLeftPixels = val(PzGClockHighDpiXPos)
+        formTopPixels = val(PzGClockHighDpiYPos)
     Else
-        formLeftPixels = Val(PzGClockLowDpiXPos)
-        formTopPixels = Val(PzGClockLowDpiYPos)
+        formLeftPixels = val(PzGClockLowDpiXPos)
+        formTopPixels = val(PzGClockLowDpiYPos)
     End If
     
     ' The RC forms are measured in pixels, whereas the native forms are in twips, do remember that...
@@ -2055,8 +2061,8 @@ Public Sub mainScreen()
     If aspectRatio = "landscape" Then
         If PzGWidgetLandscape = "1" Then
             If PzGLandscapeFormHoffset <> vbNullString Then
-                fTemperature.temperatureGaugeForm.Left = Val(PzGLandscapeFormHoffset)
-                fTemperature.temperatureGaugeForm.Top = Val(PzGLandscapeFormVoffset)
+                fTemperature.temperatureGaugeForm.Left = val(PzGLandscapeFormHoffset)
+                fTemperature.temperatureGaugeForm.Top = val(PzGLandscapeFormVoffset)
             End If
         End If
         If PzGAspectHidden = "2" Then
@@ -2068,8 +2074,8 @@ Public Sub mainScreen()
     ' check if the widget has a lock for the screen type.
     If aspectRatio = "portrait" Then
         If PzGWidgetPortrait = "1" Then
-            fTemperature.temperatureGaugeForm.Left = Val(PzGPortraitHoffset)
-            fTemperature.temperatureGaugeForm.Top = Val(PzGPortraitYoffset)
+            fTemperature.temperatureGaugeForm.Left = val(PzGPortraitHoffset)
+            fTemperature.temperatureGaugeForm.Top = val(PzGPortraitYoffset)
         End If
         If PzGAspectHidden = "1" Then
             Debug.Print "Hiding the widget for portrait mode"
@@ -2455,7 +2461,7 @@ Public Sub lockWidget()
         panzerPrefs.chkPreventDragging.Value = 0
         PzGPreventDragging = "0"
         overlayWidget.Locked = False
-        fTemperature.temperatureGaugeForm.Widgets("housing/lockbutton").Widget.Alpha = Val(PzGOpacity) / 100
+        fTemperature.temperatureGaugeForm.Widgets("housing/lockbutton").Widget.Alpha = val(PzGOpacity) / 100
     Else
         menuForm.mnuLockWidget.Checked = True
         panzerPrefs.chkPreventDragging.Value = 1
@@ -2759,12 +2765,12 @@ End Function
 Public Function ArrayString(ParamArray tokens()) As String()
     On Error GoTo ArrayString_Error
 
-    ReDim Arr(UBound(tokens)) As String
+    ReDim arr(UBound(tokens)) As String
     Dim I As Long
     For I = 0 To UBound(tokens)
-        Arr(I) = tokens(I)
+        arr(I) = tokens(I)
     Next
-    ArrayString = Arr
+    ArrayString = arr
 
     On Error GoTo 0
     Exit Function

@@ -41,7 +41,7 @@ Private SDeg As Double
 Private thisTemperature As Long
 Private temperatureTotalTimeLeft As Single
 'Private TemperatureDetails As String
-Private TemperatureVal  As Long
+Private temperatureValue  As Long
 
 Private oldSDeg As Double
 Private newSDeg As Double
@@ -739,7 +739,7 @@ Private Sub calcAnimationData()
             
             ' calculate the new cpu amount in degrees
             If weHaveData = True Then
-                newSDeg = (TemperatureVal - min) / (max - min) * 360
+                newSDeg = (temperatureValue - min) / (max - min) * 360
             Else
                 newSDeg = 30
             End If
@@ -806,7 +806,7 @@ Private Sub obtainTemperature()
     max = 50
     
     If weHaveData = True Then
-        SDeg = (TemperatureVal - min) / (max - min) * 360
+        SDeg = (temperatureValue - min) / (max - min) * 360
     Else
         SDeg = 30
     End If
@@ -925,8 +925,8 @@ End Sub
 Private Sub myStatusProc()
 
 
-    Dim humidityVal  As Long
-    Dim pressureVal As Long
+    Dim humidityValue  As Long
+    Dim pressureValue As Double
     Dim TheDate As Date: TheDate = #1/1/2000 12:00:00 PM#
     Dim secsDif As Integer: secsDif = 0
     Dim difString As String: difString = vbNullString
@@ -987,9 +987,13 @@ Private Sub myStatusProc()
     Dim initialObsTime As String: initialObsTime = vbNullString
     Dim usableObsTime As Date: usableObsTime = #1/1/2000 12:00:00 PM#
     
+    Dim thisToolTip As String: thisToolTip = vbNullString
+    
     On Error GoTo myStatusProc_Error
     
     debugFlg = 1
+    
+    tmrAsyncResponse.Enabled = False
     
     objxmldoc.async = True
     objxmldoc.LoadXML (myMSXML.responseText)
@@ -1109,13 +1113,13 @@ Private Sub myStatusProc()
     End If
     
     ' get pressure
-    pressureVal = fGetPressure(altim_in_hg)
+    pressureValue = fGetPressure(altim_in_hg)
 
     ' set temperature
-    TemperatureVal = val(temp_c)
+    temperatureValue = val(temp_c)
 
     ' calculate humidity
-    humidityVal = fGetHumidity(temp_c, dewpoint_c)
+    humidityValue = fGetHumidity(temp_c, dewpoint_c)
 
     ' decode the visibility when a cloud cover field found
     skyClarity = get_cloud_cover(sky_condition_items())
@@ -1152,14 +1156,25 @@ Private Sub myStatusProc()
     difString = nice_format_interval(secsDif)
 
     ' store the last updated value in the settings
-    'PzGLastUpdated = usableObsTime
+    PzGLastUpdated = usableObsTime
     If (debugFlg = 1) Then Debug.Print ("%myStatusProc - difString " & difString)
-    
-'    humidityBackground.Tooltip = " "
 
-'    ' set the hover over tooltips
-    Call setHoverTooltip(wind_dir_degrees, wind_speed_kt, precip_in, difString, wx_string)
+'    ' set the hover over tooltips on the gauges
+    thisToolTip = setHoverTooltip(skyClarityString, humidityValue, temperatureValue, pressureValue, usableObsTime, wind_dir_degrees, wind_speed_kt, precip_in, difString, wx_string)
+
+'    'weatherText.data = String(thisToolTip)
+'    humidityBackground.ToolTip = thisToolTip
 '
+'    ' save the tooltip value so it can be used during the regular timed 60 second tooltip updates.
+'    Preferences.lastTooltip.Value = humidityBackground.ToolTip
+'    humidityBackground.ToolTip = humidityBackground.ToolTip & " " & difString
+'    humidityBackground.ToolTip = humidityBackground.ToolTip & "  " & "Double_tap_on_me_to_get_new_weather"
+'    thermometerBackground.ToolTip = humidityBackground.ToolTip
+'    anemometerBackground.ToolTip = humidityBackground.ToolTip
+'    weatherIconGaugeBackground.ToolTip = humidityBackground.ToolTip
+'    barometerBackground.ToolTip = humidityBackground.ToolTip
+
+
 '    setIconTooltip(wx_string, sky_cover)
 '
 '     busyStop()
@@ -1203,7 +1218,7 @@ Function nice_format_interval(duration As Integer) As String
     If hours > 72 Then
         'print("%Update " & String(hours) & " hours and " & String(minutes) & " minutes ago");
         nice_format_interval = "No recent data available" & "!"
-        Exit Function
+        Exit Function ' return
     End If
     If hours > 0 Then
         res = "Updated"
@@ -1218,22 +1233,22 @@ Function nice_format_interval(duration As Integer) As String
             res = res & " " & "and" & " " & Str$(minutes) & " " & "minutes"
         End If
         nice_format_interval = res & " " & "ago"
-        Exit Function
+        Exit Function ' return
     End If
     If minutes > 0 Then
         If minutes = 1 Then
             nice_format_interval = "Updated one minute ago"
-            Exit Function
+            Exit Function ' return
         End If
         nice_format_interval = "Updated" & " " & Str$(minutes) & " " & "minutes ago"
-        Exit Function
+        Exit Function ' return
     End If
     If duration = 1 Then
         nice_format_interval = "Updated one second ago"
-        Exit Function
+        Exit Function ' return
     End If
-    nice_format_interval = "Updated" & " " & Str$(duration) & " " & "seconds ago"
-    Exit Function
+    
+    nice_format_interval = "Updated" & " " & Str$(duration) & " " & "seconds ago" ' return
     
     On Error GoTo 0
     Exit Function
@@ -1311,15 +1326,15 @@ Function fGetPressure(altim_in_hg As String) As Integer
 
     On Error GoTo fGetPressure_Error
     Dim vals0 As Integer
-    Dim pressureVal As Double
-    Dim strPressureVal As String
+    Dim pressureValue As Double
+    Dim strPressureValue As String
     
-    pressureVal = Round(CDbl(altim_in_hg) * 25.3999)
-    strPressureVal = Str$(pressureVal) & "(" & CStr(Round(1.3333 * pressureVal)) & ")"
+    pressureValue = Round(CDbl(altim_in_hg) * 25.3999)
+    strPressureValue = Str$(pressureValue) & "(" & CStr(Round(1.3333 * pressureValue)) & ")"
     
-    If debugFlg = 1 Then Debug.Print ("fGetPressure - Pressure = " & strPressureVal)
+    If debugFlg = 1 Then Debug.Print ("fGetPressure - Pressure = " & strPressureValue)
 
-    fGetPressure = pressureVal
+    fGetPressure = pressureValue ' return
     
     
     On Error GoTo 0
@@ -1351,7 +1366,7 @@ Function fGetHumidity(temp_c, dewpoint_c)
     humidity = Round(100 * (((112 - (0.1 * CInt(temp_c)) + CInt(dewpoint_c)) / (112 + (0.9 * CInt(temp_c)))) ^ 8))
     If debugFlg = 1 Then Debug.Print ("fGetHumidity - humidity " + CStr(humidity))
     
-    fGetHumidity = humidity
+    fGetHumidity = humidity ' return
     
     On Error GoTo 0
     Exit Function
@@ -1381,17 +1396,17 @@ Function fAddBaseCloudToSkyClarity(ByVal baseCloud As Integer, ByVal skyClarity 
     On Error GoTo fAddBaseCloudToSkyClarity_Error
 
     If (baseCloud <> 0) Then
-'        If (panzerPrefs.imperialMetricPref.Value = "metric") Then
-'            ' change the string to metric measurements
-'            baseCloud = Int(baseCloud * 0.3048)
-'            skyClarityString = skyClarity + " at " + baseCloud + " metres."
-'        Else
+        If PzGMetricImperial = "1" Then ' "metric"
+            ' change the string to metric measurements
+            baseCloud = Int(baseCloud * 0.3048)
+            skyClarityString = skyClarity + " at " + baseCloud + " metres."
+        Else
             skyClarityString = skyClarity + " at " + CStr(baseCloud) + " ft."
         End If
-'    End If
+    End If
     If debugFlg = 1 Then Debug.Print ("fAddBaseCloudToSkyClarity - skyClarityString " + skyClarityString)
 
-    fAddBaseCloudToSkyClarity = skyClarityString
+    fAddBaseCloudToSkyClarity = skyClarityString ' return
     
     On Error GoTo 0
     Exit Function
@@ -1412,13 +1427,14 @@ End Function
 ' Author: beededea
 ' Date: 17/01/2024
 ' ----------------------------------------------------------------
-Private Function convertToFahrenheit(ByVal T As Integer)
+Private Function convertToFahrenheit(ByVal T As Integer) As Integer
     Dim newT As Integer
     
     On Error GoTo convertToFahrenheit_Error
     
     newT = Round(1.8 * T + 32)
-    convertToFahrenheit = newT
+    
+    convertToFahrenheit = newT ' return
     
     On Error GoTo 0
     Exit Function
@@ -1448,7 +1464,7 @@ Private Function convertToKelvin(ByVal T As Integer) As Integer
     
     newT = KELVIN_CELSIUS_DIFF + T
 
-    convertToKelvin = Fix(newT)
+    convertToKelvin = Fix(newT) ' return
     
     On Error GoTo 0
     Exit Function
@@ -1481,7 +1497,8 @@ Function degToCompass(ByVal num As String) As String
     
     val = CInt((num / 22.5) + 0.5)
     compassDirection = thisArray(val Mod 16)
-    degToCompass = compassDirection
+    
+    degToCompass = compassDirection ' return
     
     On Error GoTo 0
     Exit Function
@@ -1502,7 +1519,7 @@ End Function
 ' Author: beededea
 ' Date: 15/03/2024
 ' ----------------------------------------------------------------
-Function beaufortConversion(ByVal wind_speed_kt As Integer)
+Function beaufortConversion(ByVal wind_speed_kt As Integer) As Integer
     Dim windIconSrc As String: windIconSrc = vbNullString
     Dim windIconToolTip As String: windIconToolTip = vbNullString
     Dim force As Integer: force = 0
@@ -1599,7 +1616,7 @@ Function beaufortConversion(ByVal wind_speed_kt As Integer)
      'windIcon.Visible = True
      'windIcon.ZOrder = 50
     
-     beaufortConversion = force
+     beaufortConversion = force ' return
     
     On Error GoTo 0
     Exit Function
@@ -1610,72 +1627,98 @@ beaufortConversion_Error:
 
 End Function
 
-'================
-' this function sets the hover over tooltip
-'================
-Private Function setHoverTooltip(ByVal wind_dir_degrees As String, ByVal wind_speed_kt As String, ByVal precip_inByVal As String, difString As String, ByVal wx_string As String)
 
-            Dim force As String: force = vbNullString
-            Dim tooltipString As String: tooltipString = vbNullString
-            Dim compassDirection As String: compassDirection = vbNullString
-            Dim TemperatureVal As Long: TemperatureVal = 0
+' ----------------------------------------------------------------
+' Procedure Name: setHoverTooltip
+' Purpose: this function sets the hover over tooltip
+' Procedure Kind: Function
+' Procedure Access: Private
+' Parameter usableObsTime (Date):
+' Parameter wind_dir_degrees (String):
+' Parameter wind_speed_kt (String):
+' Parameter precip_in (String):
+' Parameter difString (String):
+' Parameter wx_string (String):
+' Author: beededea
+' Date: 17/03/2024
+' ----------------------------------------------------------------
+Private Function setHoverTooltip(ByVal skyClarityString As String, ByVal humidityValue As Double, ByVal temperatureValue As Double, ByVal pressureValue As Double, ByVal usableObsTime As Date, ByVal wind_dir_degrees As String, ByVal wind_speed_kt As String, ByVal precip_in As String, difString As String, ByVal wx_string As String) As String
             
-            compassDirection = degToCompass(val(wind_dir_degrees))
+    Dim icaoLocation1 As String: icaoLocation1 = vbNullString
+    Dim icaoLocation2 As String: icaoLocation2 = vbNullString
+    Dim icaoLocation3 As String: icaoLocation3 = vbNullString
+    Dim icaoLocation4 As String: icaoLocation4 = vbNullString
+    Dim icaoLocation5 As String: icaoLocation5 = vbNullString
+    
+    Dim force As String: force = vbNullString
+    Dim tooltipString As String: tooltipString = vbNullString
+    Dim compassDirection As String: compassDirection = vbNullString
+    Dim wx_str As String: wx_str = vbNullString
+            
+    On Error GoTo setHoverTooltip_Error
+            
+            
+    icaoLocation1 = "NORWICH INTERNATIONAL AIRPORT"
+    icaoLocation2 = "NORWICH"
+    icaoLocation3 = "UNITED KINGDOM"
+    icaoLocation4 = "NWI"
+    icaoLocation5 = "EGSH"
+    
+    compassDirection = degToCompass(val(wind_dir_degrees))
 
-            force = Str$(beaufortConversion(wind_speed_kt))
+    force = Str$(beaufortConversion(wind_speed_kt))
 
-            'tooltipString = " " & usableObsTime & " " & " " & PzGIcao & " "
-            'tooltipString = tooltipString & icaoLocation1 & ", " & icaoLocation2 & ", " & icaoLocation3 & " " & vbCrLf
+    tooltipString = " " & CStr(usableObsTime) & " " & " " & PzGIcao & " "
+    tooltipString = tooltipString & icaoLocation1 & ", " & icaoLocation2 & ", " & icaoLocation3 & " " & vbCrLf
 
-'            If (Preferences.barometerScalePref.Value = "millibars") Then
-'                tooltipString = tooltipString & "Pressure" & ": " & Int(pressureValue * 1.33322) & " mb " & vbCrLf
-'             ElseIf (Preferences.barometerScalePref.Value = "hg") Then
-'                tooltipString = tooltipString & "Pressure" & ": " & Int(pressureValue / 25.399999704976) & " inHg " & vbCrLf
-'             ElseIf (Preferences.barometerScalePref.Value = "hpa") Then
-'                tooltipString = tooltipString & "Pressure" & ": " & Int(pressureValue * 1.33322) & " hpa " & vbCrLf
-'             ElseIf (Preferences.barometerScalePref.Value = "mmhg") Then
-'                tooltipString = tooltipString & "Pressure" & ": " & pressureValue & " mmHg " & vbCrLf
-'            End If
+    If (PzGPressureScale = "0") Then ' "millibars") Then
+        tooltipString = tooltipString & "Pressure" & ": " & Int(pressureValue * 1.33322) & " mb " & vbCrLf
+     ElseIf (PzGPressureScale = "1") Then '"hg") Then
+        tooltipString = tooltipString & "Pressure" & ": " & Int(pressureValue / 25.399999704976) & " inHg " & vbCrLf
+     ElseIf (PzGPressureScale = "2") Then '"hpa") Then
+        tooltipString = tooltipString & "Pressure" & ": " & Int(pressureValue * 1.33322) & " hpa " & vbCrLf
+     ElseIf (PzGPressureScale = "3") Then '"mmhg") Then
+        tooltipString = tooltipString & "Pressure" & ": " & pressureValue & " mmHg " & vbCrLf
+    End If
 
-'            If (Preferences.tempUnit.Value = "fahrenheit") Then
-'                TemperatureVal = temperatureValue * 1.8 & 32
-'                tooltipString = tooltipString & "Temperature" & ": " & Round(TemperatureVal).toFixed(2) & " F " & vbCrLf
-'            End If
-'            If (Preferences.tempUnit.Value = "celsius") Then
-'                tooltipString = tooltipString & "Temperature" & ": " & Round(temperatureValue).toFixed(2) & " C " & vbCrLf
-'            End If
-'            If (Preferences.tempUnit.Value = "kelvin") Then
-'                tooltipString = tooltipString & "Temperature" & ": " & Round(Int(temperatureValue & 273.15)).toFixed(2) & " K " & vbCrLf
-'                tooltipString = tooltipString & "Humidity" & ": " & humidityValue & " % " & " " & skyClarityString & " " & vbCrLf
-'            End If
-'            If (Preferences.windUnit.Value = "knots") Then
-'                    tooltipString = tooltipString & "wind_speed_is" & " " & wind_speed_kt & " knots, "
-'            Else
-'                tooltipString = tooltipString & "wind_speed_is" & " " & Int(wind_speed_kt * 0.51444) & " m/sec, "
-'                tooltipString = tooltipString & "strength_force" & " " & force & ", " & "direction" & " " & compassDirection
-'            End If
-'            If (precip_in <> 0) Then
-'               tooltipString = tooltipString & " " & "precipitation_is" & " " & precip_in & " inches"
-'
-'
-'            Var wx_str = getMetarDescription(wx_string)    ' get the interpreted wx string data
-'            If (wx_str <> "") Then
-'               tooltipString = tooltipString & "  " & wx_str & "  " & vbCrLf
-'
-'            'weatherText.data = String(tooltipString)
-'
-'            humidityBackground.ToolTip = tooltipString
-'
-'            ' save the tooltip value so it can be used during the regular timed 60 second tooltip updates.
-'            Preferences.lastTooltip.Value = humidityBackground.ToolTip
-'            humidityBackground.ToolTip = humidityBackground.ToolTip & " " & difString
-'            humidityBackground.ToolTip = humidityBackground.ToolTip & "  " & "Double_tap_on_me_to_get_new_weather"
-'            thermometerBackground.ToolTip = humidityBackground.ToolTip
-'            anemometerBackground.ToolTip = humidityBackground.ToolTip
-'            weatherIconGaugeBackground.ToolTip = humidityBackground.ToolTip
-'            barometerBackground.ToolTip = humidityBackground.ToolTip
+    If PzGTemperatureScale = "1" Then '"fahrenheit"
+        tooltipString = tooltipString & "Temperature" & ": " & Round(temperatureValue * 1.8 + 32, 2) & " F " & vbCrLf
+    End If
+    If PzGTemperatureScale = "0" Then ' "celsius"
+        tooltipString = tooltipString & "Temperature" & ": " & Round(temperatureValue, 2) & " C " & vbCrLf
+    End If
+    
+    If PzGTemperatureScale = "2" Then '"kelvin"
+        tooltipString = tooltipString & "Temperature" & ": " & Round(Int(temperatureValue + 273.15), 2) & " K " & vbCrLf
+        tooltipString = tooltipString & "Humidity" & ": " & humidityValue & " % " & " " & skyClarityString & " " & vbCrLf
+    End If
+    
+    If PzGWindSpeedScale = "0" Then  ' knots
+        tooltipString = tooltipString & "wind_speed_is" & " " & wind_speed_kt & " knots, "
+    Else
+        tooltipString = tooltipString & "wind_speed_is" & " " & Int(wind_speed_kt * 0.51444) & " m/sec, "
+        tooltipString = tooltipString & "strength_force" & " " & force & ", " & "direction" & " " & compassDirection
+    End If
 
-'========
+    If (precip_in <> vbNullString) Then
+       tooltipString = tooltipString & " " & "precipitation_is" & " " & precip_in & " inches"
+    End If
+
+    If (wx_string <> "") Then
+      wx_str = getMetarDescription(wx_string)    ' get the interpreted wx string data
+      tooltipString = tooltipString & "  " & wx_str & "  " & vbCrLf
+    End If
+    
+    setHoverTooltip = tooltipString ' return
+
+    
+    On Error GoTo 0
+    Exit Function
+
+setHoverTooltip_Error:
+
+    MsgBox "Error " & Err.Number & " (" & Err.Description & ") in procedure setHoverTooltip, line " & Erl & "."
+
 End Function
 '========
 
@@ -1685,7 +1728,7 @@ End Function
 ' ----------------------------------------------------------------
 ' Procedure Name: determineWeatherConditionIcon
 ' Purpose: function to decode_weather when a wx field found and set the icon accordingly
-' Procedure Kind: Function
+' Procedure Kind: sub
 ' Procedure Access: Private
 ' Parameter thisSkyClarity (String):
 ' Parameter thisWxString (String):
@@ -1695,7 +1738,7 @@ End Function
 ' Author: beededea
 ' Date: 14/03/2024
 ' ----------------------------------------------------------------
-Private Function determineWeatherConditionIcon(ByVal thisSkyClarity As String, ByVal thisWxString As String, ByRef sky_cover() As String, ByVal thisIsDay As Boolean)
+Private Sub determineWeatherConditionIcon(ByVal thisSkyClarity As String, ByVal thisWxString As String, ByRef sky_cover() As String, ByVal thisIsDay As Boolean)
     On Error GoTo determineWeatherConditionIcon_Error
    'thisWxString = "+PRFG" 'testing string
    'sky_cover(0) = "BKN"
@@ -1769,35 +1812,37 @@ Private Function determineWeatherConditionIcon(ByVal thisSkyClarity As String, B
    weatherIconSrc = "0cloud.png"
 
    'determine the weather type,
-   If (InStr(thisWxString, "MI") <> 0) Then
-     wModifier = wModifier & "shallow "
-   End If
-   If (InStr(thisWxString, "PR") <> 0) Then
-     wModifier = wModifier & "partial "
-   End If
-   If (InStr(thisWxString, "DZ") <> 0) Then
-     wModifier = wModifier & "drizzle "
-   End If
-   If (InStr(thisWxString, "BC") <> 0) Then
-     wModifier = wModifier & "patches of "
-   End If
-   If (InStr(thisWxString, "DR") <> 0) Then
-     wModifier = wModifier & "drifting "
-   End If
-   If (InStr(thisWxString, "BL") <> 0) Then
-     wModifier = wModifier & "blowing "
-   End If
-   If (InStr(thisWxString, "SH") <> 0) Then
-     wModifier = wModifier & "showers "
-   End If
-   If (InStr(thisWxString, "VC") <> 0) Then
-     '"nearby "
-     wModifier = wModifier & "nearby "
-   End If
-   If (InStr(thisWxString, "FZ") <> 0) Then
-     '"freezing "
-     wModifier = wModifier & "freezing "
-   End If
+   If thisWxString <> "" Then
+        If (InStr(thisWxString, "MI") <> 0) Then
+          wModifier = wModifier & "shallow "
+        End If
+        If (InStr(thisWxString, "PR") <> 0) Then
+          wModifier = wModifier & "partial "
+        End If
+        If (InStr(thisWxString, "DZ") <> 0) Then
+          wModifier = wModifier & "drizzle "
+        End If
+        If (InStr(thisWxString, "BC") <> 0) Then
+          wModifier = wModifier & "patches of "
+        End If
+        If (InStr(thisWxString, "DR") <> 0) Then
+          wModifier = wModifier & "drifting "
+        End If
+        If (InStr(thisWxString, "BL") <> 0) Then
+          wModifier = wModifier & "blowing "
+        End If
+        If (InStr(thisWxString, "SH") <> 0) Then
+          wModifier = wModifier & "showers "
+        End If
+        If (InStr(thisWxString, "VC") <> 0) Then
+          '"nearby "
+          wModifier = wModifier & "nearby "
+        End If
+        If (InStr(thisWxString, "FZ") <> 0) Then
+          '"freezing "
+          wModifier = wModifier & "freezing "
+        End If
+    End If
 
    ' FEW = 1 or 2 eighths cover SCT = 3 or 4 eighths cover BKN = 5, 6 or 7 eighths cover & OVC = 8/8 cover
 
@@ -2055,13 +2100,13 @@ Private Function determineWeatherConditionIcon(ByVal thisSkyClarity As String, B
     If (debugFlg = 1) Then Debug.Print ("%determineWeatherCondition - iconSrc " & iconSrc)
 
     On Error GoTo 0
-    Exit Function
+    Exit Sub
 
 determineWeatherConditionIcon_Error:
 
     MsgBox "Error " & Err.Number & " (" & Err.Description & ") in procedure determineWeatherConditionIcon, line " & Erl & "."
 
-End Function
+End Sub
 
 ' ----------------------------------------------------------------
 ' Procedure Name: getMetarDescription
@@ -2220,7 +2265,8 @@ Function getMetarDescription(wx_string As String) As String
     If debugFlg = 1 And presentConditions <> "" Then
         Debug.Print ("%getMetarDescription - presentConditions " & presentConditions)
     End If
-
+    
+    getMetarDescription = presentConditions
     
     On Error GoTo 0
     Exit Function

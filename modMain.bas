@@ -300,6 +300,9 @@ Private Sub initialiseGlobalVars()
     PzGLastSelectedTab = vbNullString
     PzGSkinTheme = vbNullString
     
+    PzGLastUpdated = vbNullString
+    PzGPressureScale = vbNullString
+    
     ' general variables declared
     'toolSettingsFile = vbNullString
     classicThemeCapable = False
@@ -414,7 +417,7 @@ Public Sub adjustMainControls()
     ' validate the inputs of any data from the input settings file
     Call validateInputs
     
-    fTemperature.AdjustZoom Val(PzGGaugeSize) / 100
+    fTemperature.AdjustZoom val(PzGGaugeSize) / 100
     
 '    overlayWidget.ZoomDirection = PzGScrollWheelDirection
 
@@ -449,27 +452,27 @@ Public Sub adjustMainControls()
     With fTemperature.temperatureGaugeForm.Widgets("housing/helpbutton").Widget
         .HoverColor = 0 ' set the hover colour to grey - this may change later with new RC6
         .MousePointer = IDC_HAND
-        .Alpha = Val(PzGOpacity) / 100
+        .Alpha = val(PzGOpacity) / 100
     End With
      
     With fTemperature.temperatureGaugeForm.Widgets("housing/startbutton").Widget
         .HoverColor = 0 ' set the hover colour to grey - this may change later with new RC6
         .MousePointer = IDC_HAND
-        .Alpha = Val(PzGOpacity) / 100
+        .Alpha = val(PzGOpacity) / 100
         .Tag = 0.25
     End With
       
     With fTemperature.temperatureGaugeForm.Widgets("housing/stopbutton").Widget
         .HoverColor = 0 ' set the hover colour to grey - this may change later with new RC6
         .MousePointer = IDC_HAND
-        .Alpha = Val(PzGOpacity) / 100
+        .Alpha = val(PzGOpacity) / 100
         .Tag = 0.25
     End With
       
     With fTemperature.temperatureGaugeForm.Widgets("housing/switchfacesbutton").Widget
         .HoverColor = 0 ' set the hover colour to grey - this may change later with new RC6
         .MousePointer = IDC_HAND
-        .Alpha = Val(PzGOpacity) / 100
+        .Alpha = val(PzGOpacity) / 100
     End With
           
     With fTemperature.temperatureGaugeForm.Widgets("housing/lockbutton").Widget
@@ -480,7 +483,7 @@ Public Sub adjustMainControls()
     With fTemperature.temperatureGaugeForm.Widgets("housing/prefsbutton").Widget
         .HoverColor = 0 ' set the hover colour to grey - this may change later with new RC6
         .MousePointer = IDC_HAND
-        .Alpha = Val(PzGOpacity) / 100
+        .Alpha = val(PzGOpacity) / 100
     End With
           
     With fTemperature.temperatureGaugeForm.Widgets("housing/tickbutton").Widget
@@ -491,13 +494,13 @@ Public Sub adjustMainControls()
     With fTemperature.temperatureGaugeForm.Widgets("housing/surround").Widget
         .HoverColor = 0 ' set the hover colour to grey - this may change later with new RC6
         .MousePointer = IDC_SIZEALL
-        .Alpha = Val(PzGOpacity) / 100
+        .Alpha = val(PzGOpacity) / 100
 
     End With
     
     If PzGPointerAnimate = "0" Then
         overlayWidget.pointerAnimate = False
-        fTemperature.temperatureGaugeForm.Widgets("housing/tickbutton").Widget.Alpha = Val(PzGOpacity) / 100
+        fTemperature.temperatureGaugeForm.Widgets("housing/tickbutton").Widget.Alpha = val(PzGOpacity) / 100
     Else
         overlayWidget.pointerAnimate = True
         fTemperature.temperatureGaugeForm.Widgets("housing/tickbutton").Widget.Alpha = 0
@@ -506,16 +509,16 @@ Public Sub adjustMainControls()
     If PzGPreventDragging = "0" Then
         menuForm.mnuLockWidget.Checked = False
         overlayWidget.Locked = False
-        fTemperature.temperatureGaugeForm.Widgets("housing/lockbutton").Widget.Alpha = Val(PzGOpacity) / 100
+        fTemperature.temperatureGaugeForm.Widgets("housing/lockbutton").Widget.Alpha = val(PzGOpacity) / 100
     Else
         menuForm.mnuLockWidget.Checked = True
         overlayWidget.Locked = True ' this is just here for continuity's sake, it is also set at the time the control is selected
         fTemperature.temperatureGaugeForm.Widgets("housing/lockbutton").Widget.Alpha = 0
     End If
 
-    overlayWidget.thisOpacity = Val(PzGOpacity)
-    overlayWidget.samplingInterval = Val(PzGSamplingInterval)
-    overlayWidget.thisFace = Val(PzGTemperatureScale)
+    overlayWidget.thisOpacity = val(PzGOpacity)
+    overlayWidget.samplingInterval = val(PzGSamplingInterval)
+    overlayWidget.thisFace = val(PzGTemperatureScale)
                
     ' set the z-ordering of the window
     Call setAlphaFormZordering
@@ -548,11 +551,11 @@ Public Sub setAlphaFormZordering()
 
    On Error GoTo setAlphaFormZordering_Error
 
-    If Val(PzGWindowLevel) = 0 Then
+    If val(PzGWindowLevel) = 0 Then
         Call SetWindowPos(fTemperature.temperatureGaugeForm.hwnd, HWND_BOTTOM, 0&, 0&, 0&, 0&, OnTopFlags)
-    ElseIf Val(PzGWindowLevel) = 1 Then
+    ElseIf val(PzGWindowLevel) = 1 Then
         Call SetWindowPos(fTemperature.temperatureGaugeForm.hwnd, HWND_TOP, 0&, 0&, 0&, 0&, OnTopFlags)
-    ElseIf Val(PzGWindowLevel) = 2 Then
+    ElseIf val(PzGWindowLevel) = 2 Then
         Call SetWindowPos(fTemperature.temperatureGaugeForm.hwnd, HWND_TOPMOST, 0&, 0&, 0&, 0&, OnTopFlags)
     End If
 
@@ -582,8 +585,9 @@ Public Sub readSettingsFile(ByVal location As String, ByVal PzGSettingsFile As S
         PzGPointerAnimate = fGetINISetting(location, "pointerAnimate", PzGSettingsFile)
         PzGSamplingInterval = fGetINISetting(location, "samplingInterval", PzGSettingsFile)
         PzGTemperatureScale = fGetINISetting(location, "temperatureScale", PzGSettingsFile)
-
-
+        PzGPressureScale = fGetINISetting(location, "pressureScale", PzGSettingsFile)
+        PzGWindSpeedScale = fGetINISetting(location, "windSpeedScale", PzGSettingsFile)
+        PzGMetricImperial = fGetINISetting(location, "metricImperial", PzGSettingsFile)
 
         ' configuration
         PzGEnableTooltips = fGetINISetting(location, "enableTooltips", PzGSettingsFile)
@@ -640,9 +644,8 @@ Public Sub readSettingsFile(ByVal location As String, ByVal PzGSettingsFile As S
         PzGPreventDragging = fGetINISetting(location, "preventDragging", PzGSettingsFile)
         PzGOpacity = fGetINISetting(location, "opacity", PzGSettingsFile)
         
-        
+        PzGLastUpdated = fGetINISetting(location, "lastUpdated", PzGSettingsFile)
 
-        
         ' we do not want the widget to hide at startup
         'PzGWidgetHidden = fGetINISetting(location, "widgetHidden", PzGSettingsFile)
         PzGWidgetHidden = "0"
@@ -683,6 +686,10 @@ Public Sub validateInputs()
         If PzGPointerAnimate = vbNullString Then PzGPointerAnimate = "0"
         If PzGSamplingInterval = vbNullString Then PzGSamplingInterval = "3"
         If PzGTemperatureScale = vbNullString Then PzGTemperatureScale = "0"
+        If PzGPressureScale = vbNullString Then PzGPressureScale = "0" ' "Millibars"
+        If PzGWindSpeedScale = vbNullString Then PzGWindSpeedScale = "0"
+        If PzGMetricImperial = vbNullString Then PzGMetricImperial = "0"
+        
         If PzGIcao = vbNullString Then PzGIcao = "EGSH"
 
 
@@ -739,6 +746,9 @@ Public Sub validateInputs()
         If PzGLastSelectedTab = vbNullString Then PzGLastSelectedTab = "general"
         If PzGSkinTheme = vbNullString Then PzGSkinTheme = "dark"
         
+        If PzGLastUpdated = vbNullString Then PzGLastUpdated = Now()
+ 
+ 
    On Error GoTo 0
    Exit Sub
 

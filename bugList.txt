@@ -5,9 +5,32 @@ DONE
 
 ' smooth pointer - flick/smooth - done
 
+help images updated
+readme.md updated
+add barometer and vars reading/writing, validation &c - done
+add anemometer and vars reading/writing, validation &c  - done
+add windspeed and vars reading/writing, validation &c  - done
+add metric/imperial and vars reading/writing, validation &c - done
+
 TODO
+
 ' progressing through myStatusProc
 '             determineWeatherConditionIcon - wip - needs to return several values for icon types, perhaps split
+
+         iconSrc = "Resources/images/icons_metar/night/n_" & weatherIconSrc
+         weatherIconSrc = iconSrc
+         precedingSrc = iconSrc
+         followingSrc = iconSrc
+         exoticIconSrc
+         fogIconSrc
+         showersIconSrc
+
+' the approach now is to create the temperature gauge and to make it operate, extracting all the data that is required for ALL gauges.
+' later on, we may have a master gauge that obtains the data. So, all the gauges may have the extraction code.
+
+' we may have a last poll date that each checks beforehand.
+
+
 
 ' help  -
 ' help CHM -
