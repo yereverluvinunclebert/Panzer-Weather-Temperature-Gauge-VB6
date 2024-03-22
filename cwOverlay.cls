@@ -1092,8 +1092,8 @@ Private Sub myStatusProc()
                         cloud_base_ft_agl(SkyConditionCounter) = cloudNodeValue
                             
                     End If
-                    If debugFlg = 1 Then Debug.Print ("%myStatusProc - sky_condition, sky_cover " + sky_condition_items(attributeCounter))
-                    If debugFlg = 1 Then Debug.Print ("%myStatusProc - sky_condition, cloud_base_ft_agl " + cloud_base_ft_agl(attributeCounter))
+                    If debugFlg = 1 Then Debug.Print ("%myStatusProc - sky_condition, sky_cover " + sky_condition_items(SkyConditionCounter))
+                    If debugFlg = 1 Then Debug.Print ("%myStatusProc - sky_condition, cloud_base_ft_agl " + cloud_base_ft_agl(SkyConditionCounter))
                     SkyConditionCounter = SkyConditionCounter + 1
                 Next
             End If
@@ -1131,7 +1131,11 @@ Private Sub myStatusProc()
     skyClarity = get_cloud_cover(sky_condition_items())
 
     ' decode the base cloud from the upperbound of the cloud array but only if the array is populated
-    If (Not cloud_base_ft_agl) = -1 Then baseCloud = cloud_base_ft_agl(UBound(cloud_base_ft_agl))
+    If (Not cloud_base_ft_agl) = -1 Then
+        Debug.Print "this array is NOT initialized"
+    Else
+        baseCloud = cloud_base_ft_agl(UBound(cloud_base_ft_agl))
+    End If
     
     ' add the base cloud to the visibility string
     skyClarityString = fAddBaseCloudToSkyClarity(baseCloud, skyClarity)
@@ -1330,22 +1334,22 @@ Function get_cloud_cover(ByRef sky_condition_items() As String) As String
    
     On Error GoTo get_cloud_cover_Error
 
-    If (sky_condition_items(0) = "SKC") Then skyClarity = "clear_skies"
-    If (sky_condition_items(0) = "CLR") Then skyClarity = "clear_skies"
-    If (sky_condition_items(0) = "FEW") Then skyClarity = "partly_cloudy"
-    If (sky_condition_items(0) = "SCT") Then skyClarity = "scattered_clouds"
-    If (sky_condition_items(0) = "BKN") Then skyClarity = "mostly_cloudy"
-    If (sky_condition_items(0) = "OVC") Then skyClarity = "overcast"
-    If (sky_condition_items(0) = "VV ") Then skyClarity = "vertical_visibility"
-    If (sky_condition_items(0) = "CAVOK ") Then skyClarity = "ceiling_and_visibility_OK"
+    If (sky_condition_items(0) = "SKC") Then skyClarity = "Clear skies"
+    If (sky_condition_items(0) = "CLR") Then skyClarity = "Clear skies"
+    If (sky_condition_items(0) = "FEW") Then skyClarity = "Partly cloudy"
+    If (sky_condition_items(0) = "SCT") Then skyClarity = "Scattered clouds"
+    If (sky_condition_items(0) = "BKN") Then skyClarity = "Mostly cloudy"
+    If (sky_condition_items(0) = "OVC") Then skyClarity = "Overcast"
+    If (sky_condition_items(0) = "VV ") Then skyClarity = "Vertical visibility"
+    If (sky_condition_items(0) = "CAVOK ") Then skyClarity = "Ceiling and visibility OK"
 
 '    (1) there are no clouds below 5000 feet above aerodrome level (AAL) or minimum sector altitude (whichever is higher) and no cumulonimbus or towering cumulus (2) visibility is at least 10 kilometres (6 statute miles) or more and (3) no current or forecast significant weather such as precipitation, thunderstorms, shallow fog or low drifting snow
 
     If (Not sky_condition_items) = -1 Then
-        If (sky_condition_items(1) = "FEW" And Not sky_condition_items(0) = sky_condition_items(1)) Then skyClarity = skyClarity & " + " & "partly cloudy"
-        If (sky_condition_items(1) = "SCT" And Not sky_condition_items(0) = sky_condition_items(1)) Then skyClarity = skyClarity & " + " & "scattered clouds"
-        If (sky_condition_items(1) = "BKN" And Not sky_condition_items(0) = sky_condition_items(1)) Then skyClarity = skyClarity & " + " & "mostly cloudy"
-        If (sky_condition_items(1) = "OVC" And Not sky_condition_items(0) = sky_condition_items(1)) Then skyClarity = skyClarity & " + " & "overcast"
+        If (sky_condition_items(1) = "FEW" And Not sky_condition_items(0) = sky_condition_items(1)) Then skyClarity = skyClarity & " + " & "Partly cloudy"
+        If (sky_condition_items(1) = "SCT" And Not sky_condition_items(0) = sky_condition_items(1)) Then skyClarity = skyClarity & " + " & "Scattered clouds"
+        If (sky_condition_items(1) = "BKN" And Not sky_condition_items(0) = sky_condition_items(1)) Then skyClarity = skyClarity & " + " & "Mostly cloudy"
+        If (sky_condition_items(1) = "OVC" And Not sky_condition_items(0) = sky_condition_items(1)) Then skyClarity = skyClarity & " + " & "Overcast"
     End If
     If (debugFlg = 1) Then Debug.Print ("%get_cloud_cover - part " & skyClarity)
     get_cloud_cover = skyClarity 'return skyClarity
@@ -1740,15 +1744,15 @@ Private Function setHoverTooltip(ByVal skyClarityString As String, ByVal humidit
         tooltipString = tooltipString & "Temperature" & ": " & Round(Int(temperatureValue + 273.15), 2) & " K " & vbCrLf
     End If
     
-    tooltipString = tooltipString & "Humidity" & ": " & humidityValue & " % " & " " & skyClarityString & " " & vbCrLf
+    tooltipString = tooltipString & "Humidity" & ": " & humidityValue & " % " & vbCrLf & skyClarityString & " " & vbCrLf
    
     If PzGWindSpeedScale = "0" Then  ' knots
-        tooltipString = tooltipString & "wind speed is" & " " & wind_speed_kt & " knots, "
+        tooltipString = tooltipString & "Wind speed is" & " " & wind_speed_kt & " knots, "
     Else
-        tooltipString = tooltipString & "wind speed is" & " " & Int(wind_speed_kt * 0.51444) & " m/sec, "
+        tooltipString = tooltipString & "Wind speed is" & " " & Int(wind_speed_kt * 0.51444) & " m/sec, "
     End If
 
-    tooltipString = tooltipString & "strength force" & " " & force & ", " & "direction" & " " & compassDirection
+    tooltipString = tooltipString & "strength force " & force & ", " & "direction" & " " & compassDirection
 
     If (precip_in <> vbNullString) Then
        tooltipString = tooltipString & " " & "precipitation is" & " " & precip_in & " inches"
