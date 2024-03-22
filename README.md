@@ -37,12 +37,12 @@ command of your choice. The widget takes command line-style commands for
 windows. Mouse hover over the widget and press CTRL+mousewheel up/down to resize. It works well on Windows XP
 to Windows 11.
 
-It takes the weather data from forecasts provided by airports and airfields. If you 
-can find an airfield nearby that has an ICAO code then using this it will supply local 
-weather data. You enter your local town name and if it has an airfield then it 
-will have a forecast. The data feed is provided by Aviation Weather GOV - 
+It takes the weather data from forecasts provided by airports and airfields. If you
+can find an airfield nearby that has an ICAO code then using this it will supply local
+weather data. You enter your local town name and if it has an airfield then it
+will have a forecast. The data feed is provided by Aviation Weather GOV -
 
-	aviationweather.gov/  
+    aviationweather.gov/
 
 ![panzer-weather-help](https://github.com/yereverluvinunclebert/Panzer-Weather-Widget/assets/2788342/23582667-4a0d-4719-b6a0-b1a1407ccf7f)
 
@@ -72,9 +72,7 @@ contribute.
 
 ![panzer-weather-gauges](https://github.com/yereverluvinunclebert/Panzer-Weather-Widget/assets/2788342/9d1fb5ee-0e4e-467a-a337-36fd2fa9bc64)
 
-BUILD: The program runs without any Microsoft plugins.
-
-
+BUILD: The program runs without any Microsoft plugins but does require some components as project Reference, specifically Microsoft XML, v3.0. See the project references section below.
 
 Built using: VB6, MZ-TOOLS 3.0, VBAdvance, CodeHelp Core IDE Extender
 Framework 2.2 & Rubberduck 2.4.1, RichClient 6
@@ -85,11 +83,10 @@ Links:
     MZ-TOOLS https://www.mztools.com/
     CodeHelp http://www.planetsourcecode.com/vb/scripts/ShowCode.asp?txtCodeId=62468&lngWId=1
     Rubberduck http://rubberduckvba.com/
-    Rocketdock https://punklabs.com/
     Registry code ALLAPI.COM
     La Volpe http://www.planet-source-code.com/vb/scripts/ShowCode.asp?txtCodeId=67466&lngWId=1
     PrivateExtractIcons code http://www.activevb.de/rubriken/
-    Persistent debug code http://www.vbforums.com/member.php?234143-Elroy
+    Balloon Tooltips - Elroy on VBforums.
     Open File common dialog code without dependent OCX - http://forums.codeguru.com/member.php?92278-rxbagain
     VBAdvance
 
@@ -207,11 +204,11 @@ Project References:
     VisualBasic for Applications
     VisualBasic Runtime Objects and Procedures
     VisualBasic Objects and Procedures
-    OLE Automation
-    vbRichClient6 - RC6Widgets (RC6Widgets.DLL) - RC6 (RC6.DLL)
+    vbRichClient6 - RC6Widgets (RC6Widgets.DLL)
+    vbRichClient6 - RC6 (RC6.DLL)
+    Microsoft XML, v3.0 c:/windows/SysWow64/msxml3.dll
 
-
-![weather](https://github.com/yereverluvinunclebert/Panzer-Weather-Widget/assets/2788342/4ab9945b-f460-43c9-b2d2-92a0643c50d0)    
+![weather](https://github.com/yereverluvinunclebert/Panzer-Weather-Widget/assets/2788342/4ab9945b-f460-43c9-b2d2-92a0643c50d0)
 
 LICENCE AGREEMENTS:
 
@@ -223,7 +220,6 @@ permission. In all other non-commercial cases I require a credit to the
 original artist using my name or one of my pseudonyms and a link to my site.
 With regard to the commercial use of incorporated images, permission and a
 licence would need to be obtained from the original owner and creator, ie. me.
-
 
 ![about](https://github.com/yereverluvinunclebert/Panzer-Weather-Gauges-VB6/assets/2788342/d36355ff-0289-4145-b9bf-641aad58041e)
 

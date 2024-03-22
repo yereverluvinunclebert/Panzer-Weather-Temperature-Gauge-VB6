@@ -105,7 +105,7 @@ Option Explicit
 
 '---------------------------------------------------------------------------------------
 ' Procedure : Form_Load
-' Author    : beededea
+' Author    : Dean Beedell (yereverluvinunclebert)
 ' Date      : 07/04/2020
 ' Purpose   : We have a separate form for the right click menu. We do not need an on-form menu for the
 '               various RC6 forms so a native VB6 menu will do. It looks good in any case as it is
@@ -134,7 +134,7 @@ End Sub
 
 '---------------------------------------------------------------------------------------
 ' Procedure : menuReload_Click
-' Author    : beededea
+' Author    : Dean Beedell (yereverluvinunclebert)
 ' Date      : 03/05/2023
 ' Purpose   :
 '---------------------------------------------------------------------------------------
@@ -164,7 +164,7 @@ End Sub
 
 '---------------------------------------------------------------------------------------
 ' Procedure : mnuAppFolder_Click
-' Author    : beededea
+' Author    : Dean Beedell (yereverluvinunclebert)
 ' Date      : 05/05/2023
 ' Purpose   :
 '---------------------------------------------------------------------------------------
@@ -198,7 +198,7 @@ End Sub
 
 '---------------------------------------------------------------------------------------
 ' Procedure : mnuEditWidget_Click
-' Author    : beededea
+' Author    : Dean Beedell (yereverluvinunclebert)
 ' Date      : 05/05/2023
 ' Purpose   :
 '---------------------------------------------------------------------------------------
@@ -234,7 +234,7 @@ End Sub
 
 '---------------------------------------------------------------------------------------
 ' Procedure : mnuHelpHTM_Click
-' Author    : beededea
+' Author    : Dean Beedell (yereverluvinunclebert)
 ' Date      : 14/05/2023
 ' Purpose   :
 '---------------------------------------------------------------------------------------
@@ -260,7 +260,7 @@ End Sub
 
 '---------------------------------------------------------------------------------------
 ' Procedure : mnuHelpSplash_Click
-' Author    : beededea
+' Author    : Dean Beedell (yereverluvinunclebert)
 ' Date      : 03/08/2023
 ' Purpose   :
 '---------------------------------------------------------------------------------------
@@ -286,7 +286,7 @@ End Sub
 
 '---------------------------------------------------------------------------------------
 ' Procedure : mnuHideWidget_Click
-' Author    : beededea
+' Author    : Dean Beedell (yereverluvinunclebert)
 ' Date      : 14/05/2023
 ' Purpose   :
 '---------------------------------------------------------------------------------------
@@ -311,7 +311,7 @@ End Sub
 
 '---------------------------------------------------------------------------------------
 ' Procedure : mnuLockWidget_Click
-' Author    : beededea
+' Author    : Dean Beedell (yereverluvinunclebert)
 ' Date      : 05/05/2023
 ' Purpose   :
 '---------------------------------------------------------------------------------------
@@ -336,7 +336,7 @@ End Sub
 
 '---------------------------------------------------------------------------------------
 ' Procedure : mnuProgramPreferences_Click
-' Author    : beededea
+' Author    : Dean Beedell (yereverluvinunclebert)
 ' Date      : 07/05/2023
 ' Purpose   :
 '---------------------------------------------------------------------------------------
@@ -362,7 +362,7 @@ End Sub
 
 '---------------------------------------------------------------------------------------
 ' Procedure : mnuQuit_Click
-' Author    : beededea
+' Author    : Dean Beedell (yereverluvinunclebert)
 ' Date      : 07/04/2020
 ' Purpose   :
 '---------------------------------------------------------------------------------------
@@ -384,7 +384,7 @@ End Sub
 
 '---------------------------------------------------------------------------------------
 ' Procedure : mnuCoffee_Click
-' Author    : beededea
+' Author    : Dean Beedell (yereverluvinunclebert)
 ' Date      : 13/02/2019
 ' Purpose   : main menu item to buy the developer a coffee
 '---------------------------------------------------------------------------------------
@@ -406,7 +406,7 @@ End Sub
 
 '---------------------------------------------------------------------------------------
 ' Procedure : mnuFacebook_Click
-' Author    : beededea
+' Author    : Dean Beedell (yereverluvinunclebert)
 ' Date      : 14/02/2019
 ' Purpose   :
 '---------------------------------------------------------------------------------------
@@ -438,7 +438,7 @@ End Sub
 
 '---------------------------------------------------------------------------------------
 ' Procedure : mnuLatest_Click
-' Author    : beededea
+' Author    : Dean Beedell (yereverluvinunclebert)
 ' Date      : 13/02/2019
 ' Purpose   :
 '---------------------------------------------------------------------------------------
@@ -471,7 +471,7 @@ End Sub
 
 '---------------------------------------------------------------------------------------
 ' Procedure : mnuLicence_Click
-' Author    : beededea
+' Author    : Dean Beedell (yereverluvinunclebert)
 ' Date      : 14/02/2019
 ' Purpose   :
 '---------------------------------------------------------------------------------------
@@ -494,7 +494,7 @@ End Sub
 
 '---------------------------------------------------------------------------------------
 ' Procedure : mnuSupport_Click
-' Author    : beededea
+' Author    : Dean Beedell (yereverluvinunclebert)
 ' Date      : 13/02/2019
 ' Purpose   :
 '---------------------------------------------------------------------------------------
@@ -515,7 +515,7 @@ End Sub
 
 ''---------------------------------------------------------------------------------------
 '' Procedure : mnuSweets_Click
-'' Author    : beededea
+'' Author    : Dean Beedell (yereverluvinunclebert)
 '' Date      : 13/02/2019
 '' Purpose   :
 ''---------------------------------------------------------------------------------------
@@ -544,7 +544,7 @@ End Sub
 
 '---------------------------------------------------------------------------------------
 ' Procedure : mnuSwitchOff_Click
-' Author    : beededea
+' Author    : Dean Beedell (yereverluvinunclebert)
 ' Date      : 05/05/2023
 ' Purpose   :
 '---------------------------------------------------------------------------------------
@@ -567,7 +567,7 @@ End Sub
 
 '---------------------------------------------------------------------------------------
 ' Procedure : mnuTurnFunctionsOn_Click
-' Author    : beededea
+' Author    : Dean Beedell (yereverluvinunclebert)
 ' Date      : 05/05/2023
 ' Purpose   :
 '---------------------------------------------------------------------------------------
@@ -589,7 +589,7 @@ End Sub
 
 '---------------------------------------------------------------------------------------
 ' Procedure : mnuWidgets_Click
-' Author    : beededea
+' Author    : Dean Beedell (yereverluvinunclebert)
 ' Date      : 13/02/2019
 ' Purpose   :
 '---------------------------------------------------------------------------------------
@@ -620,7 +620,7 @@ End Sub
 
 '---------------------------------------------------------------------------------------
 ' Procedure : mnuAbout_Click
-' Author    : beededea
+' Author    : Dean Beedell (yereverluvinunclebert)
 ' Date      : 13/02/2019
 ' Purpose   :
 '---------------------------------------------------------------------------------------

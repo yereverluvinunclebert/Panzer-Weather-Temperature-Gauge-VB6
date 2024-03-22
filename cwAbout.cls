@@ -14,7 +14,7 @@ Attribute VB_Exposed = False
 '@IgnoreModule IntegerDataType, ModuleWithoutFolder
 '---------------------------------------------------------------------------------------
 ' Class Module      : cwAbout
-' Author            : beededea
+' Author            : Dean Beedell (yereverluvinunclebert)
 ' Date              : 17/05/2023
 ' Purpose           :
 '---------------------------------------------------------------------------------------
@@ -41,7 +41,7 @@ Private mZoom As Double
 
 '---------------------------------------------------------------------------------------
 ' Procedure : Class_Initialize
-' Author    : beededea
+' Author    : Dean Beedell (yereverluvinunclebert)
 ' Date      : 17/05/2023
 ' Purpose   :
 '---------------------------------------------------------------------------------------
@@ -108,7 +108,7 @@ Widgets_Error:
 End Property
 '---------------------------------------------------------------------------------------
 ' Procedure : Zoom
-' Author    : beededea
+' Author    : Dean Beedell (yereverluvinunclebert)
 ' Date      : 17/05/2023
 ' Purpose   :
 '---------------------------------------------------------------------------------------
@@ -127,7 +127,7 @@ ZoomGet_Error:
 End Property
 '---------------------------------------------------------------------------------------
 ' Procedure : Zoom
-' Author    : beededea
+' Author    : Dean Beedell (yereverluvinunclebert)
 ' Date      : 17/05/2023
 ' Purpose   :
 '---------------------------------------------------------------------------------------
@@ -149,7 +149,7 @@ End Property
 
 '---------------------------------------------------------------------------------------
 ' Procedure : W_MouseDown
-' Author    : beededea
+' Author    : Dean Beedell (yereverluvinunclebert)
 ' Date      : 17/05/2023
 ' Purpose   :
 '---------------------------------------------------------------------------------------
@@ -175,7 +175,7 @@ W_MouseDown_Error:
 End Sub
 '---------------------------------------------------------------------------------------
 ' Procedure : MyOpacity
-' Author    : beededea
+' Author    : Dean Beedell (yereverluvinunclebert)
 ' Date      : 17/05/2023
 ' Purpose   :
 '---------------------------------------------------------------------------------------
@@ -194,7 +194,7 @@ MyOpacityLet_Error:
 End Property
 '---------------------------------------------------------------------------------------
 ' Procedure : MyOpacity
-' Author    : beededea
+' Author    : Dean Beedell (yereverluvinunclebert)
 ' Date      : 17/05/2023
 ' Purpose   :
 '---------------------------------------------------------------------------------------
@@ -214,7 +214,7 @@ End Property
 
 '---------------------------------------------------------------------------------------
 ' Procedure : ShowMe
-' Author    : beededea
+' Author    : Dean Beedell (yereverluvinunclebert)
 ' Date      : 17/05/2023
 ' Purpose   :
 '---------------------------------------------------------------------------------------
@@ -235,7 +235,7 @@ ShowMeLet_Error:
 End Property
 '---------------------------------------------------------------------------------------
 ' Procedure : ShowMe
-' Author    : beededea
+' Author    : Dean Beedell (yereverluvinunclebert)
 ' Date      : 17/05/2023
 ' Purpose   :
 '---------------------------------------------------------------------------------------
@@ -256,7 +256,7 @@ End Property
 '
 '---------------------------------------------------------------------------------------
 ' Procedure : tmrAboutFadeIn_Timer
-' Author    : beededea
+' Author    : Dean Beedell (yereverluvinunclebert)
 ' Date      : 17/05/2023
 ' Purpose   : timer to make the about form or about image fade in opacity
 '---------------------------------------------------------------------------------------
@@ -285,7 +285,7 @@ End Sub
 '
 '---------------------------------------------------------------------------------------
 ' Procedure : tmrAboutFadeOut_Timer
-' Author    : beededea
+' Author    : Dean Beedell (yereverluvinunclebert)
 ' Date      : 17/05/2023
 ' Purpose   : timer to make the about form or about image fade out in opacity
 '---------------------------------------------------------------------------------------
@@ -313,7 +313,7 @@ tmrAboutFadeOut_Timer_Error:
 End Sub
 '---------------------------------------------------------------------------------------
 ' Procedure : W_Paint
-' Author    : beededea
+' Author    : Dean Beedell (yereverluvinunclebert)
 ' Date      : 17/05/2023
 ' Purpose   :
 '---------------------------------------------------------------------------------------
@@ -333,7 +333,7 @@ End Sub
 
 '---------------------------------------------------------------------------------------
 ' Procedure : Draw
-' Author    : beededea
+' Author    : Dean Beedell (yereverluvinunclebert)
 ' Date      : 17/05/2023
 ' Purpose   :
 '---------------------------------------------------------------------------------------

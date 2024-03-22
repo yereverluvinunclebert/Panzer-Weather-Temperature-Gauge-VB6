@@ -48,7 +48,7 @@ Public widgetName As String
 
 '---------------------------------------------------------------------------------------
 ' Procedure : Main
-' Author    : beededea
+' Author    : Dean Beedell (yereverluvinunclebert)
 ' Date      : 27/04/2023
 ' Purpose   :
 '---------------------------------------------------------------------------------------
@@ -69,7 +69,7 @@ End Sub
 
 '---------------------------------------------------------------------------------------
 ' Procedure : main_routine
-' Author    : beededea
+' Author    : Dean Beedell (yereverluvinunclebert)
 ' Date      : 27/06/2023
 ' Purpose   : called by sub main() to allow this routine to be called elsewhere,
 '             a reload for example.
@@ -189,7 +189,7 @@ End Sub
  
 '---------------------------------------------------------------------------------------
 ' Procedure : checkFirstTime
-' Author    : beededea
+' Author    : Dean Beedell (yereverluvinunclebert)
 ' Date      : 12/05/2023
 ' Purpose   : check for first time running, first time run shows prefs
 '---------------------------------------------------------------------------------------
@@ -217,7 +217,7 @@ End Sub
 
 '---------------------------------------------------------------------------------------
 ' Procedure : initialiseGlobalVars
-' Author    : beededea
+' Author    : Dean Beedell (yereverluvinunclebert)
 ' Date      : 12/05/2023
 ' Purpose   : initialise global vars
 '---------------------------------------------------------------------------------------
@@ -342,7 +342,7 @@ End Sub
         
 '---------------------------------------------------------------------------------------
 ' Procedure : addImagesToImageList
-' Author    : beededea
+' Author    : Dean Beedell (yereverluvinunclebert)
 ' Date      : 27/04/2023
 ' Purpose   : add Resources to the global ImageList
 '---------------------------------------------------------------------------------------
@@ -405,7 +405,7 @@ addImagesToImageList_Error:
 End Sub
 '---------------------------------------------------------------------------------------
 ' Procedure : adjustMainControls
-' Author    : beededea
+' Author    : Dean Beedell (yereverluvinunclebert)
 ' Date      : 27/04/2023
 ' Purpose   : called at runtime and on restart, sets the characteristics of the gauge, individual controls and menus
 '---------------------------------------------------------------------------------------
@@ -542,7 +542,7 @@ End Sub
 
 '---------------------------------------------------------------------------------------
 ' Procedure : setAlphaFormZordering
-' Author    : beededea
+' Author    : Dean Beedell (yereverluvinunclebert)
 ' Date      : 02/05/2023
 ' Purpose   : set the z-ordering of the window
 '---------------------------------------------------------------------------------------
@@ -569,7 +569,7 @@ End Sub
 
 '---------------------------------------------------------------------------------------
 ' Procedure : readSettingsFile
-' Author    : beededea
+' Author    : Dean Beedell (yereverluvinunclebert)
 ' Date      : 12/05/2020
 ' Purpose   : read the application's setting file and assign values to public vars
 '---------------------------------------------------------------------------------------
@@ -670,7 +670,7 @@ End Sub
     
 '---------------------------------------------------------------------------------------
 ' Procedure : validateInputs
-' Author    : beededea
+' Author    : Dean Beedell (yereverluvinunclebert)
 ' Date      : 17/06/2020
 ' Purpose   : validate the relevant entries from the settings.ini file in user appdata
 '---------------------------------------------------------------------------------------
@@ -759,7 +759,7 @@ End Sub
 
 '---------------------------------------------------------------------------------------
 ' Procedure : getTrinketsFile
-' Author    : beededea
+' Author    : Dean Beedell (yereverluvinunclebert)
 ' Date      : 17/10/2019
 ' Purpose   : get this tool's entry in the trinkets settings file and assign the app.path
 '---------------------------------------------------------------------------------------
@@ -799,7 +799,7 @@ End Sub
 
 '---------------------------------------------------------------------------------------
 ' Procedure : getToolSettingsFile
-' Author    : beededea
+' Author    : Dean Beedell (yereverluvinunclebert)
 ' Date      : 17/10/2019
 ' Purpose   : get this tool's settings file and assign to a global var
 '---------------------------------------------------------------------------------------
@@ -841,7 +841,7 @@ End Sub
 '
 '---------------------------------------------------------------------------------------
 ' Procedure : configureTimers
-' Author    : beededea
+' Author    : Dean Beedell (yereverluvinunclebert)
 ' Date      : 07/05/2023
 ' Purpose   : configure any global timers here
 '---------------------------------------------------------------------------------------
@@ -872,7 +872,7 @@ End Sub
 '
 '---------------------------------------------------------------------------------------
 ' Procedure : setHidingTime
-' Author    : beededea
+' Author    : Dean Beedell (yereverluvinunclebert)
 ' Date      : 07/05/2023
 ' Purpose   : set the hiding time for the hiding timer, can't read the minutes from comboxbox as the prefs isn't yet open
 '---------------------------------------------------------------------------------------
@@ -904,7 +904,7 @@ End Sub
 
 '---------------------------------------------------------------------------------------
 ' Procedure : createRCFormsOnCurrentDisplay
-' Author    : beededea
+' Author    : Dean Beedell (yereverluvinunclebert)
 ' Date      : 07/05/2023
 ' Purpose   :
 '---------------------------------------------------------------------------------------
@@ -940,7 +940,7 @@ End Sub
 
 '---------------------------------------------------------------------------------------
 ' Procedure : handleUnhideMode
-' Author    : beededea
+' Author    : Dean Beedell (yereverluvinunclebert)
 ' Date      : 13/05/2023
 ' Purpose   : when run in 'unhide' mode it writes the settings file then exits, the other
 '             running but hidden process will unhide itself by timer.
@@ -972,7 +972,7 @@ End Sub
 
 '---------------------------------------------------------------------------------------
 ' Procedure : loadExcludePathCollection
-' Author    : beededea
+' Author    : Dean Beedell (yereverluvinunclebert)
 ' Date      : 30/07/2023
 ' Purpose   : Do not create Widgets for those in the exclude list.
 '             all non UI-interacting elements (no mouse events) must be inserted here
@@ -1057,7 +1057,7 @@ End Sub
 ' .74 DAEB 22/05/2022 rDIConConfig.frm Msgbox replacement that can be placed on top of the form instead as the middle of the screen, see Steamydock for a potential replacement?
 '---------------------------------------------------------------------------------------
 ' Procedure : msgBoxA
-' Author    : beededea
+' Author    : Dean Beedell (yereverluvinunclebert)
 ' Date      : 20/05/2022
 ' Purpose   : ans = msgBoxA("main message", vbOKOnly, "title bar message", False)
 '---------------------------------------------------------------------------------------

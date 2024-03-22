@@ -13,7 +13,7 @@ Attribute VB_PredeclaredId = False
 Attribute VB_Exposed = False
 '---------------------------------------------------------------------------------------
 ' Module    : cfTemperature
-' Author    : beededea
+' Author    : Dean Beedell (yereverluvinunclebert)
 ' Date      : 05/12/2023
 ' Purpose   :
 '---------------------------------------------------------------------------------------
@@ -53,7 +53,7 @@ End Sub
 
 '---------------------------------------------------------------------------------------
 ' Procedure : InitFromPSD
-' Author    : olaf schmidt
+' Author    : olaf schmidt & Dean Beedell (yereverluvinunclebert)
 ' Date      : 31/07/2023
 ' Purpose   :    loads up the Cairo imageList with keyed entries and a surface from each and every PSD layer
 '                adds path X,Y and alpha to the excluded collection
@@ -130,7 +130,7 @@ End Sub
 '
 '---------------------------------------------------------------------------------------
 ' Procedure : temperatureGaugeForm_BubblingEvent
-' Author    : beededea
+' Author    : Dean Beedell (yereverluvinunclebert)
 ' Date      : 31/07/2023
 ' Purpose   : central handling of all Click-Events
 '---------------------------------------------------------------------------------------
@@ -222,7 +222,7 @@ temperatureGaugeForm_BubblingEvent_Error:
 End Sub
 '---------------------------------------------------------------------------------------
 ' Procedure : helpbutton_click
-' Author    : beededea
+' Author    : Dean Beedell (yereverluvinunclebert)
 ' Date      : 03/08/2023
 ' Purpose   :
 '---------------------------------------------------------------------------------------
@@ -244,7 +244,7 @@ End Sub
 
 '---------------------------------------------------------------------------------------
 ' Procedure : startbutton_click
-' Author    : beededea
+' Author    : Dean Beedell (yereverluvinunclebert)
 ' Date      : 03/08/2023
 ' Purpose   :
 '---------------------------------------------------------------------------------------
@@ -272,7 +272,7 @@ End Sub
 
 '---------------------------------------------------------------------------------------
 ' Procedure : stopbutton_mouseUp
-' Author    : beededea
+' Author    : Dean Beedell (yereverluvinunclebert)
 ' Date      : 03/08/2023
 ' Purpose   :
 '---------------------------------------------------------------------------------------
@@ -302,7 +302,7 @@ stopbutton_mouseUp_Error:
 End Sub
 '---------------------------------------------------------------------------------------
 ' Procedure : stopbutton_mouseDown
-' Author    : beededea
+' Author    : Dean Beedell (yereverluvinunclebert)
 ' Date      : 03/08/2023
 ' Purpose   :
 '---------------------------------------------------------------------------------------
@@ -324,7 +324,7 @@ stopbutton_mouseDown_Error:
 End Sub
 '---------------------------------------------------------------------------------------
 ' Procedure : switchfacesbutton_mouseDown
-' Author    : beededea
+' Author    : Dean Beedell (yereverluvinunclebert)
 ' Date      : 03/08/2023
 ' Purpose   :
 '---------------------------------------------------------------------------------------
@@ -345,7 +345,7 @@ switchfacesbutton_mouseDown_Error:
 End Sub
 '---------------------------------------------------------------------------------------
 ' Procedure : switchfacesbutton_mouseUp
-' Author    : beededea
+' Author    : Dean Beedell (yereverluvinunclebert)
 ' Date      : 03/08/2023
 ' Purpose   :
 '---------------------------------------------------------------------------------------
@@ -381,7 +381,7 @@ switchfacesbutton_mouseUp_Error:
 End Sub
 '---------------------------------------------------------------------------------------
 ' Procedure : lockbutton_mouseDown
-' Author    : beededea
+' Author    : Dean Beedell (yereverluvinunclebert)
 ' Date      : 03/08/2023
 ' Purpose   :
 '---------------------------------------------------------------------------------------
@@ -407,7 +407,7 @@ lockbutton_mouseDown_Error:
 End Sub
 '---------------------------------------------------------------------------------------
 ' Procedure : prefsbutton_mouseDown
-' Author    : beededea
+' Author    : Dean Beedell (yereverluvinunclebert)
 ' Date      : 03/08/2023
 ' Purpose   :
 '---------------------------------------------------------------------------------------
@@ -437,7 +437,7 @@ prefsbutton_mouseDown_Error:
 End Sub
 '---------------------------------------------------------------------------------------
 ' Procedure : tickbutton_mouseDown
-' Author    : beededea
+' Author    : Dean Beedell (yereverluvinunclebert)
 ' Date      : 03/08/2023
 ' Purpose   :
 '---------------------------------------------------------------------------------------
@@ -482,7 +482,7 @@ End Sub
 
 '---------------------------------------------------------------------------------------
 ' Procedure : temperatureGaugeForm_DblClick
-' Author    : beededea
+' Author    : Dean Beedell (yereverluvinunclebert)
 ' Date      : 05/05/2023
 ' Purpose   :
 '---------------------------------------------------------------------------------------
@@ -533,7 +533,7 @@ End Sub
 
 '---------------------------------------------------------------------------------------
 ' Procedure : temperatureGaugeForm_KeyDown
-' Author    : beededea
+' Author    : Dean Beedell (yereverluvinunclebert)
 ' Date      : 01/06/2019
 ' Purpose   : get F5 and SHIFT keypresses
 '---------------------------------------------------------------------------------------
@@ -553,7 +553,7 @@ End Sub
 ''
 '---------------------------------------------------------------------------------------
 ' Procedure : temperatureGaugeForm_MouseUp
-' Author    : beededea
+' Author    : Dean Beedell (yereverluvinunclebert)
 ' Date      : 05/05/2023
 ' Purpose   : save the form x,y position when ever the gauge/form is dragged
 '---------------------------------------------------------------------------------------
@@ -578,7 +578,7 @@ End Sub
 
 '---------------------------------------------------------------------------------------
 ' Procedure : temperatureGaugeForm_MouseMove
-' Author    : beededea
+' Author    : Dean Beedell (yereverluvinunclebert)
 ' Date      : 31/07/2023
 ' Purpose   :
 '---------------------------------------------------------------------------------------
@@ -609,7 +609,7 @@ End Sub
 
 '---------------------------------------------------------------------------------------
 ' Procedure : temperatureGaugeForm_MouseWheel
-' Author    : beededea
+' Author    : Dean Beedell (yereverluvinunclebert)
 ' Date      : 31/07/2023
 ' Purpose   : rotate forward positive = smaller
 '---------------------------------------------------------------------------------------
@@ -642,7 +642,7 @@ End Sub
 ''
 ''---------------------------------------------------------------------------------------
 '' Procedure : temperatureGaugeForm_ResizeWithDimensionsDIP
-'' Author    : beededea
+'' Author    : Dean Beedell (yereverluvinunclebert)
 '' Date      : 31/07/2023
 '' Purpose   : put any other resizing action in here - unused
 ''---------------------------------------------------------------------------------------

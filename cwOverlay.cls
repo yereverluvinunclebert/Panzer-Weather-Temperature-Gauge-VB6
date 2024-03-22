@@ -14,11 +14,14 @@ Attribute VB_Exposed = False
 '@IgnoreModule IntegerDataType, ModuleWithoutFolder
 '---------------------------------------------------------------------------------------
 ' Module    : cwOverlay
-' Author    : beededea
+' Author    : Dean Beedell (yereverluvinunclebert)
 ' Date      : 31/07/2023
 ' Purpose   : create a fully click-through Widget, which allows for all kind of
 '             things to render on top of the PSD-generated Widgets created in cfTemperature
 '---------------------------------------------------------------------------------------
+
+' Microsoft XML, v3.0
+' c:/windows/SysWow64/msxml3.dll
 
 Option Explicit
 
@@ -68,7 +71,7 @@ Private weHaveData As Boolean
 
 '---------------------------------------------------------------------------------------
 ' Procedure : Class_Initialize
-' Author    : olaf schmidt
+' Author    : Dean Beedell (yereverluvinunclebert)
 ' Date      : 31/07/2023
 ' Purpose   :
 '---------------------------------------------------------------------------------------
@@ -106,7 +109,7 @@ End Sub
 
 '---------------------------------------------------------------------------------------
 ' Procedure : Widget
-' Author    : olaf schmidt
+' Author    : Dean Beedell (yereverluvinunclebert)
 ' Date      : 21/09/2023
 ' Purpose   :
 '---------------------------------------------------------------------------------------
@@ -125,7 +128,7 @@ Widget_Error:
 End Property
 '---------------------------------------------------------------------------------------
 ' Procedure : Widgets
-' Author    : olaf schmidt
+' Author    : Dean Beedell (yereverluvinunclebert)
 ' Date      : 21/09/2023
 ' Purpose   :
 '---------------------------------------------------------------------------------------
@@ -146,7 +149,7 @@ End Property
 
 '---------------------------------------------------------------------------------------
 ' Property : Ticking
-' Author    : beededea
+' Author    : Dean Beedell (yereverluvinunclebert)
 ' Date      : 17/05/2023
 ' Purpose   :
 '---------------------------------------------------------------------------------------
@@ -192,7 +195,7 @@ End Property ' the earth Ticking flag
 
 '---------------------------------------------------------------------------------------
 ' Property : thisOpacity
-' Author    : beededea
+' Author    : Dean Beedell (yereverluvinunclebert)
 ' Date      : 17/05/2023
 ' Purpose   :
 '---------------------------------------------------------------------------------------
@@ -231,7 +234,7 @@ End Property
 
 '---------------------------------------------------------------------------------------
 ' Property : thisSensor
-' Author    : beededea
+' Author    : Dean Beedell (yereverluvinunclebert)
 ' Date      : 17/05/2023
 ' Purpose   :
 '---------------------------------------------------------------------------------------
@@ -272,7 +275,7 @@ End Property
 
 '---------------------------------------------------------------------------------------
 ' Property : samplingInterval
-' Author    : beededea
+' Author    : Dean Beedell (yereverluvinunclebert)
 ' Date      : 17/05/2023
 ' Purpose   :
 '---------------------------------------------------------------------------------------
@@ -302,12 +305,8 @@ Public Property Let samplingInterval(ByVal newValue As String)
     If mSamplingInterval <> newValue Then mSamplingInterval = newValue Else Exit Property
     
     If tmrSampler.Interval = 100 Then Call getData ' allows first early run
-    'If tmrSampler.Interval = 100 Then Call tmrSampler_Timer ' allows first early run
     
     tmrSampler.Interval = val(mSamplingInterval) * 1000
-'    If mPointerAnimate = True Then
-'        If tmrSampler.Interval = 1000 Then tmrSampler.Interval = 1200 ' take into account the animator
-'    End If
     
     On Error GoTo 0
     Exit Property
@@ -318,7 +317,7 @@ samplingIntervalLet_Error:
 End Property
 '---------------------------------------------------------------------------------------
 ' Property : pointerAnimate
-' Author    : beededea
+' Author    : Dean Beedell (yereverluvinunclebert)
 ' Date      : 17/05/2023
 ' Purpose   :
 '---------------------------------------------------------------------------------------
@@ -357,7 +356,7 @@ End Property
 
 '---------------------------------------------------------------------------------------
 ' Property : Locked
-' Author    : beededea
+' Author    : Dean Beedell (yereverluvinunclebert)
 ' Date      : 17/05/2023
 ' Purpose   :
 '---------------------------------------------------------------------------------------
@@ -376,7 +375,7 @@ LockedGet_Error:
 End Property
 '---------------------------------------------------------------------------------------
 ' Property  : Locked
-' Author    : beededea
+' Author    : Dean Beedell (yereverluvinunclebert)
 ' Date      : 17/05/2023
 ' Purpose   :
 '---------------------------------------------------------------------------------------
@@ -397,7 +396,7 @@ End Property
 
 '---------------------------------------------------------------------------------------
 ' Property : TemperatureDetails
-' Author    : beededea
+' Author    : Dean Beedell (yereverluvinunclebert)
 ' Date      : 17/05/2023
 ' Purpose   :
 '---------------------------------------------------------------------------------------
@@ -416,7 +415,7 @@ TemperatureDetailsGet_Error:
 End Property
 '---------------------------------------------------------------------------------------
 ' Property  : TemperatureDetails
-' Author    : beededea
+' Author    : Dean Beedell (yereverluvinunclebert)
 ' Date      : 17/05/2023
 ' Purpose   :
 '---------------------------------------------------------------------------------------
@@ -439,7 +438,7 @@ End Property
 
 '---------------------------------------------------------------------------------------
 ' Property  : Hidden
-' Author    : beededea
+' Author    : Dean Beedell (yereverluvinunclebert)
 ' Date      : 17/05/2023
 ' Purpose   :
 '---------------------------------------------------------------------------------------
@@ -458,7 +457,7 @@ HiddenGet_Error:
 End Property
 '---------------------------------------------------------------------------------------
 ' Property  : Hidden
-' Author    : beededea
+' Author    : Dean Beedell (yereverluvinunclebert)
 ' Date      : 10/05/2023
 ' Purpose   :
 '---------------------------------------------------------------------------------------
@@ -509,7 +508,7 @@ End Sub
 
 '---------------------------------------------------------------------------------------
 ' Procedure : W_Paint
-' Author    : olaf schmidt
+' Author    : olaf schmidt & Dean Beedell (yereverluvinunclebert) & Dean Beedell (yereverluvinunclebert)
 ' Date      : 01/08/2023
 ' Purpose   :
 '---------------------------------------------------------------------------------------
@@ -721,10 +720,13 @@ End Sub
 '
 Private Sub calcAnimationData()
     Dim degDiff As Double: degDiff = 0
-    Dim min  As Integer: min = -30
-    Dim max  As Integer: max = 50
+    Dim min  As Integer: min = 0
+    Dim max  As Integer: max = 0
     
     On Error GoTo calcAnimationData_Error
+
+    min = -30
+    max = 50
 
     If mPointerAnimate = True Then
         If tmrAnimator.Enabled = False Then
@@ -734,8 +736,8 @@ Private Sub calcAnimationData()
                     
             ' obtain the new temperature amount
         
-            min = -30
-            max = 50
+'            min = -30
+'            max = 50
             
             ' calculate the new cpu amount in degrees
             If weHaveData = True Then
@@ -792,13 +794,13 @@ End Sub
 ' Purpose:
 ' Procedure Kind: Sub
 ' Procedure Access: Private
-' Author: beededea
+' Author: Dean Beedell (yereverluvinunclebert)
 ' Date: 13/01/2024
 ' ----------------------------------------------------------------
 Private Sub obtainTemperature()
         
-    Dim min  As Integer: min = -30
-    Dim max  As Integer: max = 50
+    Dim min  As Integer: min = 0
+    Dim max  As Integer: max = 0
     
     On Error GoTo obtainTemperature_Error
 
@@ -852,7 +854,7 @@ End Sub
 ' Purpose: this function obtains data from the chosen location using an httpXMLrequest. Requires a reference to Microsoft XML library.
 ' Procedure Kind: Sub
 ' Procedure Access: Private
-' Author: beededea
+' Author: Dean Beedell (yereverluvinunclebert)
 ' Date: 26/01/2024
 ' ----------------------------------------------------------------
 Private Sub getData()
@@ -919,14 +921,14 @@ End Sub
 ' Purpose:
 ' Procedure Kind: Sub
 ' Procedure Access: Private
-' Author: beededea
+' Author: Dean Beedell (yereverluvinunclebert)
 ' Date: 27/01/2024
 ' ----------------------------------------------------------------
 Private Sub myStatusProc()
 
 
-    Dim humidityValue  As Long
-    Dim pressureValue As Double
+    Dim humidityValue  As Long: humidityValue = 0
+    Dim pressureValue As Double: pressureValue = 0
     Dim TheDate As Date: TheDate = #1/1/2000 12:00:00 PM#
     Dim secsDif As Integer: secsDif = 0
     Dim difString As String: difString = vbNullString
@@ -947,29 +949,29 @@ Private Sub myStatusProc()
     Dim visibility_statute_mi As String: visibility_statute_mi = vbNullString
     Dim metar_items As String: metar_items = vbNullString
     Dim current_node As String: current_node = vbNullString
-    Dim sky_condition_items() As String
+    Dim sky_condition_items() As String ' array
     Dim sky_condition As String: sky_condition = vbNullString
-    Dim attributeCounter As Integer
-    Dim SkyConditionCounter As Integer
-    Dim locationDayNight As Boolean
+    Dim attributeCounter As Integer: attributeCounter = 0
+    Dim SkyConditionCounter As Integer: SkyConditionCounter = 0
+    Dim locationDayNight As Boolean: locationDayNight = False
     
     Dim tmpSky_condition As String: tmpSky_condition = vbNullString
     Dim humidity As Long: humidity = 0
     Dim skyClarity As String: skyClarity = vbNullString
     
-    Dim cloud_base_mt_agl As Integer
-    Dim baseCloud As Integer
+    Dim cloud_base_mt_agl As Integer: cloud_base_mt_agl = 0
+    Dim baseCloud As Integer: baseCloud = 0
     Dim skyClarityString As String: skyClarityString = vbNullString
     
-    Dim cloud_base_ft_agl() As String
-    Dim sky_cover() As String
-    Dim sky_condition_items_length As Integer
-    Dim sky_condition_attributes_length As Integer
+    Dim cloud_base_ft_agl() As String ' array
+    Dim sky_cover() As String ' array
+    Dim sky_condition_items_length As Integer: sky_condition_items_length = 0
+    Dim sky_condition_attributes_length As Integer: sky_condition_attributes_length = 0
     Dim skyNodeName As String: skyNodeName = vbNullString
     Dim cloudNodeName As String: cloudNodeName = vbNullString
     Dim skyNodeValue As String: skyNodeValue = vbNullString
     Dim cloudNodeValue As String: cloudNodeValue = vbNullString
-    Dim uboundSkyConditions As Integer
+    Dim uboundSkyConditions As Integer: uboundSkyConditions = 0
     
     Dim nodeList As MSXML2.IXMLDOMNodeList
     Dim objxmldoc As New MSXML2.DOMDocument
@@ -1216,7 +1218,7 @@ End Sub
 ' Procedure Access: Private
 ' Parameter wx_string ():
 ' Parameter sky_cover ():
-' Author: beededea
+' Author: Dean Beedell (yereverluvinunclebert)
 ' Date: 21/03/2024
 ' ----------------------------------------------------------------
 Private Function setIconTooltip(ByVal wx_string As String, ByRef sky_condition_items() As String) As String
@@ -1254,7 +1256,7 @@ End Function
 ' Procedure Access: Public
 ' Parameter duration (Integer):
 ' Return Type: String
-' Author: beededea
+' Author: Dean Beedell (yereverluvinunclebert)
 ' Date: 15/03/2024
 ' ----------------------------------------------------------------
 Function nice_format_interval(duration As Integer) As String
@@ -1319,7 +1321,7 @@ End Function
 ' Procedure Access: Public
 ' Parameter sky_cover (String):
 ' Return Type: String
-' Author: beededea
+' Author: Dean Beedell (yereverluvinunclebert)
 ' Date: 29/01/2024
 '
 ' Decodes cloud cover information.
@@ -1371,7 +1373,7 @@ End Function
 ' Procedure Access: Public
 ' Parameter altim_in_hg (String):
 ' Return Type: Integer
-' Author: beededea
+' Author: Dean Beedell (yereverluvinunclebert)
 ' Date: 29/01/2024
 ' ----------------------------------------------------------------
 Function fGetPressure(altim_in_hg As String) As Integer
@@ -1406,7 +1408,7 @@ End Function
 ' Procedure Access: Public
 ' Parameter temp_c ():
 ' Parameter dewpoint_c ():
-' Author: beededea
+' Author: Dean Beedell (yereverluvinunclebert)
 ' Date: 29/01/2024
 ' ----------------------------------------------------------------
 Function fGetHumidity(temp_c, dewpoint_c)
@@ -1439,7 +1441,7 @@ End Function
 ' Procedure Access: Public
 ' Parameter baseCloud (Integer):
 ' Parameter skyClarity (String):
-' Author: beededea
+' Author: Dean Beedell (yereverluvinunclebert)
 ' Date: 30/01/2024
 ' ----------------------------------------------------------------
 Function fAddBaseCloudToSkyClarity(ByVal baseCloud As Integer, ByVal skyClarity As String)
@@ -1476,7 +1478,7 @@ End Function
 ' Procedure Kind: Function
 ' Procedure Access: Private
 ' Parameter t ():
-' Author: beededea
+' Author: Dean Beedell (yereverluvinunclebert)
 ' Date: 17/01/2024
 ' ----------------------------------------------------------------
 Private Function convertToFahrenheit(ByVal T As Integer) As Integer
@@ -1504,7 +1506,7 @@ End Function
 ' Procedure Kind: Function
 ' Procedure Access: Private
 ' Parameter t ():
-' Author: beededea
+' Author: Dean Beedell (yereverluvinunclebert)
 ' Date: 17/01/2024
 ' ----------------------------------------------------------------
 Private Function convertToKelvin(ByVal T As Integer) As Integer
@@ -1536,7 +1538,7 @@ End Function
 ' Procedure Access: Public
 ' Parameter num (Integer):
 ' Return Type: String
-' Author: beededea
+' Author: Dean Beedell (yereverluvinunclebert)
 ' Date: 15/03/2024
 ' ----------------------------------------------------------------
 Function degToCompass(ByVal num As String) As String
@@ -1568,7 +1570,7 @@ End Function
 ' Procedure Kind: Sub
 ' Procedure Access: Public
 ' Parameter wind_speed_kt (Integer):
-' Author: beededea
+' Author: Dean Beedell (yereverluvinunclebert)
 ' Date: 15/03/2024
 ' ----------------------------------------------------------------
 Function beaufortConversion(ByVal wind_speed_kt As Integer) As Integer
@@ -1691,7 +1693,7 @@ End Function
 ' Parameter precip_in (String):
 ' Parameter difString (String):
 ' Parameter wx_string (String):
-' Author: beededea
+' Author: Dean Beedell (yereverluvinunclebert)
 ' Date: 17/03/2024
 ' ----------------------------------------------------------------
 Private Function setHoverTooltip(ByVal skyClarityString As String, ByVal humidityValue As Double, ByVal temperatureValue As Double, ByVal pressureValue As Double, ByVal usableObsTime As Date, ByVal wind_dir_degrees As String, ByVal wind_speed_kt As String, ByVal precip_in As String, difString As String, ByVal wx_string As String) As String
@@ -1789,7 +1791,7 @@ End Function
 ' Parameter sky_cover (String):
 ' Parameter thisIsDay (Boolean):
 ' Return Type: String, ByVal thisIsDay As Boolean)
-' Author: beededea
+' Author: Dean Beedell (yereverluvinunclebert)
 ' Date: 14/03/2024
 ' ----------------------------------------------------------------
 Private Sub determineWeatherConditionIcon(ByVal thisSkyClarity As String, ByVal thisWxString As String, ByRef sky_cover() As String, ByVal thisIsDay As Boolean)
@@ -2169,7 +2171,7 @@ End Sub
 ' Procedure Access: Public
 ' Parameter wx_string (String):
 ' Return Type: String
-' Author: beededea
+' Author: Dean Beedell (yereverluvinunclebert)
 ' Date: 15/03/2024
 ' ----------------------------------------------------------------
 Function getMetarDescription(wx_string As String) As String

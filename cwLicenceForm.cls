@@ -14,7 +14,7 @@ Attribute VB_Exposed = False
 '@IgnoreModule IntegerDataType, ModuleWithoutFolder
 '---------------------------------------------------------------------------------------
 ' Class Module      : cwLicence
-' Author            : beededea
+' Author            : Dean Beedell (yereverluvinunclebert)
 ' Date              : 17/05/2023
 ' Purpose           :
 '---------------------------------------------------------------------------------------
@@ -43,7 +43,7 @@ Private mZoom As Double
 
 '---------------------------------------------------------------------------------------
 ' Procedure : Class_Initialize
-' Author    : beededea
+' Author    : Dean Beedell (yereverluvinunclebert)
 ' Date      : 17/05/2023
 ' Purpose   :
 '---------------------------------------------------------------------------------------
@@ -110,7 +110,7 @@ Widgets_Error:
 End Property
 '---------------------------------------------------------------------------------------
 ' Procedure : Zoom
-' Author    : beededea
+' Author    : Dean Beedell (yereverluvinunclebert)
 ' Date      : 17/05/2023
 ' Purpose   :
 '---------------------------------------------------------------------------------------
@@ -129,7 +129,7 @@ ZoomGet_Error:
 End Property
 '---------------------------------------------------------------------------------------
 ' Procedure : Zoom
-' Author    : beededea
+' Author    : Dean Beedell (yereverluvinunclebert)
 ' Date      : 17/05/2023
 ' Purpose   :
 '---------------------------------------------------------------------------------------
@@ -151,7 +151,7 @@ End Property
 
 ''---------------------------------------------------------------------------------------
 '' Procedure : W_MouseMove
-'' Author    : beededea
+'' Author    : Dean Beedell (yereverluvinunclebert)
 '' Date      : 17/05/2023
 '' Purpose   :
 ''---------------------------------------------------------------------------------------
@@ -170,7 +170,7 @@ End Property
 'End Sub
 '---------------------------------------------------------------------------------------
 ' Procedure : MyOpacity
-' Author    : beededea
+' Author    : Dean Beedell (yereverluvinunclebert)
 ' Date      : 17/05/2023
 ' Purpose   :
 '---------------------------------------------------------------------------------------
@@ -189,7 +189,7 @@ MyOpacityLet_Error:
 End Property
 '---------------------------------------------------------------------------------------
 ' Procedure : MyOpacity
-' Author    : beededea
+' Author    : Dean Beedell (yereverluvinunclebert)
 ' Date      : 17/05/2023
 ' Purpose   :
 '---------------------------------------------------------------------------------------
@@ -209,7 +209,7 @@ End Property
 
 '---------------------------------------------------------------------------------------
 ' Procedure : ShowMe
-' Author    : beededea
+' Author    : Dean Beedell (yereverluvinunclebert)
 ' Date      : 17/05/2023
 ' Purpose   :
 '---------------------------------------------------------------------------------------
@@ -230,7 +230,7 @@ ShowMeLet_Error:
 End Property
 '---------------------------------------------------------------------------------------
 ' Procedure : ShowMe
-' Author    : beededea
+' Author    : Dean Beedell (yereverluvinunclebert)
 ' Date      : 17/05/2023
 ' Purpose   :
 '---------------------------------------------------------------------------------------
@@ -251,7 +251,7 @@ End Property
 '
 '---------------------------------------------------------------------------------------
 ' Procedure : tmrLicenceFadeIn_Timer
-' Author    : beededea
+' Author    : Dean Beedell (yereverluvinunclebert)
 ' Date      : 17/05/2023
 ' Purpose   : timer to make the Licence form or Licence image fade in opacity
 '---------------------------------------------------------------------------------------
@@ -281,7 +281,7 @@ End Sub
 '
 '---------------------------------------------------------------------------------------
 ' Procedure : tmrLicenceFadeOut_Timer
-' Author    : beededea
+' Author    : Dean Beedell (yereverluvinunclebert)
 ' Date      : 17/05/2023
 ' Purpose   : timer to make the Licence form or Licence image fade out in opacity
 '---------------------------------------------------------------------------------------
@@ -308,7 +308,7 @@ tmrLicenceFadeOut_Timer_Error:
 End Sub
 '---------------------------------------------------------------------------------------
 ' Procedure : W_Paint
-' Author    : beededea
+' Author    : Dean Beedell (yereverluvinunclebert)
 ' Date      : 17/05/2023
 ' Purpose   :
 '---------------------------------------------------------------------------------------
@@ -328,7 +328,7 @@ End Sub
 
 '---------------------------------------------------------------------------------------
 ' Procedure : Draw
-' Author    : beededea
+' Author    : Dean Beedell (yereverluvinunclebert)
 ' Date      : 17/05/2023
 ' Purpose   :
 '---------------------------------------------------------------------------------------

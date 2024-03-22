@@ -104,7 +104,7 @@ Attribute VB_PredeclaredId = True
 Attribute VB_Exposed = False
 '---------------------------------------------------------------------------------------
 ' Module    : frmMessage
-' Author    : beededea
+' Author    : Dean Beedell (yereverluvinunclebert)
 ' Date      : 20/11/2023
 ' Purpose   :
 '---------------------------------------------------------------------------------------
@@ -132,7 +132,7 @@ Private mPropReturnedValue As Integer
 
 '---------------------------------------------------------------------------------------
 ' Procedure : Form_Load
-' Author    : beededea
+' Author    : Dean Beedell (yereverluvinunclebert)
 ' Date      : 23/09/2023
 ' Purpose   :
 '---------------------------------------------------------------------------------------
@@ -157,9 +157,9 @@ Private Sub Form_Load()
             If PzGPrefsFont <> "" Then Ctrl.Font.Name = PzGPrefsFont
            
             If PzGDpiAwareness = "1" Then
-                If Val(Abs(PzGPrefsFontSizeHighDPI)) > 0 Then Ctrl.Font.Size = Val(Abs(PzGPrefsFontSizeHighDPI))
+                If val(Abs(PzGPrefsFontSizeHighDPI)) > 0 Then Ctrl.Font.Size = val(Abs(PzGPrefsFontSizeHighDPI))
             Else
-                If Val(Abs(PzGPrefsFontSizeLowDPI)) > 0 Then Ctrl.Font.Size = Val(Abs(PzGPrefsFontSizeLowDPI))
+                If val(Abs(PzGPrefsFontSizeLowDPI)) > 0 Then Ctrl.Font.Size = val(Abs(PzGPrefsFontSizeLowDPI))
             End If
             'Ctrl.Font.Italic = CBool(SDSuppliedFontItalics) TBD
            'If suppliedStyle <> "" Then Ctrl.Font.Style = suppliedStyle
@@ -179,7 +179,7 @@ End Sub
 
 '---------------------------------------------------------------------------------------
 ' Property : Form_Resize
-' Author    : beededea
+' Author    : Dean Beedell (yereverluvinunclebert)
 ' Date      : 23/09/2023
 ' Purpose   :
 '---------------------------------------------------------------------------------------
@@ -194,9 +194,9 @@ Private Sub Form_Resize()
 
     ratio = cMsgBoxAFormHeight / cMsgBoxAFormWidth
     If PzGDpiAwareness = "1" Then
-        currentFont = Val(PzGPrefsFontSizeHighDPI)
+        currentFont = val(PzGPrefsFontSizeHighDPI)
     Else
-        currentFont = Val(PzGPrefsFontSizeLowDPI)
+        currentFont = val(PzGPrefsFontSizeLowDPI)
     End If
     
     If msgBoxADynamicSizingFlg = True Then
@@ -223,7 +223,7 @@ End Sub
 
 '---------------------------------------------------------------------------------------
 ' Property : btnButtonTwo_Click
-' Author    : beededea
+' Author    : Dean Beedell (yereverluvinunclebert)
 ' Date      : 23/09/2023
 ' Purpose   :
 '---------------------------------------------------------------------------------------
@@ -245,7 +245,7 @@ End Sub
 
 '---------------------------------------------------------------------------------------
 ' Property : btnButtonOne_Click
-' Author    : beededea
+' Author    : Dean Beedell (yereverluvinunclebert)
 ' Date      : 23/09/2023
 ' Purpose   :
 '---------------------------------------------------------------------------------------
@@ -268,7 +268,7 @@ End Sub
 
 '---------------------------------------------------------------------------------------
 ' Procedure : Display
-' Author    : beededea
+' Author    : Dean Beedell (yereverluvinunclebert)
 ' Date      : 23/09/2023
 ' Purpose   :
 '---------------------------------------------------------------------------------------
@@ -307,7 +307,7 @@ End Sub
 '
 '---------------------------------------------------------------------------------------
 ' Property  : propMessage
-' Author    : beededea
+' Author    : Dean Beedell (yereverluvinunclebert)
 ' Date      : 23/09/2023
 ' Purpose   : property to allow a message to be passed to the form
 '---------------------------------------------------------------------------------------
@@ -340,7 +340,7 @@ End Property
 
 '---------------------------------------------------------------------------------------
 ' Procedure : propMessage
-' Author    : beededea
+' Author    : Dean Beedell (yereverluvinunclebert)
 ' Date      : 17/05/2023
 ' Purpose   :
 '---------------------------------------------------------------------------------------
@@ -360,7 +360,7 @@ End Property
 
 '---------------------------------------------------------------------------------------
 ' Property  : propTitle
-' Author    : beededea
+' Author    : Dean Beedell (yereverluvinunclebert)
 ' Date      : 23/09/2023
 ' Purpose   :
 '---------------------------------------------------------------------------------------
@@ -385,7 +385,7 @@ propTitle_Error:
 End Property
 '---------------------------------------------------------------------------------------
 ' Procedure : propTitle
-' Author    : beededea
+' Author    : Dean Beedell (yereverluvinunclebert)
 ' Date      : 17/05/2023
 ' Purpose   :
 '---------------------------------------------------------------------------------------
@@ -405,7 +405,7 @@ End Property
 
 '---------------------------------------------------------------------------------------
 ' Property  : propMsgContext
-' Author    : beededea
+' Author    : Dean Beedell (yereverluvinunclebert)
 ' Date      : 23/09/2023
 ' Purpose   :
 '---------------------------------------------------------------------------------------
@@ -426,7 +426,7 @@ propMsgContext_Error:
 End Property
 '---------------------------------------------------------------------------------------
 ' Procedure : propMsgContext
-' Author    : beededea
+' Author    : Dean Beedell (yereverluvinunclebert)
 ' Date      : 17/05/2023
 ' Purpose   :
 '---------------------------------------------------------------------------------------
@@ -445,7 +445,7 @@ propMsgContextGet_Error:
 End Property
 '---------------------------------------------------------------------------------------
 ' Procedure : propReturnedValue
-' Author    : beededea
+' Author    : Dean Beedell (yereverluvinunclebert)
 ' Date      : 23/09/2023
 ' Purpose   :
 '---------------------------------------------------------------------------------------
@@ -466,7 +466,7 @@ End Property
 
 '---------------------------------------------------------------------------------------
 ' Property  : propReturnedValue
-' Author    : beededea
+' Author    : Dean Beedell (yereverluvinunclebert)
 ' Date      : 23/09/2023
 ' Purpose   :
 '---------------------------------------------------------------------------------------
@@ -488,7 +488,7 @@ End Property
 
 '---------------------------------------------------------------------------------------
 ' Property  : propShowAgainChkBox
-' Author    : beededea
+' Author    : Dean Beedell (yereverluvinunclebert)
 ' Date      : 23/09/2023
 ' Purpose   :
 '---------------------------------------------------------------------------------------
@@ -509,7 +509,7 @@ propShowAgainChkBox_Error:
 End Property
 '---------------------------------------------------------------------------------------
 ' Procedure : propShowAgainChkBox
-' Author    : beededea
+' Author    : Dean Beedell (yereverluvinunclebert)
 ' Date      : 17/05/2023
 ' Purpose   :
 '---------------------------------------------------------------------------------------
@@ -528,7 +528,7 @@ propShowAgainChkBoxGet_Error:
 End Property
 '---------------------------------------------------------------------------------------
 ' Property  : propButtonVal
-' Author    : beededea
+' Author    : Dean Beedell (yereverluvinunclebert)
 ' Date      : 23/09/2023
 ' Purpose   :
 '---------------------------------------------------------------------------------------
@@ -636,7 +636,7 @@ End Property
 
 '---------------------------------------------------------------------------------------
 ' Procedure : loadHigherResMessageImages
-' Author    : beededea
+' Author    : Dean Beedell (yereverluvinunclebert)
 ' Date      : 18/06/2023
 ' Purpose   :
 '---------------------------------------------------------------------------------------
@@ -664,7 +664,7 @@ End Sub
 
 '---------------------------------------------------------------------------------------
 ' Procedure : setPrefsIconImagesLight
-' Author    : beededea
+' Author    : Dean Beedell (yereverluvinunclebert)
 ' Date      : 22/06/2023
 ' Purpose   :
 '---------------------------------------------------------------------------------------

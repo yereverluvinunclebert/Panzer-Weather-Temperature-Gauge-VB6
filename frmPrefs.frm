@@ -1978,7 +1978,7 @@ Attribute VB_Exposed = False
 
 '---------------------------------------------------------------------------------------
 ' Module    : panzerPrefs
-' Author    : beededea
+' Author    : Dean Beedell (yereverluvinunclebert)
 ' Date      : 17/08/2022
 ' Purpose   : VB6 standard form to display the prefs
 '---------------------------------------------------------------------------------------
@@ -2187,7 +2187,7 @@ Private gblAllowSizeChangeFlg As Boolean
 ' Purpose:
 ' Procedure Kind: Sub
 ' Procedure Access: Private
-' Author: beededea
+' Author: Dean Beedell (yereverluvinunclebert)
 ' Date: 20/03/2024
 ' ----------------------------------------------------------------
 Private Sub cmbMetricImperial_Click()
@@ -2211,7 +2211,7 @@ End Sub
 ' Purpose:
 ' Procedure Kind: Sub
 ' Procedure Access: Private
-' Author: beededea
+' Author: Dean Beedell (yereverluvinunclebert)
 ' Date: 19/03/2024
 ' ----------------------------------------------------------------
 Private Sub cmbPressureScale_Click()
@@ -2235,7 +2235,7 @@ End Sub
 ' Purpose:
 ' Procedure Kind: Sub
 ' Procedure Access: Private
-' Author: beededea
+' Author: Dean Beedell (yereverluvinunclebert)
 ' Date: 17/01/2024
 ' ----------------------------------------------------------------
 Private Sub cmbTemperatureScale_Click()
@@ -2261,7 +2261,7 @@ End Sub
 ' Purpose:
 ' Procedure Kind: Sub
 ' Procedure Access: Private
-' Author: beededea
+' Author: Dean Beedell (yereverluvinunclebert)
 ' Date: 19/03/2024
 ' ----------------------------------------------------------------
 Private Sub cmbWindSpeedScale_Click()
@@ -2285,7 +2285,7 @@ End Sub
 ' Purpose:
 ' Procedure Kind: Constructor (Initialize)
 ' Procedure Access: Private
-' Author: beededea
+' Author: Dean Beedell (yereverluvinunclebert)
 ' Date: 05/10/2023
 ' ----------------------------------------------------------------
 Private Sub Form_Initialize()
@@ -2306,7 +2306,7 @@ Form_Initialize_Error:
 
 '---------------------------------------------------------------------------------------
 ' Procedure : Form_Load
-' Author    : beededea
+' Author    : Dean Beedell (yereverluvinunclebert)
 ' Date      : 25/04/2023
 ' Purpose   :
 '---------------------------------------------------------------------------------------
@@ -2407,7 +2407,7 @@ End Sub
 '
 '---------------------------------------------------------------------------------------
 ' Procedure : positionPrefsMonitor
-' Author    : beededea
+' Author    : Dean Beedell (yereverluvinunclebert)
 ' Date      : 06/10/2023
 ' Purpose   : position the prefs on the curent monitor
 '---------------------------------------------------------------------------------------
@@ -2474,7 +2474,7 @@ End Sub
     
 '---------------------------------------------------------------------------------------
 ' Procedure : btnResetMessages_MouseMove
-' Author    : beededea
+' Author    : Dean Beedell (yereverluvinunclebert)
 ' Date      : 01/10/2023
 ' Purpose   :
 '---------------------------------------------------------------------------------------
@@ -2495,7 +2495,7 @@ End Sub
 
 '---------------------------------------------------------------------------------------
 ' Procedure : chkDpiAwareness_Click
-' Author    : beededea
+' Author    : Dean Beedell (yereverluvinunclebert)
 ' Date      : 14/08/2023
 ' Purpose   :
 '---------------------------------------------------------------------------------------
@@ -2548,7 +2548,7 @@ End Sub
 
 '---------------------------------------------------------------------------------------
 ' Procedure : chkEnablePrefsTooltips_Click
-' Author    : beededea
+' Author    : Dean Beedell (yereverluvinunclebert)
 ' Date      : 07/09/2023
 ' Purpose   :
 '---------------------------------------------------------------------------------------
@@ -2584,7 +2584,7 @@ End Sub
 
 '---------------------------------------------------------------------------------------
 ' Procedure : chkEnableTooltips_MouseMove
-' Author    : beededea
+' Author    : Dean Beedell (yereverluvinunclebert)
 ' Date      : 05/10/2023
 ' Purpose   :
 '---------------------------------------------------------------------------------------
@@ -2605,7 +2605,7 @@ End Sub
 
 '---------------------------------------------------------------------------------------
 ' Procedure : chkShowTaskbar_Click
-' Author    : beededea
+' Author    : Dean Beedell (yereverluvinunclebert)
 ' Date      : 19/07/2023
 ' Purpose   :
 '---------------------------------------------------------------------------------------
@@ -2637,7 +2637,7 @@ End Sub
 
 '---------------------------------------------------------------------------------------
 ' Procedure : btnResetMessages_Click
-' Author    : beededea
+' Author    : Dean Beedell (yereverluvinunclebert)
 ' Date      : 01/10/2023
 ' Purpose   :
 '---------------------------------------------------------------------------------------
@@ -2663,7 +2663,7 @@ End Sub
 
 '---------------------------------------------------------------------------------------
 ' Procedure : btnAboutDebugInfo_Click
-' Author    : beededea
+' Author    : Dean Beedell (yereverluvinunclebert)
 ' Date      : 03/03/2020
 ' Purpose   :
 '---------------------------------------------------------------------------------------
@@ -2686,7 +2686,7 @@ End Sub
 
 '---------------------------------------------------------------------------------------
 ' Procedure : btnDonate_Click
-' Author    : beededea
+' Author    : Dean Beedell (yereverluvinunclebert)
 ' Date      : 13/06/2020
 ' Purpose   :
 '---------------------------------------------------------------------------------------
@@ -2706,7 +2706,7 @@ End Sub
 
 '---------------------------------------------------------------------------------------
 ' Procedure : btnFacebook_Click
-' Author    : beededea
+' Author    : Dean Beedell (yereverluvinunclebert)
 ' Date      : 29/02/2020
 ' Purpose   :
 '---------------------------------------------------------------------------------------
@@ -2728,7 +2728,7 @@ End Sub
 
 '---------------------------------------------------------------------------------------
 ' Procedure : btnOpenFile_Click
-' Author    : beededea
+' Author    : Dean Beedell (yereverluvinunclebert)
 ' Date      : 02/05/2023
 ' Purpose   :
 '---------------------------------------------------------------------------------------
@@ -2781,7 +2781,7 @@ End Sub
 
 '---------------------------------------------------------------------------------------
 ' Procedure : btnUpdate_Click
-' Author    : beededea
+' Author    : Dean Beedell (yereverluvinunclebert)
 ' Date      : 29/02/2020
 ' Purpose   :
 '---------------------------------------------------------------------------------------
@@ -2803,7 +2803,7 @@ End Sub
 
 '---------------------------------------------------------------------------------------
 ' Procedure : chkGaugeFunctions_Click
-' Author    : beededea
+' Author    : Dean Beedell (yereverluvinunclebert)
 ' Date      : 30/09/2023
 ' Purpose   :
 '---------------------------------------------------------------------------------------
@@ -2830,7 +2830,7 @@ End Sub
 
 '---------------------------------------------------------------------------------------
 ' Procedure : btnDefaultEditor_Click
-' Author    : beededea
+' Author    : Dean Beedell (yereverluvinunclebert)
 ' Date      : 02/05/2023
 ' Purpose   :
 '---------------------------------------------------------------------------------------
@@ -2881,7 +2881,7 @@ End Sub
 
 '---------------------------------------------------------------------------------------
 ' Procedure : chkEnableBalloonTooltips_Click
-' Author    : beededea
+' Author    : Dean Beedell (yereverluvinunclebert)
 ' Date      : 09/05/2023
 ' Purpose   :
 '---------------------------------------------------------------------------------------
@@ -2907,7 +2907,7 @@ End Sub
 
 '---------------------------------------------------------------------------------------
 ' Procedure : chkIgnoreMouse_Click
-' Author    : beededea
+' Author    : Dean Beedell (yereverluvinunclebert)
 ' Date      : 09/05/2023
 ' Purpose   :
 '---------------------------------------------------------------------------------------
@@ -2933,7 +2933,7 @@ End Sub
 
 '---------------------------------------------------------------------------------------
 ' Procedure : chkPreventDragging_Click
-' Author    : beededea
+' Author    : Dean Beedell (yereverluvinunclebert)
 ' Date      : 02/05/2023
 ' Purpose   :
 '---------------------------------------------------------------------------------------
@@ -2985,7 +2985,7 @@ End Sub
 
 '---------------------------------------------------------------------------------------
 ' Procedure : chkWidgetHidden_Click
-' Author    : beededea
+' Author    : Dean Beedell (yereverluvinunclebert)
 ' Date      : 09/05/2023
 ' Purpose   :
 '---------------------------------------------------------------------------------------
@@ -3023,7 +3023,7 @@ End Sub
 
 '---------------------------------------------------------------------------------------
 ' Procedure : cmbAspectHidden_Click
-' Author    : beededea
+' Author    : Dean Beedell (yereverluvinunclebert)
 ' Date      : 09/05/2023
 ' Purpose   :
 '---------------------------------------------------------------------------------------
@@ -3055,7 +3055,7 @@ End Sub
 
 '---------------------------------------------------------------------------------------
 ' Procedure : cmbDebug_Click
-' Author    : beededea
+' Author    : Dean Beedell (yereverluvinunclebert)
 ' Date      : 02/05/2023
 ' Purpose   :
 '---------------------------------------------------------------------------------------
@@ -3100,7 +3100,7 @@ End Sub
 
 '---------------------------------------------------------------------------------------
 ' Procedure : cmbScrollWheelDirection_Click
-' Author    : beededea
+' Author    : Dean Beedell (yereverluvinunclebert)
 ' Date      : 09/05/2023
 ' Purpose   :
 '---------------------------------------------------------------------------------------
@@ -3131,7 +3131,7 @@ End Sub
 
 '---------------------------------------------------------------------------------------
 ' Procedure : cmbWidgetPosition_Click
-' Author    : beededea
+' Author    : Dean Beedell (yereverluvinunclebert)
 ' Date      : 02/05/2023
 ' Purpose   :
 '---------------------------------------------------------------------------------------
@@ -3177,7 +3177,7 @@ End Sub
 
 '---------------------------------------------------------------------------------------
 ' Procedure : IsVisible
-' Author    : beededea
+' Author    : Dean Beedell (yereverluvinunclebert)
 ' Date      : 08/05/2023
 ' Purpose   : calling a manual property to a form allows external checks to the form to
 '             determine whether it is loaded, without also activating the form automatically.
@@ -3212,7 +3212,7 @@ End Property
 
 '---------------------------------------------------------------------------------------
 ' Procedure : showLastTab
-' Author    : beededea
+' Author    : Dean Beedell (yereverluvinunclebert)
 ' Date      : 02/05/2023
 ' Purpose   : make the last used tab appear on startup
 '---------------------------------------------------------------------------------------
@@ -3242,7 +3242,7 @@ End Sub
 
 '---------------------------------------------------------------------------------------
 ' Procedure : positionPrefsFramesButtons
-' Author    : beededea
+' Author    : Dean Beedell (yereverluvinunclebert)
 ' Date      : 01/05/2023
 ' Purpose   : size and position the frames and buttons. Note we are NOT using control
 '             arrays so the form can be converted to Cairo forms later.
@@ -3351,7 +3351,7 @@ End Sub
 
 '---------------------------------------------------------------------------------------
 ' Procedure : btnClose_Click
-' Author    : beededea
+' Author    : Dean Beedell (yereverluvinunclebert)
 ' Date      : 02/05/2023
 ' Purpose   :
 '---------------------------------------------------------------------------------------
@@ -3375,7 +3375,7 @@ End Sub
 '
 '---------------------------------------------------------------------------------------
 ' Procedure : btnHelp_Click
-' Author    : beededea
+' Author    : Dean Beedell (yereverluvinunclebert)
 ' Date      : 02/05/2023
 ' Purpose   : display the help file
 '---------------------------------------------------------------------------------------
@@ -3400,7 +3400,7 @@ End Sub
 '
 '---------------------------------------------------------------------------------------
 ' Procedure : btnSave_Click
-' Author    : beededea
+' Author    : Dean Beedell (yereverluvinunclebert)
 ' Date      : 02/05/2023
 ' Purpose   : save the values from all the tabs
 '---------------------------------------------------------------------------------------
@@ -3594,7 +3594,7 @@ End Sub
 ' set a var on a checkbox tick
 '---------------------------------------------------------------------------------------
 ' Procedure : chkEnableTooltips_Click
-' Author    : beededea
+' Author    : Dean Beedell (yereverluvinunclebert)
 ' Date      : 19/08/2023
 ' Purpose   :
 '---------------------------------------------------------------------------------------
@@ -3649,7 +3649,7 @@ Private Sub cmbWindowLevel_Click()
 End Sub
 '---------------------------------------------------------------------------------------
 ' Procedure : btnPrefsFont_Click
-' Author    : beededea
+' Author    : Dean Beedell (yereverluvinunclebert)
 ' Date      : 02/05/2023
 ' Purpose   :
 '---------------------------------------------------------------------------------------
@@ -3730,7 +3730,7 @@ End Sub
 
 '---------------------------------------------------------------------------------------
 ' Procedure : adjustPrefsControls
-' Author    : beededea
+' Author    : Dean Beedell (yereverluvinunclebert)
 ' Date      : 12/05/2020
 ' Purpose   : adjust the controls so their startup position matches the last write of the config file
 '---------------------------------------------------------------------------------------
@@ -3865,7 +3865,7 @@ End Sub
 '
 '---------------------------------------------------------------------------------------
 ' Procedure : populatePrefsComboBoxes
-' Author    : beededea
+' Author    : Dean Beedell (yereverluvinunclebert)
 ' Date      : 10/09/2022
 ' Purpose   : all combo boxes in the prefs are populated here with default values
 '           : done by preference here rather than in the IDE
@@ -3981,7 +3981,7 @@ End Sub
 
 '---------------------------------------------------------------------------------------
 ' Procedure : readFileWriteComboBox
-' Author    : beededea
+' Author    : Dean Beedell (yereverluvinunclebert)
 ' Date      : 28/07/2023
 ' Purpose   : Open and load the Array with the timezones text File
 '---------------------------------------------------------------------------------------
@@ -4019,7 +4019,7 @@ End Sub
 '
 '---------------------------------------------------------------------------------------
 ' Procedure : clearBorderStyle
-' Author    : beededea
+' Author    : Dean Beedell (yereverluvinunclebert)
 ' Date      : 02/05/2023
 ' Purpose   : removes all styling from the icon frames and makes the major frames below invisible too, not using control arrays.
 '---------------------------------------------------------------------------------------
@@ -4057,7 +4057,7 @@ End Sub
 
 '---------------------------------------------------------------------------------------
 ' Procedure : Form_Resize
-' Author    : beededea
+' Author    : Dean Beedell (yereverluvinunclebert)
 ' Date      : 30/05/2023
 ' Purpose   : If the form is NOT to be resized then restrain the height/width. Otherwise,
 '             maintain the aspect ratio. When minimised and a resize is called then simply exit.
@@ -4115,7 +4115,7 @@ End Sub
 
 '---------------------------------------------------------------------------------------
 ' Procedure : tweakPrefsControlPositions
-' Author    : beededea
+' Author    : Dean Beedell (yereverluvinunclebert)
 ' Date      : 22/09/2023
 ' Purpose   : final tweak the bottom frame top and left positions
 '---------------------------------------------------------------------------------------
@@ -4175,7 +4175,7 @@ End Sub
 
 '---------------------------------------------------------------------------------------
 ' Procedure : Form_Unload
-' Author    : beededea
+' Author    : Dean Beedell (yereverluvinunclebert)
 ' Date      : 27/05/2023
 ' Purpose   :
 '---------------------------------------------------------------------------------------
@@ -4370,7 +4370,7 @@ End Sub
 
 '---------------------------------------------------------------------------------------
 ' Procedure : lblGitHub_dblClick
-' Author    : beededea
+' Author    : Dean Beedell (yereverluvinunclebert)
 ' Date      : 14/08/2023
 ' Purpose   :
 '---------------------------------------------------------------------------------------
@@ -4411,7 +4411,7 @@ End Sub
 ' Purpose:
 ' Procedure Kind: Sub
 ' Procedure Access: Private
-' Author: beededea
+' Author: Dean Beedell (yereverluvinunclebert)
 ' Date: 10/01/2024
 ' ----------------------------------------------------------------
 Private Sub sliSamplingInterval_Click()
@@ -4443,7 +4443,7 @@ End Sub
 
 '---------------------------------------------------------------------------------------
 ' Procedure : txtAboutText_MouseDown
-' Author    : beededea
+' Author    : Dean Beedell (yereverluvinunclebert)
 ' Date      : 30/09/2023
 ' Purpose   :
 '---------------------------------------------------------------------------------------
@@ -4556,7 +4556,7 @@ Private Sub sliGaugeSize_LostFocus()
 End Sub
 '---------------------------------------------------------------------------------------
 ' Procedure : sliGaugeSize_Change
-' Author    : beededea
+' Author    : Dean Beedell (yereverluvinunclebert)
 ' Date      : 30/09/2023
 ' Purpose   :
 '---------------------------------------------------------------------------------------
@@ -4579,7 +4579,7 @@ End Sub
 
 '---------------------------------------------------------------------------------------
 ' Procedure : sliOpacity_Click
-' Author    : beededea
+' Author    : Dean Beedell (yereverluvinunclebert)
 ' Date      : 15/08/2023
 ' Purpose   :
 '---------------------------------------------------------------------------------------
@@ -4622,7 +4622,7 @@ End Sub
 
 '---------------------------------------------------------------------------------------
 ' Procedure : Form_MouseDown
-' Author    : beededea
+' Author    : Dean Beedell (yereverluvinunclebert)
 ' Date      : 14/08/2023
 ' Purpose   :
 '---------------------------------------------------------------------------------------
@@ -4706,7 +4706,7 @@ End Sub
 
 '---------------------------------------------------------------------------------------
 ' Procedure : mnuAbout_Click
-' Author    : beededea
+' Author    : Dean Beedell (yereverluvinunclebert)
 ' Date      : 13/02/2019
 ' Purpose   :
 '---------------------------------------------------------------------------------------
@@ -4728,7 +4728,7 @@ End Sub
 
 '---------------------------------------------------------------------------------------
 ' Procedure : setPrefsTooltips
-' Author    : beededea
+' Author    : Dean Beedell (yereverluvinunclebert)
 ' Date      : 27/04/2023
 ' Purpose   :
 '---------------------------------------------------------------------------------------
@@ -4905,7 +4905,7 @@ End Sub
 
 '---------------------------------------------------------------------------------------
 ' Procedure : setPrefsLabels
-' Author    : beededea
+' Author    : Dean Beedell (yereverluvinunclebert)
 ' Date      : 27/09/2023
 ' Purpose   : set the text in any labels that need a vbCrLf to space the text
 '---------------------------------------------------------------------------------------
@@ -4929,7 +4929,7 @@ End Sub
 
 '---------------------------------------------------------------------------------------
 ' Procedure : DestroyToolTip
-' Author    : beededea
+' Author    : Dean Beedell (yereverluvinunclebert)
 ' Date      : 02/05/2023
 ' Purpose   : It's not a bad idea to put this in the Form_Unload event just to make sure.
 '---------------------------------------------------------------------------------------
@@ -4950,7 +4950,7 @@ DestroyToolTip_Error:
 End Sub
 '---------------------------------------------------------------------------------------
 ' Procedure : loadPrefsAboutText
-' Author    : beededea
+' Author    : Dean Beedell (yereverluvinunclebert)
 ' Date      : 12/03/2020
 ' Purpose   : The text for the about page is stored here
 '---------------------------------------------------------------------------------------
@@ -4977,7 +4977,7 @@ End Sub
 '
 '---------------------------------------------------------------------------------------
 ' Procedure : picButtonMouseUpEvent
-' Author    : beededea
+' Author    : Dean Beedell (yereverluvinunclebert)
 ' Date      : 02/05/2023
 ' Purpose   : capture the icon button clicks avoiding creating a control array
 '---------------------------------------------------------------------------------------
@@ -5064,7 +5064,7 @@ End Sub
 
 ''---------------------------------------------------------------------------------------
 '' Procedure : scrollFrameDownward
-'' Author    : beededea
+'' Author    : Dean Beedell (yereverluvinunclebert)
 '' Date      : 02/05/2023
 '' Purpose   : unused as the scrolling causes blinking, will reduce the interval and re-test
 ''---------------------------------------------------------------------------------------
@@ -5130,7 +5130,7 @@ End Sub
 
 '---------------------------------------------------------------------------------------
 ' Procedure : themeTimer_Timer
-' Author    : beededea
+' Author    : Dean Beedell (yereverluvinunclebert)
 ' Date      : 13/06/2020
 ' Purpose   : a timer to apply a theme automatically
 '---------------------------------------------------------------------------------------
@@ -5160,7 +5160,7 @@ End Sub
 
 '---------------------------------------------------------------------------------------
 ' Procedure : mnuCoffee_Click
-' Author    : beededea
+' Author    : Dean Beedell (yereverluvinunclebert)
 ' Date      : 13/02/2019
 ' Purpose   : main menu item to buy the developer a coffee
 '---------------------------------------------------------------------------------------
@@ -5181,7 +5181,7 @@ End Sub
 '
 '---------------------------------------------------------------------------------------
 ' Procedure : mnuLicenceA_Click
-' Author    : beededea
+' Author    : Dean Beedell (yereverluvinunclebert)
 ' Date      : 17/08/2022
 ' Purpose   : menu option to show licence
 '---------------------------------------------------------------------------------------
@@ -5209,7 +5209,7 @@ End Sub
 
 '---------------------------------------------------------------------------------------
 ' Procedure : mnuSupport_Click
-' Author    : beededea
+' Author    : Dean Beedell (yereverluvinunclebert)
 ' Date      : 13/02/2019
 ' Purpose   : menu option to open support page
 '---------------------------------------------------------------------------------------
@@ -5238,7 +5238,7 @@ End Sub
 
 '---------------------------------------------------------------------------------------
 ' Procedure : mnuAuto_Click
-' Author    : beededea
+' Author    : Dean Beedell (yereverluvinunclebert)
 ' Date      : 19/05/2020
 ' Purpose   :
 '---------------------------------------------------------------------------------------
@@ -5272,7 +5272,7 @@ End Sub
 
 '---------------------------------------------------------------------------------------
 ' Procedure : mnuDark_Click
-' Author    : beededea
+' Author    : Dean Beedell (yereverluvinunclebert)
 ' Date      : 19/05/2020
 ' Purpose   :
 '---------------------------------------------------------------------------------------
@@ -5300,7 +5300,7 @@ End Sub
 
 '---------------------------------------------------------------------------------------
 ' Procedure : mnuLight_Click
-' Author    : beededea
+' Author    : Dean Beedell (yereverluvinunclebert)
 ' Date      : 19/05/2020
 ' Purpose   :
 '---------------------------------------------------------------------------------------
@@ -5333,7 +5333,7 @@ End Sub
 '
 '---------------------------------------------------------------------------------------
 ' Procedure : setThemeShade
-' Author    : beededea
+' Author    : Dean Beedell (yereverluvinunclebert)
 ' Date      : 06/05/2023
 ' Purpose   : set the theme shade, Windows classic dark/new lighter theme colours
 '---------------------------------------------------------------------------------------
@@ -5398,7 +5398,7 @@ End Sub
 
 '---------------------------------------------------------------------------------------
 ' Procedure : setThemeColour
-' Author    : beededea
+' Author    : Dean Beedell (yereverluvinunclebert)
 ' Date      : 19/09/2019
 ' Purpose   : if the o/s is capable of supporting the classic theme it tests every 10 secs
 '             to see if a theme has been switched
@@ -5439,7 +5439,7 @@ setThemeColour_Error:
 End Sub
 '---------------------------------------------------------------------------------------
 ' Procedure : adjustPrefsTheme
-' Author    : beededea
+' Author    : Dean Beedell (yereverluvinunclebert)
 ' Date      : 25/04/2023
 ' Purpose   : adjust the theme used by the prefs alone
 '---------------------------------------------------------------------------------------
@@ -5474,7 +5474,7 @@ End Sub
 
 '---------------------------------------------------------------------------------------
 ' Procedure : setModernThemeColours
-' Author    : beededea
+' Author    : Dean Beedell (yereverluvinunclebert)
 ' Date      : 02/05/2023
 ' Purpose   :
 '---------------------------------------------------------------------------------------
@@ -5508,7 +5508,7 @@ End Sub
 
 '---------------------------------------------------------------------------------------
 ' Procedure : loadHigherResPrefsImages
-' Author    : beededea
+' Author    : Dean Beedell (yereverluvinunclebert)
 ' Date      : 18/06/2023
 ' Purpose   :
 '---------------------------------------------------------------------------------------
@@ -5537,7 +5537,7 @@ End Sub
 
 '---------------------------------------------------------------------------------------
 ' Procedure : positionTimer_Timer
-' Author    : beededea
+' Author    : Dean Beedell (yereverluvinunclebert)
 ' Date      : 27/05/2023
 ' Purpose   :
 '---------------------------------------------------------------------------------------
@@ -5561,7 +5561,7 @@ End Sub
 
 '---------------------------------------------------------------------------------------
 ' Procedure : chkEnableResizing_Click
-' Author    : beededea
+' Author    : Dean Beedell (yereverluvinunclebert)
 ' Date      : 27/05/2023
 ' Purpose   :
 '---------------------------------------------------------------------------------------
@@ -5606,7 +5606,7 @@ End Sub
 
 '---------------------------------------------------------------------------------------
 ' Procedure : setframeHeights
-' Author    : beededea
+' Author    : Dean Beedell (yereverluvinunclebert)
 ' Date      : 28/05/2023
 ' Purpose   :
 '---------------------------------------------------------------------------------------
@@ -5662,7 +5662,7 @@ End Sub
 
 '---------------------------------------------------------------------------------------
 ' Procedure : setPrefsIconImagesDark
-' Author    : beededea
+' Author    : Dean Beedell (yereverluvinunclebert)
 ' Date      : 22/06/2023
 ' Purpose   :
 '---------------------------------------------------------------------------------------
@@ -5701,7 +5701,7 @@ End Sub
 
 '---------------------------------------------------------------------------------------
 ' Procedure : setPrefsIconImagesLight
-' Author    : beededea
+' Author    : Dean Beedell (yereverluvinunclebert)
 ' Date      : 22/06/2023
 ' Purpose   :
 '---------------------------------------------------------------------------------------
@@ -5771,7 +5771,7 @@ End Sub
 
 '---------------------------------------------------------------------------------------
 ' Procedure : populateTimeZoneRegions
-' Author    : beededea
+' Author    : Dean Beedell (yereverluvinunclebert)
 ' Date      : 13/08/2023
 ' Purpose   :
 '---------------------------------------------------------------------------------------
@@ -6115,7 +6115,7 @@ End Sub
 
 '---------------------------------------------------------------------------------------
 ' Procedure : lblDragCorner_MouseDown
-' Author    : beededea
+' Author    : Dean Beedell (yereverluvinunclebert)
 ' Date      : 07/10/2023
 ' Purpose   :
 '---------------------------------------------------------------------------------------
@@ -6140,7 +6140,7 @@ End Sub
 
 '---------------------------------------------------------------------------------------
 ' Procedure : lblDragCorner_MouseMove
-' Author    : beededea
+' Author    : Dean Beedell (yereverluvinunclebert)
 ' Date      : 07/10/2023
 ' Purpose   :
 '---------------------------------------------------------------------------------------
@@ -6163,7 +6163,7 @@ End Sub
 
 '---------------------------------------------------------------------------------------
 ' Procedure : setPrefsFormZordering
-' Author    : beededea
+' Author    : Dean Beedell (yereverluvinunclebert)
 ' Date      : 02/05/2023
 ' Purpose   : set the z-ordering of the window
 '---------------------------------------------------------------------------------------

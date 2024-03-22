@@ -69,7 +69,7 @@ Private mIsDayLight As Boolean
 ' Purpose:
 ' Procedure Kind: Constructor (Initialize)
 ' Procedure Access: Private
-' Author: beededea
+' Author: Dean Beedell (yereverluvinunclebert)
 ' Date: 12/02/2024
 ' ----------------------------------------------------------------
 Private Sub Class_Initialize()
@@ -93,7 +93,7 @@ Class_Initialize_Error:
 End Sub
 '---------------------------------------------------------------------------------------
 ' Property : isDayLight
-' Author    : beededea
+' Author    : Dean Beedell (yereverluvinunclebert)
 ' Date      : 17/05/2023
 ' Purpose   :
 '---------------------------------------------------------------------------------------
@@ -129,7 +129,7 @@ isDayLightGet_Error:
 End Property
 '---------------------------------------------------------------------------------------
 ' Property  : isDayLight
-' Author    : beededea
+' Author    : Dean Beedell (yereverluvinunclebert)
 ' Date      : 17/05/2023
 ' Purpose   :
 '---------------------------------------------------------------------------------------
@@ -150,7 +150,7 @@ End Property
 
 '---------------------------------------------------------------------------------------
 ' Property : Latitude
-' Author    : beededea
+' Author    : Dean Beedell (yereverluvinunclebert)
 ' Date      : 17/05/2023
 ' Purpose   :
 '---------------------------------------------------------------------------------------
@@ -169,7 +169,7 @@ LatitudeGet_Error:
 End Property
 '---------------------------------------------------------------------------------------
 ' Property  : Latitude
-' Author    : beededea
+' Author    : Dean Beedell (yereverluvinunclebert)
 ' Date      : 17/05/2023
 ' Purpose   :
 '---------------------------------------------------------------------------------------
@@ -189,7 +189,7 @@ End Property
 
 '---------------------------------------------------------------------------------------
 ' Property : Longitude
-' Author    : beededea
+' Author    : Dean Beedell (yereverluvinunclebert)
 ' Date      : 17/05/2023
 ' Purpose   :
 '---------------------------------------------------------------------------------------
@@ -208,7 +208,7 @@ LongitudeGet_Error:
 End Property
 '---------------------------------------------------------------------------------------
 ' Property  : Longitude
-' Author    : beededea
+' Author    : Dean Beedell (yereverluvinunclebert)
 ' Date      : 17/05/2023
 ' Purpose   :
 '---------------------------------------------------------------------------------------
@@ -228,7 +228,7 @@ End Property
 
 '---------------------------------------------------------------------------------------
 ' Property : FullYear
-' Author    : beededea
+' Author    : Dean Beedell (yereverluvinunclebert)
 ' Date      : 17/05/2023
 ' Purpose   :
 '---------------------------------------------------------------------------------------
@@ -247,7 +247,7 @@ FullYearGet_Error:
 End Property
 '---------------------------------------------------------------------------------------
 ' Property  : FullYear
-' Author    : beededea
+' Author    : Dean Beedell (yereverluvinunclebert)
 ' Date      : 17/05/2023
 ' Purpose   :
 '---------------------------------------------------------------------------------------
@@ -267,7 +267,7 @@ End Property
 
 '---------------------------------------------------------------------------------------
 ' Property : UtcMonth
-' Author    : beededea
+' Author    : Dean Beedell (yereverluvinunclebert)
 ' Date      : 17/05/2023
 ' Purpose   :
 '---------------------------------------------------------------------------------------
@@ -286,7 +286,7 @@ UtcMonthGet_Error:
 End Property
 '---------------------------------------------------------------------------------------
 ' Property  : UtcMonth
-' Author    : beededea
+' Author    : Dean Beedell (yereverluvinunclebert)
 ' Date      : 17/05/2023
 ' Purpose   :
 '---------------------------------------------------------------------------------------
@@ -306,7 +306,7 @@ End Property
 
 '---------------------------------------------------------------------------------------
 ' Property : utcDay
-' Author    : beededea
+' Author    : Dean Beedell (yereverluvinunclebert)
 ' Date      : 17/05/2023
 ' Purpose   :
 '---------------------------------------------------------------------------------------
@@ -325,7 +325,7 @@ utcDayGet_Error:
 End Property
 '---------------------------------------------------------------------------------------
 ' Property  : utcDay
-' Author    : beededea
+' Author    : Dean Beedell (yereverluvinunclebert)
 ' Date      : 17/05/2023
 ' Purpose   :
 '---------------------------------------------------------------------------------------
@@ -377,7 +377,7 @@ End Function
 ' Procedure Access: Private
 ' Parameter returnHours (Double):
 ' Return Type: Boolean
-' Author: beededea
+' Author: Dean Beedell (yereverluvinunclebert)
 ' Date: 12/02/2024
 ' ----------------------------------------------------------------
 Private Function calcSunPosition(ByVal rising As Boolean, ByVal dateInput As Date, ByRef returnHours As Double) As Boolean
@@ -428,7 +428,7 @@ Private Function calcSunPosition(ByVal rising As Boolean, ByVal dateInput As Dat
     N3 = (1 + Fix((thisYear - 4 * Fix(thisYear / 4) + 2) / 3))
     If debugFlg = 1 Then Debug.Print ("%SFN-I N3 " & N3)
     
-    N = N1 - (N2 * N3) + Val(thisDay) - 30
+    N = N1 - (N2 * N3) + val(thisDay) - 30
     If debugFlg = 1 Then Debug.Print ("%SFN-I N " & N)
     
     ' convert the longitude to hour value and calculate an approximate time
@@ -517,7 +517,7 @@ End Function
 ' Parameter sunsetHours (Double):
 ' Parameter sunriseHours (Double):
 ' Return Type: Boolean
-' Author: beededea
+' Author: Dean Beedell (yereverluvinunclebert)
 ' Date: 12/02/2024
 ' ----------------------------------------------------------------
 Private Function testIsDaylight(ByVal sunsetHours As Double, ByRef sunriseHours As Double) As Boolean
@@ -571,7 +571,7 @@ End Function
 ' Parameter approximateTime (Double):
 ' Parameter returnSunString (String):
 ' Return Type: Double
-' Author: beededea
+' Author: Dean Beedell (yereverluvinunclebert)
 ' Date: 12/02/2024
 ' ----------------------------------------------------------------
 Private Function getLocalMeanTime(ByVal rising As Boolean, ByVal lnghour As Double, ByVal sunDeclination As Double, ByVal cosDec As Double, ByVal rightAscension As Double, ByVal approximateTime As Double, ByRef returnSunString As String) As Double
@@ -656,7 +656,7 @@ End Function
 ' Procedure Access: Private
 ' Parameter x (Double):
 ' Return Type: Double
-' Author: beededea
+' Author: Dean Beedell (yereverluvinunclebert)
 ' Date: 12/02/2024
 ' ----------------------------------------------------------------
 Private Function thisAcos(x As Double) As Double
@@ -680,7 +680,7 @@ End Function
 
 '---------------------------------------------------------------------------------------
 ' Function   : fUtcMonth
-' Author    : beededea
+' Author    : Dean Beedell (yereverluvinunclebert)
 ' Date      : 07/10/2023
 ' Purpose   : get the number of the month given a month name
 '---------------------------------------------------------------------------------------
@@ -721,7 +721,7 @@ End Function
 ' Procedure Access: Private
 ' Parameter vb6DateTime (Date):
 ' Return Type: Integer
-' Author: beededea
+' Author: Dean Beedell (yereverluvinunclebert)
 ' Date: 12/02/2024
 ' ----------------------------------------------------------------
 Private Function fUtcDayOfWeek(vb6DateTime As Date) As Integer

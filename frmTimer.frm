@@ -76,7 +76,7 @@ Option Explicit
 
 '---------------------------------------------------------------------------------------
 ' Procedure : revealWidgetTimer_Timer
-' Author    : beededea
+' Author    : Dean Beedell (yereverluvinunclebert)
 ' Date      : 05/05/2023
 ' Purpose   :
 '---------------------------------------------------------------------------------------
@@ -110,7 +110,7 @@ End Sub
 
 '---------------------------------------------------------------------------------------
 ' Procedure : rotationTimer_Timer
-' Author    : beededea
+' Author    : Dean Beedell (yereverluvinunclebert)
 ' Date      : 05/05/2023
 ' Purpose   : for handling rotation of the screen in tablet mode
 '---------------------------------------------------------------------------------------
@@ -148,7 +148,7 @@ End Sub
 
 '---------------------------------------------------------------------------------------
 ' Procedure : settingsTimer_Timer
-' Author    : beededea
+' Author    : Dean Beedell (yereverluvinunclebert)
 ' Date      : 13/05/2023
 ' Purpose   : if the unhide setting is set by another process it will unhide the widget
 '---------------------------------------------------------------------------------------

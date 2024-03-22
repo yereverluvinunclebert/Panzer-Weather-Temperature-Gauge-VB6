@@ -30,7 +30,7 @@ Private Type TOOLINFO
 End Type
 '
 Private Declare Sub InitCommonControls Lib "comctl32" ()
-Private Declare Function CreateWindowExW Lib "user32" (ByVal dwExStyle As Long, ByVal lpClassName As Long, ByVal lpWindowName As Long, ByVal dwStyle As Long, ByVal x As Long, ByVal Y As Long, ByVal nWidth As Long, ByVal nHeight As Long, ByVal hWndParent As Long, ByVal hMenu As Long, ByVal hInstance As Long, lpParam As Any) As Long
+Private Declare Function CreateWindowExW Lib "user32" (ByVal dwExStyle As Long, ByVal lpClassName As Long, ByVal lpWindowName As Long, ByVal dwStyle As Long, ByVal x As Long, ByVal y As Long, ByVal nWidth As Long, ByVal nHeight As Long, ByVal hWndParent As Long, ByVal hMenu As Long, ByVal hInstance As Long, lpParam As Any) As Long
 Public Declare Function DestroyWindow Lib "user32" (ByVal hwnd As Long) As Long
 '
 Private Const WM_USER               As Long = &H400&
@@ -163,7 +163,7 @@ End Sub
 
 '---------------------------------------------------------------------------------------
 ' Procedure : DestroyToolTip
-' Author    : beededea
+' Author    : Dean Beedell (yereverluvinunclebert)
 ' Date      : 14/05/2023
 ' Purpose   :
 '---------------------------------------------------------------------------------------

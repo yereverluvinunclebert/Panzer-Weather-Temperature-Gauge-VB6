@@ -4,7 +4,7 @@ Attribute VB_Name = "Module1"
 
 '---------------------------------------------------------------------------------------
 ' Module    : Module1
-' Author    : beededea
+' Author    : Dean Beedell (yereverluvinunclebert)
 ' Date      : 27/04/2023
 ' Purpose   : Module for declaring any public and private constants, APIs and types used by the functions therein.
 '---------------------------------------------------------------------------------------
@@ -498,7 +498,7 @@ fDirExists_Error:
 End Function
 ''---------------------------------------------------------------------------------------
 '' Procedure : fFExists
-'' Author    : beededea
+'' Author    : Dean Beedell (yereverluvinunclebert)
 '' Date      : 17/10/2019
 '' Purpose   :
 ''---------------------------------------------------------------------------------------
@@ -522,7 +522,7 @@ End Function
 
 '---------------------------------------------------------------------------------------
 ' Procedure : fDirExists
-' Author    : beededea
+' Author    : Dean Beedell (yereverluvinunclebert)
 ' Date      : 17/10/2019
 ' Purpose   :
 '---------------------------------------------------------------------------------------
@@ -548,7 +548,7 @@ End Function
 
 '---------------------------------------------------------------------------------------
 ' Procedure : fExtractSuffix
-' Author    : beededea
+' Author    : Dean Beedell (yereverluvinunclebert)
 ' Date      : 20/06/2019
 ' Purpose   : extract the suffix from a filename
 '---------------------------------------------------------------------------------------
@@ -584,7 +584,7 @@ End Function
 'End Function
 '---------------------------------------------------------------------------------------
 ' Procedure : fExtractSuffixWithDot
-' Author    : beededea
+' Author    : Dean Beedell (yereverluvinunclebert)
 ' Date      : 20/06/2019
 ' Purpose   : extract the suffix from a filename
 '---------------------------------------------------------------------------------------
@@ -620,7 +620,7 @@ End Function
 
 '---------------------------------------------------------------------------------------
 ' Procedure : fExtractFileNameNoSuffix
-' Author    : beededea
+' Author    : Dean Beedell (yereverluvinunclebert)
 ' Date      : 20/06/2019
 ' Purpose   : extract the filename without a suffix
 '---------------------------------------------------------------------------------------
@@ -656,7 +656,7 @@ End Function
 '
 '---------------------------------------------------------------------------------------
 ' Procedure : fLicenceState
-' Author    : beededea
+' Author    : Dean Beedell (yereverluvinunclebert)
 ' Date      : 20/06/2019
 ' Purpose   : check the state of the licence
 '---------------------------------------------------------------------------------------
@@ -685,7 +685,7 @@ fLicenceState_Error:
 End Function
 '---------------------------------------------------------------------------------------
 ' Procedure : showLicence
-' Author    : beededea
+' Author    : Dean Beedell (yereverluvinunclebert)
 ' Date      : 20/06/2019
 ' Purpose   : check the state of the licence
 '---------------------------------------------------------------------------------------
@@ -715,7 +715,7 @@ End Sub
 
 '---------------------------------------------------------------------------------------
 ' Procedure : setDPIaware
-' Author    : beededea
+' Author    : Dean Beedell (yereverluvinunclebert)
 ' Date      : 29/10/2023
 ' Purpose   : This sets DPI awareness for the whole program incl. native VB6 forms, requires a program hard restart.
 '---------------------------------------------------------------------------------------
@@ -745,7 +745,7 @@ End Sub
 
 '---------------------------------------------------------------------------------------
 ' Procedure : testDPIAndSetInitialAwareness
-' Author    : beededea
+' Author    : Dean Beedell (yereverluvinunclebert)
 ' Date      : 29/10/2023
 ' Purpose   :
 '---------------------------------------------------------------------------------------
@@ -768,7 +768,7 @@ End Sub
 
 '---------------------------------------------------------------------------------------
 ' Procedure : LoadFileToTB
-' Author    : beededea
+' Author    : Dean Beedell (yereverluvinunclebert)
 ' Date      : 26/08/2019
 ' Purpose   :
 '---------------------------------------------------------------------------------------
@@ -821,7 +821,7 @@ End Sub
 '
 '---------------------------------------------------------------------------------------
 ' Procedure : fGetINISetting
-' Author    : beededea
+' Author    : Dean Beedell (yereverluvinunclebert)
 ' Date      : 05/07/2019
 ' Purpose   : Get the INI Setting from the File
 '---------------------------------------------------------------------------------------
@@ -847,7 +847,7 @@ End Function
 '
 '---------------------------------------------------------------------------------------
 ' Procedure : sPutINISetting
-' Author    : beededea
+' Author    : Dean Beedell (yereverluvinunclebert)
 ' Date      : 05/07/2019
 ' Purpose   : Save INI Setting in the File
 '---------------------------------------------------------------------------------------
@@ -871,7 +871,7 @@ End Sub
 
 '---------------------------------------------------------------------------------------
 ' Procedure : savestring
-' Author    : beededea
+' Author    : Dean Beedell (yereverluvinunclebert)
 ' Date      : 05/07/2019
 ' Purpose   :
 '---------------------------------------------------------------------------------------
@@ -923,7 +923,7 @@ End Function
 
 '---------------------------------------------------------------------------------------
 ' Procedure : addTargetfile
-' Author    : beededea
+' Author    : Dean Beedell (yereverluvinunclebert)
 ' Date      : 30/05/2019
 ' Purpose   : open a dialogbox to select a file as the target, normally a binary
 '---------------------------------------------------------------------------------------
@@ -983,7 +983,7 @@ Public Sub addTargetFile(ByVal fieldValue As String, ByRef retFileName As String
 End Sub
 '---------------------------------------------------------------------------------------
 ' Procedure : fGetDirectory
-' Author    : beededea
+' Author    : Dean Beedell (yereverluvinunclebert)
 ' Date      : 11/07/2019
 ' Purpose   : get the folder or directory path as a string not including the last backslash
 '---------------------------------------------------------------------------------------
@@ -1009,7 +1009,7 @@ End Function
 
 '---------------------------------------------------------------------------------------
 ' Procedure : obtainOpenFileName
-' Author    : beededea
+' Author    : Dean Beedell (yereverluvinunclebert)
 ' Date      : 02/09/2019
 ' Purpose   : using GetOpenFileName API rturns file name and title, the filename will be buffered to 256 bytes
 '---------------------------------------------------------------------------------------
@@ -1190,7 +1190,7 @@ End Function
 
 '---------------------------------------------------------------------------------------
 ' Procedure : fGetstring
-' Author    : beededea
+' Author    : Dean Beedell (yereverluvinunclebert)
 ' Date      : 05/07/2019
 ' Purpose   : get a string from the registry
 '---------------------------------------------------------------------------------------
@@ -1237,7 +1237,7 @@ End Function
 ' select a font for the fnt form
 '---------------------------------------------------------------------------------------
 ' Procedure : changeFont
-' Author    : beededea
+' Author    : Dean Beedell (yereverluvinunclebert)
 ' Date      : 02/05/2023
 ' Purpose   :
 '---------------------------------------------------------------------------------------
@@ -1279,7 +1279,7 @@ End Sub
 
 '---------------------------------------------------------------------------------------
 ' Procedure : displayFontSelector
-' Author    : beededea
+' Author    : Dean Beedell (yereverluvinunclebert)
 ' Date      : 29/02/2020
 ' Purpose   : select a font for the supplied form
 '---------------------------------------------------------------------------------------
@@ -1329,7 +1329,7 @@ End Sub
 
 '---------------------------------------------------------------------------------------
 ' Procedure : changeFormFont
-' Author    : beededea
+' Author    : Dean Beedell (yereverluvinunclebert)
 ' Date      : 12/07/2019
 ' Purpose   : change the font throughout the whole form
 '---------------------------------------------------------------------------------------
@@ -1371,7 +1371,7 @@ End Sub
 
 '---------------------------------------------------------------------------------------
 ' Procedure : fDialogFont
-' Author    : beededea
+' Author    : Dean Beedell (yereverluvinunclebert)
 ' Date      : 21/08/2020
 ' Purpose   : display the default windows dialog box that allows the user to select a font
 '---------------------------------------------------------------------------------------
@@ -1541,7 +1541,7 @@ End Function
 
 '---------------------------------------------------------------------------------------
 ' Procedure : aboutClickEvent
-' Author    : beededea
+' Author    : Dean Beedell (yereverluvinunclebert)
 ' Date      : 02/05/2023
 ' Purpose   :
 '---------------------------------------------------------------------------------------
@@ -1584,7 +1584,7 @@ aboutClickEvent_Error:
 End Sub
 '---------------------------------------------------------------------------------------
 ' Procedure : helpSplash
-' Author    : beededea
+' Author    : Dean Beedell (yereverluvinunclebert)
 ' Date      : 03/08/2023
 ' Purpose   :
 '---------------------------------------------------------------------------------------
@@ -1624,7 +1624,7 @@ helpSplash_Error:
 End Sub
 '---------------------------------------------------------------------------------------
 ' Procedure : licenceSplash
-' Author    : beededea
+' Author    : Dean Beedell (yereverluvinunclebert)
 ' Date      : 03/08/2023
 ' Purpose   :
 '---------------------------------------------------------------------------------------
@@ -1670,7 +1670,7 @@ End Sub
 
 '---------------------------------------------------------------------------------------
 ' Procedure : mnuCoffee_ClickEvent
-' Author    : beededea
+' Author    : Dean Beedell (yereverluvinunclebert)
 ' Date      : 20/05/2023
 ' Purpose   :
 '---------------------------------------------------------------------------------------
@@ -1698,7 +1698,7 @@ mnuCoffee_ClickEvent_Error:
 End Sub
 '---------------------------------------------------------------------------------------
 ' Procedure : mnuSupport_ClickEvent
-' Author    : beededea
+' Author    : Dean Beedell (yereverluvinunclebert)
 ' Date      : 20/05/2023
 ' Purpose   :
 '---------------------------------------------------------------------------------------
@@ -1728,7 +1728,7 @@ mnuSupport_ClickEvent_Error:
 End Sub
 '---------------------------------------------------------------------------------------
 ' Procedure : mnuLicence_ClickEvent
-' Author    : beededea
+' Author    : Dean Beedell (yereverluvinunclebert)
 ' Date      : 20/05/2023
 ' Purpose   :
 '---------------------------------------------------------------------------------------
@@ -1751,7 +1751,7 @@ mnuLicence_ClickEvent_Error:
 End Sub
 '---------------------------------------------------------------------------------------
 ' Procedure : setMainTooltips
-' Author    : beededea
+' Author    : Dean Beedell (yereverluvinunclebert)
 ' Date      : 15/05/2023
 ' Purpose   :
 '---------------------------------------------------------------------------------------
@@ -1801,7 +1801,7 @@ setMainTooltips_Error:
 End Sub
 '---------------------------------------------------------------------------------------
 ' Procedure : ChangeToolTipWidgetDefaultSettings
-' Author    : beededea
+' Author    : Dean Beedell (yereverluvinunclebert)
 ' Date      : 20/06/2023
 ' Purpose   :
 '---------------------------------------------------------------------------------------
@@ -1827,7 +1827,7 @@ End Sub
 
 '---------------------------------------------------------------------------------------
 ' Procedure : makeVisibleFormElements
-' Author    : beededea
+' Author    : Dean Beedell (yereverluvinunclebert)
 ' Date      : 01/03/2023
 ' Purpose   : ' adjust Form Position on startup placing form onto Correct Monitor when placed off screen due to
 '               monitor/resolution changes.
@@ -1954,7 +1954,7 @@ End Sub
 
 '---------------------------------------------------------------------------------------
 ' Procedure : getkeypress
-' Author    : beededea
+' Author    : Dean Beedell (yereverluvinunclebert)
 ' Date      : 20/06/2019
 ' Purpose   : getting a keypress from the keyboard
     '36 home
@@ -2006,7 +2006,7 @@ End Sub
 
 '---------------------------------------------------------------------------------------
 ' Procedure : determineScreenDimensions
-' Author    : beededea
+' Author    : Dean Beedell (yereverluvinunclebert)
 ' Date      : 18/09/2020
 ' Purpose   : VB6 has a bug - it should return width in twips on my screen but often returns a faulty value when a game runs full screen, changing the resolution
 '             the screen width determination is incorrect, the API call below resolves this.
@@ -2042,7 +2042,7 @@ End Sub
 
 '---------------------------------------------------------------------------------------
 ' Procedure : mainScreen
-' Author    : beededea
+' Author    : Dean Beedell (yereverluvinunclebert)
 ' Date      : 04/05/2023
 ' Purpose   : Function to move the main_window onto the main screen - called on startup and by timer
 '---------------------------------------------------------------------------------------
@@ -2116,7 +2116,7 @@ End Sub
 
 '---------------------------------------------------------------------------------------
 ' Procedure : thisForm_Unload
-' Author    : beededea
+' Author    : Dean Beedell (yereverluvinunclebert)
 ' Date      : 18/08/2022
 ' Purpose   : the standard form unload routine
 '---------------------------------------------------------------------------------------
@@ -2143,7 +2143,7 @@ End Sub
 
 '---------------------------------------------------------------------------------------
 ' Procedure : unloadAllForms
-' Author    : beededea
+' Author    : Dean Beedell (yereverluvinunclebert)
 ' Date      : 28/06/2023
 ' Purpose   : unload all VB6 and RC6 forms
 '---------------------------------------------------------------------------------------
@@ -2195,7 +2195,7 @@ End Sub
 
 '---------------------------------------------------------------------------------------
 ' Procedure : reloadWidget
-' Author    : beededea
+' Author    : Dean Beedell (yereverluvinunclebert)
 ' Date      : 05/05/2023
 ' Purpose   :
 '---------------------------------------------------------------------------------------
@@ -2227,7 +2227,7 @@ End Sub
 
 '---------------------------------------------------------------------------------------
 ' Procedure : savePosition
-' Author    : beededea
+' Author    : Dean Beedell (yereverluvinunclebert)
 ' Date      : 04/08/2023
 ' Purpose   :
 '---------------------------------------------------------------------------------------
@@ -2264,7 +2264,7 @@ End Sub
 
 '---------------------------------------------------------------------------------------
 ' Procedure : makeProgramPreferencesAvailable
-' Author    : beededea
+' Author    : Dean Beedell (yereverluvinunclebert)
 ' Date      : 01/05/2023
 ' Purpose   : open the prefs
 '---------------------------------------------------------------------------------------
@@ -2301,7 +2301,7 @@ End Sub
 
 '---------------------------------------------------------------------------------------
 ' Procedure : readPrefsPosition
-' Author    : beededea
+' Author    : Dean Beedell (yereverluvinunclebert)
 ' Date      : 28/05/2023
 ' Purpose   : read the form X/Y params from the toolSettings.ini
 '---------------------------------------------------------------------------------------
@@ -2353,7 +2353,7 @@ readPrefsPosition_Error:
 End Sub
 '---------------------------------------------------------------------------------------
 ' Procedure : writePrefsPosition
-' Author    : beededea
+' Author    : Dean Beedell (yereverluvinunclebert)
 ' Date      : 28/05/2023
 ' Purpose   : save the current X and y position of this form to allow repositioning when restarting
 '---------------------------------------------------------------------------------------
@@ -2395,7 +2395,7 @@ End Sub
 
 '---------------------------------------------------------------------------------------
 ' Procedure : settingsTimer_Timer
-' Author    : beededea
+' Author    : Dean Beedell (yereverluvinunclebert)
 ' Date      : 03/03/2023
 ' Purpose   : Checking the date/time of the settings.ini file meaning that another tool has edited the settings
 '---------------------------------------------------------------------------------------
@@ -2444,7 +2444,7 @@ End Sub
 
 '---------------------------------------------------------------------------------------
 ' Procedure : lockWidget
-' Author    : beededea
+' Author    : Dean Beedell (yereverluvinunclebert)
 ' Date      : 03/08/2023
 ' Purpose   :
 '---------------------------------------------------------------------------------------
@@ -2492,7 +2492,7 @@ End Sub
 
 '---------------------------------------------------------------------------------------
 ' Procedure : SwitchOff
-' Author    : beededea
+' Author    : Dean Beedell (yereverluvinunclebert)
 ' Date      : 03/08/2023
 ' Purpose   :
 '---------------------------------------------------------------------------------------
@@ -2521,7 +2521,7 @@ End Sub
 
 '---------------------------------------------------------------------------------------
 ' Procedure : TurnFunctionsOn
-' Author    : beededea
+' Author    : Dean Beedell (yereverluvinunclebert)
 ' Date      : 03/08/2023
 ' Purpose   :
 '---------------------------------------------------------------------------------------
@@ -2554,7 +2554,7 @@ End Sub
 
 '''---------------------------------------------------------------------------------------
 ''' Procedure : IsDLSavings
-''' Author    : beededea
+''' Author    : Dean Beedell (yereverluvinunclebert)
 ''' Date      : 13/08/2023
 ''' Purpose   :
 '''---------------------------------------------------------------------------------------
@@ -2585,7 +2585,7 @@ End Sub
 
 '---------------------------------------------------------------------------------------
 ' Procedure : hardRestart
-' Author    : beededea
+' Author    : Dean Beedell (yereverluvinunclebert)
 ' Date      : 14/08/2023
 ' Purpose   :
 '---------------------------------------------------------------------------------------
@@ -2648,7 +2648,7 @@ End Function
 
 '---------------------------------------------------------------------------------------
 ' Procedure : InDebugMode
-' Author    : beededea
+' Author    : Dean Beedell (yereverluvinunclebert)
 ' Date      : 02/03/2021
 ' Purpose   : ' .30 DAEB 03/03/2021 frmMain.frm replaced the inIDE function that used a variant to one without
 '---------------------------------------------------------------------------------------
@@ -2670,7 +2670,7 @@ End Function
 
 '---------------------------------------------------------------------------------------
 ' Procedure : clearAllMessageBoxRegistryEntries
-' Author    : beededea
+' Author    : Dean Beedell (yereverluvinunclebert)
 ' Date      : 11/04/2023
 ' Purpose   : Clear all the message box "show again" entries in the registry
 '---------------------------------------------------------------------------------------
@@ -2707,7 +2707,7 @@ End Sub
 
 '---------------------------------------------------------------------------------------
 ' Procedure : determineIconWidth
-' Author    : beededea
+' Author    : Dean Beedell (yereverluvinunclebert)
 ' Date      : 02/10/2023
 ' Purpose   :
 '---------------------------------------------------------------------------------------
@@ -2755,7 +2755,7 @@ End Function
 
 '---------------------------------------------------------------------------------------
 ' Procedure : ArrayString
-' Author    : beededea
+' Author    : Dean Beedell (yereverluvinunclebert)
 ' Date      : 09/10/2023
 ' Purpose   : allows population of a string array from a comma separated string
 '             VB6 normally creates a variant when assigning a comma separated string to a var with an undeclared type

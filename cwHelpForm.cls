@@ -14,7 +14,7 @@ Attribute VB_Exposed = False
 '@IgnoreModule IntegerDataType, ModuleWithoutFolder
 '---------------------------------------------------------------------------------------
 ' Class Module      : cwhelp
-' Author            : beededea
+' Author            : Dean Beedell (yereverluvinunclebert)
 ' Date              : 17/05/2023
 ' Purpose           :
 '---------------------------------------------------------------------------------------
@@ -42,7 +42,7 @@ Private mZoom As Double
 
 '---------------------------------------------------------------------------------------
 ' Procedure : Class_Initialize
-' Author    : beededea
+' Author    : Dean Beedell (yereverluvinunclebert)
 ' Date      : 17/05/2023
 ' Purpose   :
 '---------------------------------------------------------------------------------------
@@ -73,7 +73,7 @@ Public Property Get Widget() As cWidgetBase: Set Widget = W: End Property
 Public Property Get Widgets() As cWidgets:  Set Widgets = W.Widgets: End Property ' does this really need to be exposed?
 '---------------------------------------------------------------------------------------
 ' Procedure : Zoom
-' Author    : beededea
+' Author    : Dean Beedell (yereverluvinunclebert)
 ' Date      : 17/05/2023
 ' Purpose   :
 '---------------------------------------------------------------------------------------
@@ -92,7 +92,7 @@ ZoomGet_Error:
 End Property
 '---------------------------------------------------------------------------------------
 ' Procedure : Zoom
-' Author    : beededea
+' Author    : Dean Beedell (yereverluvinunclebert)
 ' Date      : 17/05/2023
 ' Purpose   :
 '---------------------------------------------------------------------------------------
@@ -113,12 +113,12 @@ ZoomLet_Error:
 End Property
 '---------------------------------------------------------------------------------------
 ' Procedure : W_MouseDown
-' Author    : beededea
+' Author    : Dean Beedell (yereverluvinunclebert)
 ' Date      : 17/05/2023
 ' Purpose   :
 '---------------------------------------------------------------------------------------
 '
-Private Sub W_MouseDown(Button As Integer, Shift As Integer, ByVal x As Single, ByVal Y As Single)
+Private Sub W_MouseDown(Button As Integer, Shift As Integer, ByVal x As Single, ByVal y As Single)
    On Error GoTo W_MouseDown_Error
 
     tmrHelpFadeOut.Enabled = True ' this is not currently making the opacity reduce
@@ -132,7 +132,7 @@ W_MouseDown_Error:
 End Sub
 '---------------------------------------------------------------------------------------
 ' Procedure : MyOpacity
-' Author    : beededea
+' Author    : Dean Beedell (yereverluvinunclebert)
 ' Date      : 17/05/2023
 ' Purpose   :
 '---------------------------------------------------------------------------------------
@@ -151,7 +151,7 @@ MyOpacityLet_Error:
 End Property
 '---------------------------------------------------------------------------------------
 ' Procedure : opacity
-' Author    : beededea
+' Author    : Dean Beedell (yereverluvinunclebert)
 ' Date      : 17/05/2023
 ' Purpose   :
 '---------------------------------------------------------------------------------------
@@ -171,7 +171,7 @@ End Property
 
 '---------------------------------------------------------------------------------------
 ' Procedure : ShowMe
-' Author    : beededea
+' Author    : Dean Beedell (yereverluvinunclebert)
 ' Date      : 17/05/2023
 ' Purpose   :
 '---------------------------------------------------------------------------------------
@@ -191,7 +191,7 @@ ShowMeLet_Error:
 End Property
 '---------------------------------------------------------------------------------------
 ' Procedure : ShowMe
-' Author    : beededea
+' Author    : Dean Beedell (yereverluvinunclebert)
 ' Date      : 17/05/2023
 ' Purpose   :
 '---------------------------------------------------------------------------------------
@@ -212,7 +212,7 @@ End Property
 '
 '---------------------------------------------------------------------------------------
 ' Procedure : tmrHelpFadeIn_Timer
-' Author    : beededea
+' Author    : Dean Beedell (yereverluvinunclebert)
 ' Date      : 17/05/2023
 ' Purpose   : timer to make the help form or help image fade in opacity
 '---------------------------------------------------------------------------------------
@@ -220,7 +220,7 @@ End Property
 Private Sub tmrHelpFadeIn_Timer()
       
    On Error GoTo tmrHelpFadeIn_Timer_Error
-    fMain.helpForm.show
+    fMain.helpForm.Show
     MyOpacity = MyOpacity + 0.05
     If MyOpacity >= 1 Then
         MyOpacity = 1
@@ -241,7 +241,7 @@ End Sub
 '
 '---------------------------------------------------------------------------------------
 ' Procedure : tmrHelpFadeOut_Timer
-' Author    : beededea
+' Author    : Dean Beedell (yereverluvinunclebert)
 ' Date      : 17/05/2023
 ' Purpose   : timer to make the help form or help image fade out in opacity
 '---------------------------------------------------------------------------------------
@@ -276,7 +276,7 @@ tmrHelpFadeOut_Timer_Error:
 End Sub
 '---------------------------------------------------------------------------------------
 ' Procedure : W_Paint
-' Author    : beededea
+' Author    : Dean Beedell (yereverluvinunclebert)
 ' Date      : 17/05/2023
 ' Purpose   :
 '---------------------------------------------------------------------------------------
@@ -296,7 +296,7 @@ End Sub
 
 '---------------------------------------------------------------------------------------
 ' Procedure : Draw
-' Author    : beededea
+' Author    : Dean Beedell (yereverluvinunclebert)
 ' Date      : 17/05/2023
 ' Purpose   :
 '---------------------------------------------------------------------------------------
