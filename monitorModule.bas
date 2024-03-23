@@ -1,5 +1,5 @@
 Attribute VB_Name = "Module2"
-'@IgnoreModule IntegerDataType, ModuleWithoutFolder
+'@IgnoreModule AssignmentNotUsed, IntegerDataType, ModuleWithoutFolder
     ' 23/01/2021 .01 monitorModule.bas DAEB added if then else if you can't get device context
 
 Option Explicit
@@ -7,7 +7,7 @@ Option Explicit
 'Constants for the return value when finding a monitor
 Public Enum dwFlags
     MONITOR_DEFAULTTONULL = &H0       'If the monitor is not found, return 0
-    MONITOR_DEFAULTTOPRIMARY& = &H1   'If the monitor is not found, return the primary monitor
+    MONITOR_DEFAULTTOPRIMARY = &H1   'If the monitor is not found, return the primary monitor
     MONITOR_DEFAULTTONEAREST = &H2    'If the monitor is not found, return the nearest monitor
 End Enum
 
@@ -159,6 +159,7 @@ Public screenTwipsPerPixelY As Long ' .07 DAEB 26/04/2021 common.bas changed to 
 '---------------------------------------------------------------------------------------
 '
 Public Function fPixelsPerInchX() As Long
+    
     Dim hdc As Long: hdc = 0
     
     Const LOGPIXELSX As Integer = 88       '  Logical pixels/inch in X
@@ -188,6 +189,7 @@ End Function
 '---------------------------------------------------------------------------------------
 '
 Public Function fTwipsPerPixelX() As Single
+    
     Dim hdc As Long: hdc = 0
     Dim lPixelsPerInch As Long: lPixelsPerInch = 0
     
@@ -223,6 +225,7 @@ End Function
 '---------------------------------------------------------------------------------------
 '
 Public Function fTwipsPerPixelY() As Single
+    
     Dim hdc As Long: hdc = 0
     Dim lPixelsPerInch As Long: lPixelsPerInch = 0
     
@@ -292,6 +295,7 @@ Public Sub adjustFormPositionToCorrectMonitor(ByRef hwnd As Long, ByVal Left As 
     Dim rc As RECT
 '    Dim Left As Long: Left = 0
 '    Dim Top As Long: Top = 0
+    
     Dim hMonitor As Long: hMonitor = 0
     Dim mi As tagMONITORINFO
     
@@ -343,10 +347,12 @@ Public Function monitorProperties(ByVal frm As cWidgetForm) As UDTMonitor
     
     'Return the properties (in Twips) of the monitor on which most of Frm is mapped
     
+    
     Dim hMonitor As Long: hMonitor = 0
     Dim MONITORINFO As tagMONITORINFO
     Dim Frect As RECT
-    Dim ad As Double: ad = 0
+
+    'Dim ad As Double: ad = 0
     
     ' reads the size and position of the window
     On Error GoTo monitorProperties_Error

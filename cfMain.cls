@@ -11,7 +11,7 @@ Attribute VB_GlobalNameSpace = False
 Attribute VB_Creatable = True
 Attribute VB_PredeclaredId = False
 Attribute VB_Exposed = False
-'@IgnoreModule IntegerDataType, ModuleWithoutFolder
+'@IgnoreModule AssignmentNotUsed, IntegerDataType, ModuleWithoutFolder
 '---------------------------------------------------------------------------------------
 ' Module    : cfMain
 ' Author    : Dean Beedell (yereverluvinunclebert)
@@ -39,7 +39,6 @@ Attribute btnDecline.VB_VarHelpID = -1
 Private WithEvents textBox As cwTextBox
 Attribute textBox.VB_VarHelpID = -1
 Private lblDeclineOrNot As cwLabel
-Attribute lblDeclineOrNot.VB_VarHelpID = -1
 
  
 
@@ -53,11 +52,13 @@ Attribute lblDeclineOrNot.VB_VarHelpID = -1
 ' Purpose   :
 '---------------------------------------------------------------------------------------
 '
-Public Sub initAndShowAboutForm(ByVal x As Long, ByVal y As Long, Optional ByVal dx As Long, Optional ByVal dy As Long, Optional ByVal Caption As String)
+Public Sub initAndShowAboutForm(Optional ByVal Caption As String)
     
     Dim aboutFormWidth As Long: aboutFormWidth = 0
     Dim aboutFormHeight As Long: aboutFormHeight = 0
+    
     Dim aboutWidgetWidth As Long: aboutWidgetWidth = 0
+    
     Dim aboutWidgetHeight As Long: aboutWidgetHeight = 0
     Dim aboutWidgetZoomValue As Double: aboutWidgetZoomValue = 1
     
@@ -120,11 +121,13 @@ End Sub
 ' Purpose   :
 '---------------------------------------------------------------------------------------
 '
-Public Sub initAndShowHelpForm(ByVal x As Long, ByVal y As Long, Optional ByVal dx As Long, Optional ByVal dy As Long, Optional ByVal Caption As String)
+Public Sub initAndShowHelpForm(Optional ByVal Caption As String)
     
     Dim helpFormWidth As Long: helpFormWidth = 0
     Dim helpFormHeight As Long: helpFormHeight = 0
+    
     Dim helpWidgetWidth As Long: helpWidgetWidth = 0
+    
     Dim helpWidgetHeight As Long: helpWidgetHeight = 0
     
     Dim helpWidgetZoomValue As Double: helpWidgetZoomValue = 1
@@ -190,11 +193,13 @@ End Sub
 ' Purpose   :
 '---------------------------------------------------------------------------------------
 '
-Public Sub initAndShowLicenceForm(ByVal x As Long, ByVal y As Long, Optional ByVal dx As Long, Optional ByVal dy As Long, Optional ByVal Caption As String)
+Public Sub initAndShowLicenceForm(Optional ByVal Caption As String)
     
     Dim licenceFormWidth As Long: licenceFormWidth = 0
     Dim licenceFormHeight As Long: licenceFormHeight = 0
+    
     Dim licenceWidgetWidth As Long: licenceWidgetWidth = 0
+    
     Dim licenceWidgetHeight As Long: licenceWidgetHeight = 0
     
     Dim licenceWidgetZoomValue As Double: licenceWidgetZoomValue = 1
@@ -316,8 +321,11 @@ End Sub
 '---------------------------------------------------------------------------------------
 '
 Private Sub btnAccept_Click()
-    Dim answer As VbMsgBoxResult: answer = vbNo
+    
+    'Dim answer As VbMsgBoxResult: answer = vbNo
+    
     Dim fileToPlay As String: fileToPlay = vbNullString
+    
     Dim slicence As String: slicence = "0"
     
     On Error GoTo btnAccept_Click_Error
@@ -327,7 +335,8 @@ Private Sub btnAccept_Click()
         PlaySound App.path & "\resources\sounds\" & fileToPlay, ByVal 0&, SND_FILENAME Or SND_ASYNC
     End If
 
-    answer = msgBoxA("User accepted licence, thankyou.", vbOKOnly + vbExclamation, "Licence Acceptance", True, "btnAcceptClick")
+    
+    Call msgBoxA("User accepted licence, thankyou.", vbOKOnly + vbExclamation, "Licence Acceptance", True, "btnAcceptClick")
     
     slicence = "1"
     sPutINISetting "Software\PzTemperatureGauge", "licence", slicence, PzGSettingsFile
@@ -355,13 +364,16 @@ End Sub
 '
 Private Sub btnDecline_Click()
     
-    Dim answer As VbMsgBoxResult: answer = vbNo
+    
+    'Dim answer As VbMsgBoxResult: answer = vbNo
+    
     Dim slicence As String: slicence = "0"
         
     On Error GoTo btnDecline_Click_Error
 
     'answer = MsgBox("Licence declined, please destroy your copy of this widget and its documentation.", vbYes)
-    answer = msgBoxA("Licence declined, please destroy your copy of this widget and its documentation. This widget will now unload.", vbOKOnly + vbExclamation, "Licence Declined", False)
+    
+    Call msgBoxA("Licence declined, please destroy your copy of this widget and its documentation. This widget will now unload.", vbOKOnly + vbExclamation, "Licence Declined", False)
     slicence = "0"
     sPutINISetting "Software\PzTemperatureGauge", "licence", slicence, PzGSettingsFile
 

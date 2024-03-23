@@ -14,292 +14,6 @@ Begin VB.Form panzerPrefs
    ScaleWidth      =   8880
    StartUpPosition =   3  'Windows Default
    Visible         =   0   'False
-   Begin VB.Frame fraGeneral 
-      Caption         =   "General"
-      ForeColor       =   &H80000008&
-      Height          =   8775
-      Left            =   75
-      TabIndex        =   50
-      Top             =   1200
-      Visible         =   0   'False
-      Width           =   7995
-      Begin VB.Frame fraGeneralInner 
-         BorderStyle     =   0  'None
-         Height          =   8070
-         Left            =   480
-         TabIndex        =   51
-         Top             =   300
-         Width           =   7215
-         Begin VB.ComboBox cmbMetricImperial 
-            Height          =   315
-            ItemData        =   "frmPrefs.frx":10CA
-            Left            =   2010
-            List            =   "frmPrefs.frx":10CC
-            Style           =   2  'Dropdown List
-            TabIndex        =   170
-            Top             =   4200
-            Width           =   1740
-         End
-         Begin VB.ComboBox cmbWindSpeedScale 
-            Height          =   315
-            ItemData        =   "frmPrefs.frx":10CE
-            Left            =   2010
-            List            =   "frmPrefs.frx":10D0
-            Style           =   2  'Dropdown List
-            TabIndex        =   168
-            Top             =   3690
-            Width           =   1740
-         End
-         Begin VB.ComboBox cmbPressureScale 
-            Height          =   315
-            ItemData        =   "frmPrefs.frx":10D2
-            Left            =   2010
-            List            =   "frmPrefs.frx":10D4
-            Style           =   2  'Dropdown List
-            TabIndex        =   166
-            Top             =   3150
-            Width           =   1740
-         End
-         Begin VB.TextBox txtIcao 
-            Height          =   315
-            Left            =   2010
-            Locked          =   -1  'True
-            TabIndex        =   164
-            Text            =   "EGSH"
-            Top             =   2025
-            Width           =   1680
-         End
-         Begin VB.ComboBox cmbTemperatureScale 
-            Height          =   315
-            ItemData        =   "frmPrefs.frx":10D6
-            Left            =   2010
-            List            =   "frmPrefs.frx":10D8
-            Style           =   2  'Dropdown List
-            TabIndex        =   161
-            Top             =   2580
-            Width           =   1740
-         End
-         Begin VB.CheckBox chkGaugeFunctions 
-            Caption         =   "Pointer operation toggle *"
-            Height          =   225
-            Left            =   1995
-            TabIndex        =   52
-            ToolTipText     =   "When checked this box enables the pointer. That's it!"
-            Top             =   180
-            Width           =   3405
-         End
-         Begin VB.ComboBox cmbTickSwitchPref 
-            Height          =   315
-            ItemData        =   "frmPrefs.frx":10DA
-            Left            =   2010
-            List            =   "frmPrefs.frx":10DC
-            Style           =   2  'Dropdown List
-            TabIndex        =   145
-            Top             =   975
-            Width           =   1710
-         End
-         Begin VB.CheckBox chkGenStartup 
-            Caption         =   "Run the Temperature Widget at Windows Startup "
-            Height          =   465
-            Left            =   2010
-            TabIndex        =   93
-            ToolTipText     =   "Check this box to enable the automatic start of the program when Windows is started."
-            Top             =   7080
-            Width           =   4020
-         End
-         Begin vb6projectCCRSlider.Slider sliSamplingInterval 
-            Height          =   390
-            Left            =   1890
-            TabIndex        =   155
-            ToolTipText     =   "Setting the sampling interval affects the frequency of the pointer updates."
-            Top             =   5700
-            Width           =   3870
-            _ExtentX        =   6826
-            _ExtentY        =   688
-            Min             =   60
-            Max             =   4800
-            Value           =   60
-            TickFrequency   =   100
-            SelStart        =   60
-         End
-         Begin VB.Label lblGeneral 
-            Caption         =   "The Wind Speed Scale"
-            Height          =   480
-            Index           =   14
-            Left            =   3885
-            TabIndex        =   174
-            Top             =   3750
-            Width           =   2610
-         End
-         Begin VB.Label lblGeneral 
-            Caption         =   "The Air Pressure Scale"
-            Height          =   480
-            Index           =   13
-            Left            =   3885
-            TabIndex        =   173
-            Top             =   3195
-            Width           =   2610
-         End
-         Begin VB.Label lblGeneral 
-            Caption         =   $"frmPrefs.frx":10DE
-            Height          =   1005
-            Index           =   12
-            Left            =   2025
-            TabIndex        =   172
-            Top             =   4680
-            Width           =   3555
-         End
-         Begin VB.Label lblGeneral 
-            Alignment       =   1  'Right Justify
-            Caption         =   "Metric or Imperial :"
-            Height          =   480
-            Index           =   8
-            Left            =   255
-            TabIndex        =   171
-            Top             =   4230
-            Width           =   1545
-         End
-         Begin VB.Label lblGeneral 
-            Alignment       =   1  'Right Justify
-            Caption         =   "Anemometer :"
-            Height          =   480
-            Index           =   7
-            Left            =   255
-            TabIndex        =   169
-            Top             =   3720
-            Width           =   1545
-         End
-         Begin VB.Label lblGeneral 
-            Alignment       =   1  'Right Justify
-            Caption         =   "Barometer :"
-            Height          =   345
-            Index           =   4
-            Left            =   255
-            TabIndex        =   167
-            Top             =   3180
-            Width           =   1545
-         End
-         Begin VB.Label lblGeneral 
-            Caption         =   "ICAO Station ID :"
-            Height          =   255
-            Index           =   1
-            Left            =   585
-            TabIndex        =   165
-            Top             =   2085
-            Width           =   1545
-         End
-         Begin VB.Label lblGeneral 
-            Caption         =   "Temperature :"
-            Height          =   480
-            Index           =   5
-            Left            =   810
-            TabIndex        =   163
-            Top             =   2640
-            Width           =   1545
-         End
-         Begin VB.Label lblGeneral 
-            Caption         =   "Select Celsius / Fahrenheit / Kelvin"
-            Height          =   480
-            Index           =   10
-            Left            =   3855
-            TabIndex        =   162
-            Top             =   2625
-            Width           =   2610
-         End
-         Begin VB.Label lblWindowLevel 
-            Caption         =   "Adjust to determine gauge sampling frequency.*"
-            Height          =   270
-            Index           =   14
-            Left            =   2100
-            TabIndex        =   160
-            Top             =   6465
-            Width           =   3810
-         End
-         Begin VB.Label lblWindowLevel 
-            Caption         =   "Sampling Interval :"
-            Height          =   315
-            Index           =   13
-            Left            =   495
-            TabIndex        =   159
-            Top             =   5760
-            Width           =   1410
-         End
-         Begin VB.Label lblWindowLevel 
-            Caption         =   "secs"
-            Height          =   315
-            Index           =   12
-            Left            =   3615
-            TabIndex        =   158
-            Top             =   6165
-            Width           =   840
-         End
-         Begin VB.Label lblWindowLevel 
-            Caption         =   "4800"
-            Height          =   315
-            Index           =   11
-            Left            =   5385
-            TabIndex        =   157
-            Top             =   6165
-            Width           =   405
-         End
-         Begin VB.Label lblWindowLevel 
-            Caption         =   "60"
-            Height          =   315
-            Index           =   10
-            Left            =   2070
-            TabIndex        =   156
-            Top             =   6165
-            Width           =   345
-         End
-         Begin VB.Label lblGeneral 
-            Caption         =   "The pointer can be set to smooth or flick, the smooth movement uses more CPU."
-            Height          =   660
-            Index           =   9
-            Left            =   2025
-            TabIndex        =   147
-            Top             =   1410
-            Width           =   3810
-         End
-         Begin VB.Label lblGeneral 
-            Caption         =   "Smooth Movement :"
-            Height          =   480
-            Index           =   3
-            Left            =   375
-            TabIndex        =   146
-            Top             =   1035
-            Width           =   1605
-         End
-         Begin VB.Label lblGeneral 
-            Caption         =   "Gauge Functions :"
-            Height          =   315
-            Index           =   6
-            Left            =   510
-            TabIndex        =   95
-            Top             =   165
-            Width           =   1320
-         End
-         Begin VB.Label lblGeneral 
-            Caption         =   "Auto Start :"
-            Height          =   375
-            Index           =   11
-            Left            =   975
-            TabIndex        =   94
-            Tag             =   "lblRefreshInterval"
-            Top             =   7200
-            Width           =   1740
-         End
-         Begin VB.Label lblGeneral 
-            Caption         =   "When checked this box enables the pointer. *"
-            Height          =   660
-            Index           =   2
-            Left            =   2025
-            TabIndex        =   53
-            Tag             =   "lblEnableSoundsDesc"
-            Top             =   540
-            Width           =   3615
-         End
-      End
-   End
    Begin VB.Frame fraAbout 
       Caption         =   "About"
       Height          =   8580
@@ -325,7 +39,7 @@ Begin VB.Form panzerPrefs
          MultiLine       =   -1  'True
          ScrollBars      =   2  'Vertical
          TabIndex        =   114
-         Text            =   "frmPrefs.frx":118C
+         Text            =   "frmPrefs.frx":10CA
          Top             =   2205
          Width           =   8010
       End
@@ -620,6 +334,292 @@ Begin VB.Form panzerPrefs
          TabIndex        =   106
          Top             =   510
          Width           =   1245
+      End
+   End
+   Begin VB.Frame fraGeneral 
+      Caption         =   "General"
+      ForeColor       =   &H80000008&
+      Height          =   8775
+      Left            =   75
+      TabIndex        =   50
+      Top             =   1200
+      Visible         =   0   'False
+      Width           =   7995
+      Begin VB.Frame fraGeneralInner 
+         BorderStyle     =   0  'None
+         Height          =   8070
+         Left            =   480
+         TabIndex        =   51
+         Top             =   300
+         Width           =   7215
+         Begin VB.ComboBox cmbMetricImperial 
+            Height          =   315
+            ItemData        =   "frmPrefs.frx":2081
+            Left            =   2010
+            List            =   "frmPrefs.frx":2083
+            Style           =   2  'Dropdown List
+            TabIndex        =   170
+            Top             =   4200
+            Width           =   1740
+         End
+         Begin VB.ComboBox cmbWindSpeedScale 
+            Height          =   315
+            ItemData        =   "frmPrefs.frx":2085
+            Left            =   2010
+            List            =   "frmPrefs.frx":2087
+            Style           =   2  'Dropdown List
+            TabIndex        =   168
+            Top             =   3690
+            Width           =   1740
+         End
+         Begin VB.ComboBox cmbPressureScale 
+            Height          =   315
+            ItemData        =   "frmPrefs.frx":2089
+            Left            =   2010
+            List            =   "frmPrefs.frx":208B
+            Style           =   2  'Dropdown List
+            TabIndex        =   166
+            Top             =   3150
+            Width           =   1740
+         End
+         Begin VB.TextBox txtIcao 
+            Height          =   315
+            Left            =   2010
+            Locked          =   -1  'True
+            TabIndex        =   164
+            Text            =   "EGSH"
+            Top             =   2025
+            Width           =   1680
+         End
+         Begin VB.ComboBox cmbTemperatureScale 
+            Height          =   315
+            ItemData        =   "frmPrefs.frx":208D
+            Left            =   2010
+            List            =   "frmPrefs.frx":208F
+            Style           =   2  'Dropdown List
+            TabIndex        =   161
+            Top             =   2580
+            Width           =   1740
+         End
+         Begin VB.CheckBox chkGaugeFunctions 
+            Caption         =   "Pointer operation toggle *"
+            Height          =   225
+            Left            =   1995
+            TabIndex        =   52
+            ToolTipText     =   "When checked this box enables the pointer. That's it!"
+            Top             =   180
+            Width           =   3405
+         End
+         Begin VB.ComboBox cmbTickSwitchPref 
+            Height          =   315
+            ItemData        =   "frmPrefs.frx":2091
+            Left            =   2010
+            List            =   "frmPrefs.frx":2093
+            Style           =   2  'Dropdown List
+            TabIndex        =   145
+            Top             =   975
+            Width           =   1710
+         End
+         Begin VB.CheckBox chkGenStartup 
+            Caption         =   "Run the Temperature Widget at Windows Startup "
+            Height          =   465
+            Left            =   2010
+            TabIndex        =   93
+            ToolTipText     =   "Check this box to enable the automatic start of the program when Windows is started."
+            Top             =   7080
+            Width           =   4020
+         End
+         Begin vb6projectCCRSlider.Slider sliSamplingInterval 
+            Height          =   390
+            Left            =   1890
+            TabIndex        =   155
+            ToolTipText     =   "Setting the sampling interval affects the frequency of the pointer updates."
+            Top             =   5700
+            Width           =   3870
+            _ExtentX        =   6826
+            _ExtentY        =   688
+            Min             =   60
+            Max             =   4800
+            Value           =   60
+            TickFrequency   =   100
+            SelStart        =   60
+         End
+         Begin VB.Label lblGeneral 
+            Caption         =   "The Wind Speed Scale"
+            Height          =   480
+            Index           =   14
+            Left            =   3885
+            TabIndex        =   174
+            Top             =   3750
+            Width           =   2610
+         End
+         Begin VB.Label lblGeneral 
+            Caption         =   "The Air Pressure Scale"
+            Height          =   480
+            Index           =   13
+            Left            =   3885
+            TabIndex        =   173
+            Top             =   3195
+            Width           =   2610
+         End
+         Begin VB.Label lblGeneral 
+            Caption         =   $"frmPrefs.frx":2095
+            Height          =   1005
+            Index           =   12
+            Left            =   2025
+            TabIndex        =   172
+            Top             =   4680
+            Width           =   3555
+         End
+         Begin VB.Label lblGeneral 
+            Alignment       =   1  'Right Justify
+            Caption         =   "Metric or Imperial :"
+            Height          =   480
+            Index           =   8
+            Left            =   255
+            TabIndex        =   171
+            Top             =   4230
+            Width           =   1545
+         End
+         Begin VB.Label lblGeneral 
+            Alignment       =   1  'Right Justify
+            Caption         =   "Anemometer :"
+            Height          =   480
+            Index           =   7
+            Left            =   255
+            TabIndex        =   169
+            Top             =   3720
+            Width           =   1545
+         End
+         Begin VB.Label lblGeneral 
+            Alignment       =   1  'Right Justify
+            Caption         =   "Barometer :"
+            Height          =   345
+            Index           =   4
+            Left            =   255
+            TabIndex        =   167
+            Top             =   3180
+            Width           =   1545
+         End
+         Begin VB.Label lblGeneral 
+            Caption         =   "ICAO Station ID :"
+            Height          =   255
+            Index           =   1
+            Left            =   585
+            TabIndex        =   165
+            Top             =   2085
+            Width           =   1545
+         End
+         Begin VB.Label lblGeneral 
+            Caption         =   "Temperature :"
+            Height          =   480
+            Index           =   5
+            Left            =   810
+            TabIndex        =   163
+            Top             =   2640
+            Width           =   1545
+         End
+         Begin VB.Label lblGeneral 
+            Caption         =   "Select Celsius / Fahrenheit / Kelvin"
+            Height          =   480
+            Index           =   10
+            Left            =   3855
+            TabIndex        =   162
+            Top             =   2625
+            Width           =   2610
+         End
+         Begin VB.Label lblWindowLevel 
+            Caption         =   "Adjust to determine gauge sampling frequency.*"
+            Height          =   270
+            Index           =   14
+            Left            =   2100
+            TabIndex        =   160
+            Top             =   6465
+            Width           =   3810
+         End
+         Begin VB.Label lblWindowLevel 
+            Caption         =   "Sampling Interval :"
+            Height          =   315
+            Index           =   13
+            Left            =   495
+            TabIndex        =   159
+            Top             =   5760
+            Width           =   1410
+         End
+         Begin VB.Label lblWindowLevel 
+            Caption         =   "secs"
+            Height          =   315
+            Index           =   12
+            Left            =   3615
+            TabIndex        =   158
+            Top             =   6165
+            Width           =   840
+         End
+         Begin VB.Label lblWindowLevel 
+            Caption         =   "4800"
+            Height          =   315
+            Index           =   11
+            Left            =   5385
+            TabIndex        =   157
+            Top             =   6165
+            Width           =   405
+         End
+         Begin VB.Label lblWindowLevel 
+            Caption         =   "60"
+            Height          =   315
+            Index           =   10
+            Left            =   2070
+            TabIndex        =   156
+            Top             =   6165
+            Width           =   345
+         End
+         Begin VB.Label lblGeneral 
+            Caption         =   "The pointer can be set to smooth or flick, the smooth movement uses more CPU."
+            Height          =   660
+            Index           =   9
+            Left            =   2025
+            TabIndex        =   147
+            Top             =   1410
+            Width           =   3810
+         End
+         Begin VB.Label lblGeneral 
+            Caption         =   "Smooth Movement :"
+            Height          =   480
+            Index           =   3
+            Left            =   375
+            TabIndex        =   146
+            Top             =   1035
+            Width           =   1605
+         End
+         Begin VB.Label lblGeneral 
+            Caption         =   "Gauge Functions :"
+            Height          =   315
+            Index           =   6
+            Left            =   510
+            TabIndex        =   95
+            Top             =   165
+            Width           =   1320
+         End
+         Begin VB.Label lblGeneral 
+            Caption         =   "Auto Start :"
+            Height          =   375
+            Index           =   11
+            Left            =   975
+            TabIndex        =   94
+            Tag             =   "lblRefreshInterval"
+            Top             =   7200
+            Width           =   1740
+         End
+         Begin VB.Label lblGeneral 
+            Caption         =   "When checked this box enables the pointer. *"
+            Height          =   660
+            Index           =   2
+            Left            =   2025
+            TabIndex        =   53
+            Tag             =   "lblEnableSoundsDesc"
+            Top             =   540
+            Width           =   3615
+         End
       End
    End
    Begin VB.Frame fraPosition 
@@ -1972,7 +1972,7 @@ Attribute VB_GlobalNameSpace = False
 Attribute VB_Creatable = False
 Attribute VB_PredeclaredId = True
 Attribute VB_Exposed = False
-'@IgnoreModule IntegerDataType, ModuleWithoutFolder
+'@IgnoreModule ArgumentWithIncompatibleObjectType, AssignmentNotUsed, IntegerDataType, ModuleWithoutFolder
 
 ' gaugeForm_BubblingEvent ' leaving that here so I can copy/paste to find it
 
@@ -1996,8 +1996,8 @@ Private Declare Function SendMessage Lib "user32" _
    ByVal wParam As Long, _
    lParam As Any) As Long
 
-Private Const WM_NCLBUTTONDOWN = &HA1
-Private Const HTBOTTOMRIGHT = 17
+Private Const WM_NCLBUTTONDOWN As Long = &HA1
+Private Const HTBOTTOMRIGHT  As Long = 17
 '------------------------------------------------------ ENDS
 
 
@@ -2312,6 +2312,7 @@ Form_Initialize_Error:
 '---------------------------------------------------------------------------------------
 '
 Private Sub Form_Load()
+    
     Dim prefsFormHeight As Long: prefsFormHeight = 0
 
     On Error GoTo Form_Load_Error
@@ -2416,6 +2417,7 @@ Public Sub positionPrefsMonitor()
 
     Dim formLeftTwips As Long: formLeftTwips = 0
     Dim formTopTwips As Long: formTopTwips = 0
+    
     Dim monitorCount As Long: monitorCount = 0
     
     On Error GoTo positionPrefsMonitor_Error
@@ -2429,8 +2431,8 @@ Public Sub positionPrefsMonitor()
     End If
     
     If formLeftTwips = 0 Then
-        If ((fTemperature.temperatureGaugeForm.Left + fTemperature.temperatureGaugeForm.Width) * screenTwipsPerPixelX) + 200 + panzerPrefs.Width > screenWidthTwips Then
-            panzerPrefs.Left = (fTemperature.temperatureGaugeForm.Left * screenTwipsPerPixelX) - (panzerPrefs.Width + 200)
+        If ((fTemperature.temperatureGaugeForm.Left + fTemperature.temperatureGaugeForm.Width) * screenTwipsPerPixelX) + 200 + Me.Width > screenWidthTwips Then
+            Me.Left = (fTemperature.temperatureGaugeForm.Left * screenTwipsPerPixelX) - (Me.Width + 200)
         End If
     End If
 
@@ -3067,14 +3069,18 @@ Private Sub cmbDebug_Click()
     If cmbDebug.ListIndex = 0 Then
         txtDefaultEditor.Text = "eg. E:\vb6\Panzer Earth gauge VB6\Panzer Earth Gauge.vbp"
         txtDefaultEditor.Enabled = False
+        '@Ignore DefaultMemberRequired
         lblDebug(7).Enabled = False
         btnDefaultEditor.Enabled = False
+        '@Ignore DefaultMemberRequired
         lblDebug(9).Enabled = False
     Else
         txtDefaultEditor.Text = PzGDefaultEditor
         txtDefaultEditor.Enabled = True
+        '@Ignore DefaultMemberRequired
         lblDebug(7).Enabled = True
         btnDefaultEditor.Enabled = True
+        '@Ignore DefaultMemberRequired
         lblDebug(9).Enabled = True
     End If
 
@@ -3221,13 +3227,45 @@ Private Sub showLastTab()
 
    On Error GoTo showLastTab_Error
 
+    
+    
+    
+    
     If PzGLastSelectedTab = "general" Then Call picButtonMouseUpEvent("general", imgGeneral, imgGeneralClicked, fraGeneral, fraGeneralButton)  ' was imgGeneralMouseUpEvent
+    
+    
+    
+    
     If PzGLastSelectedTab = "config" Then Call picButtonMouseUpEvent("config", imgConfig, imgConfigClicked, fraConfig, fraConfigButton)     ' was imgConfigMouseUpEvent
+    
+    
+    
+    
     If PzGLastSelectedTab = "position" Then Call picButtonMouseUpEvent("position", imgPosition, imgPositionClicked, fraPosition, fraPositionButton)
+    
+    
+    
+    
     If PzGLastSelectedTab = "development" Then Call picButtonMouseUpEvent("development", imgDevelopment, imgDevelopmentClicked, fraDevelopment, fraDevelopmentButton)
+    
+    
+    
+    
     If PzGLastSelectedTab = "fonts" Then Call picButtonMouseUpEvent("fonts", imgFonts, imgFontsClicked, fraFonts, fraFontsButton)
+    
+    
+    
+    
     If PzGLastSelectedTab = "sounds" Then Call picButtonMouseUpEvent("sounds", imgSounds, imgSoundsClicked, fraSounds, fraSoundsButton)
+    
+    
+    
+    
     If PzGLastSelectedTab = "window" Then Call picButtonMouseUpEvent("window", imgWindow, imgWindowClicked, fraWindow, fraWindowButton)
+    
+    
+    
+    
     If PzGLastSelectedTab = "about" Then Call picButtonMouseUpEvent("about", imgAbout, imgAboutClicked, fraAbout, fraAboutButton)
 
    On Error GoTo 0
@@ -3265,12 +3303,18 @@ End Sub
 Private Sub positionPrefsFramesButtons()
     On Error GoTo positionPrefsFramesButtons_Error
 
+    
     Dim frameWidth As Integer: frameWidth = 0
+    
     Dim frameTop As Integer: frameTop = 0
+    
     Dim frameLeft As Integer: frameLeft = 0
+    
     Dim buttonTop As Integer:    buttonTop = 0
     'Dim currentFrameHeight As Integer: currentFrameHeight = 0
+    
     Dim rightHandAlignment As Long: rightHandAlignment = 0
+    
     Dim leftHandGutterWidth As Long: leftHandGutterWidth = 0
     
     ' align frames rightmost and leftmost to the buttons at the top
@@ -3656,11 +3700,14 @@ End Sub
 '
 Private Sub btnPrefsFont_Click()
 
+    
     Dim fntFont As String: fntFont = vbNullString
     Dim fntSize As Integer: fntSize = 0
     Dim fntWeight As Integer: fntWeight = 0
     Dim fntStyle As Boolean: fntStyle = False
+    
     Dim fntColour As Long: fntColour = 0
+    
     Dim fntItalics As Boolean: fntItalics = False
     Dim fntUnderline As Boolean: fntUnderline = False
     Dim fntFontResult As Boolean: fntFontResult = False
@@ -3683,6 +3730,7 @@ Private Sub btnPrefsFont_Click()
     fntItalics = CBool(PzGPrefsFontItalics)
     fntColour = CLng(PzGPrefsFontColour)
         
+    
     Call changeFont(panzerPrefs, True, fntFont, fntSize, fntWeight, fntStyle, fntColour, fntItalics, fntUnderline, fntFontResult)
     
     PzGPrefsFont = CStr(fntFont)
@@ -3739,8 +3787,10 @@ Private Sub adjustPrefsControls()
     
     Dim fntWeight As Integer: fntWeight = 0
     Dim fntStyle As Boolean: fntStyle = False
+    
     Dim sliGaugeSizeOldValue As Long: sliGaugeSizeOldValue = 0
-    Dim testDST As Boolean: testDST = False
+    
+    'Dim testDST As Boolean: testDST = False
     
     On Error GoTo adjustPrefsControls_Error
             
@@ -3766,7 +3816,7 @@ Private Sub adjustPrefsControls()
     cmbWindSpeedScale.ListIndex = val(PzGWindSpeedScale)
     cmbMetricImperial.ListIndex = val(PzGMetricImperial)
  
-    sliSamplingInterval = val(PzGSamplingInterval)
+    sliSamplingInterval.Value = val(PzGSamplingInterval)
     
     txtIcao.Text = PzGIcao
     
@@ -3986,35 +4036,38 @@ End Sub
 ' Purpose   : Open and load the Array with the timezones text File
 '---------------------------------------------------------------------------------------
 '
-Private Sub readFileWriteComboBox(ByRef thisComboBox As Control, ByVal thisFileName As String)
-    Dim strArr() As String
-    Dim lngCount As Long: lngCount = 0
-    Dim lngIdx As Long: lngIdx = 0
-        
-    On Error GoTo readFileWriteComboBox_Error
-
-    If fFExists(thisFileName) = True Then
-       ' the files must be DOS CRLF delineated
-       Open thisFileName For Input As #1
-           strArr() = Split(Input(LOF(1), 1), vbCrLf)
-       Close #1
-    
-       lngCount = UBound(strArr)
-    
-       thisComboBox.Clear
-       For lngIdx = 0 To lngCount
-           thisComboBox.AddItem strArr(lngIdx)
-       Next lngIdx
-    End If
-
-   On Error GoTo 0
-   Exit Sub
-
-readFileWriteComboBox_Error:
-
-    MsgBox "Error " & Err.Number & " (" & Err.Description & ") in procedure readFileWriteComboBox of Form panzerPrefs"
-
-End Sub
+'Private Sub readFileWriteComboBox(ByRef thisComboBox As Control, ByVal thisFileName As String)
+'    Dim strArr() As String
+'    Dim lngCount As Long: lngCount = 0
+'    Dim lngIdx As Long: lngIdx = 0
+'
+'    On Error GoTo readFileWriteComboBox_Error
+'
+'    If fFExists(thisFileName) = True Then
+'       ' the files must be DOS CRLF delineated
+'       Open thisFileName For Input As #1
+'           '@Ignore DefaultMemberRequired
+'           strArr() = Split(Input(LOF(1), 1), vbCrLf)
+'       Close #1
+'
+'       lngCount = UBound(strArr)
+'
+'       '@Ignore MemberNotOnInterface
+'       thisComboBox.Clear
+'       For lngIdx = 0 To lngCount
+'           '@Ignore MemberNotOnInterface
+'           thisComboBox.AddItem strArr(lngIdx)
+'       Next lngIdx
+'    End If
+'
+'   On Error GoTo 0
+'   Exit Sub
+'
+'readFileWriteComboBox_Error:
+'
+'    MsgBox "Error " & Err.Number & " (" & Err.Description & ") in procedure readFileWriteComboBox of Form panzerPrefs"
+'
+'End Sub
 
 '
 '---------------------------------------------------------------------------------------
@@ -4064,6 +4117,7 @@ End Sub
 '---------------------------------------------------------------------------------------
 '
 Private Sub Form_Resize()
+    
     Dim ratio As Double: ratio = 0
     Dim currentFont As Long: currentFont = 0
     
@@ -4084,7 +4138,9 @@ Private Sub Form_Resize()
         Else
             currentFont = PzGPrefsFontSizeLowDPI
         End If
+        '@Ignore DefaultMemberRequired, ArgumentWithIncompatibleObjectType
         Call resizeControls(Me, prefsControlPositions(), prefsCurrentWidth, prefsCurrentHeight, currentFont)
+        
         Call tweakPrefsControlPositions(Me, prefsCurrentWidth, prefsCurrentHeight)
         
         Me.Width = Me.Height / ratio ' maintain the aspect ratio
@@ -4123,7 +4179,9 @@ End Sub
 Private Sub tweakPrefsControlPositions(ByVal thisForm As Form, ByVal m_FormWid As Single, ByVal m_FormHgt As Single)
 
     ' not sure why but the resizeControls routine can lead to incorrect positioning of frames and buttons
+    
     Dim x_scale As Single: x_scale = 0
+    
     Dim y_scale As Single: y_scale = 0
     
     On Error GoTo tweakPrefsControlPositions_Error
@@ -4361,6 +4419,7 @@ Private Sub imgGeneral_Click()
 End Sub
 
 Private Sub imgGeneral_MouseUp(Button As Integer, Shift As Integer, x As Single, y As Single)
+    
     Call picButtonMouseUpEvent("general", imgGeneral, imgGeneralClicked, fraGeneral, fraGeneralButton) ' was imgGeneralMouseUpEvent
 End Sub
 
@@ -4368,33 +4427,7 @@ End Sub
 
 
 
-'---------------------------------------------------------------------------------------
-' Procedure : lblGitHub_dblClick
-' Author    : Dean Beedell (yereverluvinunclebert)
-' Date      : 14/08/2023
-' Purpose   :
-'---------------------------------------------------------------------------------------
-'
-Private Sub lblGitHub_dblClick()
-    Dim answer As VbMsgBoxResult: answer = vbNo
-    Dim answerMsg As String: answerMsg = vbNullString
-    
-    On Error GoTo lblGitHub_dblClick_Error
 
-    answer = vbYes
-    answerMsg = "This option opens a browser window and take you straight to Github. Proceed?"
-    answer = msgBoxA(answerMsg, vbExclamation + vbYesNo, "Proceed to Github? ", True, "lblGitHubDblClick")
-    If answer = vbYes Then
-       Call ShellExecute(Me.hwnd, "Open", "https://github.com/yereverluvinunclebert/Panzer-Temperature-Gauge-VB6", vbNullString, App.path, 1)
-    End If
-
-   On Error GoTo 0
-   Exit Sub
-
-lblGitHub_dblClick_Error:
-
-    MsgBox "Error " & Err.Number & " (" & Err.Description & ") in procedure lblGitHub_dblClick of Form panzerPrefs"
-End Sub
 
 Private Sub lblGitHub_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
     lblGitHub.ForeColor = &H8000000D
@@ -4474,6 +4507,7 @@ Private Sub imgAbout_MouseDown(Button As Integer, Shift As Integer, x As Single,
     imgAboutClicked.Visible = True
 End Sub
 Private Sub imgAbout_MouseUp(Button As Integer, Shift As Integer, x As Single, y As Single)
+  
     Call picButtonMouseUpEvent("about", imgAbout, imgAboutClicked, fraAbout, fraAboutButton)
 End Sub
 
@@ -4483,6 +4517,8 @@ Private Sub imgDevelopment_MouseDown(Button As Integer, Shift As Integer, x As S
 End Sub
 
 Private Sub imgDevelopment_MouseUp(Button As Integer, Shift As Integer, x As Single, y As Single)
+    
+
     Call picButtonMouseUpEvent("development", imgDevelopment, imgDevelopmentClicked, fraDevelopment, fraDevelopmentButton)
 End Sub
 
@@ -4492,6 +4528,10 @@ Private Sub imgFonts_MouseDown(Button As Integer, Shift As Integer, x As Single,
 End Sub
 
 Private Sub imgFonts_MouseUp(Button As Integer, Shift As Integer, x As Single, y As Single)
+    
+    
+    
+    
     Call picButtonMouseUpEvent("fonts", imgFonts, imgFontsClicked, fraFonts, fraFontsButton)
 End Sub
 
@@ -4501,6 +4541,10 @@ Private Sub imgConfig_MouseDown(Button As Integer, Shift As Integer, x As Single
 End Sub
 
 Private Sub imgConfig_MouseUp(Button As Integer, Shift As Integer, x As Single, y As Single)
+    
+    
+    
+    
     Call picButtonMouseUpEvent("config", imgConfig, imgConfigClicked, fraConfig, fraConfigButton) ' was imgConfigMouseUpEvent
 End Sub
 
@@ -4516,6 +4560,10 @@ Private Sub imgPosition_MouseDown(Button As Integer, Shift As Integer, x As Sing
 End Sub
 
 Private Sub imgPosition_MouseUp(Button As Integer, Shift As Integer, x As Single, y As Single)
+    
+    
+    
+    
     Call picButtonMouseUpEvent("position", imgPosition, imgPositionClicked, fraPosition, fraPositionButton)
 End Sub
 
@@ -4527,6 +4575,10 @@ End Sub
 
 Private Sub imgSounds_MouseUp(Button As Integer, Shift As Integer, x As Single, y As Single)
     'Call imgSoundsMouseUpEvent
+    
+    
+    
+    
     Call picButtonMouseUpEvent("sounds", imgSounds, imgSoundsClicked, fraSounds, fraSoundsButton)
 End Sub
 
@@ -4536,6 +4588,7 @@ Private Sub imgWindow_MouseDown(Button As Integer, Shift As Integer, x As Single
 End Sub
 
 Private Sub imgWindow_MouseUp(Button As Integer, Shift As Integer, x As Single, y As Single)
+        
     Call picButtonMouseUpEvent("window", imgWindow, imgWindowClicked, fraWindow, fraWindowButton)
 End Sub
 
@@ -4757,6 +4810,7 @@ Public Sub setPrefsTooltips()
         imgFontsClicked.ToolTipText = "Opens the Fonts tab"
         imgGeneral.ToolTipText = "Opens the general tab"
         imgGeneralClicked.ToolTipText = "Opens the general tab"
+        '@Ignore DefaultMemberRequired
         lblPosition(6).ToolTipText = "Tablets only. Don't fiddle with this unless you really know what you are doing. Here you can choose whether this Pz Earth widget is hidden by default in either landscape or portrait mode or not at all. This option allows you to have certain widgets that do not obscure the screen in either landscape or portrait. If you accidentally set it so you can't find your widget on screen then change the setting here to NONE."
         chkGenStartup.ToolTipText = "Check this box to enable the automatic start of the program when Windows is started."
         chkGaugeFunctions.ToolTipText = "When checked this box enables the pointer. Any adjustment takes place instantly. "
@@ -4797,10 +4851,13 @@ Public Sub setPrefsTooltips()
         btnAboutDebugInfo.ToolTipText = "This gives access to the debugging tool"
         btnDonate.ToolTipText = "Buy me a Kofi! This button opens a browser window and connects to Kofi donation page"
         btnUpdate.ToolTipText = "Here you can visit the update location where you can download new versions of the programs."
+        '@Ignore DefaultMemberRequired
         lblFontsTab(0).ToolTipText = "We suggest Centurion Light SF at 8pt - which you will find in the FCW program folder"
 '        lblFontsTab(1).ToolTipText = "We suggest Centurion Light SF at 8pt - which you will find in the FCW program folder"
 '        lblFontsTab(2).ToolTipText = "We suggest Centurion Light SF at 8pt - which you will find in the FCW program folder"
+        '@Ignore DefaultMemberRequired
         lblFontsTab(6).ToolTipText = "We suggest Centurion Light SF at 8pt - which you will find in the FCW program folder"
+        '@Ignore DefaultMemberRequired
         lblFontsTab(7).ToolTipText = "Choose a font size that fits the text boxes"
         txtPrefsFontCurrentSize.ToolTipText = "Disabled for manual input. Shows the current font size when form resizing is enabled."
         lblCurrentFontsTab.ToolTipText = "Disabled for manual input. Shows the current font size when form resizing is enabled."
@@ -4874,10 +4931,13 @@ Public Sub setPrefsTooltips()
         btnAboutDebugInfo.ToolTipText = vbNullString
         btnDonate.ToolTipText = vbNullString
         btnUpdate.ToolTipText = vbNullString
+        '@Ignore DefaultMemberRequired
         lblFontsTab(0).ToolTipText = vbNullString
 '        lblFontsTab(1).ToolTipText = vbNullString
 '        lblFontsTab(2).ToolTipText = vbNullString
+        '@Ignore DefaultMemberRequired
         lblFontsTab(6).ToolTipText = vbNullString
+        '@Ignore DefaultMemberRequired
         lblFontsTab(7).ToolTipText = vbNullString
         txtPrefsFontCurrentSize.ToolTipText = vbNullString
         lblCurrentFontsTab.ToolTipText = vbNullString
@@ -4914,6 +4974,7 @@ Private Sub setPrefsLabels()
 
     On Error GoTo setPrefsLabels_Error
 
+    '@Ignore DefaultMemberRequired
     lblFontsTab(0).Caption = "When resizing the form (drag bottom right) the font size will in relation to form height. The base font determines the initial size, the resulting resized font will dynamically change." & vbCrLf & vbCrLf & _
         "Next time you open the prefs it will revert to the default." & vbCrLf & vbCrLf & _
         "My preferred font for this utility is Centurion Light SF at 8pt size."
@@ -4987,8 +5048,11 @@ Private Sub picButtonMouseUpEvent(ByVal thisTabName As String, ByRef thisPicName
     On Error GoTo picButtonMouseUpEvent_Error
     
     Dim padding As Long: padding = 0
+    
     Dim borderWidth As Long: borderWidth = 0
+    
     Dim captionHeight As Long: captionHeight = 0
+    
     Dim y_scale As Single: y_scale = 0
     
     thisPicNameClicked.Visible = False
@@ -5137,6 +5201,7 @@ End Sub
 '
 Private Sub themeTimer_Timer()
         
+    
     Dim SysClr As Long: SysClr = 0
 
     On Error GoTo themeTimer_Timer_Error
@@ -5351,6 +5416,7 @@ Private Sub setThemeShade(ByVal redC As Integer, ByVal greenC As Integer, ByVal 
     ' all buttons must be set to graphical
     For Each Ctrl In Me.Controls
         If (TypeOf Ctrl Is CommandButton) Or (TypeOf Ctrl Is CheckBox) Or (TypeOf Ctrl Is Label) Or (TypeOf Ctrl Is OptionButton) Or (TypeOf Ctrl Is Frame) Then
+          '@Ignore MemberNotOnInterface
           Ctrl.BackColor = RGB(redC, greenC, blueC)
         End If
     Next
@@ -5481,6 +5547,7 @@ End Sub
 '
 Private Sub setModernThemeColours()
          
+    
     Dim SysClr As Long: SysClr = 0
     
     On Error GoTo setModernThemeColours_Error
@@ -5633,7 +5700,8 @@ Private Sub setframeHeights()
     
         'If PzGDpiAwareness = "1" Then
             ' save the initial positions of ALL the controls on the prefs form
-            Call SaveSizes(panzerPrefs, prefsControlPositions(), prefsCurrentWidth, prefsCurrentHeight)
+            '@Ignore DefaultMemberRequired, ArgumentWithIncompatibleObjectType
+            Call SaveSizes(Me, prefsControlPositions(), prefsCurrentWidth, prefsCurrentHeight)
         'End If
     Else
         fraGeneral.Height = 8899

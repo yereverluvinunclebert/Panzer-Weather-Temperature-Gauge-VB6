@@ -99,7 +99,7 @@ Attribute VB_GlobalNameSpace = False
 Attribute VB_Creatable = False
 Attribute VB_PredeclaredId = True
 Attribute VB_Exposed = False
-'@IgnoreModule ModuleWithoutFolder
+'@IgnoreModule AssignmentNotUsed, ModuleWithoutFolder
 
 Option Explicit
 
@@ -170,6 +170,7 @@ End Sub
 '---------------------------------------------------------------------------------------
 '
 Private Sub mnuAppFolder_Click()
+    
     Dim folderPath As String: folderPath = vbNullString
     Dim execStatus As Long: execStatus = 0
     
@@ -204,6 +205,7 @@ End Sub
 '---------------------------------------------------------------------------------------
 '
 Private Sub mnuEditWidget_Click()
+    
     Dim editorPath As String: editorPath = vbNullString
     Dim execStatus As Long: execStatus = 0
     
@@ -412,10 +414,13 @@ End Sub
 '---------------------------------------------------------------------------------------
 '
 Public Sub mnuFacebook_Click()
+    
     Dim answer As VbMsgBoxResult: answer = vbNo
+    
     Dim answerMsg As String: answerMsg = vbNullString
     
     On Error GoTo mnuFacebook_Click_Error
+    
     
     answer = vbYes
 
@@ -444,11 +449,14 @@ End Sub
 '---------------------------------------------------------------------------------------
 '
 Public Sub mnuLatest_Click()
+    
     Dim answer As VbMsgBoxResult: answer = vbNo
+    
     Dim answerMsg As String: answerMsg = vbNullString
 
     On Error GoTo mnuLatest_Click_Error
     '''If debugflg = 1  Then msgBox "%" & "mnuLatest_Click"
+    
     
     answer = vbYes
 
@@ -595,10 +603,13 @@ End Sub
 '---------------------------------------------------------------------------------------
 '
 Private Sub mnuWidgets_Click()
+    
     Dim answer As VbMsgBoxResult: answer = vbNo
+    
     Dim answerMsg As String: answerMsg = vbNullString
     
     On Error GoTo mnuWidgets_Click_Error
+    
     answer = vbYes
 
     answerMsg = " This button opens a browser window and connects to the Steampunk widgets page on my site. Do you wish to proceed?"

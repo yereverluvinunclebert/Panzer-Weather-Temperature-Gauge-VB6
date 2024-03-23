@@ -18,7 +18,7 @@ Attribute VB_Exposed = False
 ' Purpose   :
 '---------------------------------------------------------------------------------------
 
-'@IgnoreModule IntegerDataType, ModuleWithoutFolder
+'@IgnoreModule AssignmentNotUsed, IntegerDataType, ModuleWithoutFolder
 Option Explicit 'simple Alpha-Form (...to be filled with (mostly Img-) Content via .Widgets.Add)
 
 Public WithEvents temperatureGaugeForm As cWidgetForm
@@ -28,7 +28,7 @@ Public collPSDNonUIElements As cCollection, FX As Long, FY As Long, FZ As Single
 
 Private PSDWidth As Long
 Private PSDHeight As Long
-Private mGlowing As Boolean
+'Private mGlowing As Boolean
 
 '---------------------------------------------------------------------------------------
 ' Procedure : Class_Initialize
@@ -40,7 +40,7 @@ Private mGlowing As Boolean
 Private Sub Class_Initialize()
    On Error GoTo Class_Initialize_Error
 
-    mGlowing = False ' when the alpha for the overlays arrives this might be usable
+    'mGlowing = False ' when the alpha for the overlays arrives this might be usable
     Set collPSDNonUIElements = New_c.Collection(False)
 
    On Error GoTo 0
@@ -88,6 +88,7 @@ Public Sub InitFromPSD(ByRef PSD_FileNameOrByteArray As Variant)
                     If collPSDNonUIElements.Exists(.LayerPath(I)) Then ' we do not create Widgets for those in this exclude list.
                         
                         'we add layer info. (used in cwOverlay) to the "excluded paths" previously defined in Sub Main,
+                        '@Ignore DefaultMemberRequired
                         collPSDNonUIElements(.LayerPath(I)) = Array(.LayerX(I), .LayerY(I), val(PzGOpacity) / 100)  'here we update the so far empty slots with the PSD-offsets
                 
                     Else 'everything not in the exclude-list will get its own Widget-instance
@@ -252,6 +253,7 @@ End Sub
 Private Sub startbutton_click()
     On Error GoTo startbutton_click_Error
    
+    
     Dim fileToPlay As String: fileToPlay = vbNullString
 
     Call TurnFunctionsOn
@@ -278,6 +280,7 @@ End Sub
 '---------------------------------------------------------------------------------------
 '
 Private Sub stopbutton_mouseUp(ByRef Sender As Object)
+    
     Dim fileToPlay As String: fileToPlay = vbNullString
    
     On Error GoTo stopbutton_mouseUp_Error
@@ -351,7 +354,9 @@ End Sub
 '---------------------------------------------------------------------------------------
 '
 Private Sub switchfacesbutton_mouseUp(ByRef Sender As Object)
+    
     Dim fileToPlay As String: fileToPlay = vbNullString
+    
     Dim currFace As Integer: currFace = 0
     
     On Error GoTo switchfacesbutton_mouseUp_Error
@@ -413,6 +418,7 @@ End Sub
 '---------------------------------------------------------------------------------------
 '
 Private Sub prefsbutton_mouseDown(ByRef Sender As Object)
+    
     Dim fileToPlay As String: fileToPlay = vbNullString
    
     On Error GoTo prefsbutton_mouseDown_Error
@@ -443,6 +449,7 @@ End Sub
 '---------------------------------------------------------------------------------------
 '
 Private Sub tickbutton_mouseDown(ByRef Sender As Object)
+    
     Dim fileToPlay As String: fileToPlay = vbNullString
    
     On Error GoTo tickbutton_mouseDown_Error
@@ -489,6 +496,7 @@ End Sub
 '
 Private Sub temperatureGaugeForm_DblClick()
     Dim userprof As String: userprof = vbNullString
+    
     Dim thisCommand As String: thisCommand = vbNullString
     
     On Error GoTo temperatureGaugeForm_DblClick_Error
@@ -677,7 +685,7 @@ Public Sub AdjustZoom(ByVal NewZoom As Single)
     
       ' when resized from the gauge scroll up/down it needs to write it back so the size is correct when prefs opened.
       PzGGaugeSize = LTrim$(Str$(NewZoom * 100))
-      If panzerPrefs.IsVisible = True Then panzerPrefs.sliGaugeSize = val(PzGGaugeSize)
+      If panzerPrefs.IsVisible = True Then panzerPrefs.sliGaugeSize.Value = val(PzGGaugeSize)
 
     
    On Error GoTo 0

@@ -284,7 +284,7 @@ End Sub
 Private Sub W_Paint(CC As RC6.cCairoContext, ByVal xAbs As Single, ByVal yAbs As Single, ByVal dx_Aligned As Single, ByVal dy_Aligned As Single, UserObj As Object)
    On Error GoTo W_Paint_Error
 
-    Draw CC, dx_Aligned, dy_Aligned, mMyOpacity
+    Draw CC, mMyOpacity
 
    On Error GoTo 0
    Exit Sub
@@ -301,7 +301,7 @@ End Sub
 ' Purpose   :
 '---------------------------------------------------------------------------------------
 '
-Private Sub Draw(ByRef CC As cCairoContext, ByVal dx As Single, ByVal dy As Single, ByVal mMyOpacity As Double)
+Private Sub Draw(ByRef CC As cCairoContext, ByVal mMyOpacity As Double)
     On Error GoTo Draw_Error
 
     CC.ScaleDrawings mZoom, mZoom

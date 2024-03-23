@@ -11,6 +11,7 @@ Attribute VB_GlobalNameSpace = False
 Attribute VB_Creatable = True
 Attribute VB_PredeclaredId = False
 Attribute VB_Exposed = False
+'@IgnoreModule AssignmentNotUsed
 
 Option Explicit
 
@@ -100,7 +101,9 @@ End Sub
 '
 Public Property Get isDayLight() As Boolean
     Dim ret As Double: ret = 0
+    
     Dim sunriseHours  As Double: sunriseHours = 0
+    
     Dim sunsetHours  As Double: sunsetHours = 0
 
     On Error GoTo isDayLightGet_Error
@@ -343,30 +346,30 @@ utcDayLet_Error:
     MsgBox "Error " & Err.Number & " (" & Err.Description & ") in Property utcDay of Class Module cwSunriseSunset"
 End Property
 
-Private Function thisSin(deg) As Double
+Private Function thisSin(ByVal deg As Double) As Double
     thisSin = Sin(deg * pi / 180)
     'Debug.Print ("%SRS-O thisSin " & thisSin)
 End Function
-Private Function thisCos(deg) As Double
+Private Function thisCos(ByVal deg As Double) As Double
     thisCos = Cos(deg * pi / 180)
     'Debug.Print ("%SRS-O thisCos " & thisCos)
 End Function
-Private Function thisTan(deg) As Double
+Private Function thisTan(ByVal deg As Double) As Double
     thisTan = Tan(deg * pi / 180)
     'Debug.Print ("%SRS-O thisTan " & thisTan)
 End Function
-Private Function thisAsin(x) As Double
+Private Function thisAsin(ByVal x As Double) As Double
     thisAsin = Atn(x / Sqr(-x * x + 1))
     'Debug.Print ("%SRS-O thisAsin " & thisAsin)
 End Function
 
-Public Function Asn(x)
+Public Function Asn(ByVal x As Double) As Double
 ' x is double
 ' Equivalent of spreadsheet Asin(x)
     Asn = 2 * Atn(x / (1 + Sqr(1 - x * x))) ' Asn is double
 End Function
 
-Private Function thisAtan(x) As Double
+Private Function thisAtan(ByVal x As Double) As Double
     thisAtan = (180 / pi) * Atn(x)
     'Debug.Print ("%SRS-O thisAtan " & thisAtan)
 End Function
@@ -380,35 +383,33 @@ End Function
 ' Author: Dean Beedell (yereverluvinunclebert)
 ' Date: 12/02/2024
 ' ----------------------------------------------------------------
-Private Function calcSunPosition(ByVal rising As Boolean, ByVal dateInput As Date, ByRef returnHours As Double) As Boolean
+Private Sub calcSunPosition(ByVal rising As Boolean, ByVal dateInput As Date, ByRef returnHours As Double)
 
+    
     Dim N1 As Integer: N1 = 0
     Dim N2 As Integer: N2 = 0
     Dim N3 As Integer: N3 = 0
     Dim N As Integer: N = 0
-    Dim H As Double
     Dim RA As Double
-    'Dim dateInput As Date: dateInput = #1/1/2000 12:00:00 PM#
     Dim meanAnomaly As Double: meanAnomaly = 0
     Dim trueLongitude As Double: trueLongitude = 0
     Dim returnSunString  As String: returnSunString = vbNullString
-    Dim localMeanTime  As Double: localMeanTime = 0
-    Dim UTCTime  As Double: UTCTime = 0
     Dim T As Double: T = 0
     Dim M As Double: M = 0
     Dim Lquadrant As Double
     Dim RAquadrant As Double
     Dim longi As Double
+    Dim thisDateInput As Date
     
     On Error GoTo calcSunPosition_Error
     
         
     debugFlg = 1
     
-    dateInput = Date
-    thisMonth = Month(dateInput) - 1
-    thisYear = Year(dateInput) - 1900
-    thisDay = fUtcDayOfWeek(dateInput)
+    thisDateInput = dateInput
+    thisMonth = Month(thisDateInput) - 1
+    thisYear = Year(thisDateInput) - 1900
+    thisDay = fUtcDayOfWeek(thisDateInput)
     
     If debugFlg = 1 Then Debug.Print ("************************************************************")
     If debugFlg = 1 Then Debug.Print ("%SFN-O latitude " & Latitude)
@@ -476,6 +477,7 @@ Private Function calcSunPosition(ByVal rising As Boolean, ByVal dateInput As Dat
     RA = RA + (Lquadrant - RAquadrant)
     
     ' right ascension value needs to be converted into hours
+    
     RA = RA / 15
 
     rightAscension = RA 'return
@@ -497,13 +499,13 @@ Private Function calcSunPosition(ByVal rising As Boolean, ByVal dateInput As Dat
     If debugFlg = 1 Then Debug.Print ("************************************************************")
 
     On Error GoTo 0
-    Exit Function
+    Exit Sub
 
 calcSunPosition_Error:
 
     MsgBox "Error " & Err.Number & " (" & Err.Description & ") in procedure calcSunPosition, line " & Erl & "."
 
-End Function
+End Sub
 
 
 
@@ -521,6 +523,7 @@ End Function
 ' Date: 12/02/2024
 ' ----------------------------------------------------------------
 Private Function testIsDaylight(ByVal sunsetHours As Double, ByRef sunriseHours As Double) As Boolean
+    
     Dim utcCurrentHours As Double: utcCurrentHours = 0
     
     On Error GoTo testIsDaylight_Error
@@ -540,11 +543,7 @@ Private Function testIsDaylight(ByVal sunsetHours As Double, ByRef sunriseHours 
     End If
     
     If (utcCurrentHours >= sunriseHours) Then
-        If utcCurrentHours < sunsetHours Then
-            testIsDaylight = True
-        Else
-            testIsDaylight = False
-        End If
+        testIsDaylight = utcCurrentHours < sunsetHours ' true/false
     End If
 
     Debug.Print ("%SFN-I testIsDaylight " & testIsDaylight)
@@ -663,7 +662,7 @@ Private Function thisAcos(x As Double) As Double
 
     On Error GoTo thisAcos_Error
     
-    thisAcos = (180 / pi) * thisAcos
+    thisAcos = (180 / pi) * x
     
     'Debug.Print ("%SRS-O thisAcos " & thisAcos)
     

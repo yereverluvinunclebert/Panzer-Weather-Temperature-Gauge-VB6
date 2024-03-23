@@ -11,7 +11,7 @@ Attribute VB_GlobalNameSpace = False
 Attribute VB_Creatable = False
 Attribute VB_PredeclaredId = False
 Attribute VB_Exposed = False
-'@IgnoreModule IntegerDataType, ModuleWithoutFolder
+'@IgnoreModule AssignmentNotUsed, IntegerDataType, ModuleWithoutFolder
 '---------------------------------------------------------------------------------------
 ' Class Module      : cwAbout
 ' Author            : Dean Beedell (yereverluvinunclebert)
@@ -155,6 +155,7 @@ End Property
 '---------------------------------------------------------------------------------------
 '
 Private Sub W_MouseDown(Button As Integer, Shift As Integer, ByVal x As Single, ByVal y As Single)
+   
    Dim fileToPlay As String: fileToPlay = vbNullString
    On Error GoTo W_MouseDown_Error
     

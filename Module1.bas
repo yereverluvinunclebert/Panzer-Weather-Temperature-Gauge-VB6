@@ -1,5 +1,5 @@
 Attribute VB_Name = "Module1"
-'@IgnoreModule IntegerDataType, ModuleWithoutFolder
+'@IgnoreModule AssignmentNotUsed, IntegerDataType, ModuleWithoutFolder
 ' gaugeForm_BubblingEvent ' leaving that here so I can copy/paste to find it
 
 '---------------------------------------------------------------------------------------
@@ -404,8 +404,6 @@ Public minutesToHide As Integer
 Public aspectRatio As String
   
 Public oldPzGSettingsModificationTime  As Date
-
-Public Const visibleAreaWidth As Long = 648 ' this is the width of the rightmost visible point of the widget - ie. the surround
 '------------------------------------------------------ ENDS
 
 '------------------------------------------------------ STARTS
@@ -436,8 +434,8 @@ Public PzGWindowLevelWasChanged As Boolean
 ' Flag for debug mode '.06 DAEB 19/04/2021 common.bas moved to the common area so that it can be used by each of the utilities
 Private mbDebugMode As Boolean ' .30 DAEB 03/03/2021 frmMain.frm replaced the inIDE function that used a variant to one without
 
-Public tzDelta As Long
-Public tzDelta1 As Long
+'Public tzDelta As Long
+'Public tzDelta1 As Long
 
 Public msgBoxADynamicSizingFlg As Boolean
 
@@ -459,11 +457,7 @@ Public Function fFExists(ByVal Fname As String) As Boolean
     On Error GoTo fFExists_Error
     
     lRetVal = OpenFile(Fname, OfSt, OF_EXIST)
-    If lRetVal <> HFILE_ERROR Then
-        fFExists = True
-    Else
-        fFExists = False
-    End If
+    fFExists = lRetVal <> HFILE_ERROR ' true/false
 
    On Error GoTo 0
    Exit Function
@@ -691,7 +685,8 @@ End Function
 '---------------------------------------------------------------------------------------
 '
 Public Sub showLicence(ByVal licenceState As Integer)
-    Dim slicence As String: slicence = "0"
+    
+    'Dim slicence As String: slicence = "0"
     On Error GoTo showLicence_Error
     ''If debugflg = 1  Then DebugPrint "%" & "showLicence"
     
@@ -782,7 +777,9 @@ Public Sub LoadFileToTB(ByVal TxtBox As Object, ByVal FilePath As String, Option
     
     'Returns: True if Successful, false otherwise
     
+    
     Dim iFile As Integer: iFile = 0
+    
     Dim s As String: s = vbNullString
     
     On Error GoTo LoadFileToTB_Error
@@ -792,6 +789,7 @@ Public Sub LoadFileToTB(ByVal TxtBox As Object, ByVal FilePath As String, Option
     If Dir$(FilePath) = vbNullString Then Exit Sub
     
     On Error GoTo errorhandler:
+    
     s = TxtBox.Text
     
     iFile = FreeFile
@@ -831,6 +829,7 @@ Public Function fGetINISetting(ByVal sHeading As String, ByVal sKey As String, B
     Const cparmLen As Integer = 500 ' maximum no of characters allowed in the returned string
     Dim sReturn As String * cparmLen ' not going to initialise this with a 500 char string
     Dim sDefault As String * cparmLen
+    
     Dim lLength As Long: lLength = 0
 
     lLength = GetPrivateProfileString(sHeading, sKey, sDefault, sReturn, cparmLen, sINIFileName)
@@ -856,7 +855,9 @@ Public Sub sPutINISetting(ByVal sHeading As String, ByVal sKey As String, ByVal 
 
    On Error GoTo sPutINISetting_Error
 
+    
     Dim unusedReturnValue As Long: unusedReturnValue = 0
+    
     
     unusedReturnValue = WritePrivateProfileString(sHeading, sKey, sSetting, sINIFileName)
 
@@ -879,12 +880,16 @@ End Sub
 Public Sub savestring(ByRef hKey As Long, ByRef strPath As String, ByRef strvalue As String, ByRef strData As String)
 
     Dim keyhand As Long: keyhand = 0
+    
     Dim unusedReturnValue As Long: unusedReturnValue = 0
     
     On Error GoTo savestring_Error
 
+    
     unusedReturnValue = RegCreateKey(hKey, strPath, keyhand)
+    
     unusedReturnValue = RegSetValueEx(keyhand, strvalue, 0, REG_SZ, ByVal strData, Len(strData))
+    
     unusedReturnValue = RegCloseKey(keyhand)
 
    On Error GoTo 0
@@ -904,6 +909,7 @@ End Sub
 Public Function fSpecialFolder(ByVal pfe As FolderEnum) As String
     Const MAX_PATH As Integer = 260
     Dim strPath As String: strPath = vbNullString
+    
     Dim strBuffer As String: strBuffer = vbNullString
     
    On Error GoTo fSpecialFolder_Error
@@ -1129,7 +1135,9 @@ Public Function fTestClassicThemeCapable() As Boolean
     '=================================
     On Error GoTo fTestClassicThemeCapable_Error
 
+    
     Dim ProgramFilesDir As String: ProgramFilesDir = vbNullString
+    
     Dim strString As String: strString = vbNullString
     'Dim shortWindowsVer As String: shortWindowsVer = vbNullString
     
@@ -1198,13 +1206,15 @@ End Function
 Public Function fGetstring(ByRef hKey As Long, ByRef strPath As String, ByRef strvalue As String) As String
 
     Dim keyhand As Long: keyhand = 0
+    
     Dim lResult As Long: lResult = 0
     Dim strBuf As String: strBuf = vbNullString
     Dim lDataBufSize As Long: lDataBufSize = 0
     Dim intZeroPos As Integer: intZeroPos = 0
+    Dim ERROR_SUCCESS As Long: ERROR_SUCCESS = 0
     Dim unusedReturnValue As Integer: unusedReturnValue = 0
 
-    Dim lValueType As Variant
+    Dim lValueType As Long: lValueType = 0
 
     On Error GoTo fGetstring_Error
 
@@ -1213,7 +1223,7 @@ Public Function fGetstring(ByRef hKey As Long, ByRef strPath As String, ByRef st
     If lValueType = REG_SZ Then
         strBuf = String$(lDataBufSize, " ")
         lResult = RegQueryValueEx(keyhand, strvalue, 0&, 0&, ByVal strBuf, lDataBufSize)
-        Dim ERROR_SUCCESS As Variant
+        'Dim ERROR_SUCCESS As Variant
         If lResult = ERROR_SUCCESS Then
             intZeroPos = InStr(strBuf, Chr$(0))
             If intZeroPos > 0 Then
@@ -1342,14 +1352,18 @@ Public Sub changeFormFont(ByVal formName As Object, ByVal suppliedFont As String
     ' loop through all the controls and identify the labels and text boxes
     For Each Ctrl In formName.Controls
         If (TypeOf Ctrl Is CommandButton) Or (TypeOf Ctrl Is textBox) Or (TypeOf Ctrl Is FileListBox) Or (TypeOf Ctrl Is Label) Or (TypeOf Ctrl Is ComboBox) Or (TypeOf Ctrl Is CheckBox) Or (TypeOf Ctrl Is OptionButton) Or (TypeOf Ctrl Is Frame) Or (TypeOf Ctrl Is ListBox) Then
+            '@Ignore MemberNotOnInterface
             If Ctrl.Name <> "lblDragCorner" Then
+                '@Ignore MemberNotOnInterface
                 If suppliedFont <> vbNullString Then Ctrl.Font.Name = suppliedFont
+                '@Ignore MemberNotOnInterface
                 If suppliedSize > 0 Then Ctrl.Font.Size = suppliedSize
+                '@Ignore MemberNotOnInterface
                 Ctrl.Font.Italic = suppliedItalics
             End If
             Select Case True
                 Case (TypeOf Ctrl Is CommandButton)
-                    ' stupif fecking VB6 will not let you change the font of the forecolour on a button!
+                    ' REMINDER: stupid fecking VB6 will not let you change the font of the forecolour on a button!
                     'Ctrl.ForeColor = suppliedColour
                     ' do nothing
                 Case Else
@@ -1380,7 +1394,9 @@ Public Function fDialogFont(ByRef f As FormFontInfo) As Boolean
       
     Dim logFnt As LOGFONT
     Dim ftStruc As FONTSTRUC
+    
     Dim lLogFontAddress As Long: lLogFontAddress = 0
+    
     Dim lMemHandle As Long: lMemHandle = 0
     Dim hWndAccessApp As Long: hWndAccessApp = 0
     
@@ -1393,6 +1409,7 @@ Public Function fDialogFont(ByRef f As FormFontInfo) As Boolean
     logFnt.lfUnderline = f.UnderLine * -1
     logFnt.lfHeight = -fMulDiv(CLng(f.Height), GetDeviceCaps(GetDC(hWndAccessApp), LOGPIXELSY), 72)
     f.Name = "Centurion Light SF"
+    '@Ignore DefaultMemberRequired
     Call StringToByte(f.Name, logFnt.lfFaceName()) ' HERE
     ftStruc.rgbColors = f.Color
     ftStruc.lStructSize = Len(ftStruc)
@@ -1418,6 +1435,7 @@ Public Function fDialogFont(ByRef f As FormFontInfo) As Boolean
       f.Weight = logFnt.lfWeight
       f.Italic = CBool(logFnt.lfItalic)
       f.UnderLine = CBool(logFnt.lfUnderline)
+      '@Ignore DefaultMemberRequired
       f.Name = fByteToString(logFnt.lfFaceName())
       f.Height = CLng(ftStruc.iPointSize / 10)
       f.Color = ftStruc.rgbColors
@@ -1458,6 +1476,7 @@ Private Function fMulDiv(ByVal In1 As Long, ByVal In2 As Long, ByVal In3 As Long
     fMulDiv = lngTemp
     Exit Function
 fMulDiv_err:
+    
     lngTemp = -1
     Resume fMulDiv_err
 
@@ -1480,8 +1499,11 @@ End Function
 '
 Private Sub StringToByte(ByVal InString As String, ByRef ByteArray() As Byte)
     
+    
     Dim intLbound As Integer: intLbound = 0
+    
     Dim intUbound As Integer: intUbound = 0
+    
     Dim intLen As Integer: intLen = 0
     Dim intX As Integer: intX = 0
     
@@ -1512,6 +1534,7 @@ End Sub
 '
 Private Function fByteToString(ByRef aBytes() As Byte) As String
       
+    
     Dim dwBytePoint As Long: dwBytePoint = 0
     Dim dwByteVal As Long: dwByteVal = 0
     Dim szOut As String: szOut = vbNullString
@@ -1547,6 +1570,7 @@ End Function
 '---------------------------------------------------------------------------------------
 '
 Public Sub aboutClickEvent()
+    
     Dim fileToPlay As String: fileToPlay = vbNullString
 
     On Error GoTo aboutClickEvent_Error
@@ -1591,6 +1615,7 @@ End Sub
 '
 Public Sub helpSplash()
 
+    
     Dim fileToPlay As String: fileToPlay = vbNullString
 
     On Error GoTo helpSplash_Error
@@ -1631,6 +1656,7 @@ End Sub
 '
 Public Sub licenceSplash()
 
+    
     Dim fileToPlay As String: fileToPlay = vbNullString
 
     On Error GoTo licenceSplash_Error
@@ -1676,9 +1702,12 @@ End Sub
 '---------------------------------------------------------------------------------------
 '
 Public Sub mnuCoffee_ClickEvent()
+    
     Dim answer As VbMsgBoxResult: answer = vbNo
+    
     Dim answerMsg As String: answerMsg = vbNullString
     On Error GoTo mnuCoffee_ClickEvent_Error
+    
     
     answer = vbYes
     answerMsg = " Help support the creation of more widgets like this, DO send us a coffee! This button opens a browser window and connects to the Kofi donate page for this widget). Will you be kind and proceed?"
@@ -1705,10 +1734,13 @@ End Sub
 '
 Public Sub mnuSupport_ClickEvent()
 
+    
     Dim answer As VbMsgBoxResult: answer = vbNo
+    
     Dim answerMsg As String: answerMsg = vbNullString
 
     On Error GoTo mnuSupport_ClickEvent_Error
+    
     
     answer = vbYes
     answerMsg = "Visiting the support page - this button opens a browser window and connects to our Github issues page where you can send us a support query. Proceed?"
@@ -1837,6 +1869,7 @@ Public Sub makeVisibleFormElements()
 
     Dim formLeftPixels As Long: formLeftPixels = 0
     Dim formTopPixels As Long: formTopPixels = 0
+    
     Dim monitorCount As Long: monitorCount = 0
     
     On Error GoTo makeVisibleFormElements_Error
@@ -2403,7 +2436,9 @@ End Sub
 
 Private Sub settingsTimer_Timer()
 
+    
     Dim timeDifferenceInSecs As Long: timeDifferenceInSecs = 0 ' max 86 years as a LONG in secs
+    
     Dim settingsModificationTime As Date: settingsModificationTime = #1/1/2000 12:00:00 PM#
     
     On Error GoTo settingsTimer_Timer_Error
@@ -2450,6 +2485,7 @@ End Sub
 '---------------------------------------------------------------------------------------
 '
 Public Sub lockWidget()
+    
     Dim fileToPlay As String: fileToPlay = vbNullString
 
     On Error GoTo lockWidget_Error
@@ -2527,6 +2563,7 @@ End Sub
 '---------------------------------------------------------------------------------------
 '
 Public Sub TurnFunctionsOn()
+    
     Dim fileToPlay As String: fileToPlay = vbNullString
 
    On Error GoTo TurnFunctionsOn_Error
@@ -2591,8 +2628,10 @@ End Sub
 '---------------------------------------------------------------------------------------
 '
 Public Sub hardRestart()
-    Dim answer As VbMsgBoxResult: answer = vbNo
+    
+    'Dim answer As VbMsgBoxResult: answer = vbNo
     Dim answerMsg As String: answerMsg = vbNullString
+    
     Dim thisCommand As String: thisCommand = vbNullString
     
     On Error GoTo hardRestart_Error
@@ -2606,7 +2645,7 @@ Public Sub hardRestart()
     Else
         'answer = MsgBox(thisCommand & " is missing", vbOKOnly + vbExclamation)
         answerMsg = thisCommand & " is missing"
-        answer = msgBoxA(answerMsg, vbOKOnly + vbExclamation, "Restart Error Notification", False)
+        Call msgBoxA(answerMsg, vbOKOnly + vbExclamation, "Restart Error Notification", False)
     End If
 
    On Error GoTo 0
@@ -2779,4 +2818,5 @@ ArrayString_Error:
 
      MsgBox "Error " & Err.Number & " (" & Err.Description & ") in procedure ArrayString of Module Module1"
 End Function
+
 

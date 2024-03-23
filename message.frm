@@ -109,7 +109,7 @@ Attribute VB_Exposed = False
 ' Purpose   :
 '---------------------------------------------------------------------------------------
 
-'@IgnoreModule IntegerDataType, ModuleWithoutFolder
+'@IgnoreModule AssignmentNotUsed, IntegerDataType, ModuleWithoutFolder
 ' .74 DAEB 22/05/2022 rDIConConfig.frm Msgbox replacement that can be placed on top of the form instead as the middle of the screen STARTS
 Option Explicit
 Private yesNoReturnValue As Integer
@@ -147,6 +147,7 @@ Private Sub Form_Load()
     
     'If PzGDpiAwareness = "1" Then
         ' save the initial positions of ALL the controls on the msgbox form
+        '@Ignore DefaultMemberRequired, ArgumentWithIncompatibleObjectType
         Call SaveSizes(Me, msgBoxAControlPositions(), msgBoxACurrentWidth, msgBoxACurrentHeight)
     'End If
         
@@ -154,11 +155,14 @@ Private Sub Form_Load()
     '                       as each instance of the form is new, the font modification must be here.
     For Each Ctrl In Me.Controls
          If (TypeOf Ctrl Is CommandButton) Or (TypeOf Ctrl Is textBox) Or (TypeOf Ctrl Is FileListBox) Or (TypeOf Ctrl Is Label) Or (TypeOf Ctrl Is ComboBox) Or (TypeOf Ctrl Is CheckBox) Or (TypeOf Ctrl Is OptionButton) Or (TypeOf Ctrl Is Frame) Or (TypeOf Ctrl Is ListBox) Then
+            '@Ignore MemberNotOnInterface
             If PzGPrefsFont <> "" Then Ctrl.Font.Name = PzGPrefsFont
            
             If PzGDpiAwareness = "1" Then
+                '@Ignore MemberNotOnInterface
                 If val(Abs(PzGPrefsFontSizeHighDPI)) > 0 Then Ctrl.Font.Size = val(Abs(PzGPrefsFontSizeHighDPI))
             Else
+                '@Ignore MemberNotOnInterface
                 If val(Abs(PzGPrefsFontSizeLowDPI)) > 0 Then Ctrl.Font.Size = val(Abs(PzGPrefsFontSizeLowDPI))
             End If
             'Ctrl.Font.Italic = CBool(SDSuppliedFontItalics) TBD
@@ -186,6 +190,7 @@ End Sub
 '
 Private Sub Form_Resize()
     Dim currentFont As Long: currentFont = 0
+    
     Dim ratio As Double: ratio = 0
     
     On Error GoTo Form_Resize_Error
@@ -201,6 +206,7 @@ Private Sub Form_Resize()
     
     If msgBoxADynamicSizingFlg = True Then
         Call setMessageIconImagesLight(1920)
+        '@Ignore DefaultMemberRequired, ArgumentWithIncompatibleObjectType
         Call resizeControls(Me, msgBoxAControlPositions(), msgBoxACurrentWidth, msgBoxACurrentHeight, currentFont)
         Me.Width = Me.Height / ratio ' maintain the aspect ratio
     Else
@@ -670,6 +676,7 @@ End Sub
 '---------------------------------------------------------------------------------------
 '
 Private Sub setMessageIconImagesLight(ByVal thisIconWidth As Long)
+    
     
     Dim resourcePath As String: resourcePath = vbNullString
     

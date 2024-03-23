@@ -201,6 +201,8 @@ In the VB6 IDE - project - references - browse - select the OLEGuids.tlb
 
 Project References:
 
+The following Project References MUST in place and must be set (ticked) in order for this project to build.
+
     VisualBasic for Applications
     VisualBasic Runtime Objects and Procedures
     VisualBasic Objects and Procedures

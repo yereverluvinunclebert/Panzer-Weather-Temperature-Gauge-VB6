@@ -1,7 +1,7 @@
 Attribute VB_Name = "modResize"
 Option Explicit
 
-'@IgnoreModule IntegerDataType, ModuleWithoutFolder
+'@IgnoreModule AssignmentNotUsed, IntegerDataType, ModuleWithoutFolder
 Public Type ControlPositionType
     Left As Single
     Top As Single
@@ -26,9 +26,12 @@ Public msgBoxACurrentHeight As Double
 '---------------------------------------------------------------------------------------
 '
 Public Sub resizeControls(ByRef thisForm As Form, ByRef m_ControlPositions() As ControlPositionType, ByVal m_FormWid As Double, ByVal m_FormHgt As Double, ByVal formFontSize As Long)
+    
     Dim I As Integer: I = 0
     Dim Ctrl As Control
+    
     Dim x_scale As Single: x_scale = 0
+    
     Dim y_scale As Single: y_scale = 0
         
     On Error GoTo ResizeControls_Error
@@ -45,23 +48,36 @@ Public Sub resizeControls(ByRef thisForm As Form, ByRef m_ControlPositions() As 
 
                 If (TypeOf Ctrl Is Image) Then
 
+                    '@Ignore MemberNotOnInterface
                     Ctrl.Stretch = True
+                    '@Ignore MemberNotOnInterface
                     Ctrl.Left = x_scale * .Left
+                    '@Ignore MemberNotOnInterface
                     Ctrl.Top = y_scale * .Top
+                    '@Ignore MemberNotOnInterface
                     Ctrl.Width = x_scale * .Width
+                    '@Ignore MemberNotOnInterface
+                    '@Ignore MemberNotOnInterface
                     Ctrl.Height = Ctrl.Width ' always square in our case
 
+                    '@Ignore MemberNotOnInterface
                     Ctrl.Refresh
                 Else
+                    '@Ignore MemberNotOnInterface
                     Ctrl.Left = x_scale * .Left
+                    '@Ignore MemberNotOnInterface
                     Ctrl.Top = y_scale * .Top
+                    '@Ignore MemberNotOnInterface
                     Ctrl.Width = x_scale * .Width
                     If Not (TypeOf Ctrl Is ComboBox) Then
                         ' Cannot change height of ComboBoxes.
+                        '@Ignore MemberNotOnInterface
                         Ctrl.Height = y_scale * .Height
                     End If
                     On Error Resume Next
+                    '@Ignore MemberNotOnInterface
                     Ctrl.Font.Size = y_scale * formFontSize
+                    '@Ignore MemberNotOnInterface
                     Ctrl.Refresh
                     On Error GoTo 0
                 End If
@@ -91,6 +107,7 @@ End Sub
 '---------------------------------------------------------------------------------------
 '
 Public Sub SaveSizes(ByVal thisForm As Form, ByRef m_ControlPositions() As ControlPositionType, ByRef m_FormWid As Double, ByRef m_FormHgt As Double)
+    
     Dim I As Integer: I = 0
     Dim Ctrl As Control
 
@@ -103,11 +120,16 @@ Public Sub SaveSizes(ByVal thisForm As Form, ByRef m_ControlPositions() As Contr
         With m_ControlPositions(I)
         
             If (TypeOf Ctrl Is CommandButton) Or (TypeOf Ctrl Is ListBox) Or (TypeOf Ctrl Is textBox) Or (TypeOf Ctrl Is FileListBox) Or (TypeOf Ctrl Is Label) Or (TypeOf Ctrl Is ComboBox) Or (TypeOf Ctrl Is CheckBox) Or (TypeOf Ctrl Is OptionButton) Or (TypeOf Ctrl Is Frame) Or (TypeOf Ctrl Is Image) Or (TypeOf Ctrl Is PictureBox) Or (TypeOf Ctrl Is Slider) Then
+                '@Ignore MemberNotOnInterface
                 .Left = Ctrl.Left
+                '@Ignore MemberNotOnInterface
                 .Top = Ctrl.Top
+                '@Ignore MemberNotOnInterface
                 .Width = Ctrl.Width
+                '@Ignore MemberNotOnInterface
                 .Height = Ctrl.Height
                 On Error Resume Next ' cater for any controls that do not have a font property that may cause an error
+                '@Ignore MemberNotOnInterface
                 .FontSize = Ctrl.Font.Size
                 On Error GoTo 0
             End If

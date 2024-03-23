@@ -1,5 +1,5 @@
 Attribute VB_Name = "modMain"
-'@IgnoreModule IntegerDataType, ModuleWithoutFolder
+'@IgnoreModule AssignmentNotUsed, IntegerDataType, ModuleWithoutFolder
 ' gaugeForm_BubblingEvent ' leaving that here so I can copy/paste to find it
 
 Option Explicit
@@ -19,14 +19,14 @@ Public Const OnTopFlags  As Long = SWP_NOMOVE Or SWP_NOSIZE
 
 '------------------------------------------------------ STARTS
 ' to set the full window Opacity
-Private Declare Function SetLayeredWindowAttributes Lib "user32" (ByVal hwnd As Long, ByVal crKey As Long, ByVal bAlpha As Byte, ByVal dwFlags As Long) As Long
-Private Declare Function GetWindowLong Lib "user32" Alias "GetWindowLongA" (ByVal hwnd As Long, ByVal nIndex As Long) As Long
-Private Declare Function SetWindowLong Lib "user32" Alias "SetWindowLongA" (ByVal hwnd As Long, ByVal nIndex As Long, ByVal dwNewLong As Long) As Long
+''Private Declare Function SetLayeredWindowAttributes Lib "user32" (ByVal hwnd As Long, ByVal crKey As Long, ByVal bAlpha As Byte, ByVal dwFlags As Long) As Long
+''Private Declare Function GetWindowLong Lib "user32" Alias "GetWindowLongA" (ByVal hwnd As Long, ByVal nIndex As Long) As Long
+''Private Declare Function SetWindowLong Lib "user32" Alias "SetWindowLongA" (ByVal hwnd As Long, ByVal nIndex As Long, ByVal dwNewLong As Long) As Long
 
-Private Const WS_EX_LAYERED  As Long = &H80000
-Private Const GWL_EXSTYLE  As Long = (-20)
-Private Const LWA_COLORKEY  As Long = &H1       'to transparent
-Private Const LWA_ALPHA  As Long = &H2          'to semi transparent
+'Private Const WS_EX_LAYERED  As Long = &H80000
+'Private Const GWL_EXSTYLE  As Long = (-20)
+'Private Const LWA_COLORKEY  As Long = &H1       'to transparent
+'Private Const LWA_ALPHA  As Long = &H2          'to semi transparent
 '------------------------------------------------------ ENDS
 
 Public fMain As New cfMain
@@ -76,8 +76,11 @@ End Sub
 '---------------------------------------------------------------------------------------
 '
 Public Sub mainRoutine(ByVal restart As Boolean)
+    
     Dim extractCommand As String: extractCommand = vbNullString
+    
     Dim thisPSDFullPath As String: thisPSDFullPath = vbNullString
+    
     Dim licenceState As Integer: licenceState = 0
 
     On Error GoTo main_routine_Error
@@ -90,9 +93,6 @@ Public Sub mainRoutine(ByVal restart As Boolean)
     
     prefsCurrentWidth = 9075
     prefsCurrentHeight = 16450
-    
-    tzDelta = 0
-    tzDelta1 = 0
     
     extractCommand = Command$ ' capture any parameter passed, remove if a soft reload
     If restart = True Then extractCommand = vbNullString
@@ -913,15 +913,15 @@ Private Sub createRCFormsOnCurrentDisplay()
     On Error GoTo createRCFormsOnCurrentDisplay_Error
 
     With New_c.Displays(1) 'get the current Display
-      Call fMain.initAndShowAboutForm(.WorkLeft, .WorkTop, 1000, 1000, widgetName)
+      Call fMain.initAndShowAboutForm(widgetName)
     End With
     
     With New_c.Displays(1) 'get the current Display
-      Call fMain.initAndShowHelpForm(.WorkLeft, .WorkTop, 1000, 1000, widgetName)
+      Call fMain.initAndShowHelpForm(widgetName)
     End With
 
     With New_c.Displays(1) 'get the current Display
-      Call fMain.initAndShowLicenceForm(.WorkLeft, .WorkTop, 1000, 1000, widgetName)
+      Call fMain.initAndShowLicenceForm(widgetName)
     End With
     
         On Error GoTo 0
@@ -1089,9 +1089,4 @@ msgBoxA_Error:
     End With
 
 End Function
-
-
-
-
-
 
