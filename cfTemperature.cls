@@ -88,7 +88,7 @@ Public Sub InitFromPSD(ByRef PSD_FileNameOrByteArray As Variant)
                     If collPSDNonUIElements.Exists(.LayerPath(I)) Then ' we do not create Widgets for those in this exclude list.
                         
                         'we add layer info. (used in cwOverlay) to the "excluded paths" previously defined in Sub Main,
-                        '@Ignore DefaultMemberRequired
+                        
                         collPSDNonUIElements(.LayerPath(I)) = Array(.LayerX(I), .LayerY(I), val(PzGOpacity) / 100)  'here we update the so far empty slots with the PSD-offsets
                 
                     Else 'everything not in the exclude-list will get its own Widget-instance
@@ -167,8 +167,10 @@ Private Sub temperatureGaugeForm_BubblingEvent(ByRef Sender As Object, ByRef Eve
             Case Else
                 If PzGEnableBalloonTooltips = "1" Then CreateToolTip temperatureGaugeForm.hwnd, " " & overlayWidget.TemperatureDetails _
                     & vbCrLf & "" _
+                    & "Double tap on me to get new weather" _
+                    & vbCrLf & "" _
                     & vbCrLf & "Right Click to open the menu and the preferences. CTRL+ Mouse scrollwheel UP/DOWN to resize." _
-                    , TTIconInfo, widgetName & " Information.", , , , True
+                    , TTIconInfo, widgetName & " METAR summary Information.", , , , True
         End Select
     End If
     

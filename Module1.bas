@@ -1409,7 +1409,7 @@ Public Function fDialogFont(ByRef f As FormFontInfo) As Boolean
     logFnt.lfUnderline = f.UnderLine * -1
     logFnt.lfHeight = -fMulDiv(CLng(f.Height), GetDeviceCaps(GetDC(hWndAccessApp), LOGPIXELSY), 72)
     f.Name = "Centurion Light SF"
-    '@Ignore DefaultMemberRequired
+    
     Call StringToByte(f.Name, logFnt.lfFaceName()) ' HERE
     ftStruc.rgbColors = f.Color
     ftStruc.lStructSize = Len(ftStruc)
@@ -1435,7 +1435,7 @@ Public Function fDialogFont(ByRef f As FormFontInfo) As Boolean
       f.Weight = logFnt.lfWeight
       f.Italic = CBool(logFnt.lfItalic)
       f.UnderLine = CBool(logFnt.lfUnderline)
-      '@Ignore DefaultMemberRequired
+      
       f.Name = fByteToString(logFnt.lfFaceName())
       f.Height = CLng(ftStruc.iPointSize / 10)
       f.Color = ftStruc.rgbColors
@@ -1793,7 +1793,7 @@ Public Sub setMainTooltips()
 
     If PzGEnableTooltips = "1" Then
 
-        overlayWidget.Widget.ToolTip = "Use CTRL+mouse scrollwheel up/down to resize."
+        overlayWidget.Widget.ToolTip = "Double tap on me to get new weather" & vbCrLf & "Use CTRL+mouse scrollwheel up/down to resize."
         helpWidget.Widget.ToolTip = "Click on me to make me go away."
         aboutWidget.Widget.ToolTip = "Click on me to make me go away."
         

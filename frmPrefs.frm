@@ -3069,18 +3069,18 @@ Private Sub cmbDebug_Click()
     If cmbDebug.ListIndex = 0 Then
         txtDefaultEditor.Text = "eg. E:\vb6\Panzer Earth gauge VB6\Panzer Earth Gauge.vbp"
         txtDefaultEditor.Enabled = False
-        '@Ignore DefaultMemberRequired
+        
         lblDebug(7).Enabled = False
         btnDefaultEditor.Enabled = False
-        '@Ignore DefaultMemberRequired
+        
         lblDebug(9).Enabled = False
     Else
         txtDefaultEditor.Text = PzGDefaultEditor
         txtDefaultEditor.Enabled = True
-        '@Ignore DefaultMemberRequired
+        
         lblDebug(7).Enabled = True
         btnDefaultEditor.Enabled = True
-        '@Ignore DefaultMemberRequired
+        
         lblDebug(9).Enabled = True
     End If
 
@@ -4046,7 +4046,7 @@ End Sub
 '    If fFExists(thisFileName) = True Then
 '       ' the files must be DOS CRLF delineated
 '       Open thisFileName For Input As #1
-'           '@Ignore DefaultMemberRequired
+'
 '           strArr() = Split(Input(LOF(1), 1), vbCrLf)
 '       Close #1
 '
@@ -4138,7 +4138,7 @@ Private Sub Form_Resize()
         Else
             currentFont = PzGPrefsFontSizeLowDPI
         End If
-        '@Ignore DefaultMemberRequired, ArgumentWithIncompatibleObjectType
+        
         Call resizeControls(Me, prefsControlPositions(), prefsCurrentWidth, prefsCurrentHeight, currentFont)
         
         Call tweakPrefsControlPositions(Me, prefsCurrentWidth, prefsCurrentHeight)
@@ -4810,7 +4810,7 @@ Public Sub setPrefsTooltips()
         imgFontsClicked.ToolTipText = "Opens the Fonts tab"
         imgGeneral.ToolTipText = "Opens the general tab"
         imgGeneralClicked.ToolTipText = "Opens the general tab"
-        '@Ignore DefaultMemberRequired
+        
         lblPosition(6).ToolTipText = "Tablets only. Don't fiddle with this unless you really know what you are doing. Here you can choose whether this Pz Earth widget is hidden by default in either landscape or portrait mode or not at all. This option allows you to have certain widgets that do not obscure the screen in either landscape or portrait. If you accidentally set it so you can't find your widget on screen then change the setting here to NONE."
         chkGenStartup.ToolTipText = "Check this box to enable the automatic start of the program when Windows is started."
         chkGaugeFunctions.ToolTipText = "When checked this box enables the pointer. Any adjustment takes place instantly. "
@@ -4851,13 +4851,13 @@ Public Sub setPrefsTooltips()
         btnAboutDebugInfo.ToolTipText = "This gives access to the debugging tool"
         btnDonate.ToolTipText = "Buy me a Kofi! This button opens a browser window and connects to Kofi donation page"
         btnUpdate.ToolTipText = "Here you can visit the update location where you can download new versions of the programs."
-        '@Ignore DefaultMemberRequired
+        
         lblFontsTab(0).ToolTipText = "We suggest Centurion Light SF at 8pt - which you will find in the FCW program folder"
 '        lblFontsTab(1).ToolTipText = "We suggest Centurion Light SF at 8pt - which you will find in the FCW program folder"
 '        lblFontsTab(2).ToolTipText = "We suggest Centurion Light SF at 8pt - which you will find in the FCW program folder"
-        '@Ignore DefaultMemberRequired
+        
         lblFontsTab(6).ToolTipText = "We suggest Centurion Light SF at 8pt - which you will find in the FCW program folder"
-        '@Ignore DefaultMemberRequired
+        
         lblFontsTab(7).ToolTipText = "Choose a font size that fits the text boxes"
         txtPrefsFontCurrentSize.ToolTipText = "Disabled for manual input. Shows the current font size when form resizing is enabled."
         lblCurrentFontsTab.ToolTipText = "Disabled for manual input. Shows the current font size when form resizing is enabled."
@@ -4931,13 +4931,13 @@ Public Sub setPrefsTooltips()
         btnAboutDebugInfo.ToolTipText = vbNullString
         btnDonate.ToolTipText = vbNullString
         btnUpdate.ToolTipText = vbNullString
-        '@Ignore DefaultMemberRequired
+        
         lblFontsTab(0).ToolTipText = vbNullString
 '        lblFontsTab(1).ToolTipText = vbNullString
 '        lblFontsTab(2).ToolTipText = vbNullString
-        '@Ignore DefaultMemberRequired
+        
         lblFontsTab(6).ToolTipText = vbNullString
-        '@Ignore DefaultMemberRequired
+        
         lblFontsTab(7).ToolTipText = vbNullString
         txtPrefsFontCurrentSize.ToolTipText = vbNullString
         lblCurrentFontsTab.ToolTipText = vbNullString
@@ -4974,7 +4974,7 @@ Private Sub setPrefsLabels()
 
     On Error GoTo setPrefsLabels_Error
 
-    '@Ignore DefaultMemberRequired
+    
     lblFontsTab(0).Caption = "When resizing the form (drag bottom right) the font size will in relation to form height. The base font determines the initial size, the resulting resized font will dynamically change." & vbCrLf & vbCrLf & _
         "Next time you open the prefs it will revert to the default." & vbCrLf & vbCrLf & _
         "My preferred font for this utility is Centurion Light SF at 8pt size."
@@ -5700,7 +5700,7 @@ Private Sub setframeHeights()
     
         'If PzGDpiAwareness = "1" Then
             ' save the initial positions of ALL the controls on the prefs form
-            '@Ignore DefaultMemberRequired, ArgumentWithIncompatibleObjectType
+            
             Call SaveSizes(Me, prefsControlPositions(), prefsCurrentWidth, prefsCurrentHeight)
         'End If
     Else

@@ -25,6 +25,30 @@ Attribute VB_Exposed = False
 
 Option Explicit
 
+'Private Type SYSTEMTIME
+'   wYear As Integer
+'   wMonth As Integer
+'   wDayOfWeek As Integer
+'   wDay As Integer
+'   wHour As Integer
+'   wMinute As Integer
+'   wSecond As Integer
+'   wMilliseconds As Integer
+'End Type
+'
+'Private Type TIME_ZONE_INFORMATION
+'    bias                    As Long
+'    StandardName(0 To 63)   As Byte
+'    StandardDate            As SYSTEMTIME
+'    StandardBias            As Long
+'    DaylightName(0 To 63)   As Byte
+'    DaylightDate            As SYSTEMTIME
+'    DaylightBias            As Long
+'End Type
+'
+'Private Const TIME_ZONE_ID_DAYLIGHT As Long = 2
+'
+'Private Declare Function GetTimeZoneInformation Lib "kernel32" (lpTimeZoneInformation As TIME_ZONE_INFORMATION) As Long
 
 'these Public Properties are set in the Parent (here, cfTemperature)
 Public cCollOverlayImages As cCollection
@@ -56,6 +80,7 @@ Private animateCCW As Boolean
 
 '------------------------------------------------------ ENDS
 
+Private mGetMetar As Boolean ' property GetMetar
 Private mTicking As Boolean ' property Ticking
 Private mPointerAnimate As Boolean ' property PointerAnimate
 Private mLocked As Boolean ' property Locked
@@ -167,6 +192,49 @@ TickingGet_Error:
     MsgBox "Error " & Err.Number & " (" & Err.Description & ") in Property Ticking of Class Module cwOverlay"
 End Property
 '---------------------------------------------------------------------------------------
+' Property  : GetMetar
+' Author    :
+' Date      : 09/05/2023
+' Purpose   :
+'---------------------------------------------------------------------------------------
+'
+Public Property Let GetMetar(ByVal newValue As Boolean)
+    On Error GoTo GetMetarLet_Error
+
+    If mGetMetar <> newValue Then mGetMetar = newValue Else Exit Property
+    
+    Call getData
+    mGetMetar = False
+    
+   On Error GoTo 0
+   Exit Property
+
+GetMetarLet_Error:
+
+    MsgBox "Error " & Err.Number & " (" & Err.Description & ") in Property GetMetar of Class Module cwOverlay"
+End Property
+
+
+'---------------------------------------------------------------------------------------
+' Property : GetMetar
+' Author    : Dean Beedell (yereverluvinunclebert)
+' Date      : 17/05/2023
+' Purpose   :
+'---------------------------------------------------------------------------------------
+'
+Public Property Get GetMetar() As Boolean
+   On Error GoTo GetMetarGet_Error
+
+  GetMetar = mGetMetar
+
+   On Error GoTo 0
+   Exit Property
+
+GetMetarGet_Error:
+
+    MsgBox "Error " & Err.Number & " (" & Err.Description & ") in Property GetMetar of Class Module cwOverlay"
+End Property
+'---------------------------------------------------------------------------------------
 ' Property  : Ticking
 ' Author    :
 ' Date      : 09/05/2023
@@ -174,7 +242,6 @@ End Property
 '---------------------------------------------------------------------------------------
 '
 Public Property Let Ticking(ByVal newValue As Boolean)
-    'Dim intervalValue As Integer: intervalValue = 0
     On Error GoTo TickingLet_Error
 
     If mTicking <> newValue Then mTicking = newValue Else Exit Property
@@ -799,10 +866,8 @@ End Sub
 ' Date: 13/01/2024
 ' ----------------------------------------------------------------
 Private Sub obtainTemperature()
-        
     
     Dim min  As Integer: min = 0
-    
     Dim max  As Integer: max = 0
     
     On Error GoTo obtainTemperature_Error
@@ -864,10 +929,7 @@ Private Sub getData()
 
     
     Dim location As String: location = vbNullString
-    
     Dim thisURL As String: thisURL = vbNullString
-    
-    'Dim thisFile As String: thisFile = vbNullString
     
     On Error GoTo getData_Error
     
@@ -933,22 +995,11 @@ End Sub
 ' ----------------------------------------------------------------
 Private Sub myStatusProc()
 
-
-    
     Dim humidityValue  As Long: humidityValue = 0
-    
     Dim pressureValue As Double: pressureValue = 0
-    
     Dim TheDate As Date: TheDate = #1/1/2000 12:00:00 PM#
-    
     Dim secsDif As Integer: secsDif = 0
-    
     Dim difString As String: difString = vbNullString
-    
-    'Dim returnedString As String: returnedString = vbNullString
-    
-    'Dim data1 As String: data1 = vbNullString
-    
     Dim num_results As Integer: num_results = 0
     Dim observation_time As String: observation_time = vbNullString
     Dim station_id As String: station_id = vbNullString
@@ -962,40 +1013,15 @@ Private Sub myStatusProc()
     Dim wx_string As String: wx_string = vbNullString
     Dim precip_in As String: precip_in = vbNullString
     Dim visibility_statute_mi As String: visibility_statute_mi = vbNullString
-    
-    'Dim metar_items As String: metar_items = vbNullString
-    
-    'Dim current_node As String: current_node = vbNullString
     Dim sky_condition_items() As String ' array
-    
-    'Dim sky_condition As String: sky_condition = vbNullString
     Dim attributeCounter As Integer: attributeCounter = 0
     Dim SkyConditionCounter As Integer: SkyConditionCounter = 0
-    
-    'Dim locationDayNight As Boolean: locationDayNight = False
-    
-    
-    'Dim tmpSky_condition As String: tmpSky_condition = vbNullString
-    
-    'Dim humidity As Long: humidity = 0
-    
     Dim skyClarity As String: skyClarity = vbNullString
-    
-    
-    'Dim cloud_base_mt_agl As Integer: cloud_base_mt_agl = 0
     Dim baseCloud As Integer: baseCloud = 0
-    
     Dim skyClarityString As String: skyClarityString = vbNullString
-    
     Dim cloud_base_ft_agl() As String ' array
     Dim sky_cover() As String ' array
-    
-    'Dim sky_condition_items_length As Integer: sky_condition_items_length = 0
     Dim sky_condition_attributes_length As Integer: sky_condition_attributes_length = 0
-    
-    'Dim skyNodeName As String: skyNodeName = vbNullString
-    
-    'Dim cloudNodeName As String: cloudNodeName = vbNullString
     Dim skyNodeValue As String: skyNodeValue = vbNullString
     Dim cloudNodeValue As String: cloudNodeValue = vbNullString
     Dim uboundSkyConditions As Integer: uboundSkyConditions = 0
@@ -1014,28 +1040,16 @@ Private Sub myStatusProc()
     Dim answer As VbMsgBoxResult
     Dim answerMsg  As String: answerMsg = vbNullString
     
-    'Dim I As Integer: I = 0
-    
     Dim isDay As Boolean: isDay = False
-    
-    
     Dim initialObsTime As String: initialObsTime = vbNullString
-    
     Dim usableObsTime As Date: usableObsTime = #1/1/2000 12:00:00 PM#
-    
-    
+    Dim prettyDate As String: prettyDate = vbNullString
     Dim thisTooltip As String: thisTooltip = vbNullString
-    
     Dim humidityBackgroundToolTip As String: humidityBackgroundToolTip = vbNullString
-    
     Dim thermometerBackgroundToolTip As String: humidityBackgroundToolTip = vbNullString
-    
     Dim anemometerBackgroundToolTip As String: humidityBackgroundToolTip = vbNullString
-    
     Dim weatherIconGaugeBackgroundToolTip As String: humidityBackgroundToolTip = vbNullString
-    
     Dim barometerBackgroundToolTip As String: humidityBackgroundToolTip = vbNullString
-    
     Dim weatherIconToolTip As String: weatherIconToolTip = vbNullString
     
     On Error GoTo myStatusProc_Error
@@ -1171,14 +1185,14 @@ Private Sub myStatusProc()
     humidityValue = fGetHumidity(temp_c, dewpoint_c)
 
     ' decode the visibility when a cloud cover field found
-    '@Ignore DefaultMemberRequired
+    
     skyClarity = getCloudCover(sky_condition_items())
 
     ' decode the base cloud from the upperbound of the cloud array but only if the array is populated
     If (Not cloud_base_ft_agl) = -1 Then
         Debug.Print "this array is NOT initialized"
     Else
-        baseCloud = cloud_base_ft_agl(UBound(cloud_base_ft_agl))
+        baseCloud = val(cloud_base_ft_agl(UBound(cloud_base_ft_agl)))
     End If
     
     ' add the base cloud to the visibility string
@@ -1193,12 +1207,14 @@ Private Sub myStatusProc()
 '    'wx_string = "+FG" 'testing string
 '
     ' set the general weather conditions into the icon displayed
-    '@Ignore DefaultMemberRequired
     Call determineWeatherConditionIcon(skyClarity, wx_string, sky_cover(), isDay)
-'
-'    ' get the observation time string
+
+    ' get the observation time string, eg. 2024-01-28T23:50:00Z and make a standard VB6 date var
     initialObsTime = Left$(observation_time, 10) & " " & Mid$(observation_time, 12, 8)
     usableObsTime = CDate(initialObsTime)
+    
+    ' make a pretty date for the balloon tooltip
+    prettyDate = getPrettyDate(usableObsTime)
 
 '    'set the mini clock to show the observation time
 '    theClock.displayTime(usableObsTime) ' we don't yet have a mini clock
@@ -1215,24 +1231,20 @@ Private Sub myStatusProc()
     If (debugFlg = 1) Then Debug.Print ("%myStatusProc - difString " & difString)
 
     ' set the hover over tooltips on the gauges
-    thisTooltip = setHoverTooltip(skyClarityString, humidityValue, temperatureValue, pressureValue, usableObsTime, wind_dir_degrees, wind_speed_kt, precip_in, wx_string)
+    thisTooltip = setHoverTooltip(skyClarityString, humidityValue, temperatureValue, pressureValue, prettyDate, wind_dir_degrees, wind_speed_kt, precip_in, wx_string)
 
 '    'weatherText.data = String(thisToolTip)
 
     ' save the tooltip value so it can be used during the regular timed 60 second tooltip updates.
     'Preferences.lastTooltip.Value = humidityBackgroundToolTip
     
-    humidityBackgroundToolTip = thisTooltip & vbCrLf & difString & vbCrLf & "Double tap on me to get new weather"
+    humidityBackgroundToolTip = thisTooltip & vbCrLf & difString
     
     thermometerBackgroundToolTip = humidityBackgroundToolTip
-    
     anemometerBackgroundToolTip = humidityBackgroundToolTip
-    
     weatherIconGaugeBackgroundToolTip = humidityBackgroundToolTip
-    
     barometerBackgroundToolTip = humidityBackgroundToolTip
 
-    '@Ignore DefaultMemberRequired
     weatherIconToolTip = setIconTooltip(wx_string, sky_condition_items())
     
     If (weatherIconToolTip = "") Then
@@ -1240,8 +1252,6 @@ Private Sub myStatusProc()
     End If
     
     mTemperatureDetails = humidityBackgroundToolTip
-
-'     busyStop()
 
     thisTemperature = temp_c
     weHaveData = True
@@ -1279,7 +1289,7 @@ Private Function setIconTooltip(ByVal wx_string As String, ByRef sky_condition_i
     
     If (thisTooltip = "") Then
       ' if no wx_string use the cloud cover or lack of it
-      '@Ignore DefaultMemberRequired
+      
       thisTooltip = getCloudCover(sky_condition_items())
     End If
 
@@ -1387,22 +1397,25 @@ Function getCloudCover(ByRef sky_condition_items() As String) As String
    
     On Error GoTo getCloudCover_Error
 
-    If (sky_condition_items(0) = "SKC") Then thisSkyClarity = "Clear skies"
-    If (sky_condition_items(0) = "CLR") Then thisSkyClarity = "Clear skies"
-    If (sky_condition_items(0) = "FEW") Then thisSkyClarity = "Partly cloudy"
-    If (sky_condition_items(0) = "SCT") Then thisSkyClarity = "Scattered clouds"
-    If (sky_condition_items(0) = "BKN") Then thisSkyClarity = "Mostly cloudy"
-    If (sky_condition_items(0) = "OVC") Then thisSkyClarity = "Overcast"
-    If (sky_condition_items(0) = "VV ") Then thisSkyClarity = "Vertical visibility"
-    If (sky_condition_items(0) = "CAVOK ") Then thisSkyClarity = "Ceiling and visibility OK"
-
+   If UBound(sky_condition_items()) >= 0 Then
+        If (sky_condition_items(0) = "SKC") Then thisSkyClarity = "Clear skies"
+        If (sky_condition_items(0) = "CLR") Then thisSkyClarity = "Clear skies"
+        If (sky_condition_items(0) = "FEW") Then thisSkyClarity = "Partly cloudy"
+        If (sky_condition_items(0) = "SCT") Then thisSkyClarity = "Scattered clouds"
+        If (sky_condition_items(0) = "BKN") Then thisSkyClarity = "Mostly cloudy"
+        If (sky_condition_items(0) = "OVC") Then thisSkyClarity = "Overcast"
+        If (sky_condition_items(0) = "VV ") Then thisSkyClarity = "Vertical visibility"
+        If (sky_condition_items(0) = "CAVOK ") Then thisSkyClarity = "Ceiling and visibility OK"
+    End If
+    
 '    (1) there are no clouds below 5000 feet above aerodrome level (AAL) or minimum sector altitude (whichever is higher) and no cumulonimbus or towering cumulus (2) visibility is at least 10 kilometres (6 statute miles) or more and (3) no current or forecast significant weather such as precipitation, thunderstorms, shallow fog or low drifting snow
-
-    If (Not sky_condition_items) = -1 Then
-        If (sky_condition_items(1) = "FEW" And Not sky_condition_items(0) = sky_condition_items(1)) Then thisSkyClarity = thisSkyClarity & " + " & "Partly cloudy"
-        If (sky_condition_items(1) = "SCT" And Not sky_condition_items(0) = sky_condition_items(1)) Then thisSkyClarity = thisSkyClarity & " + " & "Scattered clouds"
-        If (sky_condition_items(1) = "BKN" And Not sky_condition_items(0) = sky_condition_items(1)) Then thisSkyClarity = thisSkyClarity & " + " & "Mostly cloudy"
-        If (sky_condition_items(1) = "OVC" And Not sky_condition_items(0) = sky_condition_items(1)) Then thisSkyClarity = thisSkyClarity & " + " & "Overcast"
+   If UBound(sky_condition_items()) = 1 Then
+        If sky_condition_items(1) <> "" Then
+            If (sky_condition_items(1) = "FEW" And Not sky_condition_items(0) = sky_condition_items(1)) Then thisSkyClarity = thisSkyClarity & " + " & "Partly cloudy"
+            If (sky_condition_items(1) = "SCT" And Not sky_condition_items(0) = sky_condition_items(1)) Then thisSkyClarity = thisSkyClarity & " + " & "Scattered clouds"
+            If (sky_condition_items(1) = "BKN" And Not sky_condition_items(0) = sky_condition_items(1)) Then thisSkyClarity = thisSkyClarity & " + " & "Mostly cloudy"
+            If (sky_condition_items(1) = "OVC" And Not sky_condition_items(0) = sky_condition_items(1)) Then thisSkyClarity = thisSkyClarity & " + " & "Overcast"
+        End If
     End If
     If (debugFlg = 1) Then Debug.Print ("%getCloudCover - part " & thisSkyClarity)
     
@@ -1465,15 +1478,14 @@ End Function
 ' ----------------------------------------------------------------
 Function fGetHumidity(ByVal temp_c As String, ByVal dewpoint_c As String) As Long
 
-    Dim humidity As Long: humidity = 0
-    
+    Dim Humidity As Long: Humidity = 0
 
     On Error GoTo fGetHumidity_Error
     
-    humidity = Round(100 * (((112 - (0.1 * CInt(temp_c)) + CInt(dewpoint_c)) / (112 + (0.9 * CInt(temp_c)))) ^ 8))
-    If debugFlg = 1 Then Debug.Print ("fGetHumidity - humidity " + CStr(humidity))
+    Humidity = Round(100 * (((112 - (0.1 * CInt(temp_c)) + CInt(dewpoint_c)) / (112 + (0.9 * CInt(temp_c)))) ^ 8))
+    If debugFlg = 1 Then Debug.Print ("fGetHumidity - humidity " + CStr(Humidity))
     
-    fGetHumidity = humidity ' return
+    fGetHumidity = Humidity ' return
     
     On Error GoTo 0
     Exit Function
@@ -1752,7 +1764,7 @@ End Function
 ' Purpose: this function sets the hover over tooltip
 ' Procedure Kind: Function
 ' Procedure Access: Private
-' Parameter usableObsTime (Date):
+' Parameter prettyDate (Date):
 ' Parameter wind_dir_degrees (String):
 ' Parameter wind_speed_kt (String):
 ' Parameter precip_in (String):
@@ -1761,7 +1773,7 @@ End Function
 ' Author: Dean Beedell (yereverluvinunclebert)
 ' Date: 17/03/2024
 ' ----------------------------------------------------------------
-Private Function setHoverTooltip(ByVal skyClarityString As String, ByVal humidityValue As Double, ByVal temperatureValue As Double, ByVal pressureValue As Double, ByVal usableObsTime As Date, ByVal wind_dir_degrees As String, ByVal wind_speed_kt As String, ByVal precip_in As String, ByVal wx_string As String) As String
+Private Function setHoverTooltip(ByVal skyClarityString As String, ByVal humidityValue As Double, ByVal temperatureValue As Double, ByVal pressureValue As Double, ByVal prettyDate As String, ByVal wind_dir_degrees As String, ByVal wind_speed_kt As String, ByVal precip_in As String, ByVal wx_string As String) As String
             
     
     Dim icaoLocation1 As String: icaoLocation1 = vbNullString
@@ -1779,7 +1791,6 @@ Private Function setHoverTooltip(ByVal skyClarityString As String, ByVal humidit
             
     On Error GoTo setHoverTooltip_Error
             
-            
     icaoLocation1 = "NORWICH INTERNATIONAL AIRPORT"
     icaoLocation2 = "NORWICH"
     icaoLocation3 = "UNITED KINGDOM"
@@ -1790,8 +1801,8 @@ Private Function setHoverTooltip(ByVal skyClarityString As String, ByVal humidit
 
     force = Str$(beaufortConversion(wind_speed_kt))
 
-    tooltipString = " " & CStr(usableObsTime) & " " & " " & PzGIcao & " "
-    tooltipString = tooltipString & icaoLocation1 & ", " & icaoLocation2 & ", " & icaoLocation3 & " " & vbCrLf
+    tooltipString = CStr(prettyDate) & vbCrLf & vbCrLf
+    tooltipString = tooltipString & PzGIcao & " " & icaoLocation1 & ", " & vbCrLf & icaoLocation2 & ", " & icaoLocation3 & " " & vbCrLf
 
     If (PzGPressureScale = "0") Then ' "millibars") Then
         tooltipString = tooltipString & "Pressure" & ": " & Int(pressureValue * 1.33322) & " mb " & vbCrLf
@@ -1822,7 +1833,7 @@ Private Function setHoverTooltip(ByVal skyClarityString As String, ByVal humidit
         tooltipString = tooltipString & "Wind speed is" & " " & Int(wind_speed_kt * 0.51444) & " m/sec, "
     End If
 
-    tooltipString = tooltipString & "strength force " & force & ", " & "direction" & " " & compassDirection
+    tooltipString = tooltipString & "strength force " & force & ", " & "Direction" & " " & compassDirection
 
     If (precip_in <> vbNullString) Then
        tooltipString = tooltipString & " " & "precipitation is" & " " & precip_in & " inches"
@@ -1892,7 +1903,7 @@ Private Sub determineWeatherConditionIcon(ByRef skyClarity As String, ByVal this
    Dim followingSrc As String: followingSrc = vbNullString
 
     
-   '@Ignore DefaultMemberRequired
+   
    If UBound(sky_cover()) >= 0 Then
         If (sky_cover(0) = "SKC") Then skycover1 = "SKC"
         If (sky_cover(0) = "CLR") Then skycover1 = "CLR"
@@ -1904,7 +1915,7 @@ Private Sub determineWeatherConditionIcon(ByRef skyClarity As String, ByVal this
         If (sky_cover(0) = "CAVOK") Then skycover1 = "CAVOK"
     End If
         
-   '@Ignore DefaultMemberRequired
+   
    If UBound(sky_cover()) >= 1 Then
         If (sky_cover(1) = "SKC") Then skycover2 = "SKC"
         If (sky_cover(1) = "CLR") Then skycover2 = "CLR"
@@ -1916,7 +1927,7 @@ Private Sub determineWeatherConditionIcon(ByRef skyClarity As String, ByVal this
         If (sky_cover(1) = "CAVOK") Then skycover2 = "CAVOK"
     End If
     
-   '@Ignore DefaultMemberRequired
+   
    If UBound(sky_cover()) >= 2 Then
         If (sky_cover(2) = "SKC") Then skycover3 = "SKC"
         If (sky_cover(2) = "CLR") Then skycover3 = "CLR"
@@ -2413,3 +2424,71 @@ getMetarDescription_Error:
     MsgBox "Error " & Err.Number & " (" & Err.Description & ") in procedure getMetarDescription, line " & Erl & "."
 
 End Function
+
+
+' ----------------------------------------------------------------
+' Procedure Name: getPrettyDate
+' Purpose: obtain date in friendly format eg. Sun Mar 24 2024 11:50:00 GMT+0000 (GMT Standard Time) from VB6 date string 24/03/2024 12:20:00
+' Procedure Kind: Function
+' Procedure Access: Public
+' Parameter usableObsTime (Date):
+' Return Type: String
+' Author: beededea
+' Date: 24/03/2024
+' ----------------------------------------------------------------
+Function getPrettyDate(ByVal usableObsTime As Date) As String
+    On Error GoTo getPrettyDate_Error
+    
+    Dim dayOfWeek As String: dayOfWeek = vbNullString
+    Dim formattedString As String: formattedString = vbNullString
+    
+'    Dim uInfo As TIME_ZONE_INFORMATION
+'    Dim lReturn As Long
+'    Dim C As Integer
+'    Dim thisString As String
+'    Dim strData As String
+'
+'    lReturn = GetTimeZoneInformation(uInfo)
+'
+'    If lReturn = TIME_ZONE_ID_DAYLIGHT Then
+'        'IsDLSavings = True
+'    End If
+'
+'    Debug.Print "The computer's time zone is: ";
+'    For C = 0 To 32 ' the array's range is from 0 to 31
+'        thisString = thisString & Chr$(uInfo.StandardName(C))
+'        'Debug.Print thisString
+'    Next C
+'
+'    strData = Replace(thisString, Chr(0), "")
+    
+    formattedString = Format$(usableObsTime, "dd mmm yyyy hh:nn:ss")
+           
+    Select Case DatePart("w", usableObsTime)
+        Case vbSunday
+            dayOfWeek = "Sunday"
+        Case vbMonday
+            dayOfWeek = "Monday"
+        Case vbTuesday
+            dayOfWeek = "Tuesday"
+        Case vbWednesday
+            dayOfWeek = "Wednesday"
+        Case vbThursday
+            dayOfWeek = "Thursday"
+        Case vbFriday
+            dayOfWeek = "Friday"
+        Case vbSaturday
+            dayOfWeek = "Saturday"
+    End Select
+
+    getPrettyDate = dayOfWeek & " " & formattedString & " " & "GMT+0000 (GMT Standard Time)"
+        
+    On Error GoTo 0
+    Exit Function
+
+getPrettyDate_Error:
+
+    MsgBox "Error " & Err.Number & " (" & Err.Description & ") in procedure getPrettyDate, line " & Erl & "."
+
+End Function
+

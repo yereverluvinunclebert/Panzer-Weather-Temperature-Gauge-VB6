@@ -28,6 +28,24 @@ Begin VB.Form menuForm
       Begin VB.Menu mnublank1 
          Caption         =   "-"
       End
+      Begin VB.Menu mnublank9 
+         Caption         =   ""
+      End
+      Begin VB.Menu mnuChangeLocation 
+         Caption         =   "Change your location"
+      End
+      Begin VB.Menu mnuRefreshMetar 
+         Caption         =   "Refresh Metar Feed"
+      End
+      Begin VB.Menu mnuDownloadICAO 
+         Caption         =   "Download new ICAO code locations file"
+      End
+      Begin VB.Menu mnuCopyWeather 
+         Caption         =   "Copy current weather to clipboard"
+      End
+      Begin VB.Menu mnublank10 
+         Caption         =   ""
+      End
       Begin VB.Menu mnuCoffee 
          Caption         =   "Donate a coffee with KoFi"
          Index           =   2
@@ -196,6 +214,29 @@ mnuAppFolder_Click_Error:
 End Sub
 
 
+
+' ----------------------------------------------------------------
+' Procedure Name: mnuCopyWeather_Click
+' Purpose:
+' Procedure Kind: Sub
+' Procedure Access: Private
+' Author: beededea
+' Date: 24/03/2024
+' ----------------------------------------------------------------
+Private Sub mnuCopyWeather_Click()
+    On Error GoTo mnuCopyWeather_Click_Error
+    
+    Clipboard.Clear
+    Clipboard.SetText (overlayWidget.TemperatureDetails)
+
+    On Error GoTo 0
+    Exit Sub
+
+mnuCopyWeather_Click_Error:
+
+    MsgBox "Error " & Err.Number & " (" & Err.Description & ") in procedure mnuCopyWeather_Click, line " & Erl & "."
+
+End Sub
 
 '---------------------------------------------------------------------------------------
 ' Procedure : mnuEditWidget_Click
@@ -499,6 +540,10 @@ mnuLicence_Click_Error:
 End Sub
 
 
+
+Private Sub mnuRefreshMetar_Click()
+    overlayWidget.GetMetar = True
+End Sub
 
 '---------------------------------------------------------------------------------------
 ' Procedure : mnuSupport_Click

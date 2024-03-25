@@ -90,9 +90,9 @@ Public Sub CreateToolTip(ByVal ParentHwnd As Long, _
                          Optional ByVal lBackColor As Long = -1&, _
                          Optional ByVal bCentered As Boolean, _
                          Optional ByVal bBalloon As Boolean, _
-                         Optional ByVal lWrapTextLength As Long = 50&, _
+                         Optional ByVal lWrapTextLength As Long = 80&, _
                          Optional ByVal lDelayTime As Long = 600&, _
-                         Optional ByVal lVisibleTime As Long = 7500&)
+                         Optional ByVal lVisibleTime As Long = 12000&)
     '
     ' If lWrapTextLength = 0 then there will be no wrap.
     ' Also, lWrapTextLength = 40 is a minimum value.

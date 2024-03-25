@@ -147,7 +147,7 @@ Private Sub Form_Load()
     
     'If PzGDpiAwareness = "1" Then
         ' save the initial positions of ALL the controls on the msgbox form
-        '@Ignore DefaultMemberRequired, ArgumentWithIncompatibleObjectType
+        
         Call SaveSizes(Me, msgBoxAControlPositions(), msgBoxACurrentWidth, msgBoxACurrentHeight)
     'End If
         
@@ -206,7 +206,7 @@ Private Sub Form_Resize()
     
     If msgBoxADynamicSizingFlg = True Then
         Call setMessageIconImagesLight(1920)
-        '@Ignore DefaultMemberRequired, ArgumentWithIncompatibleObjectType
+        
         Call resizeControls(Me, msgBoxAControlPositions(), msgBoxACurrentWidth, msgBoxACurrentHeight, currentFont)
         Me.Width = Me.Height / ratio ' maintain the aspect ratio
     Else
