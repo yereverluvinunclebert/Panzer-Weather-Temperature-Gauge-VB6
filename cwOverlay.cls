@@ -782,16 +782,14 @@ End Sub
     
 '---------------------------------------------------------------------------------------
 ' Procedure : calcAnimationData
-' Author    :
+' Author    : set the animation variables and call the routine to move the gauge pointer
 ' Date      : 30/07/2023
 ' Purpose   :
 '---------------------------------------------------------------------------------------
 '
 Private Sub calcAnimationData()
     Dim degDiff As Double: degDiff = 0
-    
     Dim min  As Integer: min = 0
-    
     Dim max  As Integer: max = 0
     
     On Error GoTo calcAnimationData_Error
@@ -987,7 +985,7 @@ End Sub
 
 ' ----------------------------------------------------------------
 ' Procedure Name: myStatusProc
-' Purpose:
+' Purpose: Processes the XML METAR data and assigns to vars
 ' Procedure Kind: Sub
 ' Procedure Access: Private
 ' Author: Dean Beedell (yereverluvinunclebert)
@@ -1043,13 +1041,15 @@ Private Sub myStatusProc()
     Dim isDay As Boolean: isDay = False
     Dim initialObsTime As String: initialObsTime = vbNullString
     Dim usableObsTime As Date: usableObsTime = #1/1/2000 12:00:00 PM#
-    Dim prettyDate As String: prettyDate = vbNullString
+    Dim weekDayDate As String: weekDayDate = vbNullString
     Dim thisTooltip As String: thisTooltip = vbNullString
-    Dim humidityBackgroundToolTip As String: humidityBackgroundToolTip = vbNullString
-    Dim thermometerBackgroundToolTip As String: humidityBackgroundToolTip = vbNullString
-    Dim anemometerBackgroundToolTip As String: humidityBackgroundToolTip = vbNullString
-    Dim weatherIconGaugeBackgroundToolTip As String: humidityBackgroundToolTip = vbNullString
-    Dim barometerBackgroundToolTip As String: humidityBackgroundToolTip = vbNullString
+    
+'    Dim humidityBackgroundToolTip As String: humidityBackgroundToolTip = vbNullString
+'    Dim thermometerBackgroundToolTip As String: humidityBackgroundToolTip = vbNullString
+'    Dim anemometerBackgroundToolTip As String: humidityBackgroundToolTip = vbNullString
+'    Dim weatherIconGaugeBackgroundToolTip As String: humidityBackgroundToolTip = vbNullString
+'    Dim barometerBackgroundToolTip As String: humidityBackgroundToolTip = vbNullString
+    
     Dim weatherIconToolTip As String: weatherIconToolTip = vbNullString
     
     On Error GoTo myStatusProc_Error
@@ -1080,7 +1080,7 @@ Private Sub myStatusProc()
     If Not nodeList Is Nothing Then
          For Each node In nodeList
          
-            On Error Resume Next ' prevents errors being generated from optionally present nodes.
+            On Error Resume Next ' prevents errors being generated from 'optional' nodes not present.
            
            ' get the values from the XML data and return strings - the easy stuff first
             
@@ -1154,14 +1154,15 @@ Private Sub myStatusProc()
                     SkyConditionCounter = SkyConditionCounter + 1
                 Next
             End If
-            On Error GoTo myStatusProc_Error
           Next node
    End If
-               
+   
+   On Error GoTo myStatusProc_Error ' restart error trapping
+   
    'Cleanup
    Set nodeList = Nothing
    Set SkyConditions = Nothing
-    
+       
     'if the station id returned is null then assume the weather information is missing for an unknown reason.
     If (station_id = "") Then
         If debugFlg = 1 Then Debug.Print ("%myStatusProc - station_id does not seem to providing any valid data, please select another.")
@@ -1185,7 +1186,6 @@ Private Sub myStatusProc()
     humidityValue = fGetHumidity(temp_c, dewpoint_c)
 
     ' decode the visibility when a cloud cover field found
-    
     skyClarity = getCloudCover(sky_condition_items())
 
     ' decode the base cloud from the upperbound of the cloud array but only if the array is populated
@@ -1214,7 +1214,7 @@ Private Sub myStatusProc()
     usableObsTime = CDate(initialObsTime)
     
     ' make a pretty date for the balloon tooltip
-    prettyDate = getPrettyDate(usableObsTime)
+    weekDayDate = humanFriendlyDate(usableObsTime)
 
 '    'set the mini clock to show the observation time
 '    theClock.displayTime(usableObsTime) ' we don't yet have a mini clock
@@ -1231,31 +1231,31 @@ Private Sub myStatusProc()
     If (debugFlg = 1) Then Debug.Print ("%myStatusProc - difString " & difString)
 
     ' set the hover over tooltips on the gauges
-    thisTooltip = setHoverTooltip(skyClarityString, humidityValue, temperatureValue, pressureValue, prettyDate, wind_dir_degrees, wind_speed_kt, precip_in, wx_string)
-
-'    'weatherText.data = String(thisToolTip)
-
+    thisTooltip = setHoverTooltip(skyClarityString, humidityValue, temperatureValue, pressureValue, weekDayDate, wind_dir_degrees, wind_speed_kt, precip_in, wx_string)
+    thisTooltip = thisTooltip & vbCrLf & difString
+    
     ' save the tooltip value so it can be used during the regular timed 60 second tooltip updates.
-    'Preferences.lastTooltip.Value = humidityBackgroundToolTip
+    'PzGLastTooltip = thisTooltip
     
-    humidityBackgroundToolTip = thisTooltip & vbCrLf & difString
-    
-    thermometerBackgroundToolTip = humidityBackgroundToolTip
-    anemometerBackgroundToolTip = humidityBackgroundToolTip
-    weatherIconGaugeBackgroundToolTip = humidityBackgroundToolTip
-    barometerBackgroundToolTip = humidityBackgroundToolTip
+    ' set the tooltips to the various gauges
+'    humidityBackgroundToolTip = thisTooltip
+'    thermometerBackgroundToolTip = humidityBackgroundToolTip
+'    anemometerBackgroundToolTip = humidityBackgroundToolTip
+'    weatherIconGaugeBackgroundToolTip = humidityBackgroundToolTip
+'    barometerBackgroundToolTip = humidityBackgroundToolTip
 
     weatherIconToolTip = setIconTooltip(wx_string, sky_condition_items())
-    
     If (weatherIconToolTip = "") Then
-        weatherIconToolTip = humidityBackgroundToolTip
+        weatherIconToolTip = thisTooltip
     End If
     
-    mTemperatureDetails = humidityBackgroundToolTip
+    ' for setting the balloon tooltip using the TemperatureDetails property
+    mTemperatureDetails = thisTooltip
 
     thisTemperature = temp_c
     weHaveData = True
     
+    ' set the animation variables and call the routine to move the gauge pointer
     Call calcAnimationData
     
     On Error GoTo 0
@@ -1289,7 +1289,6 @@ Private Function setIconTooltip(ByVal wx_string As String, ByRef sky_condition_i
     
     If (thisTooltip = "") Then
       ' if no wx_string use the cloud cover or lack of it
-      
       thisTooltip = getCloudCover(sky_condition_items())
     End If
 
@@ -1764,7 +1763,7 @@ End Function
 ' Purpose: this function sets the hover over tooltip
 ' Procedure Kind: Function
 ' Procedure Access: Private
-' Parameter prettyDate (Date):
+' Parameter weekDayDate (Date):
 ' Parameter wind_dir_degrees (String):
 ' Parameter wind_speed_kt (String):
 ' Parameter precip_in (String):
@@ -1773,7 +1772,7 @@ End Function
 ' Author: Dean Beedell (yereverluvinunclebert)
 ' Date: 17/03/2024
 ' ----------------------------------------------------------------
-Private Function setHoverTooltip(ByVal skyClarityString As String, ByVal humidityValue As Double, ByVal temperatureValue As Double, ByVal pressureValue As Double, ByVal prettyDate As String, ByVal wind_dir_degrees As String, ByVal wind_speed_kt As String, ByVal precip_in As String, ByVal wx_string As String) As String
+Private Function setHoverTooltip(ByVal skyClarityString As String, ByVal humidityValue As Double, ByVal temperatureValue As Double, ByVal pressureValue As Double, ByVal weekDayDate As String, ByVal wind_dir_degrees As String, ByVal wind_speed_kt As String, ByVal precip_in As String, ByVal wx_string As String) As String
             
     
     Dim icaoLocation1 As String: icaoLocation1 = vbNullString
@@ -1801,7 +1800,7 @@ Private Function setHoverTooltip(ByVal skyClarityString As String, ByVal humidit
 
     force = Str$(beaufortConversion(wind_speed_kt))
 
-    tooltipString = CStr(prettyDate) & vbCrLf & vbCrLf
+    tooltipString = CStr(weekDayDate) & vbCrLf & vbCrLf
     tooltipString = tooltipString & PzGIcao & " " & icaoLocation1 & ", " & vbCrLf & icaoLocation2 & ", " & icaoLocation3 & " " & vbCrLf
 
     If (PzGPressureScale = "0") Then ' "millibars") Then
@@ -2427,7 +2426,7 @@ End Function
 
 
 ' ----------------------------------------------------------------
-' Procedure Name: getPrettyDate
+' Procedure Name: humanFriendlyDate
 ' Purpose: obtain date in friendly format eg. Sun Mar 24 2024 11:50:00 GMT+0000 (GMT Standard Time) from VB6 date string 24/03/2024 12:20:00
 ' Procedure Kind: Function
 ' Procedure Access: Public
@@ -2436,8 +2435,8 @@ End Function
 ' Author: beededea
 ' Date: 24/03/2024
 ' ----------------------------------------------------------------
-Function getPrettyDate(ByVal usableObsTime As Date) As String
-    On Error GoTo getPrettyDate_Error
+Function humanFriendlyDate(ByVal usableObsTime As Date) As String
+    On Error GoTo humanFriendlyDate_Error
     
     Dim dayOfWeek As String: dayOfWeek = vbNullString
     Dim formattedString As String: formattedString = vbNullString
@@ -2481,14 +2480,14 @@ Function getPrettyDate(ByVal usableObsTime As Date) As String
             dayOfWeek = "Saturday"
     End Select
 
-    getPrettyDate = dayOfWeek & " " & formattedString & " " & "GMT+0000 (GMT Standard Time)"
+    humanFriendlyDate = dayOfWeek & " " & formattedString & " " & "GMT+0000 (GMT Standard Time)"
         
     On Error GoTo 0
     Exit Function
 
-getPrettyDate_Error:
+humanFriendlyDate_Error:
 
-    MsgBox "Error " & Err.Number & " (" & Err.Description & ") in procedure getPrettyDate, line " & Erl & "."
+    MsgBox "Error " & Err.Number & " (" & Err.Description & ") in procedure humanFriendlyDate, line " & Erl & "."
 
 End Function
 
