@@ -50,6 +50,11 @@ Option Explicit
 '
 'Private Declare Function GetTimeZoneInformation Lib "kernel32" (lpTimeZoneInformation As TIME_ZONE_INFORMATION) As Long
 
+Private Declare Function URLDownloadToFile Lib "urlmon" _
+    Alias "URLDownloadToFileA" (ByVal pCaller As Long, _
+    ByVal szURL As String, ByVal szFileName As String, _
+    ByVal dwReserved As Long, ByVal lpfnCB As Long) As Long
+
 'these Public Properties are set in the Parent (here, cfTemperature)
 Public cCollOverlayImages As cCollection
 Public cxPerc As Single
@@ -577,7 +582,7 @@ End Sub
 '---------------------------------------------------------------------------------------
 '
 Private Sub W_Paint(CC As RC6.cCairoContext, ByVal xAbs As Single, ByVal yAbs As Single, ByVal dx_Aligned As Single, ByVal dy_Aligned As Single, UserObj As Object)
-    Dim I As Long: I = 0
+    Dim i As Long: i = 0
     Dim arr As Variant
     Dim Key As String: Key = vbNullString
     Dim Pat As cCairoPattern
@@ -615,9 +620,9 @@ Private Sub W_Paint(CC As RC6.cCairoContext, ByVal xAbs As Single, ByVal yAbs As
 
 
 
-    For I = 0 To cCollOverlayImages.Count - 1 ' this is the ExcludedPaths collection populated in cfTemperature by duplicating collPSDNonUIElements.
-      arr = cCollOverlayImages.ItemByIndex(I)
-      Key = cCollOverlayImages.KeyByIndex(I)
+    For i = 0 To cCollOverlayImages.Count - 1 ' this is the ExcludedPaths collection populated in cfTemperature by duplicating collPSDNonUIElements.
+      arr = cCollOverlayImages.ItemByIndex(i)
+      Key = cCollOverlayImages.KeyByIndex(i)
       
       If IsArray(arr) Then
              CC.Save
@@ -925,13 +930,14 @@ End Sub
 ' ----------------------------------------------------------------
 Private Sub getData()
 
-    
     Dim location As String: location = vbNullString
+    'Dim locationInformation As String: locationInformation = vbNullString
     Dim thisURL As String: thisURL = vbNullString
     
     On Error GoTo getData_Error
     
     location = PzGIcao ' eg. "EGSH"
+    'locationInformation = searchIcaoFile(location)
     thisURL = "https://aviationweather.gov/api/data/dataserver?requestType=retrieve&dataSource=metars&stationString=" & location & "&hoursBeforeNow=6&format=xml&mostRecent=true"
     
     'thisFile = "E:\vb6\Panzer-Weather-Gauges-VB6\test.xml"
@@ -1883,25 +1889,15 @@ Private Sub determineWeatherConditionIcon(ByRef skyClarity As String, ByVal this
    Dim skycover2 As String: skycover2 = vbNullString
    Dim skycover3 As String: skycover3 = vbNullString
    Dim presentConditions As String: presentConditions = vbNullString
-   
    Dim weatherIconSrc As String: weatherIconSrc = vbNullString
-   
    Dim showersIconSrc As String: showersIconSrc = vbNullString
-   
    Dim fogIconSrc As String: fogIconSrc = vbNullString
-   
    Dim windIconSrc As String: windIconSrc = vbNullString
-   
    Dim exoticIconSrc As String: exoticIconSrc = vbNullString
    Dim iconSrc As String: iconSrc = vbNullString
-   
    Dim weatherType As String: weatherType = vbNullString
-   
    Dim precedingSrc As String: precedingSrc = vbNullString
-   
    Dim followingSrc As String: followingSrc = vbNullString
-
-    
    
    If UBound(sky_cover()) >= 0 Then
         If (sky_cover(0) = "SKC") Then skycover1 = "SKC"
@@ -2435,7 +2431,7 @@ End Function
 ' Author: beededea
 ' Date: 24/03/2024
 ' ----------------------------------------------------------------
-Function humanFriendlyDate(ByVal usableObsTime As Date) As String
+Private Function humanFriendlyDate(ByVal usableObsTime As Date) As String
     On Error GoTo humanFriendlyDate_Error
     
     Dim dayOfWeek As String: dayOfWeek = vbNullString
@@ -2489,5 +2485,209 @@ humanFriendlyDate_Error:
 
     MsgBox "Error " & Err.Number & " (" & Err.Description & ") in procedure humanFriendlyDate, line " & Erl & "."
 
+End Function
+
+' ----------------------------------------------------------------
+' Procedure Name: getNewIcaoLocations
+' Purpose: function to open a web-page and obtain the new icao locations data file
+' Procedure Kind: Sub
+' Procedure Access: Public
+' Author: beededea
+' Date: 25/03/2024
+' ----------------------------------------------------------------
+Public Sub getNewIcaoLocations()
+    On Error GoTo getNewIcaoLocations_Error
+    
+    Dim webAddress As String: webAddress = vbNullString
+    Dim answerMsg As String: answerMsg = vbNullString
+    Dim answer As VbMsgBoxResult: answer = vbNo
+    Dim firstFileDate As Date: firstFileDate = #1/1/2000 12:00:00 PM#
+    Dim secondFileDate As Date: secondFileDate = #1/1/2000 12:00:00 PM#
+'    Dim fileToPlay As String: fileToPlay = vbNullString
+'
+'    fileToPlay = "click1.wav"
+'    If PzGEnableSounds = "1" And fFExists(App.path & "\resources\sounds\" & fileToPlay) Then
+'        PlaySound App.path & "\resources\sounds\" & fileToPlay, ByVal 0&, SND_FILENAME Or SND_ASYNC
+'    End If
+
+    answerMsg = "This menu option goes online and downloads/updates the airports data file. Do you wish to proceed?"
+    answer = msgBoxA(answerMsg, vbYesNo + vbExclamation, "Obtain the new icao locations data file", False)
+
+    If answer = vbYes Then
+        
+        webAddress = "https://raw.githubusercontent.com/jpatokal/openflights/master/data/airports.dat"
+
+        If Not fDirExists(App.path & "\dat") Then
+            answerMsg = "Error: The data file folder does not exist."
+            answer = msgBoxA(answerMsg, vbOKOnly + vbExclamation, "Downloaded file failed", False)
+            Exit Sub
+        End If
+        
+        ' sample the file date first
+        firstFileDate = FileDateTime(App.path & "\dat\icao_codes.dat")
+        
+        ' Download the file.
+        Call URLDownloadToFile(0, webAddress, App.path & "\dat\icao_codes.dat", 0, 0)
+        
+        ' test the new file date
+        secondFileDate = FileDateTime(App.path & "\dat\icao_codes.dat")
+        
+         ' confirm the two dates are different
+        If firstFileDate <> secondFileDate Then
+            answerMsg = "Downloaded ICAO data file successfully."
+            answer = msgBoxA(answerMsg, vbOKOnly + vbExclamation, "Downloaded ICAO data file", False)
+        Else
+            answerMsg = "Error: There was a problem downloading the ICAO data file."
+            answer = msgBoxA(answerMsg, vbOKOnly + vbExclamation, "Downloaded file failed", False)
+        End If
+        
+    End If
+
+    
+    On Error GoTo 0
+    Exit Sub
+
+getNewIcaoLocations_Error:
+
+    MsgBox "Error " & Err.Number & " (" & Err.Description & ") in procedure getNewIcaoLocations, line " & Erl & "."
+
+End Sub
+'=====================
+'End function
+'=====================
+
+'=======================================================
+' searches the icao data file for a specific code
+'=======================================================
+Function searchIcaoFile(loc As String) As String
+    Dim icaoDataArray() As String ' array
+    Dim i As Integer
+    Dim fnd As Boolean
+    Dim lookFor As String: lookFor = vbNullString
+    Dim retStr As String: retStr = vbNullString
+    Dim splitIcaoData() As String
+    Dim lReturn As Boolean
+    Dim icaoDataFile As String
+    Dim answerMsg As String: answerMsg = vbNullString
+    Dim answer As VbMsgBoxResult: answer = vbNo
+    
+    Dim icaoLocation1 As String: icaoLocation1 = vbNullString
+    Dim icaoLocation2 As String: icaoLocation2 = vbNullString
+    Dim icaoLocation3 As String: icaoLocation3 = vbNullString
+    Dim icaoLocation4 As String: icaoLocation4 = vbNullString
+    Dim icaoLocation5 As String: icaoLocation5 = vbNullString
+    
+    lookFor = loc
+    icaoDataFile = App.path & "\dat\icao_codes.dat"
+    lReturn = FileSystemReadFile(icaoDataArray(), icaoDataFile)
+    If lReturn = False Then Exit Function
+    
+    Dim a As Integer
+    a = UBound(icaoDataArray)
+    'If debugFlg = 1 Then ' & Preferences.metarpref.Value
+        Debug.Print ("searchIcaoFile - " & " search started for " & lookFor)
+    'End If
+    For i = 0 To UBound(icaoDataArray) - 1 Step 1
+        icaoDataArray(i) = UCase$(icaoDataArray(i))
+        fnd = InStr(icaoDataArray(i), lookFor) 'icaoDataArray(i).match(lookFor)
+        If fnd = True Then
+            splitIcaoData = Split(icaoDataArray(i), ",")
+            icaoLocation1 = Replace(splitIcaoData(1), """", "") '
+            If debugFlg = 1 Then
+                Print ("%searchIcaoFile - icaoLocation1 " & " = " & icaoLocation1)
+            End If
+            icaoLocation2 = Replace(splitIcaoData(2), """", "") '  city
+            If debugFlg = 1 Then
+                Print ("%searchIcaoFile - icaoLocation2 " & " = " & icaoLocation2)
+            End If
+            icaoLocation3 = Replace(splitIcaoData(3), """", "") '  country
+            If debugFlg = 1 Then
+                Print ("%searchIcaoFile - icaoLocation3 " & " = " & icaoLocation3)
+            End If
+            icaoLocation4 = Replace(splitIcaoData(4), """", "") ' // airport code LHR
+            If debugFlg = 1 Then
+                Print ("%searchIcaoFile - icaoLocation4 " & " = " & icaoLocation4)
+            End If
+            icaoLocation5 = Replace(splitIcaoData(5), """", "") ' // icao code
+            If icaoLocation5 = "\N" Then
+                icaoLocation5 = Replace(splitIcaoData(4), """", "")
+            End If ' // use the IATA code as the ICAO code is missing}
+            If debugFlg = 1 Then
+                Print ("%searchIcaoFile - icaoLocation5 " & " = " & icaoLocation5)
+            End If
+            retStr = icaoDataArray(i)
+            'Preferences.icao.Value = icaoLocation5
+            If debugFlg = 1 Then
+                Print ("searchIcaoFile - found " & lookFor & " in " & retStr)
+            End If
+
+            searchIcaoFile = retStr ' return
+            Exit For
+        End If
+    Next
+    If icaoLocation5 = "" Then
+        answerMsg = "That city does not have a valid ICAO code assigned. " & vbCrLf & " It exists and has an IATA code, but that is of no use... " & vbCrLf & " Please select another location."
+        answer = msgBoxA(answerMsg, vbOKOnly + vbExclamation, "No valid ICAO code", False)
+    End If
+    If fnd = False Then
+        If debugFlg = 1 Then
+            Print ("searchIcaoFile - lookFor not found " & lookFor)
+        End If
+        'txtSearching.Data = "Failed to find ICAO code " & lookFor
+        'Preferences.icao.Value = ""
+        loc = ""
+        searchIcaoFile = "city not found"
+    End If
+End Function
+'==================================
+'End function
+'==================================
+
+' ----------------------------------------------------------------
+' Procedure Name: FileSystemReadFile
+' Purpose:
+' Procedure Kind: Function
+' Procedure Access: Private
+' Parameter icaoDataArray (String):
+' Parameter sFileName (String):
+' Return Type: Boolean
+' Author: beededea
+' Date: 25/03/2024
+' ----------------------------------------------------------------
+Private Function FileSystemReadFile(ByRef icaoDataArray() As String, ByVal sFileName As String) As Boolean
+    Dim iFileNum As Long
+    Dim lFileLen As Long
+    Dim sBuffer As String
+    
+    On Error GoTo ErrFailed
+
+    'Open File
+    iFileNum = FreeFile
+    Open sFileName For Binary Access Read As #iFileNum
+    'Get the size of the file
+    lFileLen = LOF(iFileNum)
+    If lFileLen Then
+        'Create output buffer
+        sBuffer = String(lFileLen, " ")
+        'Read contents of file
+        Get iFileNum, 1, sBuffer
+        'Split the file contents
+        icaoDataArray = Split(sBuffer, vbLf)
+    End If
+
+    Close #iFileNum
+    'Return success
+    FileSystemReadFile = True
+
+    Exit Function
+
+ErrFailed:
+    Debug.Assert False
+    Debug.Print Err.Description
+    FileSystemReadFile = False
+    'Close file
+    If iFileNum Then
+        Close #iFileNum
+    End If
 End Function
 

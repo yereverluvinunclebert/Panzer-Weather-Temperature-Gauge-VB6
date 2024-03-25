@@ -238,6 +238,10 @@ mnuCopyWeather_Click_Error:
 
 End Sub
 
+Private Sub mnuDownloadICAO_Click()
+    Call overlayWidget.getNewIcaoLocations
+End Sub
+
 '---------------------------------------------------------------------------------------
 ' Procedure : mnuEditWidget_Click
 ' Author    : Dean Beedell (yereverluvinunclebert)
