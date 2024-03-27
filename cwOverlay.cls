@@ -99,6 +99,12 @@ Private mValidICAO As Integer             ' property
 
 Private myMSXML As MSXML2.XMLHTTP
 Private weHaveData As Boolean
+    
+Private icaoLocation1 As String
+Private icaoLocation2 As String
+Private icaoLocation3 As String
+Private icaoLocation4 As String
+Private icaoLocation5 As String
 
 '---------------------------------------------------------------------------------------
 ' Procedure : Class_Initialize
@@ -129,6 +135,12 @@ Private Sub Class_Initialize()
  
     Set tmrAsyncResponse = Nothing
     Set tmrAsyncResponse = New_c.Timer(100, False)
+    
+    icaoLocation1 = vbNullString
+    icaoLocation2 = vbNullString
+    icaoLocation3 = vbNullString
+    icaoLocation4 = vbNullString
+    icaoLocation5 = vbNullString
     
    On Error GoTo 0
    Exit Sub
@@ -208,6 +220,7 @@ Public Property Let GetMetar(ByVal newValue As Boolean)
     On Error GoTo GetMetarLet_Error
 
     If mGetMetar <> newValue Then mGetMetar = newValue Else Exit Property
+    
     
     Call getData
     mGetMetar = False
@@ -974,13 +987,15 @@ End Sub
 Private Sub getData()
 
     Dim location As String: location = vbNullString
-    'Dim locationInformation As String: locationInformation = vbNullString
+    Dim locationInformation As String: locationInformation = vbNullString
     Dim thisURL As String: thisURL = vbNullString
     
     On Error GoTo getData_Error
     
     location = PzGIcao ' eg. "EGSH"
-    'locationInformation = searchIcaoFile(location)
+    locationInformation = searchIcaoFile(location, icaoLocation1, icaoLocation2, icaoLocation3, icaoLocation4, icaoLocation5)
+    location = icaoLocation5
+    
     thisURL = "https://aviationweather.gov/api/data/dataserver?requestType=retrieve&dataSource=metars&stationString=" & location & "&hoursBeforeNow=6&format=xml&mostRecent=true"
     
     'thisFile = "E:\vb6\Panzer-Weather-Gauges-VB6\test.xml"
@@ -1092,6 +1107,8 @@ Private Sub myStatusProc()
     Dim usableObsTime As Date: usableObsTime = #1/1/2000 12:00:00 PM#
     Dim weekDayDate As String: weekDayDate = vbNullString
     Dim thisTooltip As String: thisTooltip = vbNullString
+    
+    
     
 '    Dim humidityBackgroundToolTip As String: humidityBackgroundToolTip = vbNullString
 '    Dim thermometerBackgroundToolTip As String: humidityBackgroundToolTip = vbNullString
@@ -1450,7 +1467,6 @@ Function getCloudCover(ByRef sky_condition_items() As String, ByVal uboundSkyCon
         If (sky_condition_items(0) = "CAVOK ") Then thisSkyClarity = "Ceiling and visibility OK"
     End If
     
-   
     If uboundSkyConditions >= 1 Then
         If sky_condition_items(1) <> "" Then
             If (sky_condition_items(uboundSkyConditions) = "FEW" And Not sky_condition_items(0) = sky_condition_items(uboundSkyConditions)) Then thisSkyClarity = thisSkyClarity & " + " & "Partly cloudy"
@@ -1486,7 +1502,7 @@ End Function
 Function fGetPressure(altim_in_hg As String) As Integer
 
     On Error GoTo fGetPressure_Error
-    'Dim vals0 As Integer
+
     Dim pressureValue As Double: pressureValue = 0
     Dim strPressureValue As String: strPressureValue = vbNullString
     
@@ -1496,7 +1512,6 @@ Function fGetPressure(altim_in_hg As String) As Integer
     If debugFlg = 1 Then Debug.Print ("fGetPressure - Pressure = " & strPressureValue)
 
     fGetPressure = pressureValue ' return
-    
     
     On Error GoTo 0
     Exit Function
@@ -1836,28 +1851,19 @@ End Function
 ' Date: 17/03/2024
 ' ----------------------------------------------------------------
 Private Function setHoverTooltip(ByVal skyClarityString As String, ByVal humidityValue As Double, ByVal temperatureValue As Double, ByVal pressureValue As Double, ByVal weekDayDate As String, ByVal wind_dir_degrees As String, ByVal wind_speed_kt As String, ByVal precip_in As String, ByVal wx_string As String) As String
-            
-    
-    Dim icaoLocation1 As String: icaoLocation1 = vbNullString
-    Dim icaoLocation2 As String: icaoLocation2 = vbNullString
-    Dim icaoLocation3 As String: icaoLocation3 = vbNullString
-    Dim icaoLocation4 As String: icaoLocation4 = vbNullString
-    Dim icaoLocation5 As String: icaoLocation5 = vbNullString
     
     Dim force As String: force = vbNullString
-    
     Dim tooltipString As String: tooltipString = vbNullString
-    
     Dim compassDirection As String: compassDirection = vbNullString
     Dim wx_str As String: wx_str = vbNullString
             
     On Error GoTo setHoverTooltip_Error
             
-    icaoLocation1 = "NORWICH INTERNATIONAL AIRPORT"
-    icaoLocation2 = "NORWICH"
-    icaoLocation3 = "UNITED KINGDOM"
-    icaoLocation4 = "NWI"
-    icaoLocation5 = "EGSH"
+'    icaoLocation1 = "NORWICH INTERNATIONAL AIRPORT"
+'    icaoLocation2 = "NORWICH"
+'    icaoLocation3 = "UNITED KINGDOM"
+'    icaoLocation4 = "NWI"
+'    icaoLocation5 = "EGSH"
     
     compassDirection = degToCompass(val(wind_dir_degrees))
 
@@ -2610,7 +2616,7 @@ End Sub
 '=======================================================
 ' searches the icao data file for a specific code
 '=======================================================
-Function searchIcaoFile(loc As String) As String
+Function searchIcaoFile(loc As String, ByRef icaoLocation1 As String, ByRef icaoLocation2 As String, ByRef icaoLocation3 As String, ByRef icaoLocation4 As String, ByRef icaoLocation5 As String) As String
     Dim icaoDataArray() As String ' array
     Dim i As Integer
     Dim fnd As Boolean
@@ -2622,11 +2628,11 @@ Function searchIcaoFile(loc As String) As String
     Dim answerMsg As String: answerMsg = vbNullString
     Dim answer As VbMsgBoxResult: answer = vbNo
     
-    Dim icaoLocation1 As String: icaoLocation1 = vbNullString
-    Dim icaoLocation2 As String: icaoLocation2 = vbNullString
-    Dim icaoLocation3 As String: icaoLocation3 = vbNullString
-    Dim icaoLocation4 As String: icaoLocation4 = vbNullString
-    Dim icaoLocation5 As String: icaoLocation5 = vbNullString
+'    Dim icaoLocation1 As String: icaoLocation1 = vbNullString
+'    Dim icaoLocation2 As String: icaoLocation2 = vbNullString
+'    Dim icaoLocation3 As String: icaoLocation3 = vbNullString
+'    Dim icaoLocation4 As String: icaoLocation4 = vbNullString
+'    Dim icaoLocation5 As String: icaoLocation5 = vbNullString
     
     lookFor = loc
     icaoDataFile = App.path & "\dat\icao_codes.dat"
