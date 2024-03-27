@@ -217,12 +217,19 @@ End Property
 '---------------------------------------------------------------------------------------
 '
 Public Property Let GetMetar(ByVal newValue As Boolean)
+
+    Dim answer As VbMsgBoxResult
+    Dim answerMsg  As String: answerMsg = vbNullString
+    
     On Error GoTo GetMetarLet_Error
 
     If mGetMetar <> newValue Then mGetMetar = newValue Else Exit Property
     
-    
     Call getData
+    
+    answerMsg = "Done. "
+    answer = msgBoxA(answerMsg, vbOKOnly + vbExclamation, "Update Information", False)
+
     mGetMetar = False
     
    On Error GoTo 0
@@ -1252,10 +1259,10 @@ Private Sub myStatusProc()
     ' calculate humidity
     humidityValue = fGetHumidity(temp_c, dewpoint_c)
 
-    ' decode the visibility when a cloud cover field found
+    ' decode the visibility types when a cloud cover field found
     skyClarity = getCloudCover(sky_condition_items(), uboundSkyConditions)
 
-    ' add base cloud to the visibility string
+    ' add two of the base cloud values to the visibility string
     skyClarityString = fAddBaseCloudToSkyClarity(baseCloud, skyClarity, cloud_base_ft_agl())
     
     ' get the current decimalTime and use it to test for sunrise or sunset
@@ -2651,31 +2658,31 @@ Function searchIcaoFile(loc As String, ByRef icaoLocation1 As String, ByRef icao
             splitIcaoData = Split(icaoDataArray(i), ",")
             icaoLocation1 = Replace(splitIcaoData(1), """", "") '
             If debugFlg = 1 Then
-                Print ("%searchIcaoFile - icaoLocation1 " & " = " & icaoLocation1)
+                Debug.Print ("%searchIcaoFile - icaoLocation1 " & " = " & icaoLocation1)
             End If
             icaoLocation2 = Replace(splitIcaoData(2), """", "") '  city
             If debugFlg = 1 Then
-                Print ("%searchIcaoFile - icaoLocation2 " & " = " & icaoLocation2)
+                Debug.Print ("%searchIcaoFile - icaoLocation2 " & " = " & icaoLocation2)
             End If
             icaoLocation3 = Replace(splitIcaoData(3), """", "") '  country
             If debugFlg = 1 Then
-                Print ("%searchIcaoFile - icaoLocation3 " & " = " & icaoLocation3)
+                Debug.Print ("%searchIcaoFile - icaoLocation3 " & " = " & icaoLocation3)
             End If
             icaoLocation4 = Replace(splitIcaoData(4), """", "") ' // airport code LHR
             If debugFlg = 1 Then
-                Print ("%searchIcaoFile - icaoLocation4 " & " = " & icaoLocation4)
+                Debug.Print ("%searchIcaoFile - icaoLocation4 " & " = " & icaoLocation4)
             End If
             icaoLocation5 = Replace(splitIcaoData(5), """", "") ' // icao code
             If icaoLocation5 = "\N" Then
                 icaoLocation5 = Replace(splitIcaoData(4), """", "")
             End If ' // use the IATA code as the ICAO code is missing}
             If debugFlg = 1 Then
-                Print ("%searchIcaoFile - icaoLocation5 " & " = " & icaoLocation5)
+                Debug.Print ("%searchIcaoFile - icaoLocation5 " & " = " & icaoLocation5)
             End If
             retStr = icaoDataArray(i)
             'Preferences.icao.Value = icaoLocation5
             If debugFlg = 1 Then
-                Print ("searchIcaoFile - found " & lookFor & " in " & retStr)
+                Debug.Print ("searchIcaoFile - found " & lookFor & " in " & retStr)
             End If
 
             searchIcaoFile = retStr ' return
@@ -2688,7 +2695,7 @@ Function searchIcaoFile(loc As String, ByRef icaoLocation1 As String, ByRef icao
     End If
     If fnd = False Then
         If debugFlg = 1 Then
-            Print ("searchIcaoFile - lookFor not found " & lookFor)
+           Debug.Print ("searchIcaoFile - lookFor not found " & lookFor)
         End If
         'txtSearching.Data = "Failed to find ICAO code " & lookFor
         'Preferences.icao.Value = ""
