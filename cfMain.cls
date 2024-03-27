@@ -373,6 +373,8 @@ Private Sub btnDecline_Click()
 
     'answer = MsgBox("Licence declined, please destroy your copy of this widget and its documentation.", vbYes)
     
+    
+      
     Call msgBoxA("Licence declined, please destroy your copy of this widget and its documentation. This widget will now unload.", vbOKOnly + vbExclamation, "Licence Declined", False)
     slicence = "0"
     sPutINISetting "Software\PzTemperatureGauge", "licence", slicence, PzGSettingsFile

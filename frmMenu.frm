@@ -215,6 +215,10 @@ End Sub
 
 
 
+Private Sub mnuChangeLocation_Click()
+    frmLocation.Show
+End Sub
+
 ' ----------------------------------------------------------------
 ' Procedure Name: mnuCopyWeather_Click
 ' Purpose:

@@ -95,6 +95,7 @@ Private mHidden As Boolean ' property Hidden
 Private mThisOpacity As String ' property ThisOpacity
 Private mSamplingInterval As String ' property SamplingInterval
 Private mThisFace As Integer             ' property mThisFace
+Private mValidICAO As Integer             ' property
 
 Private myMSXML As MSXML2.XMLHTTP
 Private weHaveData As Boolean
@@ -551,6 +552,48 @@ HiddenLet_Error:
 
     MsgBox "Error " & Err.Number & " (" & Err.Description & ") in Property Hidden of Class Module cwOverlay"
 End Property
+
+
+'---------------------------------------------------------------------------------------
+' Property  : ValidICAO
+' Author    : Dean Beedell (yereverluvinunclebert)
+' Date      : 17/05/2023
+' Purpose   :
+'---------------------------------------------------------------------------------------
+'
+Public Property Get ValidICAO() As Boolean
+   On Error GoTo ValidICAOGet_Error
+
+   ValidICAO = mValidICAO
+
+   On Error GoTo 0
+   Exit Property
+
+ValidICAOGet_Error:
+
+    MsgBox "Error " & Err.Number & " (" & Err.Description & ") in Property ValidICAO of Class Module cwOverlay"
+End Property
+'---------------------------------------------------------------------------------------
+' Property  : ValidICAO
+' Author    : Dean Beedell (yereverluvinunclebert)
+' Date      : 10/05/2023
+' Purpose   :
+'---------------------------------------------------------------------------------------
+'
+Public Property Let ValidICAO(ByVal newValue As Boolean)
+   On Error GoTo ValidICAOLet_Error
+
+    If mValidICAO <> newValue Then mValidICAO = newValue Else Exit Property
+
+
+   On Error GoTo 0
+   Exit Property
+
+ValidICAOLet_Error:
+
+    MsgBox "Error " & Err.Number & " (" & Err.Description & ") in Property ValidICAO of Class Module cwOverlay"
+End Property
+
 '
 '---------------------------------------------------------------------------------------------
 ' Procedure : W_HitTest
@@ -1128,7 +1171,8 @@ Private Sub myStatusProc()
             precip_in = node.selectSingleNode("precip_in").Text
             If debugFlg = 1 Then Debug.Print ("%myStatusProc - precip_in " + precip_in)
             
-            'the first and lowest cloudbase is the one that really counts, there could be as many as three sky cover reading
+            'the first and lowest height cloudbase is the one that really counts but there could be as many as three sky cover reading
+            'the highest and lowest need to be reported.
             
             Set SkyConditions = MetarNode.selectNodes("sky_condition") ' Get all the sky_condition nodes under METAR
             If Not SkyConditions Is Nothing Then
@@ -1192,17 +1236,10 @@ Private Sub myStatusProc()
     humidityValue = fGetHumidity(temp_c, dewpoint_c)
 
     ' decode the visibility when a cloud cover field found
-    skyClarity = getCloudCover(sky_condition_items())
+    skyClarity = getCloudCover(sky_condition_items(), uboundSkyConditions)
 
-    ' decode the base cloud from the upperbound of the cloud array but only if the array is populated
-    If (Not cloud_base_ft_agl) = -1 Then
-        Debug.Print "this array is NOT initialized"
-    Else
-        baseCloud = val(cloud_base_ft_agl(UBound(cloud_base_ft_agl)))
-    End If
-    
-    ' add the base cloud to the visibility string
-    skyClarityString = fAddBaseCloudToSkyClarity(baseCloud, skyClarity)
+    ' add base cloud to the visibility string
+    skyClarityString = fAddBaseCloudToSkyClarity(baseCloud, skyClarity, cloud_base_ft_agl())
     
     ' get the current decimalTime and use it to test for sunrise or sunset
     sunriseSunset.Longitude = Longitude
@@ -1250,7 +1287,7 @@ Private Sub myStatusProc()
 '    weatherIconGaugeBackgroundToolTip = humidityBackgroundToolTip
 '    barometerBackgroundToolTip = humidityBackgroundToolTip
 
-    weatherIconToolTip = setIconTooltip(wx_string, sky_condition_items())
+    weatherIconToolTip = setIconTooltip(wx_string, sky_condition_items(), uboundSkyConditions)
     If (weatherIconToolTip = "") Then
         weatherIconToolTip = thisTooltip
     End If
@@ -1285,7 +1322,7 @@ End Sub
 ' Author: Dean Beedell (yereverluvinunclebert)
 ' Date: 21/03/2024
 ' ----------------------------------------------------------------
-Private Function setIconTooltip(ByVal wx_string As String, ByRef sky_condition_items() As String) As String
+Private Function setIconTooltip(ByVal wx_string As String, ByRef sky_condition_items() As String, ByVal uboundSkyConditions As Integer) As String
     Dim thisTooltip As String: thisTooltip = vbNullString
     
     On Error GoTo setIconTooltip_Error
@@ -1295,7 +1332,7 @@ Private Function setIconTooltip(ByVal wx_string As String, ByRef sky_condition_i
     
     If (thisTooltip = "") Then
       ' if no wx_string use the cloud cover or lack of it
-      thisTooltip = getCloudCover(sky_condition_items())
+      thisTooltip = getCloudCover(sky_condition_items(), uboundSkyConditions)
     End If
 
     If (debugFlg = 1) Then Debug.Print ("%setIconTooltip - thisTooltip " & thisTooltip)
@@ -1397,12 +1434,12 @@ End Function
 ' 1 m = 3.28084 ft)
 ' FEW = 1 or 2 eighths cover SCT = 3 or 4 eighths cover BKN = 5, 6 or 7 eighths cover & OVC = 8/8 cover
 ' ----------------------------------------------------------------
-Function getCloudCover(ByRef sky_condition_items() As String) As String
+Function getCloudCover(ByRef sky_condition_items() As String, ByVal uboundSkyConditions As Integer) As String
     Dim thisSkyClarity As String: thisSkyClarity = ""
    
     On Error GoTo getCloudCover_Error
 
-   If UBound(sky_condition_items()) >= 0 Then
+   If uboundSkyConditions >= 0 Then
         If (sky_condition_items(0) = "SKC") Then thisSkyClarity = "Clear skies"
         If (sky_condition_items(0) = "CLR") Then thisSkyClarity = "Clear skies"
         If (sky_condition_items(0) = "FEW") Then thisSkyClarity = "Partly cloudy"
@@ -1413,13 +1450,13 @@ Function getCloudCover(ByRef sky_condition_items() As String) As String
         If (sky_condition_items(0) = "CAVOK ") Then thisSkyClarity = "Ceiling and visibility OK"
     End If
     
-'    (1) there are no clouds below 5000 feet above aerodrome level (AAL) or minimum sector altitude (whichever is higher) and no cumulonimbus or towering cumulus (2) visibility is at least 10 kilometres (6 statute miles) or more and (3) no current or forecast significant weather such as precipitation, thunderstorms, shallow fog or low drifting snow
-   If UBound(sky_condition_items()) = 1 Then
+   
+    If uboundSkyConditions >= 1 Then
         If sky_condition_items(1) <> "" Then
-            If (sky_condition_items(1) = "FEW" And Not sky_condition_items(0) = sky_condition_items(1)) Then thisSkyClarity = thisSkyClarity & " + " & "Partly cloudy"
-            If (sky_condition_items(1) = "SCT" And Not sky_condition_items(0) = sky_condition_items(1)) Then thisSkyClarity = thisSkyClarity & " + " & "Scattered clouds"
-            If (sky_condition_items(1) = "BKN" And Not sky_condition_items(0) = sky_condition_items(1)) Then thisSkyClarity = thisSkyClarity & " + " & "Mostly cloudy"
-            If (sky_condition_items(1) = "OVC" And Not sky_condition_items(0) = sky_condition_items(1)) Then thisSkyClarity = thisSkyClarity & " + " & "Overcast"
+            If (sky_condition_items(uboundSkyConditions) = "FEW" And Not sky_condition_items(0) = sky_condition_items(uboundSkyConditions)) Then thisSkyClarity = thisSkyClarity & " + " & "Partly cloudy"
+            If (sky_condition_items(uboundSkyConditions) = "SCT" And Not sky_condition_items(0) = sky_condition_items(uboundSkyConditions)) Then thisSkyClarity = thisSkyClarity & " + " & "Scattered clouds"
+            If (sky_condition_items(uboundSkyConditions) = "BKN" And Not sky_condition_items(0) = sky_condition_items(uboundSkyConditions)) Then thisSkyClarity = thisSkyClarity & " + " & "Mostly cloudy"
+            If (sky_condition_items(uboundSkyConditions) = "OVC" And Not sky_condition_items(0) = sky_condition_items(uboundSkyConditions)) Then thisSkyClarity = thisSkyClarity & " + " & "Overcast"
         End If
     End If
     If (debugFlg = 1) Then Debug.Print ("%getCloudCover - part " & thisSkyClarity)
@@ -1514,26 +1551,46 @@ End Function
 ' Author: Dean Beedell (yereverluvinunclebert)
 ' Date: 30/01/2024
 ' ----------------------------------------------------------------
-Function fAddBaseCloudToSkyClarity(ByVal baseCloud As Integer, ByVal skyClarity As String) As String
+Function fAddBaseCloudToSkyClarity(ByVal baseCloud As Integer, ByVal skyClarity As String, ByRef cloud_base_ft_agl() As String) As String
     
     Dim skyClarityString As String: skyClarityString = vbNullString
     Dim thisSkyClarity As String: thisSkyClarity = vbNullString
     Dim thisBaseCloud As Integer: thisBaseCloud = 0
+    Dim interimString As String: interimString = vbNullString
     
     On Error GoTo fAddBaseCloudToSkyClarity_Error
     
     thisSkyClarity = skyClarity
     thisBaseCloud = baseCloud
     
-    If (thisBaseCloud <> 0) Then
-        If PzGMetricImperial = "1" Then ' "metric"
-            ' change the string to metric measurements
-            thisBaseCloud = Int(thisBaseCloud * 0.3048)
-            skyClarityString = thisSkyClarity + " at " + thisBaseCloud + " metres."
-        Else
-            skyClarityString = thisSkyClarity + " at " + CStr(thisBaseCloud) + " ft."
+    If UBound(cloud_base_ft_agl()) >= 0 Then
+        If (cloud_base_ft_agl(0) <> vbNullString) Then thisBaseCloud = val(cloud_base_ft_agl(0))
+        If (thisBaseCloud <> 0) Then
+            If PzGMetricImperial = "1" Then ' "metric"
+                ' change the value to metric measurements
+                thisBaseCloud = Int(thisBaseCloud * 0.3048)
+            End If
+            interimString = CStr(thisBaseCloud)
         End If
     End If
+    
+   If UBound(cloud_base_ft_agl()) >= 1 Then
+        If (cloud_base_ft_agl(1) <> vbNullString) Then thisBaseCloud = val(cloud_base_ft_agl(UBound(cloud_base_ft_agl())))
+        If (thisBaseCloud <> 0) Then
+            If PzGMetricImperial = "1" Then ' "metric"
+                ' change the value to metric measurements
+                thisBaseCloud = Int(thisBaseCloud * 0.3048)
+            End If
+            interimString = interimString & ", " & CStr(thisBaseCloud)
+        End If
+    End If
+    
+    If PzGMetricImperial = "1" Then ' "metric"
+        skyClarityString = thisSkyClarity & " at " & interimString & " metres."
+    Else
+        skyClarityString = thisSkyClarity & " at " & interimString & " ft."
+    End If
+    
     If debugFlg = 1 Then Debug.Print ("fAddBaseCloudToSkyClarity - skyClarityString " + skyClarityString)
 
     fAddBaseCloudToSkyClarity = skyClarityString ' return
@@ -2503,12 +2560,6 @@ Public Sub getNewIcaoLocations()
     Dim answer As VbMsgBoxResult: answer = vbNo
     Dim firstFileDate As Date: firstFileDate = #1/1/2000 12:00:00 PM#
     Dim secondFileDate As Date: secondFileDate = #1/1/2000 12:00:00 PM#
-'    Dim fileToPlay As String: fileToPlay = vbNullString
-'
-'    fileToPlay = "click1.wav"
-'    If PzGEnableSounds = "1" And fFExists(App.path & "\resources\sounds\" & fileToPlay) Then
-'        PlaySound App.path & "\resources\sounds\" & fileToPlay, ByVal 0&, SND_FILENAME Or SND_ASYNC
-'    End If
 
     answerMsg = "This menu option goes online and downloads/updates the airports data file. Do you wish to proceed?"
     answer = msgBoxA(answerMsg, vbYesNo + vbExclamation, "Obtain the new icao locations data file", False)
