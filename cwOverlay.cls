@@ -647,7 +647,7 @@ End Sub
 Private Sub W_Paint(CC As RC6.cCairoContext, ByVal xAbs As Single, ByVal yAbs As Single, ByVal dx_Aligned As Single, ByVal dy_Aligned As Single, UserObj As Object)
     Dim i As Long: i = 0
     Dim arr As Variant
-    Dim Key As String: Key = vbNullString
+    Dim key As String: key = vbNullString
     Dim Pat As cCairoPattern
     
     'Dim txtTemperaturetotal As String: txtTemperaturetotal = vbNullString
@@ -685,15 +685,15 @@ Private Sub W_Paint(CC As RC6.cCairoContext, ByVal xAbs As Single, ByVal yAbs As
 
     For i = 0 To cCollOverlayImages.Count - 1 ' this is the ExcludedPaths collection populated in cfTemperature by duplicating collPSDNonUIElements.
       arr = cCollOverlayImages.ItemByIndex(i)
-      Key = cCollOverlayImages.KeyByIndex(i)
+      key = cCollOverlayImages.KeyByIndex(i)
       
       If IsArray(arr) Then
              CC.Save
              'derive a Pattern-Obj from each retrieved ImageList-Surface-reference
-             Set Pat = Cairo.ImageList(Key).CreateSurfacePattern
+             Set Pat = Cairo.ImageList(key).CreateSurfacePattern
                          
             ' for specific keys perform rotation actions, clock hands &c
-             Select Case Key
+             Select Case key
                  
                  Case "centigradeface"
                     
@@ -2623,7 +2623,7 @@ End Sub
 '=======================================================
 ' searches the icao data file for a specific code
 '=======================================================
-Function searchIcaoFile(loc As String, ByRef icaoLocation1 As String, ByRef icaoLocation2 As String, ByRef icaoLocation3 As String, ByRef icaoLocation4 As String, ByRef icaoLocation5 As String) As String
+Private Function searchIcaoFile(loc As String, ByRef icaoLocation1 As String, ByRef icaoLocation2 As String, ByRef icaoLocation3 As String, ByRef icaoLocation4 As String, ByRef icaoLocation5 As String) As String
     Dim icaoDataArray() As String ' array
     Dim i As Integer
     Dim fnd As Boolean
@@ -2754,4 +2754,5 @@ ErrFailed:
         Close #iFileNum
     End If
 End Function
+
 
