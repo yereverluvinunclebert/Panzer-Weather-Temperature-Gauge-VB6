@@ -588,6 +588,7 @@ Public Sub readSettingsFile(ByVal location As String, ByVal PzGSettingsFile As S
         PzGPressureScale = fGetINISetting(location, "pressureScale", PzGSettingsFile)
         PzGWindSpeedScale = fGetINISetting(location, "windSpeedScale", PzGSettingsFile)
         PzGMetricImperial = fGetINISetting(location, "metricImperial", PzGSettingsFile)
+        PzGIcao = fGetINISetting(location, "icao", PzGSettingsFile)
 
         ' configuration
         PzGEnableTooltips = fGetINISetting(location, "enableTooltips", PzGSettingsFile)

@@ -549,8 +549,31 @@ End Sub
 
 
 
+' ----------------------------------------------------------------
+' Procedure Name: mnuRefreshMetar_Click
+' Purpose:
+' Procedure Kind: Sub
+' Procedure Access: Private
+' Author: beededea
+' Date: 29/03/2024
+' ----------------------------------------------------------------
 Private Sub mnuRefreshMetar_Click()
+    On Error GoTo mnuRefreshMetar_Click_Error
+    Dim answer As VbMsgBoxResult
+    Dim answerMsg  As String: answerMsg = vbNullString
+    
     overlayWidget.GetMetar = True
+    answerMsg = "Done. "
+    answer = msgBoxA(answerMsg, vbOKOnly + vbExclamation, "Update Information", False)
+
+    
+    On Error GoTo 0
+    Exit Sub
+
+mnuRefreshMetar_Click_Error:
+
+    MsgBox "Error " & Err.Number & " (" & Err.Description & ") in procedure mnuRefreshMetar_Click, line " & Erl & "."
+
 End Sub
 
 '---------------------------------------------------------------------------------------

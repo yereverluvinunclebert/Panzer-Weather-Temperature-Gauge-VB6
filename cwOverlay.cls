@@ -95,7 +95,9 @@ Private mHidden As Boolean ' property Hidden
 Private mThisOpacity As String ' property ThisOpacity
 Private mSamplingInterval As String ' property SamplingInterval
 Private mThisFace As Integer             ' property mThisFace
-Private mValidICAO As Integer             ' property
+Private mValidICAO As Boolean             ' property
+Private mIcaoToTest As String             ' property
+Private mIcaoLocation As String             ' property
 
 Private myMSXML As MSXML2.XMLHTTP
 Private weHaveData As Boolean
@@ -117,6 +119,9 @@ Private Sub Class_Initialize()
     
     On Error GoTo Class_Initialize_Error
     
+    Dim icaoToFind As String: icaoToFind = vbNullString
+    Dim fullIcaoLocation As String: fullIcaoLocation = vbNullString
+   
     'Dim sunriseSunset As cwSunriseSunset 'unitialised declaration
     Set sunriseSunset = New cwSunriseSunset
 
@@ -141,6 +146,10 @@ Private Sub Class_Initialize()
     icaoLocation3 = vbNullString
     icaoLocation4 = vbNullString
     icaoLocation5 = vbNullString
+    
+    icaoToFind = PzGIcao ' eg. "EGSH"
+    fullIcaoLocation = searchIcaoFile(icaoToFind, icaoLocation1, icaoLocation2, icaoLocation3, icaoLocation4, icaoLocation5)
+    mIcaoLocation = icaoLocation1
     
    On Error GoTo 0
    Exit Sub
@@ -218,17 +227,12 @@ End Property
 '
 Public Property Let GetMetar(ByVal newValue As Boolean)
 
-    Dim answer As VbMsgBoxResult
-    Dim answerMsg  As String: answerMsg = vbNullString
-    
     On Error GoTo GetMetarLet_Error
 
     If mGetMetar <> newValue Then mGetMetar = newValue Else Exit Property
     
     Call getData
     
-    answerMsg = "Done. "
-    answer = msgBoxA(answerMsg, vbOKOnly + vbExclamation, "Update Information", False)
 
     mGetMetar = False
     
@@ -573,6 +577,46 @@ HiddenLet_Error:
     MsgBox "Error " & Err.Number & " (" & Err.Description & ") in Property Hidden of Class Module cwOverlay"
 End Property
 
+'---------------------------------------------------------------------------------------
+' Property  : IcaoToTest
+' Author    : Dean Beedell (yereverluvinunclebert)
+' Date      : 17/05/2023
+' Purpose   :
+'---------------------------------------------------------------------------------------
+'
+Public Property Get IcaoToTest() As String
+   
+    On Error GoTo IcaoToTestGet_Error
+
+    IcaoToTest = mIcaoToTest
+
+   On Error GoTo 0
+   Exit Property
+
+IcaoToTestGet_Error:
+
+    MsgBox "Error " & Err.Number & " (" & Err.Description & ") in Property IcaoToTest of Class Module cwOverlay"
+End Property
+'---------------------------------------------------------------------------------------
+' Property  : IcaoToTest
+' Author    : Dean Beedell (yereverluvinunclebert)
+' Date      : 10/05/2023
+' Purpose   :
+'---------------------------------------------------------------------------------------
+'
+Public Property Let IcaoToTest(ByVal newValue As String)
+    
+    On Error GoTo IcaoToTestLet_Error
+
+    If mIcaoToTest <> newValue Then mIcaoToTest = newValue Else Exit Property
+
+   On Error GoTo 0
+   Exit Property
+
+IcaoToTestLet_Error:
+
+    MsgBox "Error " & Err.Number & " (" & Err.Description & ") in Property IcaoToTest of Class Module cwOverlay"
+End Property
 
 '---------------------------------------------------------------------------------------
 ' Property  : ValidICAO
@@ -582,9 +626,23 @@ End Property
 '---------------------------------------------------------------------------------------
 '
 Public Property Get ValidICAO() As Boolean
-   On Error GoTo ValidICAOGet_Error
+    Dim icaoToFind As String: icaoToFind = vbNullString
+    Dim fullIcaoLocation As String: fullIcaoLocation = vbNullString
+        
+    On Error GoTo ValidICAOGet_Error
 
-   ValidICAO = mValidICAO
+    icaoToFind = mIcaoToTest ' eg. "EGSH"
+    fullIcaoLocation = searchIcaoFile(icaoToFind, icaoLocation1, icaoLocation2, icaoLocation3, icaoLocation4, icaoLocation5)
+    mIcaoLocation = icaoLocation1 ' the airport name
+
+    If icaoLocation5 <> vbNullString Then ' icao code
+        mValidICAO = True
+        ValidICAO = mValidICAO
+        mIcaoToTest = icaoLocation5
+    Else
+        ValidICAO = False
+        mValidICAO = False
+    End If
 
    On Error GoTo 0
    Exit Property
@@ -601,11 +659,12 @@ End Property
 '---------------------------------------------------------------------------------------
 '
 Public Property Let ValidICAO(ByVal newValue As Boolean)
-   On Error GoTo ValidICAOLet_Error
+
+    On Error GoTo ValidICAOLet_Error
 
     If mValidICAO <> newValue Then mValidICAO = newValue Else Exit Property
 
-
+    
    On Error GoTo 0
    Exit Property
 
@@ -614,6 +673,48 @@ ValidICAOLet_Error:
     MsgBox "Error " & Err.Number & " (" & Err.Description & ") in Property ValidICAO of Class Module cwOverlay"
 End Property
 
+
+'
+'---------------------------------------------------------------------------------------
+' Property  : icaoLocation
+' Author    : Dean Beedell (yereverluvinunclebert)
+' Date      : 17/05/2023
+' Purpose   :
+'---------------------------------------------------------------------------------------
+'
+Public Property Get icaoLocation() As String
+   
+    On Error GoTo icaoLocationGet_Error
+
+    icaoLocation = mIcaoLocation
+
+   On Error GoTo 0
+   Exit Property
+
+icaoLocationGet_Error:
+
+    MsgBox "Error " & Err.Number & " (" & Err.Description & ") in Property icaoLocation of Class Module cwOverlay"
+End Property
+'---------------------------------------------------------------------------------------
+' Property  : icaoLocation
+' Author    : Dean Beedell (yereverluvinunclebert)
+' Date      : 10/05/2023
+' Purpose   :
+'---------------------------------------------------------------------------------------
+'
+Public Property Let icaoLocation(ByVal newValue As String)
+    
+    On Error GoTo icaoLocationLet_Error
+
+    If mIcaoLocation <> newValue Then mIcaoLocation = newValue Else Exit Property
+
+   On Error GoTo 0
+   Exit Property
+
+icaoLocationLet_Error:
+
+    MsgBox "Error " & Err.Number & " (" & Err.Description & ") in Property icaoLocation of Class Module cwOverlay"
+End Property
 '
 '---------------------------------------------------------------------------------------------
 ' Procedure : W_HitTest
@@ -985,7 +1086,7 @@ End Sub
 
 ' ----------------------------------------------------------------
 ' Procedure Name: getData
-' Purpose: this function obtains data from the chosen location using an httpXMLrequest. Requires a reference to Microsoft XML library.
+' Purpose: this function obtains data from the chosen icaoLocation using an httpXMLrequest. Requires a Project Reference to Microsoft XML library.
 ' Procedure Kind: Sub
 ' Procedure Access: Private
 ' Author: Dean Beedell (yereverluvinunclebert)
@@ -993,19 +1094,22 @@ End Sub
 ' ----------------------------------------------------------------
 Private Sub getData()
 
-    Dim location As String: location = vbNullString
-    Dim locationInformation As String: locationInformation = vbNullString
+    Dim icaoToFind As String: icaoToFind = vbNullString
+    Dim icaoLocation As String: icaoLocation = vbNullString
+    'Dim fullIcaoLocation As String: fullIcaoLocation = vbNullString
     Dim thisURL As String: thisURL = vbNullString
     
     On Error GoTo getData_Error
     
-    location = PzGIcao ' eg. "EGSH"
-    locationInformation = searchIcaoFile(location, icaoLocation1, icaoLocation2, icaoLocation3, icaoLocation4, icaoLocation5)
-    location = icaoLocation5
+    icaoToFind = PzGIcao ' eg. "EGSH"
+    'fullIcaoLocation = searchIcaoFile(icaoToFind, icaoLocation1, icaoLocation2, icaoLocation3, icaoLocation4, icaoLocation5)
+    'icaoLocation = icaoLocation5 ' the icao code
+    icaoLocation = icaoToFind ' the icao code
     
-    thisURL = "https://aviationweather.gov/api/data/dataserver?requestType=retrieve&dataSource=metars&stationString=" & location & "&hoursBeforeNow=6&format=xml&mostRecent=true"
+    thisURL = "https://aviationweather.gov/api/data/dataserver?requestType=retrieve&dataSource=metars&stationString=" & icaoLocation & "&hoursBeforeNow=6&format=xml&mostRecent=true"
     
     'thisFile = "E:\vb6\Panzer-Weather-Gauges-VB6\test.xml"
+    
     Set myMSXML = CreateObject("Microsoft.XmlHttp")
     myMSXML.open "POST", thisURL, True
     'myMSXML.open "POST", thisFile, True
@@ -1029,7 +1133,7 @@ End Sub
 ' Procedure : tmrSampler_Timer
 ' Author    :
 ' Date      : 30/07/2023
-' Purpose   :
+' Purpose   : to replicate VB6's missing asynch/wait functionality
 '---------------------------------------------------------------------------------------
 '
 Private Sub tmrAsyncResponse_Timer()
@@ -1585,6 +1689,8 @@ Function fAddBaseCloudToSkyClarity(ByVal baseCloud As Integer, ByVal skyClarity 
     thisSkyClarity = skyClarity
     thisBaseCloud = baseCloud
     
+    If thisSkyClarity = vbNullString Then Exit Function
+    
     If UBound(cloud_base_ft_agl()) >= 0 Then
         If (cloud_base_ft_agl(0) <> vbNullString) Then thisBaseCloud = val(cloud_base_ft_agl(0))
         If (thisBaseCloud <> 0) Then
@@ -1865,12 +1971,6 @@ Private Function setHoverTooltip(ByVal skyClarityString As String, ByVal humidit
     Dim wx_str As String: wx_str = vbNullString
             
     On Error GoTo setHoverTooltip_Error
-            
-'    icaoLocation1 = "NORWICH INTERNATIONAL AIRPORT"
-'    icaoLocation2 = "NORWICH"
-'    icaoLocation3 = "UNITED KINGDOM"
-'    icaoLocation4 = "NWI"
-'    icaoLocation5 = "EGSH"
     
     compassDirection = degToCompass(val(wind_dir_degrees))
 
@@ -1921,7 +2021,6 @@ Private Function setHoverTooltip(ByVal skyClarityString As String, ByVal humidit
     
     setHoverTooltip = tooltipString ' return
 
-    
     On Error GoTo 0
     Exit Function
 
@@ -2685,12 +2784,12 @@ Private Function searchIcaoFile(loc As String, ByRef icaoLocation1 As String, By
                 Debug.Print ("searchIcaoFile - found " & lookFor & " in " & retStr)
             End If
 
-            searchIcaoFile = retStr ' return
+            searchIcaoFile = retStr ' return full string
             Exit For
         End If
     Next
     If icaoLocation5 = "" Then
-        answerMsg = "That city does not have a valid ICAO code assigned. " & vbCrLf & " It exists and has an IATA code, but that is of no use... " & vbCrLf & " Please select another location."
+        answerMsg = "That city does not have a valid ICAO code assigned. " & vbCrLf & vbCrLf & " Please select another location."
         answer = msgBoxA(answerMsg, vbOKOnly + vbExclamation, "No valid ICAO code", False)
     End If
     If fnd = False Then
@@ -2700,7 +2799,8 @@ Private Function searchIcaoFile(loc As String, ByRef icaoLocation1 As String, By
         'txtSearching.Data = "Failed to find ICAO code " & lookFor
         'Preferences.icao.Value = ""
         loc = ""
-        searchIcaoFile = "city not found"
+        searchIcaoFile = ""
+        icaoLocation5 = ""
     End If
 End Function
 '==================================

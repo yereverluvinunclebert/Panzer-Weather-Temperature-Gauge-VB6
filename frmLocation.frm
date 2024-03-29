@@ -6,13 +6,14 @@ Begin VB.Form frmLocation
    ClientLeft      =   45
    ClientTop       =   390
    ClientWidth     =   5655
+   Icon            =   "frmLocation.frx":0000
    LinkTopic       =   "Form1"
    MaxButton       =   0   'False
    MinButton       =   0   'False
    ScaleHeight     =   2535
    ScaleWidth      =   5655
    ShowInTaskbar   =   0   'False
-   StartUpPosition =   3  'Windows Default
+   StartUpPosition =   1  'CenterOwner
    Visible         =   0   'False
    Begin VB.ComboBox cmbMatchingLocations 
       Appearance      =   0  'Flat
@@ -20,7 +21,7 @@ Begin VB.Form frmLocation
       Left            =   285
       TabIndex        =   9
       Text            =   "Combo1"
-      Top             =   630
+      Top             =   900
       Visible         =   0   'False
       Width           =   5130
    End
@@ -34,15 +35,15 @@ Begin VB.Form frmLocation
    End
    Begin VB.CommandButton btnExit 
       Caption         =   "Exit"
-      Height          =   345
+      Height          =   465
       Left            =   4350
       TabIndex        =   7
-      Top             =   1950
+      Top             =   1830
       Width           =   1050
    End
    Begin VB.CommandButton btnOK 
       Caption         =   "OK"
-      Height          =   345
+      Height          =   465
       Left            =   4350
       TabIndex        =   6
       Top             =   1290
@@ -76,7 +77,6 @@ Begin VB.Form frmLocation
       Height          =   375
       Left            =   2085
       TabIndex        =   0
-      Text            =   "EGSH"
       Top             =   105
       Width           =   2595
    End
@@ -84,7 +84,6 @@ Begin VB.Form frmLocation
       Appearance      =   0  'Flat
       BackColor       =   &H80000005&
       BorderStyle     =   1  'Fixed Single
-      Caption         =   "EGSH Norwich International Airport"
       ForeColor       =   &H80000008&
       Height          =   300
       Left            =   300
@@ -114,51 +113,62 @@ Private icaoLocation2 As String
 Private icaoLocation3 As String
 Private icaoLocation4 As String
 Private icaoLocation5 As String
+
+Private Sub btnExit_Click()
+    frmLocation.Hide
+End Sub
+
 ' ----------------------------------------------------------------
-' Procedure Name: txtICAOInput_KeyPress
-' Purpose: Search Location - function to handle each keypress on the text search field
+' Procedure Name: btnGo_Click
+' Purpose:
 ' Procedure Kind: Sub
 ' Procedure Access: Private
-' Parameter KeyAscii (Integer):
 ' Author: beededea
-' Date: 28/03/2024
+' Date: 29/03/2024
 ' ----------------------------------------------------------------
-Private Sub txtICAOInput_KeyPress(KeyAscii As Integer)
-    On Error GoTo txtICAOInput_KeyPress_Error
-    Dim ee As String
-    Dim key As String
-    Dim ff As String
-    Dim gg As String
+Private Sub btnGo_Click()
+    On Error GoTo btnGo_Click_Error
+    Dim ee As String: ee = vbNullString
+    Dim key As String: key = vbNullString
+    Dim ff As String: ff = vbNullString
+    Dim gg As String: gg = vbNullString
+    Dim result As String: result = vbNullString
     Dim answerMsg As String: answerMsg = vbNullString
     Dim answer As VbMsgBoxResult: answer = vbNo
     
+    ee = UCase$(txtICAOInput.Text)
+    
     ' if the input is an icao then handle it
     If optICAO.Value = True Then '"location"
-        ee = txtICAOInput.Text
-        If KeyAscii = 13 Then
-            KeyAscii = 0
-            Call testICAO(ee)
-        End If
+        result = testICAO(ee)
     End If
     
     ' if the input is an location then handle it
     If optLocation.Value = True Then ' "icao"
-        ee = txtICAOInput.Text
-        If KeyAscii = 13 Then
-            KeyAscii = 0
-            Call testLocation(ee)
-        End If
+        result = testLocation(ee)
     End If
+    
+    If result <> vbNullString Then
+        answerMsg = "Done - Valid code Found. " & result
+        answer = msgBoxA(answerMsg, vbOKOnly + vbExclamation, "Good code", False)
+        
+        txtICAOInput.Text = result
+        lblDisplaySelection.Caption = overlayWidget.icaoLocation
+        
+    End If
+    
     txtICAOInput.SetFocus
     
     On Error GoTo 0
     Exit Sub
 
-txtICAOInput_KeyPress_Error:
+btnGo_Click_Error:
 
-    MsgBox "Error " & Err.Number & " (" & Err.Description & ") in procedure txtICAOInput_KeyPress, line " & Erl & "."
+    MsgBox "Error " & Err.Number & " (" & Err.Description & ") in procedure btnGo_Click, line " & Erl & "."
 
 End Sub
+
+
 
 
 
@@ -186,8 +196,12 @@ Private Function testLocation(ByVal location As String) As String
         ' it is possible that a named search location could contain a number
         
         ' call routine to search
-        'locationInformation = cwOverlay.searchIcaoFile(location, icaoLocation1, icaoLocation2, icaoLocation3, icaoLocation4, icaoLocation5)
-        testLocation = icaoLocation5  ' return
+        overlayWidget.IcaoToTest = location
+        If overlayWidget.ValidICAO = True Then
+            testLocation = overlayWidget.IcaoToTest  ' return
+        End If
+            
+        'testLocation = icaoLocation5  ' return
     End If
     
     'if the station id returned is null then assume the weather information is missing for an unknown reason.
@@ -251,9 +265,13 @@ Private Function testICAO(ByVal icao As String) As String
             allLetters = True
         Next i
         If allLetters = True Then
+            ' set
+            overlayWidget.IcaoToTest = icao
             ' call routine to search
-            'locationInformation = cwOverlay.searchIcaoFile(icao, icaoLocation1, icaoLocation2, icaoLocation3, icaoLocation4, icaoLocation5)
-            testICAO = icaoLocation5  ' return
+            If overlayWidget.ValidICAO = True Then
+                testICAO = icao  ' return
+                'lblDisplaySelection.caption = overlayWidget.icaoLocation
+            End If
         Else
             answerMsg = "The ICAO search string cannot contain numeric or non alpha characters. "
             answer = msgBoxA(answerMsg, vbOKOnly + vbExclamation, "Location Error Information", False)
@@ -293,3 +311,21 @@ Private Function IsLetter(ByVal character As String) As Boolean
     IsLetter = UCase$(character) <> LCase$(character)
 End Function
 
+Private Sub btnOK_Click()
+    PzGIcao = overlayWidget.IcaoToTest
+    sPutINISetting "Software\PzTemperatureGauge", "icao", PzGIcao, PzGSettingsFile
+    
+    If panzerPrefs.Visible = True Then
+        panzerPrefs.txtIcao = PzGIcao
+    End If
+    
+    overlayWidget.GetMetar = True
+    
+    frmLocation.Hide
+        
+End Sub
+
+Private Sub Form_Load()
+    txtICAOInput.Text = PzGIcao
+    lblDisplaySelection.Caption = overlayWidget.icaoLocation
+End Sub
