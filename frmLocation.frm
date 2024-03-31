@@ -26,12 +26,12 @@ Begin VB.Form frmLocation
       Width           =   5130
    End
    Begin VB.CommandButton btnGo 
-      Caption         =   "GO"
+      Caption         =   "Search"
       Height          =   345
-      Left            =   4860
+      Left            =   4590
       TabIndex        =   8
       Top             =   120
-      Width           =   540
+      Width           =   810
    End
    Begin VB.CommandButton btnExit 
       Caption         =   "Exit"
@@ -42,7 +42,7 @@ Begin VB.Form frmLocation
       Width           =   1050
    End
    Begin VB.CommandButton btnOK 
-      Caption         =   "OK"
+      Caption         =   "Select"
       Height          =   465
       Left            =   4350
       TabIndex        =   6
@@ -51,7 +51,7 @@ Begin VB.Form frmLocation
    End
    Begin VB.Frame fraOptions 
       Height          =   1110
-      Left            =   2145
+      Left            =   2505
       TabIndex        =   2
       Top             =   1215
       Width           =   1680
@@ -78,7 +78,23 @@ Begin VB.Form frmLocation
       Left            =   2085
       TabIndex        =   0
       Top             =   105
-      Width           =   2595
+      Width           =   2340
+   End
+   Begin VB.Label Label1 
+      Caption         =   "Airport by Name"
+      Height          =   270
+      Left            =   315
+      TabIndex        =   11
+      Top             =   1830
+      Width           =   1755
+   End
+   Begin VB.Label lbl4char 
+      Caption         =   "4-letter identifying code"
+      Height          =   270
+      Left            =   285
+      TabIndex        =   10
+      Top             =   1455
+      Width           =   1755
    End
    Begin VB.Label lblDisplaySelection 
       Appearance      =   0  'Flat
@@ -94,10 +110,10 @@ Begin VB.Form frmLocation
    Begin VB.Label lblEnterICAO 
       Caption         =   "Enter ICAO code"
       Height          =   315
-      Left            =   210
+      Left            =   315
       TabIndex        =   1
       Top             =   150
-      Width           =   1770
+      Width           =   1725
    End
 End
 Attribute VB_Name = "frmLocation"
@@ -193,8 +209,7 @@ Private Function testLocation(ByVal location As String) As String
             Debug.Print ("%txtICAOInput - calling searchIcaoFile")
         End If
         
-        ' it is possible that a named search location could contain a number
-        
+        ' note: it is possible that a named search location could contain a number
         ' call routine to search
         overlayWidget.IcaoToTest = location
         If overlayWidget.ValidICAO = True Then

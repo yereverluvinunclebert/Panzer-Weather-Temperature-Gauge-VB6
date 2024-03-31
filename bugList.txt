@@ -11,22 +11,25 @@ add barometer and vars reading/writing, validation &c - done
 add anemometer and vars reading/writing, validation &c  - done
 add windspeed and vars reading/writing, validation &c  - done
 add metric/imperial and vars reading/writing, validation &c - done
+html documentation using MZTools
+determineWeatherConditionIcon - needs to return several values for icon types, perhaps split - done
+balloon tooltip generation - done
+menu options
+create a temporary VB6 form to obtain the location codes
+function to read from a file directly into an array, reading all ICAO locations - done
+function to search an ICAO File and find a matching ICAO code - done
+function to download a new ICAO locations file from the internet using an API - done
+New frmLocation passing icao and location to and from the prefs and frmLocation forms
 
 TODO
 
-' progressing through myStatusProc
-'             determineWeatherConditionIcon - wip - needs to return several values for icon types, perhaps split
-
-         iconSrc = "Resources/images/icons_metar/night/n_" & weatherIconSrc
-         weatherIconSrc = iconSrc
-         precedingSrc = iconSrc
-         followingSrc = iconSrc
-         exoticIconSrc
-         fogIconSrc
-         showersIconSrc
+create a new RC6 form for the ICAO input
+       the RC6 form will replace the temporary VB6 form
 
 ' the approach now is to create the temperature gauge and to make it operate, extracting all the data that is required for ALL gauges.
-' later on, we may have a master gauge that obtains the data. So, all the gauges may have the extraction code.
+' later on, we may have a master gauge that obtains the data. So, all the gauges may have the same extraction code.
+
+The above approach, not yet confirmed.
 
 ' we may have a last poll date that each checks beforehand.
 
@@ -34,6 +37,8 @@ TODO
 
 ' help  -
 ' help CHM -
+
+update html documentation using MZTools
 
 ' add second monitor - wip find cable!
 

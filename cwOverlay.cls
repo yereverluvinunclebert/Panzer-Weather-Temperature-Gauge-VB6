@@ -638,7 +638,7 @@ Public Property Get ValidICAO() As Boolean
     If icaoLocation5 <> vbNullString Then ' icao code
         mValidICAO = True
         ValidICAO = mValidICAO
-        mIcaoToTest = icaoLocation5
+        mIcaoToTest = icaoLocation5 ' find the icao code and set the private var so it can be accessed via a property
     Else
         ValidICAO = False
         mValidICAO = False
@@ -1095,18 +1095,12 @@ End Sub
 Private Sub getData()
 
     Dim icaoToFind As String: icaoToFind = vbNullString
-    Dim icaoLocation As String: icaoLocation = vbNullString
-    'Dim fullIcaoLocation As String: fullIcaoLocation = vbNullString
     Dim thisURL As String: thisURL = vbNullString
     
     On Error GoTo getData_Error
     
     icaoToFind = PzGIcao ' eg. "EGSH"
-    'fullIcaoLocation = searchIcaoFile(icaoToFind, icaoLocation1, icaoLocation2, icaoLocation3, icaoLocation4, icaoLocation5)
-    'icaoLocation = icaoLocation5 ' the icao code
-    icaoLocation = icaoToFind ' the icao code
-    
-    thisURL = "https://aviationweather.gov/api/data/dataserver?requestType=retrieve&dataSource=metars&stationString=" & icaoLocation & "&hoursBeforeNow=6&format=xml&mostRecent=true"
+    thisURL = "https://aviationweather.gov/api/data/dataserver?requestType=retrieve&dataSource=metars&stationString=" & icaoToFind & "&hoursBeforeNow=6&format=xml&mostRecent=true"
     
     'thisFile = "E:\vb6\Panzer-Weather-Gauges-VB6\test.xml"
     

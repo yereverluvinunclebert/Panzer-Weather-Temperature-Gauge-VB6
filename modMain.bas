@@ -37,6 +37,7 @@ Public licenceWidget As cwLicence
 Public revealWidgetTimerCount As Integer
  
 Public fTemperature As New cfTemperature
+Public fSelector As New cfSelector
 Public overlayWidget As cwOverlay
 Public sunriseSunset As cwSunriseSunset
 Public widgetName As String
@@ -78,9 +79,8 @@ End Sub
 Public Sub mainRoutine(ByVal restart As Boolean)
     
     Dim extractCommand As String: extractCommand = vbNullString
-    
     Dim thisPSDFullPath As String: thisPSDFullPath = vbNullString
-    
+    Dim selectorPSDFullPath As String: selectorPSDFullPath = vbNullString
     Dim licenceState As Integer: licenceState = 0
 
     On Error GoTo main_routine_Error
@@ -90,6 +90,11 @@ Public Sub mainRoutine(ByVal restart As Boolean)
     fTemperature.FX = 222 'init position- and zoom-values (directly set on Public-Props of the Form-hosting Class)
     fTemperature.FY = 111
     fTemperature.FZ = 0.4
+    
+    selectorPSDFullPath = App.path & "\Res\Panzer Weather Selector VB6.psd"
+    fSelector.FX = 222 'init position- and zoom-values (directly set on Public-Props of the Form-hosting Class)
+    fSelector.FY = 111
+    fSelector.FZ = 0.4
     
     prefsCurrentWidth = 9075
     prefsCurrentHeight = 16450
@@ -131,6 +136,9 @@ Public Sub mainRoutine(ByVal restart As Boolean)
     
     ' start the load of the PSD file using the RC6 PSD-Parser.instance
     Call fTemperature.InitFromPSD(thisPSDFullPath)  ' no optional close layer as 3rd param
+
+    ' start the load of the PSD file using the RC6 PSD-Parser.instance
+    Call fSelector.InitSelectorFromPSD(selectorPSDFullPath)  ' no optional close layer as 3rd param
 
     ' resolve VB6 sizing width bug
     Call determineScreenDimensions
