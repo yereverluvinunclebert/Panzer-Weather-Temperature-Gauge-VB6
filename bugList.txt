@@ -25,6 +25,7 @@ TODO
 
 create a new RC6 form for the ICAO input
        the RC6 form will replace the temporary VB6 form
+       populate a combobox for multiple search results
 
 ' the approach now is to create the temperature gauge and to make it operate, extracting all the data that is required for ALL gauges.
 ' later on, we may have a master gauge that obtains the data. So, all the gauges may have the same extraction code.

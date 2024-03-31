@@ -374,6 +374,7 @@ Public PzGFormLowDpiXPosTwips As String
 Public PzGFormLowDpiYPosTwips As String
 
 Public PzGLastUpdated As String
+Public PzGMetarPref As String
 
 
 '------------------------------------------------------ ENDS
@@ -1793,7 +1794,7 @@ Public Sub setMainTooltips()
 
     If PzGEnableTooltips = "1" Then
 
-        overlayWidget.Widget.ToolTip = "Double tap on me to get new weather" & vbCrLf & "Use CTRL+mouse scrollwheel up/down to resize."
+        overlayTemperatureWidget.Widget.ToolTip = "Double tap on me to get new weather" & vbCrLf & "Use CTRL+mouse scrollwheel up/down to resize."
         helpWidget.Widget.ToolTip = "Click on me to make me go away."
         aboutWidget.Widget.ToolTip = "Click on me to make me go away."
         
@@ -1807,7 +1808,7 @@ Public Sub setMainTooltips()
         fTemperature.temperatureGaugeForm.Widgets("housing/surround").Widget.ToolTip = "Ctrl + mouse scrollwheel up/down to resize, you can also drag me to a new position."
         
     Else
-        overlayWidget.Widget.ToolTip = vbNullString
+        overlayTemperatureWidget.Widget.ToolTip = vbNullString
         helpWidget.Widget.ToolTip = vbNullString
         aboutWidget.Widget.ToolTip = vbNullString
         
@@ -1892,9 +1893,16 @@ Public Sub makeVisibleFormElements()
     Else
         fTemperature.temperatureGaugeForm.Left = formLeftPixels
         fTemperature.temperatureGaugeForm.Top = formTopPixels
+        fSelector.SelectorForm.Left = formLeftPixels
+        fSelector.SelectorForm.Top = formTopPixels
     End If
     
     fTemperature.temperatureGaugeForm.Show
+    
+    fSelector.SelectorForm.Width = 1000
+    fSelector.SelectorForm.Height = 800
+    fSelector.SelectorForm.Show
+
 
     On Error GoTo 0
     Exit Sub
@@ -2496,12 +2504,12 @@ Public Sub lockWidget()
         menuForm.mnuLockWidget.Checked = False
         panzerPrefs.chkPreventDragging.Value = 0
         PzGPreventDragging = "0"
-        overlayWidget.Locked = False
+        overlayTemperatureWidget.Locked = False
         fTemperature.temperatureGaugeForm.Widgets("housing/lockbutton").Widget.Alpha = val(PzGOpacity) / 100
     Else
         menuForm.mnuLockWidget.Checked = True
         panzerPrefs.chkPreventDragging.Value = 1
-        overlayWidget.Locked = True
+        overlayTemperatureWidget.Locked = True
         PzGPreventDragging = "1"
         fTemperature.temperatureGaugeForm.Widgets("housing/lockbutton").Widget.Alpha = 0
     End If
@@ -2537,7 +2545,7 @@ Public Sub SwitchOff()
 
    On Error GoTo SwitchOff_Error
 
-    overlayWidget.Ticking = False
+    overlayTemperatureWidget.Ticking = False
     menuForm.mnuSwitchOff.Checked = True
     menuForm.mnuTurnFunctionsOn.Checked = False
     
@@ -2573,7 +2581,7 @@ Public Sub TurnFunctionsOn()
         PlaySound App.path & "\resources\sounds\" & fileToPlay, ByVal 0&, SND_FILENAME Or SND_ASYNC
     End If
 
-    overlayWidget.Ticking = True
+    overlayTemperatureWidget.Ticking = True
     menuForm.mnuSwitchOff.Checked = False
     menuForm.mnuTurnFunctionsOn.Checked = True
     
@@ -2805,9 +2813,9 @@ Public Function ArrayString(ParamArray tokens()) As String()
     On Error GoTo ArrayString_Error
 
     ReDim arr(UBound(tokens)) As String
-    Dim I As Long
-    For I = 0 To UBound(tokens)
-        arr(I) = tokens(I)
+    Dim i As Long
+    For i = 0 To UBound(tokens)
+        arr(i) = tokens(i)
     Next
     ArrayString = arr
 

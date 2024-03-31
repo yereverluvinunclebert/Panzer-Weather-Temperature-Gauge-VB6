@@ -160,7 +160,7 @@ Private Sub settingsTimer_Timer()
     PzGUnhide = fGetINISetting("Software\PzTemperatureGauge", "unhide", PzGSettingsFile)
 
     If PzGUnhide = "true" Then
-        'overlayWidget.Hidden = False
+        'overlayTemperatureWidget.Hidden = False
         fTemperature.temperatureGaugeForm.Visible = True
         sPutINISetting "Software\PzTemperatureGauge", "unhide", vbNullString, PzGSettingsFile
     End If

@@ -6,14 +6,14 @@ BEGIN
   DataSourceBehavior  = 0  'vbNone
   MTSTransactionMode  = 0  'NotAnMTSObject
 END
-Attribute VB_Name = "cwOverlay"
+Attribute VB_Name = "cwOverlayTemp"
 Attribute VB_GlobalNameSpace = False
 Attribute VB_Creatable = True
 Attribute VB_PredeclaredId = False
 Attribute VB_Exposed = False
 '@IgnoreModule AssignmentNotUsed, IntegerDataType, ModuleWithoutFolder
 '---------------------------------------------------------------------------------------
-' Module    : cwOverlay
+' Module    : cwOverlayTempTemperature
 ' Author    : Dean Beedell (yereverluvinunclebert)
 ' Date      : 31/07/2023
 ' Purpose   : create a fully click-through Widget, which allows for all kind of
@@ -56,7 +56,8 @@ Private Declare Function URLDownloadToFile Lib "urlmon" _
     ByVal dwReserved As Long, ByVal lpfnCB As Long) As Long
 
 'these Public Properties are set in the Parent (here, cfTemperature)
-Public cCollOverlayImages As cCollection
+Public cCollOverlayTempImages As cCollection
+Public cCollOverlaySelectorImages As cCollection
 Public cxPerc As Single
 Public cyPerc As Single
 
@@ -156,7 +157,7 @@ Private Sub Class_Initialize()
 
 Class_Initialize_Error:
 
-    MsgBox "Error " & Err.Number & " (" & Err.Description & ") in procedure Class_Initialize of Class Module cwOverlay"
+    MsgBox "Error " & Err.Number & " (" & Err.Description & ") in procedure Class_Initialize of Class Module cwOverlayTempTemperature"
 End Sub
 
 '---------------------------------------------------------------------------------------
@@ -176,7 +177,7 @@ Public Property Get Widget() As cWidgetBase
 
 Widget_Error:
 
-    MsgBox "Error " & Err.Number & " (" & Err.Description & ") in procedure Widget of Class Module cwOverlay"
+    MsgBox "Error " & Err.Number & " (" & Err.Description & ") in procedure Widget of Class Module cwOverlayTempTemperature"
 End Property
 '---------------------------------------------------------------------------------------
 ' Procedure : Widgets
@@ -195,7 +196,7 @@ Public Property Get Widgets() As cWidgets
 
 Widgets_Error:
 
-    MsgBox "Error " & Err.Number & " (" & Err.Description & ") in procedure Widgets of Class Module cwOverlay"
+    MsgBox "Error " & Err.Number & " (" & Err.Description & ") in procedure Widgets of Class Module cwOverlayTempTemperature"
 End Property
 
 
@@ -216,7 +217,7 @@ Public Property Get Ticking() As Boolean
 
 TickingGet_Error:
 
-    MsgBox "Error " & Err.Number & " (" & Err.Description & ") in Property Ticking of Class Module cwOverlay"
+    MsgBox "Error " & Err.Number & " (" & Err.Description & ") in Property Ticking of Class Module cwOverlayTempTemperature"
 End Property
 '---------------------------------------------------------------------------------------
 ' Property  : GetMetar
@@ -241,7 +242,7 @@ Public Property Let GetMetar(ByVal newValue As Boolean)
 
 GetMetarLet_Error:
 
-    MsgBox "Error " & Err.Number & " (" & Err.Description & ") in Property GetMetar of Class Module cwOverlay"
+    MsgBox "Error " & Err.Number & " (" & Err.Description & ") in Property GetMetar of Class Module cwOverlayTempTemperature"
 End Property
 
 
@@ -262,7 +263,7 @@ Public Property Get GetMetar() As Boolean
 
 GetMetarGet_Error:
 
-    MsgBox "Error " & Err.Number & " (" & Err.Description & ") in Property GetMetar of Class Module cwOverlay"
+    MsgBox "Error " & Err.Number & " (" & Err.Description & ") in Property GetMetar of Class Module cwOverlayTempTemperature"
 End Property
 '---------------------------------------------------------------------------------------
 ' Property  : Ticking
@@ -283,7 +284,7 @@ Public Property Let Ticking(ByVal newValue As Boolean)
 
 TickingLet_Error:
 
-    MsgBox "Error " & Err.Number & " (" & Err.Description & ") in Property Ticking of Class Module cwOverlay"
+    MsgBox "Error " & Err.Number & " (" & Err.Description & ") in Property Ticking of Class Module cwOverlayTempTemperature"
 End Property ' the earth Ticking flag
 
 '---------------------------------------------------------------------------------------
@@ -303,7 +304,7 @@ Public Property Get thisOpacity() As String
 
 thisOpacityGet_Error:
 
-    MsgBox "Error " & Err.Number & " (" & Err.Description & ") in Property thisOpacity of Class Module cwOverlay"
+    MsgBox "Error " & Err.Number & " (" & Err.Description & ") in Property thisOpacity of Class Module cwOverlayTempTemperature"
 End Property
 '---------------------------------------------------------------------------------------
 ' Property  : thisOpacity
@@ -322,7 +323,7 @@ Public Property Let thisOpacity(ByVal newValue As String)
 
 thisOpacityLet_Error:
 
-    MsgBox "Error " & Err.Number & " (" & Err.Description & ") in Property thisOpacity of Class Module cwOverlay"
+    MsgBox "Error " & Err.Number & " (" & Err.Description & ") in Property thisOpacity of Class Module cwOverlayTempTemperature"
 End Property
 
 '---------------------------------------------------------------------------------------
@@ -342,7 +343,7 @@ Public Property Get thisFace() As Integer
 
 thisFaceGet_Error:
 
-    MsgBox "Error " & Err.Number & " (" & Err.Description & ") in Property thisFace of Class Module cwOverlay"
+    MsgBox "Error " & Err.Number & " (" & Err.Description & ") in Property thisFace of Class Module cwOverlayTempTemperature"
 End Property
 '---------------------------------------------------------------------------------------
 ' Property  : thisFace
@@ -363,7 +364,7 @@ Public Property Let thisFace(ByVal newValue As Integer)
 
 thisFaceLet_Error:
 
-    MsgBox "Error " & Err.Number & " (" & Err.Description & ") in Property thisFace of Class Module cwOverlay"
+    MsgBox "Error " & Err.Number & " (" & Err.Description & ") in Property thisFace of Class Module cwOverlayTempTemperature"
 End Property
 
 '---------------------------------------------------------------------------------------
@@ -383,7 +384,7 @@ Public Property Get samplingInterval() As String
 
 samplingIntervalGet_Error:
 
-    MsgBox "Error " & Err.Number & " (" & Err.Description & ") in Property samplingInterval of Class Module cwOverlay"
+    MsgBox "Error " & Err.Number & " (" & Err.Description & ") in Property samplingInterval of Class Module cwOverlayTempTemperature"
 End Property
 '---------------------------------------------------------------------------------------
 ' Property  : samplingInterval
@@ -406,7 +407,7 @@ Public Property Let samplingInterval(ByVal newValue As String)
 
 samplingIntervalLet_Error:
 
-    MsgBox "Error " & Err.Number & " (" & Err.Description & ") in Property samplingInterval of Class Module cwOverlay"
+    MsgBox "Error " & Err.Number & " (" & Err.Description & ") in Property samplingInterval of Class Module cwOverlayTempTemperature"
 End Property
 '---------------------------------------------------------------------------------------
 ' Property : pointerAnimate
@@ -425,7 +426,7 @@ Public Property Get pointerAnimate() As Boolean
 
 pointerAnimateGet_Error:
 
-    MsgBox "Error " & Err.Number & " (" & Err.Description & ") in Property pointerAnimate of Class Module cwOverlay"
+    MsgBox "Error " & Err.Number & " (" & Err.Description & ") in Property pointerAnimate of Class Module cwOverlayTempTemperature"
 End Property
 '---------------------------------------------------------------------------------------
 ' Property  : pointerAnimate
@@ -444,7 +445,7 @@ Public Property Let pointerAnimate(ByVal newValue As Boolean)
 
 pointerAnimateLet_Error:
 
-    MsgBox "Error " & Err.Number & " (" & Err.Description & ") in Property pointerAnimate of Class Module cwOverlay"
+    MsgBox "Error " & Err.Number & " (" & Err.Description & ") in Property pointerAnimate of Class Module cwOverlayTemp"
 End Property
 
 '---------------------------------------------------------------------------------------
@@ -464,7 +465,7 @@ Public Property Get Locked() As Boolean
 
 LockedGet_Error:
 
-    MsgBox "Error " & Err.Number & " (" & Err.Description & ") in Property Locked of Class Module cwOverlay"
+    MsgBox "Error " & Err.Number & " (" & Err.Description & ") in Property Locked of Class Module cwOverlayTemp"
 End Property
 '---------------------------------------------------------------------------------------
 ' Property  : Locked
@@ -483,7 +484,7 @@ Public Property Let Locked(ByVal newValue As Boolean)
 
 LockedLet_Error:
 
-    MsgBox "Error " & Err.Number & " (" & Err.Description & ") in Property Locked of Class Module cwOverlay"
+    MsgBox "Error " & Err.Number & " (" & Err.Description & ") in Property Locked of Class Module cwOverlayTemp"
 End Property
 
 
@@ -504,7 +505,7 @@ Public Property Get TemperatureDetails() As String
 
 TemperatureDetailsGet_Error:
 
-    MsgBox "Error " & Err.Number & " (" & Err.Description & ") in Property TemperatureDetails of Class Module cwOverlay"
+    MsgBox "Error " & Err.Number & " (" & Err.Description & ") in Property TemperatureDetails of Class Module cwOverlayTemp"
 End Property
 '---------------------------------------------------------------------------------------
 ' Property  : TemperatureDetails
@@ -523,7 +524,7 @@ Public Property Let TemperatureDetails(ByVal newValue As String)
 
 TemperatureDetailsLet_Error:
 
-    MsgBox "Error " & Err.Number & " (" & Err.Description & ") in Property TemperatureDetails of Class Module cwOverlay"
+    MsgBox "Error " & Err.Number & " (" & Err.Description & ") in Property TemperatureDetails of Class Module cwOverlayTemp"
 End Property
 
 
@@ -546,7 +547,7 @@ Public Property Get Hidden() As Boolean
 
 HiddenGet_Error:
 
-    MsgBox "Error " & Err.Number & " (" & Err.Description & ") in Property Hidden of Class Module cwOverlay"
+    MsgBox "Error " & Err.Number & " (" & Err.Description & ") in Property Hidden of Class Module cwOverlayTemp"
 End Property
 '---------------------------------------------------------------------------------------
 ' Property  : Hidden
@@ -574,7 +575,7 @@ Public Property Let Hidden(ByVal newValue As Boolean)
 
 HiddenLet_Error:
 
-    MsgBox "Error " & Err.Number & " (" & Err.Description & ") in Property Hidden of Class Module cwOverlay"
+    MsgBox "Error " & Err.Number & " (" & Err.Description & ") in Property Hidden of Class Module cwOverlayTemp"
 End Property
 
 '---------------------------------------------------------------------------------------
@@ -595,7 +596,7 @@ Public Property Get IcaoToTest() As String
 
 IcaoToTestGet_Error:
 
-    MsgBox "Error " & Err.Number & " (" & Err.Description & ") in Property IcaoToTest of Class Module cwOverlay"
+    MsgBox "Error " & Err.Number & " (" & Err.Description & ") in Property IcaoToTest of Class Module cwOverlayTemp"
 End Property
 '---------------------------------------------------------------------------------------
 ' Property  : IcaoToTest
@@ -615,7 +616,7 @@ Public Property Let IcaoToTest(ByVal newValue As String)
 
 IcaoToTestLet_Error:
 
-    MsgBox "Error " & Err.Number & " (" & Err.Description & ") in Property IcaoToTest of Class Module cwOverlay"
+    MsgBox "Error " & Err.Number & " (" & Err.Description & ") in Property IcaoToTest of Class Module cwOverlayTemp"
 End Property
 
 '---------------------------------------------------------------------------------------
@@ -649,7 +650,7 @@ Public Property Get ValidICAO() As Boolean
 
 ValidICAOGet_Error:
 
-    MsgBox "Error " & Err.Number & " (" & Err.Description & ") in Property ValidICAO of Class Module cwOverlay"
+    MsgBox "Error " & Err.Number & " (" & Err.Description & ") in Property ValidICAO of Class Module cwOverlayTemp"
 End Property
 '---------------------------------------------------------------------------------------
 ' Property  : ValidICAO
@@ -670,7 +671,7 @@ Public Property Let ValidICAO(ByVal newValue As Boolean)
 
 ValidICAOLet_Error:
 
-    MsgBox "Error " & Err.Number & " (" & Err.Description & ") in Property ValidICAO of Class Module cwOverlay"
+    MsgBox "Error " & Err.Number & " (" & Err.Description & ") in Property ValidICAO of Class Module cwOverlayTemp"
 End Property
 
 
@@ -693,7 +694,7 @@ Public Property Get icaoLocation() As String
 
 icaoLocationGet_Error:
 
-    MsgBox "Error " & Err.Number & " (" & Err.Description & ") in Property icaoLocation of Class Module cwOverlay"
+    MsgBox "Error " & Err.Number & " (" & Err.Description & ") in Property icaoLocation of Class Module cwOverlayTemp"
 End Property
 '---------------------------------------------------------------------------------------
 ' Property  : icaoLocation
@@ -713,7 +714,7 @@ Public Property Let icaoLocation(ByVal newValue As String)
 
 icaoLocationLet_Error:
 
-    MsgBox "Error " & Err.Number & " (" & Err.Description & ") in Property icaoLocation of Class Module cwOverlay"
+    MsgBox "Error " & Err.Number & " (" & Err.Description & ") in Property icaoLocation of Class Module cwOverlayTemp"
 End Property
 '
 '---------------------------------------------------------------------------------------------
@@ -724,7 +725,7 @@ End Property
 '             For this Overlay-Widget alone, we make everything "fully click-through"
 '---------------------------------------------------------------------------------------------
 '
-Private Sub W_HitTest(ByVal x As Single, ByVal y As Single, HitResultHit As Boolean) 'ensure ClickThrough-behaviour in ImagePixels which are "fully Alpha"
+Private Sub W_HitTest(ByVal X As Single, ByVal Y As Single, HitResultHit As Boolean) 'ensure ClickThrough-behaviour in ImagePixels which are "fully Alpha"
    On Error GoTo W_HitTest_Error
 
    HitResultHit = False
@@ -734,7 +735,7 @@ Private Sub W_HitTest(ByVal x As Single, ByVal y As Single, HitResultHit As Bool
 
 W_HitTest_Error:
 
-    MsgBox "Error " & Err.Number & " (" & Err.Description & ") in procedure W_HitTest of Class Module cwOverlay"
+    MsgBox "Error " & Err.Number & " (" & Err.Description & ") in procedure W_HitTest of Class Module cwOverlayTemp"
 End Sub
 
 
@@ -778,15 +779,11 @@ Private Sub W_Paint(CC As RC6.cCairoContext, ByVal xAbs As Single, ByVal yAbs As
     someOpacity = (val(mThisOpacity) / 100) * 0.75
     
     txtThisTemperature = CStr(Int(thisTemperature))
-    
-'    txtTemperaturetotal = CStr(Int(temperatureTotalTimeLeft))
-'
 
 
-
-    For i = 0 To cCollOverlayImages.Count - 1 ' this is the ExcludedPaths collection populated in cfTemperature by duplicating collPSDNonUIElements.
-      arr = cCollOverlayImages.ItemByIndex(i)
-      key = cCollOverlayImages.KeyByIndex(i)
+    For i = 0 To cCollOverlayTempImages.Count - 1 ' this is the ExcludedPaths collection populated in cfTemperature by duplicating collTemperaturePSDNonUIElements.
+      arr = cCollOverlayTempImages.ItemByIndex(i)
+      key = cCollOverlayTempImages.KeyByIndex(i)
       
       If IsArray(arr) Then
              CC.Save
@@ -898,7 +895,7 @@ Private Sub W_Paint(CC As RC6.cCairoContext, ByVal xAbs As Single, ByVal yAbs As
 
 W_Paint_Error:
 
-    MsgBox "Error " & Err.Number & " (" & Err.Description & ") in procedure W_Paint of Class Module cwOverlay"
+    MsgBox "Error " & Err.Number & " (" & Err.Description & ") in procedure W_Paint of Class Module cwOverlayTemp"
 End Sub
  
     
@@ -942,7 +939,7 @@ Private Sub tmrAnimator_Timer()
 
 tmrAnimator_Timer_Error:
 
-    MsgBox "Error " & Err.Number & " (" & Err.Description & ") in procedure tmrAnimator_Timer of Class Module cwOverlay"
+    MsgBox "Error " & Err.Number & " (" & Err.Description & ") in procedure tmrAnimator_Timer of Class Module cwOverlayTemp"
 End Sub
 
   
@@ -1021,7 +1018,7 @@ Private Sub calcAnimationData()
 
 calcAnimationData_Error:
 
-    MsgBox "Error " & Err.Number & " (" & Err.Description & ") in procedure calcAnimationData of Class Module cwOverlay"
+    MsgBox "Error " & Err.Number & " (" & Err.Description & ") in procedure calcAnimationData of Class Module cwOverlayTemp"
 End Sub
 
 ' ----------------------------------------------------------------
@@ -1078,7 +1075,7 @@ Private Sub tmrSampler_Timer()
 
 tmrSampler_Timer_Error:
 
-    MsgBox "Error " & Err.Number & " (" & Err.Description & ") in procedure tmrSampler_Timer of Class Module cwOverlay"
+    MsgBox "Error " & Err.Number & " (" & Err.Description & ") in procedure tmrSampler_Timer of Class Module cwOverlayTemp"
 End Sub
 
 
@@ -1147,7 +1144,7 @@ Private Sub tmrAsyncResponse_Timer()
 
 tmrSampler_Timer_Error:
 
-    MsgBox "Error " & Err.Number & " (" & Err.Description & ") in procedure tmrSampler_Timer of Class Module cwOverlay"
+    MsgBox "Error " & Err.Number & " (" & Err.Description & ") in procedure tmrSampler_Timer of Class Module cwOverlayTemp"
 End Sub
 
 
@@ -2718,22 +2715,20 @@ End Sub
 '=======================================================
 Private Function searchIcaoFile(loc As String, ByRef icaoLocation1 As String, ByRef icaoLocation2 As String, ByRef icaoLocation3 As String, ByRef icaoLocation4 As String, ByRef icaoLocation5 As String) As String
     Dim icaoDataArray() As String ' array
-    Dim i As Integer
-    Dim fnd As Boolean
+    Dim i As Integer: i = 0
+    Dim fnd As Boolean: fnd = False
+    Dim searchCount As Integer: searchCount = 0
     Dim lookFor As String: lookFor = vbNullString
     Dim retStr As String: retStr = vbNullString
     Dim splitIcaoData() As String
-    Dim lReturn As Boolean
-    Dim icaoDataFile As String
+    Dim lReturn As Boolean: lReturn = False
+    Dim icaoDataFile As String: icaoDataFile = vbNullString
+    Dim searchArray() As String
+    
     Dim answerMsg As String: answerMsg = vbNullString
     Dim answer As VbMsgBoxResult: answer = vbNo
     
-'    Dim icaoLocation1 As String: icaoLocation1 = vbNullString
-'    Dim icaoLocation2 As String: icaoLocation2 = vbNullString
-'    Dim icaoLocation3 As String: icaoLocation3 = vbNullString
-'    Dim icaoLocation4 As String: icaoLocation4 = vbNullString
-'    Dim icaoLocation5 As String: icaoLocation5 = vbNullString
-    
+    debugFlg = 0
     lookFor = loc
     icaoDataFile = App.path & "\dat\icao_codes.dat"
     lReturn = FileSystemReadFile(icaoDataArray(), icaoDataFile)
@@ -2741,12 +2736,14 @@ Private Function searchIcaoFile(loc As String, ByRef icaoLocation1 As String, By
     
     Dim a As Integer
     a = UBound(icaoDataArray)
-    'If debugFlg = 1 Then ' & Preferences.metarpref.Value
+    ReDim searchArray(a)
+    
+    'If debugFlg = 1 Then ' & PzGMetarPref
         Debug.Print ("searchIcaoFile - " & " search started for " & lookFor)
     'End If
     For i = 0 To UBound(icaoDataArray) - 1 Step 1
         icaoDataArray(i) = UCase$(icaoDataArray(i))
-        fnd = InStr(icaoDataArray(i), lookFor) 'icaoDataArray(i).match(lookFor)
+        fnd = InStr(icaoDataArray(i), lookFor)
         If fnd = True Then
             splitIcaoData = Split(icaoDataArray(i), ",")
             icaoLocation1 = Replace(splitIcaoData(1), """", "") '
@@ -2777,9 +2774,15 @@ Private Function searchIcaoFile(loc As String, ByRef icaoLocation1 As String, By
             If debugFlg = 1 Then
                 Debug.Print ("searchIcaoFile - found " & lookFor & " in " & retStr)
             End If
-
-            searchIcaoFile = retStr ' return full string
-            Exit For
+            
+            If PzGMetarPref = "ICAO" Then ' single search result
+                searchIcaoFile = retStr ' return full string
+                Exit For
+            Else
+                searchArray(searchCount) = retStr
+                searchCount = searchCount + 1
+            End If
+            
         End If
     Next
     If icaoLocation5 = "" Then

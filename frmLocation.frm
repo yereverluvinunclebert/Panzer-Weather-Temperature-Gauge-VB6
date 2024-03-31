@@ -1,7 +1,7 @@
 VERSION 5.00
 Begin VB.Form frmLocation 
    BorderStyle     =   3  'Fixed Dialog
-   Caption         =   "Choose Location"
+   Caption         =   "Temporary Form For Location Choice"
    ClientHeight    =   2535
    ClientLeft      =   45
    ClientTop       =   390
@@ -169,7 +169,7 @@ Private Sub btnGo_Click()
         answer = msgBoxA(answerMsg, vbOKOnly + vbExclamation, "Good code", False)
         
         txtICAOInput.Text = result
-        lblDisplaySelection.Caption = overlayWidget.icaoLocation
+        lblDisplaySelection.Caption = overlayTemperatureWidget.icaoLocation
         
     End If
     
@@ -200,8 +200,10 @@ End Sub
 ' ----------------------------------------------------------------
 Private Function testLocation(ByVal location As String) As String
     On Error GoTo testLocation_Error
+    
     Dim answer As VbMsgBoxResult
     Dim answerMsg  As String: answerMsg = vbNullString
+    
     location = Replace(location, " ", "")
 
     If location <> "" Then
@@ -211,12 +213,10 @@ Private Function testLocation(ByVal location As String) As String
         
         ' note: it is possible that a named search location could contain a number
         ' call routine to search
-        overlayWidget.IcaoToTest = location
-        If overlayWidget.ValidICAO = True Then
-            testLocation = overlayWidget.IcaoToTest  ' return
+        overlayTemperatureWidget.IcaoToTest = location
+        If overlayTemperatureWidget.ValidICAO = True Then
+            testLocation = overlayTemperatureWidget.IcaoToTest  ' return
         End If
-            
-        'testLocation = icaoLocation5  ' return
     End If
     
     'if the station id returned is null then assume the weather information is missing for an unknown reason.
@@ -281,11 +281,11 @@ Private Function testICAO(ByVal icao As String) As String
         Next i
         If allLetters = True Then
             ' set
-            overlayWidget.IcaoToTest = icao
+            overlayTemperatureWidget.IcaoToTest = icao
             ' call routine to search
-            If overlayWidget.ValidICAO = True Then
+            If overlayTemperatureWidget.ValidICAO = True Then
                 testICAO = icao  ' return
-                'lblDisplaySelection.caption = overlayWidget.icaoLocation
+                'lblDisplaySelection.caption = overlayTemperatureWidget.icaoLocation
             End If
         Else
             answerMsg = "The ICAO search string cannot contain numeric or non alpha characters. "
@@ -327,14 +327,14 @@ Private Function IsLetter(ByVal character As String) As Boolean
 End Function
 
 Private Sub btnOK_Click()
-    PzGIcao = overlayWidget.IcaoToTest
+    PzGIcao = overlayTemperatureWidget.IcaoToTest
     sPutINISetting "Software\PzTemperatureGauge", "icao", PzGIcao, PzGSettingsFile
     
     If panzerPrefs.Visible = True Then
         panzerPrefs.txtIcao = PzGIcao
     End If
     
-    overlayWidget.GetMetar = True
+    overlayTemperatureWidget.GetMetar = True
     
     frmLocation.Hide
         
@@ -342,5 +342,17 @@ End Sub
 
 Private Sub Form_Load()
     txtICAOInput.Text = PzGIcao
-    lblDisplaySelection.Caption = overlayWidget.icaoLocation
+    lblDisplaySelection.Caption = overlayTemperatureWidget.icaoLocation
+End Sub
+
+
+Private Sub optICAO_Click()
+    PzGMetarPref = "ICAO"
+    sPutINISetting "Software\PzTemperatureGauge", "metarPref", PzGMetarPref, PzGSettingsFile
+
+End Sub
+
+Private Sub optLocation_Click()
+    PzGMetarPref = "Location"
+    sPutINISetting "Software\PzTemperatureGauge", "metarPref", PzGMetarPref, PzGSettingsFile
 End Sub

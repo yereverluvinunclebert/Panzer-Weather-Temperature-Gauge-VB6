@@ -21,8 +21,8 @@ Attribute VB_Exposed = False
 '@IgnoreModule AssignmentNotUsed, IntegerDataType, ModuleWithoutFolder
 Option Explicit 'simple Alpha-Form (...to be filled with (mostly Img-) Content via .Widgets.Add)
 
-Public WithEvents SelectorGaugeForm As cWidgetForm
-Attribute SelectorGaugeForm.VB_VarHelpID = -1
+Public WithEvents SelectorForm As cWidgetForm
+Attribute SelectorForm.VB_VarHelpID = -1
 
 Public collSelectorPSDNonUIElements As cCollection, FX As Long, FY As Long, FZ As Single  'available on the outside, even after the Form was closed
 
@@ -58,7 +58,7 @@ End Sub
 ' Purpose   :    loads up the Cairo imageList with keyed entries and a surface from each and every PSD layer
 '                adds path X,Y and alpha to the excluded collection
 '                creates widgets with corresponding keynames, locations and sizes as per PSD for each layer
-'                cwOverlay class puts it on the screen
+'                cwOverlayTemp class puts it on the screen
 '---------------------------------------------------------------------------------------
 '
 Public Sub InitSelectorFromPSD(ByRef PSD_FileNameOrByteArray As Variant)
@@ -69,11 +69,11 @@ Public Sub InitSelectorFromPSD(ByRef PSD_FileNameOrByteArray As Variant)
     Dim i As Long: i = 0
     Dim W As cWidgetBase
    
-    On Error GoTo InitFromPSD_Error
+    On Error GoTo InitSelectorFromPSD_Error
 
     'create the Alpha-capable Top-Level-Form
-    Set SelectorGaugeForm = Cairo.WidgetForms.Create(IIf(App.LogMode, AlphaNoTaskbarEntry, AlphaWithTaskbarEntry), widgetName, True, 1, 1)
-        SelectorGaugeForm.WidgetRoot.BackColor = -1
+    Set SelectorForm = Cairo.WidgetForms.Create(IIf(App.LogMode, AlphaNoTaskbarEntry, AlphaWithTaskbarEntry), widgetName2, True, 1, 1)
+        SelectorForm.WidgetRoot.BackColor = -1
  
     With New_c.SimplePSD(PSD_FileNameOrByteArray)  'create a new PSD-Parser.instance (and load the passed content)
         PSDWidth = .Width
@@ -92,7 +92,8 @@ Public Sub InitSelectorFromPSD(ByRef PSD_FileNameOrByteArray As Variant)
                         collSelectorPSDNonUIElements(.LayerPath(i)) = Array(.LayerX(i), .LayerY(i), val(PzGOpacity) / 100)  'here we update the so far empty slots with the PSD-offsets
                 
                     Else 'everything not in the exclude-list will get its own Widget-instance
-                        Set W = SelectorGaugeForm.Widgets.Add(New cwAlphaImg, LCase$(.LayerPath(i)), .LayerX(i), .LayerY(i), .LayerWidth(i), .LayerHeight(i)).Widget
+                    
+                        Set W = SelectorForm.Widgets.Add(New cwAlphaImg, LCase$(.LayerPath(i)), .LayerX(i), .LayerY(i), .LayerWidth(i), .LayerHeight(i)).Widget
                             W.ImageKey = W.key 'W.Key equals ImageList-Key, set above - and LayerPath(i) at this point ... set it also as the ImageKey of our new created Widget
                         If PzGOpacity < 1 Then
                             W.Alpha = val(PzGOpacity) / 100
@@ -116,61 +117,59 @@ Public Sub InitSelectorFromPSD(ByRef PSD_FileNameOrByteArray As Variant)
         Next i
     End With '<-- the Parser-instance will be destroyed here (freeing the Memory, the internal PSD-Layers have occupied)
     
-'    Set overlayWidget = SelectorGaugeForm.Widgets.Add(New cwOverlay, "Overlay", 0, 0, PSDWidth, PSDHeight)
-'    Set overlayWidget.cCollOverlayImages = collSelectorPSDNonUIElements 'make the excluded PSD-Surface-Paths known to the Overlay-Widget
-'        overlayWidget.cxPerc = 0.4940476 'define the relative center (within cwOverlay, which has the same size as the Form and the PSD...) this is used for clock-hand-positioning
-'        overlayWidget.cyPerc = 0.4727272
+    Set overlaySelectorWidget = SelectorForm.Widgets.Add(New cwOverlaySelect, "Selector", 0, 0, PSDWidth, PSDHeight)
+    Set overlaySelectorWidget.cCollOverlaySelectorImages = collSelectorPSDNonUIElements 'make the excluded PSD-Surface-Paths known to the Overlay-Widget
 
    On Error GoTo 0
    Exit Sub
 
-InitFromPSD_Error:
+InitSelectorFromPSD_Error:
 
-    MsgBox "Error " & Err.Number & " (" & Err.Description & ") in procedure InitFromPSD of Class Module cfSelector"
+    MsgBox "Error " & Err.Number & " (" & Err.Description & ") in procedure InitSelectorFromPSD of Class Module cfSelector"
 End Sub
 '
 '---------------------------------------------------------------------------------------
-' Procedure : SelectorGaugeForm_BubblingEvent
+' Procedure : SelectorForm_BubblingEvent
 ' Author    : Dean Beedell (yereverluvinunclebert)
 ' Date      : 31/07/2023
 ' Purpose   : central handling of all Click-Events
 '---------------------------------------------------------------------------------------
 '
-Private Sub SelectorGaugeForm_BubblingEvent(ByRef sender As Object, ByRef EventName As String, ByRef P1 As Variant, ByRef P2 As Variant, ByRef P3 As Variant, ByRef P4 As Variant, ByRef P5 As Variant, ByRef P6 As Variant, ByRef P7 As Variant)
-   On Error GoTo SelectorGaugeForm_BubblingEvent_Error
+Private Sub SelectorForm_BubblingEvent(ByRef sender As Object, ByRef EventName As String, ByRef P1 As Variant, ByRef P2 As Variant, ByRef P3 As Variant, ByRef P4 As Variant, ByRef P5 As Variant, ByRef P6 As Variant, ByRef P7 As Variant)
+   On Error GoTo SelectorForm_BubblingEvent_Error
 
     If PzGIgnoreMouse = "1" Then Exit Sub
     
     If EventName = "W_MouseMove" Then
         Select Case LCase$(sender.Widget.key)
             Case "housing/lockbutton"
-                If PzGEnableBalloonTooltips = "1" Then CreateToolTip SelectorGaugeForm.hwnd, "Click me to lock the widget in place. This lock can be released by clicking again on the lock button, or in the preferences. A locking sound will denote the button's operation.", _
-                     TTIconInfo, widgetName & " Lock Button Help", , , , True
+                If PzGEnableBalloonTooltips = "1" Then CreateToolTip SelectorForm.hwnd, "Click me to lock the widget in place. This lock can be released by clicking again on the lock button, or in the preferences. A locking sound will denote the button's operation.", _
+                     TTIconInfo, widgetName2 & " Lock Button Help", , , , True
             Case "housing/prefsbutton"
-                If PzGEnableBalloonTooltips = "1" Then CreateToolTip SelectorGaugeForm.hwnd, "Click me to open the preferences utility. All advanced configuration of the widget is performed using the preference utility.", _
-                     TTIconInfo, widgetName & " Prefs Button Help", , , , True
+                If PzGEnableBalloonTooltips = "1" Then CreateToolTip SelectorForm.hwnd, "Click me to open the preferences utility. All advanced configuration of the widget is performed using the preference utility.", _
+                     TTIconInfo, widgetName2 & " Prefs Button Help", , , , True
             Case "housing/tickbutton"
-                If PzGEnableBalloonTooltips = "1" Then CreateToolTip SelectorGaugeForm.hwnd, "Click here to toggle the pointer movement from a jerky pointer to a more fluid, continuous movement.", _
-                     TTIconInfo, widgetName & " Tick Button Help", , , , True
+                If PzGEnableBalloonTooltips = "1" Then CreateToolTip SelectorForm.hwnd, "Click here to toggle the pointer movement from a jerky pointer to a more fluid, continuous movement.", _
+                     TTIconInfo, widgetName2 & " Tick Button Help", , , , True
             Case "housing/switchfacesbutton"
-                If PzGEnableBalloonTooltips = "1" Then CreateToolTip SelectorGaugeForm.hwnd, "Click here to select between different faces showing alternative Selector scales, celsius/fahrenheit or kelvin.", _
-                     TTIconInfo, widgetName & " Switch Faces Button Help", , , , True
+                If PzGEnableBalloonTooltips = "1" Then CreateToolTip SelectorForm.hwnd, "Click here to select between different faces showing alternative Selector scales, celsius/fahrenheit or kelvin.", _
+                     TTIconInfo, widgetName2 & " Switch Faces Button Help", , , , True
             Case "housing/stopbutton"
-                If PzGEnableBalloonTooltips = "1" Then CreateToolTip SelectorGaugeForm.hwnd, "This button stops all animated gauge functions for this widget, pointer movement, digital displays &c .", _
-                     TTIconInfo, widgetName & " Stop Button Help", , , , True
+                If PzGEnableBalloonTooltips = "1" Then CreateToolTip SelectorForm.hwnd, "This button stops all animated gauge functions for this widget, pointer movement, digital displays &c .", _
+                     TTIconInfo, widgetName2 & " Stop Button Help", , , , True
             Case "housing/startbutton"
-                If PzGEnableBalloonTooltips = "1" Then CreateToolTip SelectorGaugeForm.hwnd, "This button restarts all stopped animated gauge functions for this widget, pointer movement &c .", _
-                     TTIconInfo, widgetName & " Start Button Help", , , , True
+                If PzGEnableBalloonTooltips = "1" Then CreateToolTip SelectorForm.hwnd, "This button restarts all stopped animated gauge functions for this widget, pointer movement &c .", _
+                     TTIconInfo, widgetName2 & " Start Button Help", , , , True
             Case "housing/helpbutton"
-                If PzGEnableBalloonTooltips = "1" Then CreateToolTip SelectorGaugeForm.hwnd, "This button opens the one-page help file for this widget. There is a further detailed CHM help file available from the right-click menu that contains all the information that you need to run this widget.", _
-                     TTIconInfo, widgetName & " Help Button Help", , , , True
-            Case Else '& overlayWidget.SelectorDetails _
-                If PzGEnableBalloonTooltips = "1" Then CreateToolTip SelectorGaugeForm.hwnd, " " _
+                If PzGEnableBalloonTooltips = "1" Then CreateToolTip SelectorForm.hwnd, "This button opens the one-page help file for this widget. There is a further detailed CHM help file available from the right-click menu that contains all the information that you need to run this widget.", _
+                     TTIconInfo, widgetName2 & " Help Button Help", , , , True
+            Case Else '& overlaySelectorWidget.SelectorDetails _
+                If PzGEnableBalloonTooltips = "1" Then CreateToolTip SelectorForm.hwnd, " " _
                     & vbCrLf & "" _
                     & "Double tap on me to get new weather" _
                     & vbCrLf & "" _
                     & vbCrLf & "Right Click to open the menu and the preferences. CTRL+ Mouse scrollwheel UP/DOWN to resize." _
-                    , TTIconInfo, widgetName & " METAR summary Information.", , , , True
+                    , TTIconInfo, WidgetName2 & " METAR summary Information.", , , , True
         End Select
     End If
     
@@ -219,9 +218,9 @@ Private Sub SelectorGaugeForm_BubblingEvent(ByRef sender As Object, ByRef EventN
    On Error GoTo 0
    Exit Sub
 
-SelectorGaugeForm_BubblingEvent_Error:
+SelectorForm_BubblingEvent_Error:
 
-    MsgBox "Error " & Err.Number & " (" & Err.Description & ") in procedure SelectorGaugeForm_BubblingEvent of Class Module cfSelector"
+    MsgBox "Error " & Err.Number & " (" & Err.Description & ") in procedure SelectorForm_BubblingEvent of Class Module cfSelector"
 End Sub
 
 
@@ -238,7 +237,7 @@ End Sub
 ' Purpose   :
 '---------------------------------------------------------------------------------------
 '
-Private Sub SelectorGaugeForm_MouseDown(ByRef Button As Integer, ByRef Shift As Integer, ByRef x As Single, ByRef y As Single)
+Private Sub SelectorForm_MouseDown(ByRef Button As Integer, ByRef Shift As Integer, ByRef X As Single, ByRef Y As Single)
    On Error GoTo W_MouseDown_Error
 
     If Button = vbRightButton Then
@@ -257,3 +256,34 @@ W_MouseDown_Error:
 End Sub
 
 
+
+'---------------------------------------------------------------------------------------
+' Procedure : SelectorForm_MouseMove
+' Author    : Dean Beedell (yereverluvinunclebert)
+' Date      : 31/07/2023
+' Purpose   :
+'---------------------------------------------------------------------------------------
+'
+Private Sub SelectorForm_MouseMove(ByRef Button As Integer, ByRef Shift As Integer, ByRef X As Single, ByRef Y As Single)
+  Static x0 As Single, y0 As Single: If Button = 0 Then x0 = X: y0 = Y 'just store the offsets when no button is down
+  
+   On Error GoTo SelectorForm_MouseMove_Error
+    
+    If overlayTemperatureWidget.Locked = True Then Exit Sub
+    If PzGIgnoreMouse = "1" Then Exit Sub
+
+    If Button = vbLeftButton And Not SelectorForm.ActiveWidget Is Nothing Then 'Form-Dragging (under certain conditions)
+
+      FX = (X - x0) * SelectorForm.WidgetRoot.Zoom + SelectorForm.Left
+      FY = (Y - y0) * SelectorForm.WidgetRoot.Zoom + SelectorForm.Top
+      SelectorForm.Move FX, FY
+    End If
+
+
+   On Error GoTo 0
+   Exit Sub
+
+SelectorForm_MouseMove_Error:
+
+    MsgBox "Error " & Err.Number & " (" & Err.Description & ") in procedure SelectorForm_MouseMove of Class Module cfTemperature"
+End Sub

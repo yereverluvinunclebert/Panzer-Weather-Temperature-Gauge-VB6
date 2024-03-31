@@ -24,7 +24,7 @@ Option Explicit 'simple Alpha-Form (...to be filled with (mostly Img-) Content v
 Public WithEvents temperatureGaugeForm As cWidgetForm
 Attribute temperatureGaugeForm.VB_VarHelpID = -1
 
-Public collPSDNonUIElements As cCollection, FX As Long, FY As Long, FZ As Single  'available on the outside, even after the Form was closed
+Public collTemperaturePSDNonUIElements As cCollection, FX As Long, FY As Long, FZ As Single  'available on the outside, even after the Form was closed
 
 Private PSDWidth As Long
 Private PSDHeight As Long
@@ -41,7 +41,7 @@ Private Sub Class_Initialize()
    On Error GoTo Class_Initialize_Error
 
     'mGlowing = False ' when the alpha for the overlays arrives this might be usable
-    Set collPSDNonUIElements = New_c.Collection(False)
+    Set collTemperaturePSDNonUIElements = New_c.Collection(False)
 
    On Error GoTo 0
    Exit Sub
@@ -58,10 +58,10 @@ End Sub
 ' Purpose   :    loads up the Cairo imageList with keyed entries and a surface from each and every PSD layer
 '                adds path X,Y and alpha to the excluded collection
 '                creates widgets with corresponding keynames, locations and sizes as per PSD for each layer
-'                cwOverlay class puts it on the screen
+'                cwOverlayTemp class puts it on the screen
 '---------------------------------------------------------------------------------------
 '
-Public Sub InitFromPSD(ByRef PSD_FileNameOrByteArray As Variant)
+Public Sub InitTemperatureFromPSD(ByRef PSD_FileNameOrByteArray As Variant)
     
     Const AlphaWithTaskbarEntry As Integer = 6
     Const AlphaNoTaskbarEntry As Integer = 7
@@ -69,10 +69,10 @@ Public Sub InitFromPSD(ByRef PSD_FileNameOrByteArray As Variant)
     Dim i As Long: i = 0
     Dim W As cWidgetBase
    
-    On Error GoTo InitFromPSD_Error
+    On Error GoTo InitTemperatureFromPSD_Error
 
     'create the Alpha-capable Top-Level-Form
-    Set temperatureGaugeForm = Cairo.WidgetForms.Create(IIf(App.LogMode, AlphaNoTaskbarEntry, AlphaWithTaskbarEntry), widgetName, True, 1, 1)
+    Set temperatureGaugeForm = Cairo.WidgetForms.Create(IIf(App.LogMode, AlphaNoTaskbarEntry, AlphaWithTaskbarEntry), widgetName1, True, 1, 1)
         temperatureGaugeForm.WidgetRoot.BackColor = -1
  
     With New_c.SimplePSD(PSD_FileNameOrByteArray)  'create a new PSD-Parser.instance (and load the passed content)
@@ -85,11 +85,11 @@ Public Sub InitFromPSD(ByRef PSD_FileNameOrByteArray As Variant)
                     'add each current Layer path and surface object into the global ImageList collection (using LayerPath as the ImageKey)
                     Cairo.ImageList.AddSurface .LayerPath(i), .LayerSurface(i)
                     
-                    If collPSDNonUIElements.Exists(.LayerPath(i)) Then ' we do not create Widgets for those in this exclude list.
+                    If collTemperaturePSDNonUIElements.Exists(.LayerPath(i)) Then ' we do not create Widgets for those in this exclude list.
                         
-                        'we add layer info. (used in cwOverlay) to the "excluded paths" previously defined in Sub Main,
+                        'we add layer info. (used in cwOverlayTemp) to the "excluded paths" previously defined in Sub Main,
                         
-                        collPSDNonUIElements(.LayerPath(i)) = Array(.LayerX(i), .LayerY(i), val(PzGOpacity) / 100)  'here we update the so far empty slots with the PSD-offsets
+                        collTemperaturePSDNonUIElements(.LayerPath(i)) = Array(.LayerX(i), .LayerY(i), val(PzGOpacity) / 100)  'here we update the so far empty slots with the PSD-offsets
                 
                     Else 'everything not in the exclude-list will get its own Widget-instance
                         Set W = temperatureGaugeForm.Widgets.Add(New cwAlphaImg, LCase$(.LayerPath(i)), .LayerX(i), .LayerY(i), .LayerWidth(i), .LayerHeight(i)).Widget
@@ -116,17 +116,17 @@ Public Sub InitFromPSD(ByRef PSD_FileNameOrByteArray As Variant)
         Next i
     End With '<-- the Parser-instance will be destroyed here (freeing the Memory, the internal PSD-Layers have occupied)
     
-    Set overlayWidget = temperatureGaugeForm.Widgets.Add(New cwOverlay, "Overlay", 0, 0, PSDWidth, PSDHeight)
-    Set overlayWidget.cCollOverlayImages = collPSDNonUIElements 'make the excluded PSD-Surface-Paths known to the Overlay-Widget
-        overlayWidget.cxPerc = 0.4940476 'define the relative center (within cwOverlay, which has the same size as the Form and the PSD...) this is used for clock-hand-positioning
-        overlayWidget.cyPerc = 0.4727272
+    Set overlayTemperatureWidget = temperatureGaugeForm.Widgets.Add(New cwOverlayTemp, "Overlay", 0, 0, PSDWidth, PSDHeight)
+    Set overlayTemperatureWidget.cCollOverlayTempImages = collTemperaturePSDNonUIElements 'make the excluded PSD-Surface-Paths known to the Overlay-Widget
+        overlayTemperatureWidget.cxPerc = 0.4940476 'define the relative center (within cwOverlayTemp, which has the same size as the Form and the PSD...) this is used for clock-hand-positioning
+        overlayTemperatureWidget.cyPerc = 0.4727272
 
    On Error GoTo 0
    Exit Sub
 
-InitFromPSD_Error:
+InitTemperatureFromPSD_Error:
 
-    MsgBox "Error " & Err.Number & " (" & Err.Description & ") in procedure InitFromPSD of Class Module cfTemperature"
+    MsgBox "Error " & Err.Number & " (" & Err.Description & ") in procedure InitTemperatureFromPSD of Class Module cfTemperature"
 End Sub
 '
 '---------------------------------------------------------------------------------------
@@ -145,32 +145,32 @@ Private Sub temperatureGaugeForm_BubblingEvent(ByRef sender As Object, ByRef Eve
         Select Case LCase$(sender.Widget.key)
             Case "housing/lockbutton"
                 If PzGEnableBalloonTooltips = "1" Then CreateToolTip temperatureGaugeForm.hwnd, "Click me to lock the widget in place. This lock can be released by clicking again on the lock button, or in the preferences. A locking sound will denote the button's operation.", _
-                     TTIconInfo, widgetName & " Lock Button Help", , , , True
+                     TTIconInfo, widgetName1 & " Lock Button Help", , , , True
             Case "housing/prefsbutton"
                 If PzGEnableBalloonTooltips = "1" Then CreateToolTip temperatureGaugeForm.hwnd, "Click me to open the preferences utility. All advanced configuration of the widget is performed using the preference utility.", _
-                     TTIconInfo, widgetName & " Prefs Button Help", , , , True
+                     TTIconInfo, widgetName1 & " Prefs Button Help", , , , True
             Case "housing/tickbutton"
                 If PzGEnableBalloonTooltips = "1" Then CreateToolTip temperatureGaugeForm.hwnd, "Click here to toggle the pointer movement from a jerky pointer to a more fluid, continuous movement.", _
-                     TTIconInfo, widgetName & " Tick Button Help", , , , True
+                     TTIconInfo, widgetName1 & " Tick Button Help", , , , True
             Case "housing/switchfacesbutton"
                 If PzGEnableBalloonTooltips = "1" Then CreateToolTip temperatureGaugeForm.hwnd, "Click here to select between different faces showing alternative temperature scales, celsius/fahrenheit or kelvin.", _
-                     TTIconInfo, widgetName & " Switch Faces Button Help", , , , True
+                     TTIconInfo, widgetName1 & " Switch Faces Button Help", , , , True
             Case "housing/stopbutton"
                 If PzGEnableBalloonTooltips = "1" Then CreateToolTip temperatureGaugeForm.hwnd, "This button stops all animated gauge functions for this widget, pointer movement, digital displays &c .", _
-                     TTIconInfo, widgetName & " Stop Button Help", , , , True
+                     TTIconInfo, widgetName1 & " Stop Button Help", , , , True
             Case "housing/startbutton"
                 If PzGEnableBalloonTooltips = "1" Then CreateToolTip temperatureGaugeForm.hwnd, "This button restarts all stopped animated gauge functions for this widget, pointer movement &c .", _
-                     TTIconInfo, widgetName & " Start Button Help", , , , True
+                     TTIconInfo, widgetName1 & " Start Button Help", , , , True
             Case "housing/helpbutton"
                 If PzGEnableBalloonTooltips = "1" Then CreateToolTip temperatureGaugeForm.hwnd, "This button opens the one-page help file for this widget. There is a further detailed CHM help file available from the right-click menu that contains all the information that you need to run this widget.", _
-                     TTIconInfo, widgetName & " Help Button Help", , , , True
+                     TTIconInfo, widgetName1 & " Help Button Help", , , , True
             Case Else
-                If PzGEnableBalloonTooltips = "1" Then CreateToolTip temperatureGaugeForm.hwnd, " " & overlayWidget.TemperatureDetails _
+                If PzGEnableBalloonTooltips = "1" Then CreateToolTip temperatureGaugeForm.hwnd, " " & overlayTemperatureWidget.TemperatureDetails _
                     & vbCrLf & "" _
                     & "Double tap on me to get new weather" _
                     & vbCrLf & "" _
                     & vbCrLf & "Right Click to open the menu and the preferences. CTRL+ Mouse scrollwheel UP/DOWN to resize." _
-                    , TTIconInfo, widgetName & " METAR summary Information.", , , , True
+                    , TTIconInfo, widgetName1 & " METAR summary Information.", , , , True
         End Select
     End If
     
@@ -373,7 +373,7 @@ Private Sub switchfacesbutton_mouseUp(ByRef sender As Object)
     If currFace > 2 Then currFace = 0
     PzGTemperatureScale = LTrim$(Str$(currFace))
     
-    overlayWidget.thisFace = val(PzGTemperatureScale)
+    overlayTemperatureWidget.thisFace = val(PzGTemperatureScale)
     
     If PzGEnableSounds = "1" And fFExists(App.path & "\resources\sounds\" & fileToPlay) Then
         PlaySound App.path & "\resources\sounds\" & fileToPlay, ByVal 0&, SND_FILENAME Or SND_ASYNC
@@ -396,7 +396,7 @@ End Sub
 Private Sub lockbutton_mouseDown(ByRef sender As Object)
    On Error GoTo lockbutton_mouseDown_Error
     
-    If overlayWidget.Locked = False Then
+    If overlayTemperatureWidget.Locked = False Then
         sender.Widget.Alpha = 0
     Else
         sender.Widget.Alpha = val(PzGOpacity) / 100
@@ -456,12 +456,12 @@ Private Sub tickbutton_mouseDown(ByRef sender As Object)
    
     On Error GoTo tickbutton_mouseDown_Error
         
-    If overlayWidget.pointerAnimate = True Then
-        overlayWidget.pointerAnimate = False
+    If overlayTemperatureWidget.pointerAnimate = True Then
+        overlayTemperatureWidget.pointerAnimate = False
         sender.Widget.Alpha = val(PzGOpacity) / 100
         PzGPointerAnimate = "0"
     Else
-        overlayWidget.pointerAnimate = True
+        overlayTemperatureWidget.pointerAnimate = True
         sender.Widget.Alpha = 0 ' sender is the referring control
         PzGPointerAnimate = "1"
         
@@ -568,7 +568,7 @@ End Sub
 ' Purpose   : save the form x,y position when ever the gauge/form is dragged
 '---------------------------------------------------------------------------------------
 '
-Private Sub temperatureGaugeForm_MouseUp(ByRef Button As Integer, ByRef Shift As Integer, ByRef x As Single, ByRef y As Single)
+Private Sub temperatureGaugeForm_MouseUp(ByRef Button As Integer, ByRef Shift As Integer, ByRef X As Single, ByRef Y As Single)
     On Error GoTo temperatureGaugeForm_MouseUp_Error
     
     Call savePosition
@@ -593,18 +593,18 @@ End Sub
 ' Purpose   :
 '---------------------------------------------------------------------------------------
 '
-Private Sub temperatureGaugeForm_MouseMove(ByRef Button As Integer, ByRef Shift As Integer, ByRef x As Single, ByRef y As Single)
-  Static x0 As Single, y0 As Single: If Button = 0 Then x0 = x: y0 = y 'just store the offsets when no button is down
+Private Sub temperatureGaugeForm_MouseMove(ByRef Button As Integer, ByRef Shift As Integer, ByRef X As Single, ByRef Y As Single)
+  Static x0 As Single, y0 As Single: If Button = 0 Then x0 = X: y0 = Y 'just store the offsets when no button is down
   
    On Error GoTo temperatureGaugeForm_MouseMove_Error
     
-    If overlayWidget.Locked = True Then Exit Sub
+    If overlayTemperatureWidget.Locked = True Then Exit Sub
     If PzGIgnoreMouse = "1" Then Exit Sub
 
     If Button = vbLeftButton And Not temperatureGaugeForm.ActiveWidget Is Nothing Then 'Form-Dragging (under certain conditions)
 
-      FX = (x - x0) * temperatureGaugeForm.WidgetRoot.Zoom + temperatureGaugeForm.Left
-      FY = (y - y0) * temperatureGaugeForm.WidgetRoot.Zoom + temperatureGaugeForm.Top
+      FX = (X - x0) * temperatureGaugeForm.WidgetRoot.Zoom + temperatureGaugeForm.Left
+      FY = (Y - y0) * temperatureGaugeForm.WidgetRoot.Zoom + temperatureGaugeForm.Top
       temperatureGaugeForm.Move FX, FY
     End If
 
@@ -704,7 +704,7 @@ End Sub
 ' Purpose   :
 '---------------------------------------------------------------------------------------
 '
-Private Sub temperatureGaugeForm_MouseDown(ByRef Button As Integer, ByRef Shift As Integer, ByRef x As Single, ByRef y As Single)
+Private Sub temperatureGaugeForm_MouseDown(ByRef Button As Integer, ByRef Shift As Integer, ByRef X As Single, ByRef Y As Single)
    On Error GoTo W_MouseDown_Error
 
     If Button = vbRightButton Then
@@ -719,7 +719,7 @@ Private Sub temperatureGaugeForm_MouseDown(ByRef Button As Integer, ByRef Shift 
 
 W_MouseDown_Error:
 
-    MsgBox "Error " & Err.Number & " (" & Err.Description & ") in procedure W_MouseDown of Class Module cwOverlay"
+    MsgBox "Error " & Err.Number & " (" & Err.Description & ") in procedure W_MouseDown of Class Module cwOverlayTemp"
 End Sub
 
 

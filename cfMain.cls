@@ -288,7 +288,7 @@ Public Sub initAndShowLicenceForm(Optional ByVal Caption As String)
     
     Call LoadFileToTB(textBox, App.path & "\resources\txt\licence.txt", False)
 
-    textBox.Text = widgetName & vbCrLf & vbCrLf & _
+    textBox.Text = widgetName1 & vbCrLf & vbCrLf & _
     "Copyright © 1992-2023 Dean Beedell" & vbCrLf & vbCrLf & _
     "This program is free software; you can redistribute it and/or modify it under the terms of the GNU General Public Licence as published by the Free Software Foundation; either version 2 of the License, or (at your option) any later version." & vbCrLf & vbCrLf & _
         "This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more details." & vbCrLf & vbCrLf & _
@@ -399,18 +399,18 @@ End Sub
 ' Purpose   :
 '---------------------------------------------------------------------------------------
 '
-Private Sub licenceForm_MouseMove(ByRef Button As Integer, ByRef Shift As Integer, ByRef x As Single, ByRef y As Single)
-  Static x0 As Single, y0 As Single: If Button = 0 Then x0 = x: y0 = y 'just store the offsets when no button is down
+Private Sub licenceForm_MouseMove(ByRef Button As Integer, ByRef Shift As Integer, ByRef X As Single, ByRef Y As Single)
+  Static x0 As Single, y0 As Single: If Button = 0 Then x0 = X: y0 = Y 'just store the offsets when no button is down
   
    On Error GoTo licenceForm_MouseMove_Error
     
-    If overlayWidget.Locked = True Then Exit Sub
+    If overlayTemperatureWidget.Locked = True Then Exit Sub
     If PzGIgnoreMouse = "1" Then Exit Sub
 
     If Button = vbLeftButton And Not licenceForm.ActiveWidget Is Nothing Then 'Form-Dragging (under certain conditions)
 
-      licenceFormX = (x - x0) * licenceForm.WidgetRoot.Zoom + licenceForm.Left
-      licenceFormY = (y - y0) * licenceForm.WidgetRoot.Zoom + licenceForm.Top
+      licenceFormX = (X - x0) * licenceForm.WidgetRoot.Zoom + licenceForm.Left
+      licenceFormY = (Y - y0) * licenceForm.WidgetRoot.Zoom + licenceForm.Top
       licenceForm.Move licenceFormX, licenceFormY
     End If
 

@@ -231,7 +231,7 @@ Private Sub mnuCopyWeather_Click()
     On Error GoTo mnuCopyWeather_Click_Error
     
     Clipboard.Clear
-    Clipboard.SetText (overlayWidget.TemperatureDetails)
+    Clipboard.SetText (overlayTemperatureWidget.TemperatureDetails)
 
     On Error GoTo 0
     Exit Sub
@@ -243,7 +243,7 @@ mnuCopyWeather_Click_Error:
 End Sub
 
 Private Sub mnuDownloadICAO_Click()
-    Call overlayWidget.getNewIcaoLocations
+    Call overlayTemperatureWidget.getNewIcaoLocations
 End Sub
 
 '---------------------------------------------------------------------------------------
@@ -345,7 +345,7 @@ End Sub
 Private Sub mnuHideWidget_Click()
     On Error GoTo mnuHideWidget_Click_Error
        
-    'overlayWidget.Hidden = True
+    'overlayTemperatureWidget.Hidden = True
     fTemperature.temperatureGaugeForm.Visible = False
     frmTimer.revealWidgetTimer.Enabled = True
     PzGWidgetHidden = "1"
@@ -562,7 +562,7 @@ Private Sub mnuRefreshMetar_Click()
     Dim answer As VbMsgBoxResult
     Dim answerMsg  As String: answerMsg = vbNullString
     
-    overlayWidget.GetMetar = True
+    overlayTemperatureWidget.GetMetar = True
     answerMsg = "Done. "
     answer = msgBoxA(answerMsg, vbOKOnly + vbExclamation, "Update Information", False)
 

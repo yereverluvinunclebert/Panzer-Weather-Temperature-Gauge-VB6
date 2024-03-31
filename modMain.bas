@@ -6,7 +6,7 @@ Option Explicit
 
 '------------------------------------------------------ STARTS
 ' for SetWindowPos z-ordering
-Public Declare Function SetWindowPos Lib "user32" (ByVal hwnd As Long, ByVal hWndInsertAfter As Long, ByVal x As Long, ByVal y As Long, ByVal cx As Long, ByVal cy As Long, ByVal wFlags As Long) As Long
+Public Declare Function SetWindowPos Lib "user32" (ByVal hwnd As Long, ByVal hWndInsertAfter As Long, ByVal X As Long, ByVal Y As Long, ByVal cx As Long, ByVal cy As Long, ByVal wFlags As Long) As Long
 
 Public Const HWND_TOP As Long = 0 ' for SetWindowPos z-ordering
 Public Const HWND_TOPMOST As Long = -1
@@ -37,10 +37,14 @@ Public licenceWidget As cwLicence
 Public revealWidgetTimerCount As Integer
  
 Public fTemperature As New cfTemperature
+Public overlayTemperatureWidget As cwOverlayTemp
+
 Public fSelector As New cfSelector
-Public overlayWidget As cwOverlay
+Public overlaySelectorWidget As cwOverlaySelect
+
 Public sunriseSunset As cwSunriseSunset
-Public widgetName As String
+Public widgetName1 As String
+Public widgetName2 As String
 
 
 
@@ -85,15 +89,16 @@ Public Sub mainRoutine(ByVal restart As Boolean)
 
     On Error GoTo main_routine_Error
     
-    widgetName = "Panzer Temperature Gauge"
+    widgetName1 = "Panzer Temperature Gauge"
     thisPSDFullPath = App.path & "\Res\Panzer Weather Gauges VB6.psd"
-    fTemperature.FX = 222 'init position- and zoom-values (directly set on Public-Props of the Form-hosting Class)
-    fTemperature.FY = 111
-    fTemperature.FZ = 0.4
+'    fTemperature.FX = 222 'init position- and zoom-values (directly set on Public-Props of the Form-hosting Class)
+'    fTemperature.FY = 111
+'    fTemperature.FZ = 0.4
     
+    widgetName2 = "ICAO Selector"
     selectorPSDFullPath = App.path & "\Res\Panzer Weather Selector VB6.psd"
-    fSelector.FX = 222 'init position- and zoom-values (directly set on Public-Props of the Form-hosting Class)
-    fSelector.FY = 111
+'    fSelector.FX = 150 'init position- and zoom-values (directly set on Public-Props of the Form-hosting Class)
+'    fSelector.FY = 111
     fSelector.FZ = 0.4
     
     prefsCurrentWidth = 9075
@@ -106,7 +111,7 @@ Public Sub mainRoutine(ByVal restart As Boolean)
     Call initialiseGlobalVars
     
     'add Resources to the global ImageList
-    Call addImagesToImageList
+    Call addGeneralImagesToImageLists
     
     ' check the Windows version
     classicThemeCapable = fTestClassicThemeCapable
@@ -132,13 +137,16 @@ Public Sub mainRoutine(ByVal restart As Boolean)
     End If
 
     'load the collection for storing the overlay surfaces with its relevant keys direct from the PSD
-    If restart = False Then Call loadExcludePathCollection ' no need to reload the collPSDNonUIElements layer name keys on a reload
+    If restart = False Then Call loadTemperatureExcludePathCollection ' no need to reload the collTemperaturePSDNonUIElements layer name keys on a reload
+
+    'load the collection for storing the overlay surfaces with its relevant keys direct from the PSD
+    If restart = False Then Call loadSelectorExcludePathCollection ' no need to reload the collSelectorPSDNonUIElements layer name keys on a reload
     
     ' start the load of the PSD file using the RC6 PSD-Parser.instance
-    Call fTemperature.InitFromPSD(thisPSDFullPath)  ' no optional close layer as 3rd param
+    Call fTemperature.InitTemperatureFromPSD(thisPSDFullPath)  ' no optional close layer as 3rd param
 
     ' start the load of the PSD file using the RC6 PSD-Parser.instance
-    Call fSelector.InitSelectorFromPSD(selectorPSDFullPath)  ' no optional close layer as 3rd param
+    Call fSelector.InitSelectorFromPSD(selectorPSDFullPath) ' no optional close layer as 3rd param
 
     ' resolve VB6 sizing width bug
     Call determineScreenDimensions
@@ -154,6 +162,50 @@ Public Sub mainRoutine(ByVal restart As Boolean)
     
     ' run the functions that are also called at reload time.
     Call adjustMainControls ' this needs to be here after the initialisation of the Cairo forms and widgets
+    
+        
+    ' selector widgets
+    
+    With fSelector.SelectorForm.Widgets("locationknobgreen").Widget
+        .HoverColor = 0 ' set the hover colour to grey - this may change later with new RC6
+        .MousePointer = IDC_HAND
+        .Alpha = val(PzGOpacity) / 100
+        .Tag = 0.25
+    End With
+    
+    With fSelector.SelectorForm.Widgets("locationknobred").Widget
+        .HoverColor = 0 ' set the hover colour to grey - this may change later with new RC6
+        .MousePointer = IDC_HAND
+        .Alpha = val(PzGOpacity) / 100
+        .Tag = 0.25
+    End With
+    
+    
+    With fSelector.SelectorForm.Widgets("icaoknobgreen").Widget
+        .HoverColor = 0 ' set the hover colour to grey - this may change later with new RC6
+        .MousePointer = IDC_HAND
+        .Alpha = val(PzGOpacity) / 100
+        .Tag = 0.25
+    End With
+    
+    With fSelector.SelectorForm.Widgets("icaoknobred").Widget
+        .HoverColor = 0 ' set the hover colour to grey - this may change later with new RC6
+        .MousePointer = IDC_HAND
+        .Alpha = val(PzGOpacity) / 100
+        .Tag = 0.25
+    End With
+    
+    With fSelector.SelectorForm.Widgets("exitbutton").Widget
+        .HoverColor = 0 ' set the hover colour to grey - this may change later with new RC6
+        .MousePointer = IDC_HAND
+        .Alpha = val(PzGOpacity) / 100
+    End With
+    
+    With fSelector.SelectorForm.Widgets("okbutton").Widget
+        .HoverColor = 0 ' set the hover colour to grey - this may change later with new RC6
+        .MousePointer = IDC_HAND
+        .Alpha = val(PzGOpacity) / 100
+    End With
     
     ' move/hide onto/from the main screen
     Call mainScreen
@@ -309,6 +361,7 @@ Private Sub initialiseGlobalVars()
     PzGSkinTheme = vbNullString
     
     PzGLastUpdated = vbNullString
+    PzGMetarPref = vbNullString
     PzGPressureScale = vbNullString
     
     ' general variables declared
@@ -349,16 +402,15 @@ End Sub
 
         
 '---------------------------------------------------------------------------------------
-' Procedure : addImagesToImageList
+' Procedure : addGeneralImagesToImageLists
 ' Author    : Dean Beedell (yereverluvinunclebert)
 ' Date      : 27/04/2023
 ' Purpose   : add Resources to the global ImageList
 '---------------------------------------------------------------------------------------
 '
-Private Sub addImagesToImageList()
-    'Dim useloop As Integer: useloop = 0
+Private Sub addGeneralImagesToImageLists()
     
-    On Error GoTo addImagesToImageList_Error
+    On Error GoTo addGeneralImagesToImageLists_Error
 
 '    add Resources to the global ImageList that are not being pulled from the PSD directly
     
@@ -406,11 +458,13 @@ Private Sub addImagesToImageList()
    On Error GoTo 0
    Exit Sub
 
-addImagesToImageList_Error:
+addGeneralImagesToImageLists_Error:
 
-    MsgBox "Error " & Err.Number & " (" & Err.Description & ") in procedure addImagesToImageList of Module modMain"
+    MsgBox "Error " & Err.Number & " (" & Err.Description & ") in procedure addGeneralImagesToImageLists of Module modMain"
 
 End Sub
+        
+
 '---------------------------------------------------------------------------------------
 ' Procedure : adjustMainControls
 ' Author    : Dean Beedell (yereverluvinunclebert)
@@ -427,16 +481,16 @@ Public Sub adjustMainControls()
     
     fTemperature.AdjustZoom val(PzGGaugeSize) / 100
     
-'    overlayWidget.ZoomDirection = PzGScrollWheelDirection
+'    overlayTemperatureWidget.ZoomDirection = PzGScrollWheelDirection
 
 '   PzGIcao
 
     If PzGGaugeFunctions = "1" Then
-        overlayWidget.Ticking = True
+        overlayTemperatureWidget.Ticking = True
         menuForm.mnuSwitchOff.Checked = False
         menuForm.mnuTurnFunctionsOn.Checked = True
     Else
-        overlayWidget.Ticking = False
+        overlayTemperatureWidget.Ticking = False
         menuForm.mnuSwitchOff.Checked = True
         menuForm.mnuTurnFunctionsOn.Checked = False
     End If
@@ -503,30 +557,32 @@ Public Sub adjustMainControls()
         .HoverColor = 0 ' set the hover colour to grey - this may change later with new RC6
         .MousePointer = IDC_SIZEALL
         .Alpha = val(PzGOpacity) / 100
-
     End With
+
+    
+    
     
     If PzGPointerAnimate = "0" Then
-        overlayWidget.pointerAnimate = False
+        overlayTemperatureWidget.pointerAnimate = False
         fTemperature.temperatureGaugeForm.Widgets("housing/tickbutton").Widget.Alpha = val(PzGOpacity) / 100
     Else
-        overlayWidget.pointerAnimate = True
+        overlayTemperatureWidget.pointerAnimate = True
         fTemperature.temperatureGaugeForm.Widgets("housing/tickbutton").Widget.Alpha = 0
     End If
         
     If PzGPreventDragging = "0" Then
         menuForm.mnuLockWidget.Checked = False
-        overlayWidget.Locked = False
+        overlayTemperatureWidget.Locked = False
         fTemperature.temperatureGaugeForm.Widgets("housing/lockbutton").Widget.Alpha = val(PzGOpacity) / 100
     Else
         menuForm.mnuLockWidget.Checked = True
-        overlayWidget.Locked = True ' this is just here for continuity's sake, it is also set at the time the control is selected
+        overlayTemperatureWidget.Locked = True ' this is just here for continuity's sake, it is also set at the time the control is selected
         fTemperature.temperatureGaugeForm.Widgets("housing/lockbutton").Widget.Alpha = 0
     End If
 
-    overlayWidget.thisOpacity = val(PzGOpacity)
-    overlayWidget.samplingInterval = val(PzGSamplingInterval)
-    overlayWidget.thisFace = val(PzGTemperatureScale)
+    overlayTemperatureWidget.thisOpacity = val(PzGOpacity)
+    overlayTemperatureWidget.samplingInterval = val(PzGSamplingInterval)
+    overlayTemperatureWidget.thisFace = val(PzGTemperatureScale)
                
     ' set the z-ordering of the window
     Call setAlphaFormZordering
@@ -654,6 +710,8 @@ Public Sub readSettingsFile(ByVal location As String, ByVal PzGSettingsFile As S
         PzGOpacity = fGetINISetting(location, "opacity", PzGSettingsFile)
         
         PzGLastUpdated = fGetINISetting(location, "lastUpdated", PzGSettingsFile)
+        PzGMetarPref = fGetINISetting(location, "metarPref", PzGSettingsFile)
+        
 
         ' we do not want the widget to hide at startup
         'PzGWidgetHidden = fGetINISetting(location, "widgetHidden", PzGSettingsFile)
@@ -756,6 +814,8 @@ Public Sub validateInputs()
         If PzGSkinTheme = vbNullString Then PzGSkinTheme = "dark"
         
         If PzGLastUpdated = vbNullString Then PzGLastUpdated = Now()
+        If PzGMetarPref = vbNullString Then PzGMetarPref = "ICAO"
+        
  
  
    On Error GoTo 0
@@ -779,7 +839,7 @@ Private Sub getTrinketsFile()
     Dim iFileNo As Integer: iFileNo = 0
     
     PzGTrinketsDir = fSpecialFolder(feUserAppData) & "\trinkets" ' just for this user alone
-    PzGTrinketsFile = PzGTrinketsDir & "\" & widgetName & ".ini"
+    PzGTrinketsFile = PzGTrinketsDir & "\" & widgetName1 & ".ini"
         
     'if the folder does not exist then create the folder
     If Not fDirExists(PzGTrinketsDir) Then
@@ -922,15 +982,15 @@ Private Sub createRCFormsOnCurrentDisplay()
     On Error GoTo createRCFormsOnCurrentDisplay_Error
 
     With New_c.Displays(1) 'get the current Display
-      Call fMain.initAndShowAboutForm(widgetName)
+      Call fMain.initAndShowAboutForm(widgetName1)
     End With
     
     With New_c.Displays(1) 'get the current Display
-      Call fMain.initAndShowHelpForm(widgetName)
+      Call fMain.initAndShowHelpForm(widgetName1)
     End With
 
     With New_c.Displays(1) 'get the current Display
-      Call fMain.initAndShowLicenceForm(widgetName)
+      Call fMain.initAndShowLicenceForm(widgetName1)
     End With
     
         On Error GoTo 0
@@ -980,19 +1040,19 @@ handleUnhideMode_Error:
 End Sub
 
 '---------------------------------------------------------------------------------------
-' Procedure : loadExcludePathCollection
+' Procedure : loadTemperatureExcludePathCollection
 ' Author    : Dean Beedell (yereverluvinunclebert)
 ' Date      : 30/07/2023
 ' Purpose   : Do not create Widgets for those in the exclude list.
 '             all non UI-interacting elements (no mouse events) must be inserted here
 '---------------------------------------------------------------------------------------
 '
-Private Sub loadExcludePathCollection()
+Private Sub loadTemperatureExcludePathCollection()
 
-    'all of these will be rendered in cwOverlay in the same order as below
-    On Error GoTo loadExcludePathCollection_Error
+    'all of these will be rendered in cwOverlayTemp in the same order as below
+    On Error GoTo loadTemperatureExcludePathCollection_Error
 
-    With fTemperature.collPSDNonUIElements ' the exclude list
+    With fTemperature.collTemperaturePSDNonUIElements ' the exclude list
         .Add Empty, "centigradeface"
         .Add Empty, "fahrenheitface"
         .Add Empty, "kelvinface"
@@ -1016,13 +1076,40 @@ Private Sub loadExcludePathCollection()
    On Error GoTo 0
    Exit Sub
 
-loadExcludePathCollection_Error:
+loadTemperatureExcludePathCollection_Error:
 
-    MsgBox "Error " & Err.Number & " (" & Err.Description & ") in procedure loadExcludePathCollection of Module modMain"
+    MsgBox "Error " & Err.Number & " (" & Err.Description & ") in procedure loadTemperatureExcludePathCollection of Module modMain"
 
 End Sub
 
+'---------------------------------------------------------------------------------------
+' Procedure : loadSelectorExcludePathCollection
+' Author    : Dean Beedell (yereverluvinunclebert)
+' Date      : 30/07/2023
+' Purpose   : Do not create Widgets for those in the exclude list.
+'             all non UI-interacting elements (no mouse events) must be inserted here
+'---------------------------------------------------------------------------------------
+'
+Private Sub loadSelectorExcludePathCollection()
 
+    'all of these will be rendered in cwOverlay in the same order as below
+    On Error GoTo loadSelectorExcludePathCollection_Error
+
+    With fSelector.collSelectorPSDNonUIElements ' the exclude list
+        .Add Empty, "enterlocation"
+        .Add Empty, "entericao"
+        .Add Empty, "radioknobtwo"
+        .Add Empty, "radioknobone"
+    End With
+
+   On Error GoTo 0
+   Exit Sub
+
+loadSelectorExcludePathCollection_Error:
+
+    MsgBox "Error " & Err.Number & " (" & Err.Description & ") in procedure loadSelectorExcludePathCollection of Module modMain"
+
+End Sub
 ''---------------------------------------------------------------------------------------
 '' Procedure : ExportPngs
 '' Author    : Olaf

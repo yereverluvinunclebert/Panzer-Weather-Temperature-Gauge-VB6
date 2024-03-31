@@ -344,7 +344,7 @@ Private Sub Draw(ByRef CC As cCairoContext, ByVal dx As Single, ByVal dy As Sing
     W.FontSize = 10
     W.SelectFontSettingsInto CC
    
-    CC.DrawText 48, -235, dx, dy, "Licence Agreement " & widgetName, , , 2, True, , 1
+    CC.DrawText 48, -235, dx, dy, "Licence Agreement " & widgetName1, , , 2, True, , 1
 
     CC.ScaleDrawings mZoom, mZoom
 
