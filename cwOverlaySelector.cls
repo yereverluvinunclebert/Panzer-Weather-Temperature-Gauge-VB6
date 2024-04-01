@@ -56,6 +56,7 @@ Private Sub Class_Initialize()
     Set W = Cairo.WidgetBase
         W.BackColor = -1  'we don't use any BackColor here, transparent
         W.ImplementsHitTest = True 'when at False, no HitTest-Event would be triggered
+        W.ToolTip = "testing"
                         
    On Error GoTo 0
    Exit Sub

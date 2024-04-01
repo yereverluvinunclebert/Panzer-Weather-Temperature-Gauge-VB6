@@ -2198,30 +2198,37 @@ Public Sub unloadAllForms(ByVal endItAll As Boolean)
     aboutWidget.Widgets.RemoveAll
     helpWidget.Widgets.RemoveAll
     fTemperature.temperatureGaugeForm.Widgets.RemoveAll
+    fSelector.SelectorForm.Widgets.RemoveAll
     
-    ' unload the native VB6 and RC6 forms
+    ' unload the native VB6 forms
     
     Unload panzerPrefs
-    'Unload frmLicence
     Unload frmTimer
     Unload menuForm
+    Unload frmLocation
+    
+    ' unload the RC6 forms
 
     fMain.aboutForm.Unload  ' RC6's own method for killing forms
     fMain.helpForm.Unload
     fTemperature.temperatureGaugeForm.Unload
+    fSelector.SelectorForm.Unload
     fMain.licenceForm.Unload
     
-    ' remove all variable references to each form in turn
+    ' remove all variable references to each RC6 form in turn
     
     Set panzerPrefs = Nothing
     Set fMain.aboutForm = Nothing
     Set fMain.helpForm = Nothing
     Set fTemperature.temperatureGaugeForm = Nothing
+    Set fSelector.SelectorForm = Nothing
     Set fMain.licenceForm = Nothing
     
-    'Set frmLicence = Nothing
+    ' remove all variable references to each VB6 form in turn
+    
     Set frmTimer = Nothing
     Set menuForm = Nothing
+    Set frmLocation = Nothing
     
     If endItAll = True Then End
 

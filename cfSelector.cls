@@ -127,7 +127,19 @@ InitSelectorFromPSD_Error:
 
     MsgBox "Error " & Err.Number & " (" & Err.Description & ") in procedure InitSelectorFromPSD of Class Module cfSelector"
 End Sub
-'
+
+' enterlocation
+' entericao
+' okbutton
+' exitbutton
+' radioknobone
+' radioknobtwo
+' locationknobgreen
+' locationknobred
+' icaoknobred
+' icaoknobgreen
+' radiobody
+
 '---------------------------------------------------------------------------------------
 ' Procedure : SelectorForm_BubblingEvent
 ' Author    : Dean Beedell (yereverluvinunclebert)
@@ -142,34 +154,30 @@ Private Sub SelectorForm_BubblingEvent(ByRef sender As Object, ByRef EventName A
     
     If EventName = "W_MouseMove" Then
         Select Case LCase$(sender.Widget.key)
-            Case "housing/lockbutton"
-                If PzGEnableBalloonTooltips = "1" Then CreateToolTip SelectorForm.hwnd, "Click me to lock the widget in place. This lock can be released by clicking again on the lock button, or in the preferences. A locking sound will denote the button's operation.", _
+            Case "okbutton"
+                If PzGEnableBalloonTooltips = "1" Then CreateToolTip SelectorForm.hwnd, "Click me to select the currently displayed ICAO location.", _
                      TTIconInfo, widgetName2 & " Lock Button Help", , , , True
-            Case "housing/prefsbutton"
-                If PzGEnableBalloonTooltips = "1" Then CreateToolTip SelectorForm.hwnd, "Click me to open the preferences utility. All advanced configuration of the widget is performed using the preference utility.", _
+            Case "exitbutton"
+                If PzGEnableBalloonTooltips = "1" Then CreateToolTip SelectorForm.hwnd, "Click me to close the ICAO selection utility.", _
                      TTIconInfo, widgetName2 & " Prefs Button Help", , , , True
-            Case "housing/tickbutton"
-                If PzGEnableBalloonTooltips = "1" Then CreateToolTip SelectorForm.hwnd, "Click here to toggle the pointer movement from a jerky pointer to a more fluid, continuous movement.", _
+            Case "locationknobgreen"
+                If PzGEnableBalloonTooltips = "1" Then CreateToolTip SelectorForm.hwnd, "The selector utility is now searching by location name only.", _
                      TTIconInfo, widgetName2 & " Tick Button Help", , , , True
-            Case "housing/switchfacesbutton"
-                If PzGEnableBalloonTooltips = "1" Then CreateToolTip SelectorForm.hwnd, "Click here to select between different faces showing alternative Selector scales, celsius/fahrenheit or kelvin.", _
+            Case "locationknobred"
+                If PzGEnableBalloonTooltips = "1" Then CreateToolTip SelectorForm.hwnd, "Click here to enable the option to search by location name (airport).", _
                      TTIconInfo, widgetName2 & " Switch Faces Button Help", , , , True
-            Case "housing/stopbutton"
-                If PzGEnableBalloonTooltips = "1" Then CreateToolTip SelectorForm.hwnd, "This button stops all animated gauge functions for this widget, pointer movement, digital displays &c .", _
+            Case "icaoknobred"
+                If PzGEnableBalloonTooltips = "1" Then CreateToolTip SelectorForm.hwnd, "Click here to enable the option to search by ICAO code.", _
                      TTIconInfo, widgetName2 & " Stop Button Help", , , , True
-            Case "housing/startbutton"
-                If PzGEnableBalloonTooltips = "1" Then CreateToolTip SelectorForm.hwnd, "This button restarts all stopped animated gauge functions for this widget, pointer movement &c .", _
+            Case "icaoknobgreen"
+                If PzGEnableBalloonTooltips = "1" Then CreateToolTip SelectorForm.hwnd, "The selector utility is now searching by ICAO code only.", _
                      TTIconInfo, widgetName2 & " Start Button Help", , , , True
-            Case "housing/helpbutton"
-                If PzGEnableBalloonTooltips = "1" Then CreateToolTip SelectorForm.hwnd, "This button opens the one-page help file for this widget. There is a further detailed CHM help file available from the right-click menu that contains all the information that you need to run this widget.", _
-                     TTIconInfo, widgetName2 & " Help Button Help", , , , True
-            Case Else '& overlaySelectorWidget.SelectorDetails _
+            Case Else
                 If PzGEnableBalloonTooltips = "1" Then CreateToolTip SelectorForm.hwnd, " " _
                     & vbCrLf & "" _
-                    & "Double tap on me to get new weather" _
                     & vbCrLf & "" _
                     & vbCrLf & "Right Click to open the menu and the preferences. CTRL+ Mouse scrollwheel UP/DOWN to resize." _
-                    , TTIconInfo, WidgetName2 & " METAR summary Information.", , , , True
+                    , TTIconInfo, widgetName2 & " METAR Selector Information.", , , , True
         End Select
     End If
     
