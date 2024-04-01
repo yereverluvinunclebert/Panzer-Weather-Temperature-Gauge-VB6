@@ -23,8 +23,8 @@ New frmLocation passing icao and location to and from the prefs and frmLocation 
 
 TODO
 
-create a new RC6 form for the ICAO input
-       the RC6 form will replace the temporary VB6 form
+create a new RC6 form for the ICAO input - done
+       the RC6 form will replace the temporary VB6 form - wip
        populate a combobox for multiple search results
 
 ' the approach now is to create the temperature gauge and to make it operate, extracting all the data that is required for ALL gauges.

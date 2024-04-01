@@ -195,8 +195,8 @@ Private Sub SelectorForm_BubblingEvent(ByRef sender As Object, ByRef EventName A
                Call okbutton_mouseDown(sender)
             Case "exitbutton"
                Call exitbutton_mouseDown(sender)
-            'Case "locationknobgreen"
-               'Call locationknobgreen_mouseDown(sender)
+            Case "searchbutton"
+               Call searchbutton_mouseDown(sender)
             Case "locationknobred"
                Call locationknobred_mouseDown(sender)
             Case "icaoknobred"
@@ -249,10 +249,16 @@ End Sub
 '---------------------------------------------------------------------------------------
 '
 Private Sub okbutton_mouseDown(ByRef sender As Object)
-   On Error GoTo okbutton_mouseDown_Error
+    Dim fileToPlay As String: fileToPlay = vbNullString
+    
+    On Error GoTo okbutton_mouseDown_Error
     
     'sender.Widget.Refresh ' this removes the delay in the lockButton depressing
-
+    
+    fileToPlay = "shutdown.wav"
+    If PzGEnableSounds = "1" And fFExists(App.path & "\resources\sounds\" & fileToPlay) Then
+        PlaySound App.path & "\resources\sounds\" & fileToPlay, ByVal 0&, SND_FILENAME Or SND_ASYNC
+    End If
     
    On Error GoTo 0
    Exit Sub
@@ -273,9 +279,16 @@ End Sub
 '---------------------------------------------------------------------------------------
 '
 Private Sub exitbutton_mouseDown(ByRef sender As Object)
-   On Error GoTo exitbutton_mouseDown_Error
+    Dim fileToPlay As String: fileToPlay = vbNullString
+   
+    On Error GoTo exitbutton_mouseDown_Error
     
     SelectorForm.Hide
+    
+    fileToPlay = "shutdown.wav"
+    If PzGEnableSounds = "1" And fFExists(App.path & "\resources\sounds\" & fileToPlay) Then
+        PlaySound App.path & "\resources\sounds\" & fileToPlay, ByVal 0&, SND_FILENAME Or SND_ASYNC
+    End If
 
    On Error GoTo 0
    Exit Sub
@@ -287,6 +300,35 @@ exitbutton_mouseDown_Error:
 End Sub
 
 
+
+'---------------------------------------------------------------------------------------
+' Procedure : searchbutton_mouseDown
+' Author    : Dean Beedell (yereverluvinunclebert)
+' Date      : 03/08/2023
+' Purpose   :
+'---------------------------------------------------------------------------------------
+'
+Private Sub searchbutton_mouseDown(ByRef sender As Object)
+    Dim fileToPlay As String: fileToPlay = vbNullString
+   
+    On Error GoTo searchbutton_mouseDown_Error
+    
+    'SelectorForm.Hide
+    
+    fileToPlay = "click.wav"
+    If PzGEnableSounds = "1" And fFExists(App.path & "\resources\sounds\" & fileToPlay) Then
+        PlaySound App.path & "\resources\sounds\" & fileToPlay, ByVal 0&, SND_FILENAME Or SND_ASYNC
+    End If
+
+   On Error GoTo 0
+   Exit Sub
+
+searchbutton_mouseDown_Error:
+
+    MsgBox "Error " & Err.Number & " (" & Err.Description & ") in procedure searchbutton_mouseDown of Class Module cfSelector"
+
+End Sub
+
 '---------------------------------------------------------------------------------------
 ' Procedure : locationknobred_mouseDown
 ' Author    : Dean Beedell (yereverluvinunclebert)
@@ -295,7 +337,9 @@ End Sub
 '---------------------------------------------------------------------------------------
 '
 Private Sub locationknobred_mouseDown(ByRef sender As Object)
-   On Error GoTo locationknobred_mouseDown_Error
+    Dim fileToPlay As String: fileToPlay = vbNullString
+
+    On Error GoTo locationknobred_mouseDown_Error
    
     ' switch location red knob to nothing
     With SelectorForm.Widgets("locationknobred").Widget
@@ -333,6 +377,11 @@ Private Sub locationknobred_mouseDown(ByRef sender As Object)
         .Refresh
     End With
     
+    fileToPlay = "click1.wav"
+    If PzGEnableSounds = "1" And fFExists(App.path & "\resources\sounds\" & fileToPlay) Then
+        PlaySound App.path & "\resources\sounds\" & fileToPlay, ByVal 0&, SND_FILENAME Or SND_ASYNC
+    End If
+    
    On Error GoTo 0
    Exit Sub
 
@@ -351,7 +400,9 @@ End Sub
 '---------------------------------------------------------------------------------------
 '
 Private Sub icaoknobred_mouseDown(ByRef sender As Object)
-   On Error GoTo icaoknobred_mouseDown_Error
+    Dim fileToPlay As String: fileToPlay = vbNullString
+   
+    On Error GoTo icaoknobred_mouseDown_Error
    
     ' switch icao red knob to nothing
     With SelectorForm.Widgets("icaoknobred").Widget
@@ -388,6 +439,11 @@ Private Sub icaoknobred_mouseDown(ByRef sender As Object)
         .Visible = False
         .Refresh
     End With
+    
+    fileToPlay = "click1.wav"
+    If PzGEnableSounds = "1" And fFExists(App.path & "\resources\sounds\" & fileToPlay) Then
+        PlaySound App.path & "\resources\sounds\" & fileToPlay, ByVal 0&, SND_FILENAME Or SND_ASYNC
+    End If
        
     On Error GoTo 0
    Exit Sub
@@ -398,45 +454,7 @@ icaoknobred_mouseDown_Error:
 
 End Sub
 
-''---------------------------------------------------------------------------------------
-'' Procedure : icaoknobgreen_mouseDown
-'' Author    : Dean Beedell (yereverluvinunclebert)
-'' Date      : 03/08/2023
-'' Purpose   :
-''---------------------------------------------------------------------------------------
-''
-'Private Sub icaoknobgreen_mouseDown(ByRef sender As Object)
-'   On Error GoTo icaoknobgreen_mouseDown_Error
-'
-'    ' switch to red
-'    With SelectorForm.Widgets("locationknobgreen").Widget
-'        .Alpha = 0
-'        .Refresh
-'    End With
-'
-'    With SelectorForm.Widgets("locationknobred").Widget
-'        .Alpha = val(PzGOpacity) / 100
-'    End With
-'
-'
-'    With SelectorForm.Widgets("icaoknobred").Widget
-'        .Alpha = 0
-'        .Refresh
-'    End With
-'
-'    With SelectorForm.Widgets("icaoknobgreen").Widget
-'        .Alpha = val(PzGOpacity) / 100
-'        .Refresh
-'    End With
-'
-'   On Error GoTo 0
-'   Exit Sub
-'
-'icaoknobgreen_mouseDown_Error:
-'
-'    MsgBox "Error " & Err.Number & " (" & Err.Description & ") in procedure icaoknobgreen_mouseDown of Class Module cfSelector"
-'
-'End Sub
+
 
 
 '---------------------------------------------------------------------------------------
