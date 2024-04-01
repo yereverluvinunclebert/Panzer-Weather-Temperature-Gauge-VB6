@@ -163,80 +163,8 @@ Public Sub mainRoutine(ByVal restart As Boolean)
     ' run the functions that are also called at reload time.
     Call adjustTempMainControls ' this needs to be here after the initialisation of the Cairo forms and widgets
     
-        
-    ' selector widgets
-    
-    With fSelector.SelectorForm.Widgets("locationknobgreen").Widget
-        .HoverColor = 0 ' set the hover colour to grey - this may change later with new RC6
-        .MousePointer = IDC_HAND
-        .Alpha = val(PzGOpacity) / 100
-        .Tag = 0.25
-    End With
-    
-    With fSelector.SelectorForm.Widgets("locationknobred").Widget
-        .HoverColor = 0 ' set the hover colour to grey - this may change later with new RC6
-        .MousePointer = IDC_HAND
-        .Alpha = val(PzGOpacity) / 100
-        .Tag = 0.25
-    End With
-    
-    With fSelector.SelectorForm.Widgets("icaoknobgreen").Widget
-        .HoverColor = 0 ' set the hover colour to grey - this may change later with new RC6
-        .MousePointer = IDC_HAND
-        .Alpha = val(PzGOpacity) / 100
-        .Tag = 0.25
-    End With
-    
-    With fSelector.SelectorForm.Widgets("icaoknobred").Widget
-        .HoverColor = 0 ' set the hover colour to grey - this may change later with new RC6
-        .MousePointer = IDC_HAND
-        .Alpha = val(PzGOpacity) / 100
-        .Tag = 0.25
-    End With
-    
-    With fSelector.SelectorForm.Widgets("exitbutton").Widget
-        .HoverColor = 0 ' set the hover colour to grey - this may change later with new RC6
-        .MousePointer = IDC_HAND
-        .Alpha = val(PzGOpacity) / 100
-    End With
-    
-    With fSelector.SelectorForm.Widgets("okbutton").Widget
-        .HoverColor = 0 ' set the hover colour to grey - this may change later with new RC6
-        .MousePointer = IDC_HAND
-        .Alpha = val(PzGOpacity) / 100
-    End With
-    
-    With fSelector.SelectorForm.Widgets("entericao").Widget
-        .HoverColor = 0 ' set the hover colour to grey - this may change later with new RC6
-        .MousePointer = IDC_HAND
-        .Alpha = val(PzGOpacity) / 100
-    End With
-    
-    With fSelector.SelectorForm.Widgets("enterlocation").Widget
-        .HoverColor = 0 ' set the hover colour to grey - this may change later with new RC6
-        .MousePointer = IDC_HAND
-        .Alpha = val(PzGOpacity) / 100
-    End With
+    Call adjustSelectorMainControls
 
-    With fSelector.SelectorForm.Widgets("searchbutton").Widget
-        .HoverColor = 0 ' set the hover colour to grey - this may change later with new RC6
-        .MousePointer = IDC_HAND
-        .Alpha = val(PzGOpacity) / 100
-    End With
-
-    
-    With fSelector.SelectorForm.Widgets("radiobody").Widget
-        .HoverColor = 0 ' set the hover colour to grey - this may change later with new RC6
-        .MousePointer = IDC_SIZEALL
-        .Alpha = val(PzGOpacity) / 100
-    End With
-    
-            
-    With fSelector.SelectorForm.Widgets("glassblock").Widget
-        .HoverColor = 0 ' set the hover colour to grey - this may change later with new RC6
-        .MousePointer = IDC_HAND
-        .Alpha = val(PzGOpacity) / 100
-    End With
     
     ' move/hide onto/from the main screen
     Call mainScreen
@@ -495,7 +423,97 @@ addGeneralImagesToImageLists_Error:
 
 End Sub
         
+'---------------------------------------------------------------------------------------
+' Procedure : adjustSelectorMainControls
+' Author    : Dean Beedell (yereverluvinunclebert)
+' Date      : 27/04/2023
+' Purpose   : called at runtime and on restart, sets the characteristics of the selector, individual controls
+'---------------------------------------------------------------------------------------
+'
+Private Sub adjustSelectorMainControls()
+    
+    On Error GoTo adjustSelectorMainControls_Error
+    With fSelector.SelectorForm.Widgets("locationknobgreen").Widget
+        .HoverColor = 0 ' set the hover colour to grey - this may change later with new RC6
+        .MousePointer = IDC_HAND
+        .Alpha = val(PzGOpacity) / 100
+        .Tag = 0.25
+    End With
+    
+    With fSelector.SelectorForm.Widgets("locationknobred").Widget
+        .HoverColor = 0 ' set the hover colour to grey - this may change later with new RC6
+        .MousePointer = IDC_HAND
+        .Alpha = val(PzGOpacity) / 100
+        .Tag = 0.25
+    End With
+    
+    With fSelector.SelectorForm.Widgets("icaoknobgreen").Widget
+        .HoverColor = 0 ' set the hover colour to grey - this may change later with new RC6
+        .MousePointer = IDC_HAND
+        .Alpha = val(PzGOpacity) / 100
+        .Tag = 0.25
+    End With
+    
+    With fSelector.SelectorForm.Widgets("icaoknobred").Widget
+        .HoverColor = 0 ' set the hover colour to grey - this may change later with new RC6
+        .MousePointer = IDC_HAND
+        .Alpha = val(PzGOpacity) / 100
+        .Tag = 0.25
+    End With
+    
+    With fSelector.SelectorForm.Widgets("exitbutton").Widget
+        .HoverColor = 0 ' set the hover colour to grey - this may change later with new RC6
+        .MousePointer = IDC_HAND
+        .Alpha = val(PzGOpacity) / 100
+    End With
+    
+    With fSelector.SelectorForm.Widgets("okbutton").Widget
+        .HoverColor = 0 ' set the hover colour to grey - this may change later with new RC6
+        .MousePointer = IDC_HAND
+        .Alpha = val(PzGOpacity) / 100
+    End With
+    
+    With fSelector.SelectorForm.Widgets("entericao").Widget
+        .HoverColor = 0 ' set the hover colour to grey - this may change later with new RC6
+        .MousePointer = IDC_HAND
+        .Alpha = val(PzGOpacity) / 100
+    End With
+    
+    With fSelector.SelectorForm.Widgets("enterlocation").Widget
+        .HoverColor = 0 ' set the hover colour to grey - this may change later with new RC6
+        .MousePointer = IDC_HAND
+        .Alpha = val(PzGOpacity) / 100
+    End With
 
+    With fSelector.SelectorForm.Widgets("searchbutton").Widget
+        .HoverColor = 0 ' set the hover colour to grey - this may change later with new RC6
+        .MousePointer = IDC_HAND
+        .Alpha = val(PzGOpacity) / 100
+    End With
+
+    
+    With fSelector.SelectorForm.Widgets("radiobody").Widget
+        .HoverColor = 0 ' set the hover colour to grey - this may change later with new RC6
+        .MousePointer = IDC_SIZEALL
+        .Alpha = val(PzGOpacity) / 100
+    End With
+    
+            
+    With fSelector.SelectorForm.Widgets("glassblock").Widget
+        .HoverColor = 0 ' set the hover colour to grey - this may change later with new RC6
+        .MousePointer = IDC_HAND
+        .Alpha = val(PzGOpacity) / 100
+    End With
+    
+    
+    On Error GoTo 0
+    Exit Sub
+
+adjustSelectorMainControls_Error:
+
+    MsgBox "Error " & Err.Number & " (" & Err.Description & ") in procedure adjustSelectorMainControls, line " & Erl & "."
+
+End Sub
 '---------------------------------------------------------------------------------------
 ' Procedure : adjustTempMainControls
 ' Author    : Dean Beedell (yereverluvinunclebert)
@@ -511,10 +529,6 @@ Public Sub adjustTempMainControls()
     Call validateInputs
     
     fTemperature.AdjustZoom val(PzGGaugeSize) / 100
-    
-'    overlayTemperatureWidget.ZoomDirection = PzGScrollWheelDirection
-
-'   PzGIcao
 
     If PzGGaugeFunctions = "1" Then
         overlayTemperatureWidget.Ticking = True
