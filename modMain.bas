@@ -161,7 +161,7 @@ Public Sub mainRoutine(ByVal restart As Boolean)
     Call makeVisibleFormElements
     
     ' run the functions that are also called at reload time.
-    Call adjustMainControls ' this needs to be here after the initialisation of the Cairo forms and widgets
+    Call adjustTempMainControls ' this needs to be here after the initialisation of the Cairo forms and widgets
     
         
     ' selector widgets
@@ -179,7 +179,6 @@ Public Sub mainRoutine(ByVal restart As Boolean)
         .Alpha = val(PzGOpacity) / 100
         .Tag = 0.25
     End With
-    
     
     With fSelector.SelectorForm.Widgets("icaoknobgreen").Widget
         .HoverColor = 0 ' set the hover colour to grey - this may change later with new RC6
@@ -204,6 +203,12 @@ Public Sub mainRoutine(ByVal restart As Boolean)
     With fSelector.SelectorForm.Widgets("okbutton").Widget
         .HoverColor = 0 ' set the hover colour to grey - this may change later with new RC6
         .MousePointer = IDC_HAND
+        .Alpha = val(PzGOpacity) / 100
+    End With
+    
+    With fSelector.SelectorForm.Widgets("radiobody").Widget
+        .HoverColor = 0 ' set the hover colour to grey - this may change later with new RC6
+        .MousePointer = IDC_SIZEALL
         .Alpha = val(PzGOpacity) / 100
     End With
     
@@ -466,15 +471,15 @@ End Sub
         
 
 '---------------------------------------------------------------------------------------
-' Procedure : adjustMainControls
+' Procedure : adjustTempMainControls
 ' Author    : Dean Beedell (yereverluvinunclebert)
 ' Date      : 27/04/2023
 ' Purpose   : called at runtime and on restart, sets the characteristics of the gauge, individual controls and menus
 '---------------------------------------------------------------------------------------
 '
-Public Sub adjustMainControls()
+Public Sub adjustTempMainControls()
    
-   On Error GoTo adjustMainControls_Error
+   On Error GoTo adjustTempMainControls_Error
 
     ' validate the inputs of any data from the input settings file
     Call validateInputs
@@ -598,9 +603,9 @@ Public Sub adjustMainControls()
    On Error GoTo 0
    Exit Sub
 
-adjustMainControls_Error:
+adjustTempMainControls_Error:
 
-    MsgBox "Error " & Err.Number & " (" & Err.Description & ") in procedure adjustMainControls of Module modMain"
+    MsgBox "Error " & Err.Number & " (" & Err.Description & ") in procedure adjustTempMainControls of Module modMain"
 
 End Sub
 

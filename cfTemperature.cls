@@ -103,7 +103,7 @@ Public Sub InitTemperatureFromPSD(ByRef PSD_FileNameOrByteArray As Variant)
                         W.Tag = 0.05
                         
                         ' set the default characteristics of the non-interactive areas
-                        ' note: the clickable layers characteristics are set in adjustMainControls
+                        ' note: the clickable layers characteristics are set in adjustTempMainControls
                         
                         ' all non-clickable Layer-Widgets will be -1 or "non-hoverable" and "fully click-through"
                         W.HoverColor = -1 ' task: might change this later when new ver or RC6 arrives

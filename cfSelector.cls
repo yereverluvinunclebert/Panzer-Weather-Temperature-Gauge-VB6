@@ -104,7 +104,7 @@ Public Sub InitSelectorFromPSD(ByRef PSD_FileNameOrByteArray As Variant)
                         W.Tag = 0.05
                         
                         ' set the default characteristics of the non-interactive areas
-                        ' note: the clickable layers characteristics are set in adjustMainControls
+                        ' note: the clickable layers characteristics are set in adjustSelectMainControls
                         
                         ' all non-clickable Layer-Widgets will be -1 or "non-hoverable" and "fully click-through"
                         W.HoverColor = -1 ' task: might change this later when new ver or RC6 arrives
@@ -172,6 +172,15 @@ Private Sub SelectorForm_BubblingEvent(ByRef sender As Object, ByRef EventName A
             Case "icaoknobgreen"
                 If PzGEnableBalloonTooltips = "1" Then CreateToolTip SelectorForm.hwnd, "The selector utility is now searching by ICAO code only.", _
                      TTIconInfo, widgetName2 & " Start Button Help", , , , True
+            Case "radiobody"
+                If PzGEnableBalloonTooltips = "1" Then CreateToolTip SelectorForm.hwnd, " " _
+                    & "This is the Airport Selector utility. Use this tool to select a nearby airport with a valid ICAO code. Any airport of this type will be able to supply " _
+                    & "valid and up-to-date METAR weather data. Start by selecting the ICAO or Location option buttons below. This will allow you to search the supplied airports data " _
+                    & "file for either an ICAO code or search for the airport by name, for example: HEATHROW." & vbCrLf & vbCrLf _
+                    & "When you have a matching ICAO code, press OK to select and the main gauges will start to display weather information derived from that feed." _
+                    & vbCrLf & "" _
+                    & vbCrLf & "Right Click to open the menu and the preferences. CTRL+ Mouse scrollwheel UP/DOWN to resize." _
+                    , TTIconInfo, widgetName2 & " Airport Selector Information.", , , , True
             Case Else
                 If PzGEnableBalloonTooltips = "1" Then CreateToolTip SelectorForm.hwnd, " " _
                     & vbCrLf & "" _

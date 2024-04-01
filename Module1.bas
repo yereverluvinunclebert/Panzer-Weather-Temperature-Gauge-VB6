@@ -1786,7 +1786,7 @@ End Sub
 ' Procedure : setMainTooltips
 ' Author    : Dean Beedell (yereverluvinunclebert)
 ' Date      : 15/05/2023
-' Purpose   :
+' Purpose   : this only sets the small tooltips
 '---------------------------------------------------------------------------------------
 '
 Public Sub setMainTooltips()

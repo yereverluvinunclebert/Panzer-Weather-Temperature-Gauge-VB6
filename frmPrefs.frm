@@ -3631,7 +3631,7 @@ Private Sub btnSave_Click()
     Call setPrefsTooltips
 
     ' sets the characteristics of the gauge and menus immediately after saving
-    Call adjustMainControls
+    Call adjustTempMainControls
     
     Me.SetFocus
     btnSave.Enabled = False ' disable the save button showing it has successfully saved

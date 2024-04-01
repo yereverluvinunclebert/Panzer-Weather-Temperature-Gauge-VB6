@@ -56,7 +56,6 @@ Private Sub Class_Initialize()
     Set W = Cairo.WidgetBase
         W.BackColor = -1  'we don't use any BackColor here, transparent
         W.ImplementsHitTest = True 'when at False, no HitTest-Event would be triggered
-        W.ToolTip = "testing"
                         
    On Error GoTo 0
    Exit Sub
@@ -265,11 +264,11 @@ Private Sub W_Paint(CC As RC6.cCairoContext, ByVal xAbs As Single, ByVal yAbs As
             ' for specific keys perform rotation actions, clock hands &c
              Select Case key
                  
-                 Case "radiobody"
-                    
-                    Set Pat.Matrix = Pat.Matrix.TranslateCoords(-arr(0), -arr(1))
-                    CC.Paint arr(2), Pat ' render the Pattern
-                 
+'                 Case "radiobody"
+'
+'                    Set Pat.Matrix = Pat.Matrix.TranslateCoords(-arr(0), -arr(1))
+'                    CC.Paint arr(2), Pat ' render the Pattern
+'
                  Case "radioknobtwo"
                     
                     Set Pat.Matrix = Pat.Matrix.TranslateCoords(-arr(0), -arr(1))
