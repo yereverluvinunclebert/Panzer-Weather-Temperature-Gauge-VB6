@@ -28,7 +28,7 @@ Public collSelectorPSDNonUIElements As cCollection, FX As Long, FY As Long, FZ A
 
 Private PSDWidth As Long
 Private PSDHeight As Long
-'Private mGlowing As Boolean
+
 
 '---------------------------------------------------------------------------------------
 ' Procedure : Class_Initialize
@@ -130,14 +130,16 @@ End Sub
 
 ' enterlocation
 ' entericao
-' okbutton
-' exitbutton
 ' radioknobone
 ' radioknobtwo
+'
+' okbutton
+' exitbutton
 ' locationknobgreen
 ' locationknobred
 ' icaoknobred
 ' icaoknobgreen
+
 ' radiobody
 
 '---------------------------------------------------------------------------------------
@@ -156,22 +158,25 @@ Private Sub SelectorForm_BubblingEvent(ByRef sender As Object, ByRef EventName A
         Select Case LCase$(sender.Widget.key)
             Case "okbutton"
                 If PzGEnableBalloonTooltips = "1" Then CreateToolTip SelectorForm.hwnd, "Click me to select the currently displayed ICAO location.", _
-                     TTIconInfo, widgetName2 & " Lock Button Help", , , , True
+                     TTIconInfo, widgetName2 & " Select Button Help", , , , True
             Case "exitbutton"
                 If PzGEnableBalloonTooltips = "1" Then CreateToolTip SelectorForm.hwnd, "Click me to close the ICAO selection utility.", _
-                     TTIconInfo, widgetName2 & " Prefs Button Help", , , , True
+                     TTIconInfo, widgetName2 & " Exit Button Help", , , , True
             Case "locationknobgreen"
                 If PzGEnableBalloonTooltips = "1" Then CreateToolTip SelectorForm.hwnd, "The selector utility is now searching by location name only.", _
-                     TTIconInfo, widgetName2 & " Tick Button Help", , , , True
+                     TTIconInfo, widgetName2 & " Location Button Help", , , , True
             Case "locationknobred"
                 If PzGEnableBalloonTooltips = "1" Then CreateToolTip SelectorForm.hwnd, "Click here to enable the option to search by location name (airport).", _
-                     TTIconInfo, widgetName2 & " Switch Faces Button Help", , , , True
+                     TTIconInfo, widgetName2 & " Location Button Help", , , , True
             Case "icaoknobred"
                 If PzGEnableBalloonTooltips = "1" Then CreateToolTip SelectorForm.hwnd, "Click here to enable the option to search by ICAO code.", _
-                     TTIconInfo, widgetName2 & " Stop Button Help", , , , True
+                     TTIconInfo, widgetName2 & " ICAO Button Help", , , , True
+            Case "searchbutton"
+                If PzGEnableBalloonTooltips = "1" Then CreateToolTip SelectorForm.hwnd, "Click here to search using your supplied airport name or ICAO code.", _
+                     TTIconInfo, widgetName2 & " Search Button Help", , , , True
             Case "icaoknobgreen"
                 If PzGEnableBalloonTooltips = "1" Then CreateToolTip SelectorForm.hwnd, "The selector utility is now searching by ICAO code only.", _
-                     TTIconInfo, widgetName2 & " Start Button Help", , , , True
+                     TTIconInfo, widgetName2 & " ICAO Button Help", , , , True
             Case "radiobody"
                 If PzGEnableBalloonTooltips = "1" Then CreateToolTip SelectorForm.hwnd, " " _
                     & "This is the Airport Selector utility. Use this tool to select a nearby airport with a valid ICAO code. Any airport of this type will be able to supply " _
@@ -180,57 +185,53 @@ Private Sub SelectorForm_BubblingEvent(ByRef sender As Object, ByRef EventName A
                     & "When you have a matching ICAO code, press OK to select and the main gauges will start to display weather information derived from that feed." _
                     & vbCrLf & "" _
                     & vbCrLf & "Right Click to open the menu and the preferences. CTRL+ Mouse scrollwheel UP/DOWN to resize." _
-                    , TTIconInfo, widgetName2 & " Airport Selector Information.", , , , True
-            Case Else
-                If PzGEnableBalloonTooltips = "1" Then CreateToolTip SelectorForm.hwnd, " " _
-                    & vbCrLf & "" _
-                    & vbCrLf & "" _
-                    & vbCrLf & "Right Click to open the menu and the preferences. CTRL+ Mouse scrollwheel UP/DOWN to resize." _
-                    , TTIconInfo, widgetName2 & " METAR Selector Information.", , , , True
+                    , TTIconInfo, widgetName2 & " Airport Selection Information.", , , , True
         End Select
     End If
     
     If EventName = "W_MouseDown" Then
         Select Case LCase$(sender.Widget.key)
-            Case "housing/lockbutton"
-               '  Call lockbutton_mouseDown(sender)
-            Case "housing/prefsbutton"
-               '  Call prefsbutton_mouseDown(sender)
-            Case "housing/tickbutton"
-               '  Call tickbutton_mouseDown(sender)
-            Case "housing/switchfacesbutton"
-                '  Call switchfacesbutton_mouseDown(sender)
-            Case "housing/stopbutton"
-               '  Call stopbutton_mouseDown(sender)
+            Case "okbutton"
+               Call okbutton_mouseDown(sender)
+            Case "exitbutton"
+               Call exitbutton_mouseDown(sender)
+            'Case "locationknobgreen"
+               'Call locationknobgreen_mouseDown(sender)
+            Case "locationknobred"
+               Call locationknobred_mouseDown(sender)
+            Case "icaoknobred"
+               Call icaoknobred_mouseDown(sender)
+            'Case "icaoknobgreen"
+               '  Call icaoknobgreen_mouseDown(sender)
             Case Else
                 Debug.Print sender.Widget.key
         End Select
     End If
     
-    If EventName = "W_MouseUp" Then
-        Select Case LCase$(sender.Widget.key)
-            Case "housing/prefsbutton"
-                sender.Widget.Alpha = val(PzGOpacity) / 100
-                sender.Widget.Refresh
-            Case "housing/switchfacesbutton"
-               '  Call switchfacesbutton_mouseUp(sender)
-            Case "housing/stopbutton"
-               '  Call stopbutton_mouseUp(sender)
-            Case Else
-                Debug.Print sender.Widget.key
-        End Select
-    End If
+'    If EventName = "W_MouseUp" Then
+'        Select Case LCase$(sender.Widget.key)
+'            Case "housing/prefsbutton"
+'                sender.Widget.Alpha = val(PzGOpacity) / 100
+'                sender.Widget.Refresh
+'            Case "housing/switchfacesbutton"
+'               '  Call switchfacesbutton_mouseUp(sender)
+'            Case "housing/stopbutton"
+'               '  Call stopbutton_mouseUp(sender)
+'            Case Else
+'                Debug.Print sender.Widget.key
+'        End Select
+'    End If
     
-    If EventName = "W_Click" Then
-        Select Case LCase$(sender.Widget.key)
-            Case "housing/helpbutton"
-                '  Call helpbutton_click
-            Case "housing/startbutton"
-                '  Call startbutton_click
-            Case Else
-                Debug.Print sender.Widget.key
-        End Select
-    End If
+'    If EventName = "W_Click" Then
+'        Select Case LCase$(sender.Widget.key)
+'            Case "housing/helpbutton"
+'                '  Call helpbutton_click
+'            Case "housing/startbutton"
+'                '  Call startbutton_click
+'            Case Else
+'                Debug.Print sender.Widget.key
+'        End Select
+'    End If
    
    On Error GoTo 0
    Exit Sub
@@ -240,11 +241,202 @@ SelectorForm_BubblingEvent_Error:
     MsgBox "Error " & Err.Number & " (" & Err.Description & ") in procedure SelectorForm_BubblingEvent of Class Module cfSelector"
 End Sub
 
+'---------------------------------------------------------------------------------------
+' Procedure : okbutton_mouseDown
+' Author    : Dean Beedell (yereverluvinunclebert)
+' Date      : 03/08/2023
+' Purpose   :
+'---------------------------------------------------------------------------------------
+'
+Private Sub okbutton_mouseDown(ByRef sender As Object)
+   On Error GoTo okbutton_mouseDown_Error
+    
+    'sender.Widget.Refresh ' this removes the delay in the lockButton depressing
+
+    
+   On Error GoTo 0
+   Exit Sub
+
+okbutton_mouseDown_Error:
+
+    MsgBox "Error " & Err.Number & " (" & Err.Description & ") in procedure okbutton_mouseDown of Class Module cfSelector"
+
+End Sub
 
 
 
+'---------------------------------------------------------------------------------------
+' Procedure : exitbutton_mouseDown
+' Author    : Dean Beedell (yereverluvinunclebert)
+' Date      : 03/08/2023
+' Purpose   :
+'---------------------------------------------------------------------------------------
+'
+Private Sub exitbutton_mouseDown(ByRef sender As Object)
+   On Error GoTo exitbutton_mouseDown_Error
+    
+    SelectorForm.Hide
+
+   On Error GoTo 0
+   Exit Sub
+
+exitbutton_mouseDown_Error:
+
+    MsgBox "Error " & Err.Number & " (" & Err.Description & ") in procedure exitbutton_mouseDown of Class Module cfSelector"
+
+End Sub
 
 
+'---------------------------------------------------------------------------------------
+' Procedure : locationknobred_mouseDown
+' Author    : Dean Beedell (yereverluvinunclebert)
+' Date      : 03/08/2023
+' Purpose   :
+'---------------------------------------------------------------------------------------
+'
+Private Sub locationknobred_mouseDown(ByRef sender As Object)
+   On Error GoTo locationknobred_mouseDown_Error
+   
+    ' switch location red knob to nothing
+    With SelectorForm.Widgets("locationknobred").Widget
+        .Visible = False
+        .Refresh
+    End With
+    
+   ' switch location knob to green
+    With SelectorForm.Widgets("locationknobgreen").Widget
+        .Visible = True
+        .Refresh
+    End With
+    
+    ' set icao green knob to invisible
+    With SelectorForm.Widgets("icaoknobgreen").Widget
+        .Visible = False
+        .Refresh
+    End With
+    
+    ' set icao knob to red to show icao is disabled
+    With SelectorForm.Widgets("icaoknobred").Widget
+        .Visible = True
+        .Refresh
+    End With
+    
+    ' set red block to show location is enabled
+    With SelectorForm.Widgets("enterlocation").Widget
+        .Visible = True
+        .Refresh
+    End With
+    
+    ' set red block to show icao is disabled
+    With SelectorForm.Widgets("entericao").Widget
+        .Visible = False
+        .Refresh
+    End With
+    
+   On Error GoTo 0
+   Exit Sub
+
+locationknobred_mouseDown_Error:
+
+    MsgBox "Error " & Err.Number & " (" & Err.Description & ") in procedure locationknobred_mouseDown of Class Module cfSelector"
+
+End Sub
+
+
+'---------------------------------------------------------------------------------------
+' Procedure : icaoknobred_mouseDown
+' Author    : Dean Beedell (yereverluvinunclebert)
+' Date      : 03/08/2023
+' Purpose   :
+'---------------------------------------------------------------------------------------
+'
+Private Sub icaoknobred_mouseDown(ByRef sender As Object)
+   On Error GoTo icaoknobred_mouseDown_Error
+   
+    ' switch icao red knob to nothing
+    With SelectorForm.Widgets("icaoknobred").Widget
+        .Visible = False
+        .Refresh
+    End With
+    
+    ' switch icao knob to green
+    With SelectorForm.Widgets("icaoknobgreen").Widget
+        .Visible = True
+        .Refresh
+    End With
+    
+    ' set location green knob to invisible
+    With SelectorForm.Widgets("locationknobgreen").Widget
+        .Visible = False
+        .Refresh
+    End With
+    
+    ' set location knob to red to show location is disabled
+    With SelectorForm.Widgets("locationknobred").Widget
+        .Visible = True
+        .Refresh
+    End With
+    
+    ' set red block to show icao is enabled
+    With SelectorForm.Widgets("entericao").Widget
+        .Visible = True
+        .Refresh
+    End With
+    
+    ' set red block to show location is disabled
+    With SelectorForm.Widgets("enterlocation").Widget
+        .Visible = False
+        .Refresh
+    End With
+       
+    On Error GoTo 0
+   Exit Sub
+
+icaoknobred_mouseDown_Error:
+
+    MsgBox "Error " & Err.Number & " (" & Err.Description & ") in procedure icaoknobred_mouseDown of Class Module cfSelector"
+
+End Sub
+
+''---------------------------------------------------------------------------------------
+'' Procedure : icaoknobgreen_mouseDown
+'' Author    : Dean Beedell (yereverluvinunclebert)
+'' Date      : 03/08/2023
+'' Purpose   :
+''---------------------------------------------------------------------------------------
+''
+'Private Sub icaoknobgreen_mouseDown(ByRef sender As Object)
+'   On Error GoTo icaoknobgreen_mouseDown_Error
+'
+'    ' switch to red
+'    With SelectorForm.Widgets("locationknobgreen").Widget
+'        .Alpha = 0
+'        .Refresh
+'    End With
+'
+'    With SelectorForm.Widgets("locationknobred").Widget
+'        .Alpha = val(PzGOpacity) / 100
+'    End With
+'
+'
+'    With SelectorForm.Widgets("icaoknobred").Widget
+'        .Alpha = 0
+'        .Refresh
+'    End With
+'
+'    With SelectorForm.Widgets("icaoknobgreen").Widget
+'        .Alpha = val(PzGOpacity) / 100
+'        .Refresh
+'    End With
+'
+'   On Error GoTo 0
+'   Exit Sub
+'
+'icaoknobgreen_mouseDown_Error:
+'
+'    MsgBox "Error " & Err.Number & " (" & Err.Description & ") in procedure icaoknobgreen_mouseDown of Class Module cfSelector"
+'
+'End Sub
 
 
 '---------------------------------------------------------------------------------------
@@ -260,7 +452,7 @@ Private Sub SelectorForm_MouseDown(ByRef Button As Integer, ByRef Shift As Integ
     If Button = vbRightButton Then
         Call menuForm.PopupMenu(menuForm.mnuMainMenu)
     Else
-        If PzGIgnoreMouse = "1" Then Exit Sub
+        'If PzGIgnoreMouse = "1" Then Exit Sub
         ' do whatever you want with a mouseDown here, not doing anything at the moment but we will...
     End If
 
@@ -269,7 +461,7 @@ Private Sub SelectorForm_MouseDown(ByRef Button As Integer, ByRef Shift As Integ
 
 W_MouseDown_Error:
 
-    MsgBox "Error " & Err.Number & " (" & Err.Description & ") in procedure W_MouseDown of Class Module cwOverlay"
+    MsgBox "Error " & Err.Number & " (" & Err.Description & ") in procedure W_MouseDown of Class Module cfSelector"
 End Sub
 
 
@@ -302,5 +494,5 @@ Private Sub SelectorForm_MouseMove(ByRef Button As Integer, ByRef Shift As Integ
 
 SelectorForm_MouseMove_Error:
 
-    MsgBox "Error " & Err.Number & " (" & Err.Description & ") in procedure SelectorForm_MouseMove of Class Module cfTemperature"
+    MsgBox "Error " & Err.Number & " (" & Err.Description & ") in procedure SelectorForm_MouseMove of Class Module cfSelector"
 End Sub

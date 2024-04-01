@@ -206,9 +206,35 @@ Public Sub mainRoutine(ByVal restart As Boolean)
         .Alpha = val(PzGOpacity) / 100
     End With
     
+    With fSelector.SelectorForm.Widgets("entericao").Widget
+        .HoverColor = 0 ' set the hover colour to grey - this may change later with new RC6
+        .MousePointer = IDC_HAND
+        .Alpha = val(PzGOpacity) / 100
+    End With
+    
+    With fSelector.SelectorForm.Widgets("enterlocation").Widget
+        .HoverColor = 0 ' set the hover colour to grey - this may change later with new RC6
+        .MousePointer = IDC_HAND
+        .Alpha = val(PzGOpacity) / 100
+    End With
+
+    With fSelector.SelectorForm.Widgets("searchbutton").Widget
+        .HoverColor = 0 ' set the hover colour to grey - this may change later with new RC6
+        .MousePointer = IDC_HAND
+        .Alpha = val(PzGOpacity) / 100
+    End With
+
+    
     With fSelector.SelectorForm.Widgets("radiobody").Widget
         .HoverColor = 0 ' set the hover colour to grey - this may change later with new RC6
         .MousePointer = IDC_SIZEALL
+        .Alpha = val(PzGOpacity) / 100
+    End With
+    
+            
+    With fSelector.SelectorForm.Widgets("glassblock").Widget
+        .HoverColor = 0 ' set the hover colour to grey - this may change later with new RC6
+        .MousePointer = IDC_HAND
         .Alpha = val(PzGOpacity) / 100
     End With
     
@@ -1101,8 +1127,8 @@ Private Sub loadSelectorExcludePathCollection()
     On Error GoTo loadSelectorExcludePathCollection_Error
 
     With fSelector.collSelectorPSDNonUIElements ' the exclude list
-        .Add Empty, "enterlocation"
-        .Add Empty, "entericao"
+'        .Add Empty, "enterlocation"
+'        .Add Empty, "entericao"
         .Add Empty, "radioknobtwo"
         .Add Empty, "radioknobone"
     End With

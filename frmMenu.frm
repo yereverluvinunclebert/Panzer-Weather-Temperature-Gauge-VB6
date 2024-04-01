@@ -215,8 +215,27 @@ End Sub
 
 
 
+' ----------------------------------------------------------------
+' Procedure Name: mnuChangeLocation_Click
+' Purpose:
+' Procedure Kind: Sub
+' Procedure Access: Private
+' Author: beededea
+' Date: 01/04/2024
+' ----------------------------------------------------------------
 Private Sub mnuChangeLocation_Click()
+    On Error GoTo mnuChangeLocation_Click_Error
+    
     frmLocation.Show
+    fSelector.SelectorForm.Show
+    
+    On Error GoTo 0
+    Exit Sub
+
+mnuChangeLocation_Click_Error:
+
+    MsgBox "Error " & Err.Number & " (" & Err.Description & ") in procedure mnuChangeLocation_Click, line " & Erl & "."
+
 End Sub
 
 ' ----------------------------------------------------------------
