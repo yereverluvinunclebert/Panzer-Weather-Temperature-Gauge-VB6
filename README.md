@@ -39,7 +39,7 @@ to Windows 11.
 
 To make this operate in your area giving you the local weather, you need to find a METAR source. This will be a local airport.
 The widget takes the weather data from forecasts provided specifcally from airports and airfields. If you
-can find an airfield nearby that has an ICAO code then using this it will supply local METAR weather data. You simply enter your local town name and it will find the airport. If it has an airfield then it will have a current weather forecast. The reason we obtain the weather forecast via META is because the feed is free and works throughout the world. The data provided is fed through a US governmental site, Aviation Weather GOV -
+can find an airfield nearby that has an ICAO code then using this it will supply local METAR weather data. You simply enter your local town name and it will find the airport. If it has an airfield then it will have a current weather forecast. The reason we obtain the weather forecast via METAR is because the feed is free and works throughout the world. The data provided is fed through a US governmental site, Aviation Weather GOV -
 
     aviationweather.gov/
 
