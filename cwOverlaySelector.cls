@@ -264,11 +264,6 @@ Private Sub W_Paint(CC As RC6.cCairoContext, ByVal xAbs As Single, ByVal yAbs As
             ' for specific keys perform rotation actions, clock hands &c
              Select Case key
                  
-'                 Case "radiobody"
-'
-'                    Set Pat.Matrix = Pat.Matrix.TranslateCoords(-arr(0), -arr(1))
-'                    CC.Paint arr(2), Pat ' render the Pattern
-'
                  Case "radioknobtwo"
                     
                     Set Pat.Matrix = Pat.Matrix.TranslateCoords(-arr(0), -arr(1))

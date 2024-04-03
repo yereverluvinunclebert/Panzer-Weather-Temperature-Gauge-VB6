@@ -46,7 +46,7 @@ Public sunriseSunset As cwSunriseSunset
 Public widgetName1 As String
 Public widgetName2 As String
 
-
+    
 
 
 
@@ -91,15 +91,10 @@ Public Sub mainRoutine(ByVal restart As Boolean)
     
     widgetName1 = "Panzer Temperature Gauge"
     thisPSDFullPath = App.path & "\Res\Panzer Weather Gauges VB6.psd"
-'    fTemperature.FX = 222 'init position- and zoom-values (directly set on Public-Props of the Form-hosting Class)
-'    fTemperature.FY = 111
-'    fTemperature.FZ = 0.4
     
     widgetName2 = "ICAO Selector"
     selectorPSDFullPath = App.path & "\Res\Panzer Weather Selector VB6.psd"
-'    fSelector.FX = 150 'init position- and zoom-values (directly set on Public-Props of the Form-hosting Class)
-'    fSelector.FY = 111
-    fSelector.FZ = 0.4
+    'fSelector.FZ = 0.4
     
     prefsCurrentWidth = 9075
     prefsCurrentHeight = 16450
@@ -147,7 +142,7 @@ Public Sub mainRoutine(ByVal restart As Boolean)
 
     ' start the load of the PSD file using the RC6 PSD-Parser.instance
     Call fSelector.InitSelectorFromPSD(selectorPSDFullPath) ' no optional close layer as 3rd param
-
+    
     ' resolve VB6 sizing width bug
     Call determineScreenDimensions
             
@@ -160,12 +155,14 @@ Public Sub mainRoutine(ByVal restart As Boolean)
     ' place the form at the saved location
     Call makeVisibleFormElements
     
-    ' run the functions that are also called at reload time.
+    ' run the functions that are ALSO called at reload time elsewhere.
+    
+    ' set characteristics of widgets on the main gauge form
     Call adjustTempMainControls ' this needs to be here after the initialisation of the Cairo forms and widgets
     
+    ' set characteristics of widgets on the selector form
     Call adjustSelectorMainControls
 
-    
     ' move/hide onto/from the main screen
     Call mainScreen
         
@@ -1141,8 +1138,6 @@ Private Sub loadSelectorExcludePathCollection()
     On Error GoTo loadSelectorExcludePathCollection_Error
 
     With fSelector.collSelectorPSDNonUIElements ' the exclude list
-'        .Add Empty, "enterlocation"
-'        .Add Empty, "entericao"
         .Add Empty, "radioknobtwo"
         .Add Empty, "radioknobone"
     End With

@@ -99,6 +99,7 @@ Private mThisFace As Integer             ' property mThisFace
 Private mValidICAO As Boolean             ' property
 Private mIcaoToTest As String             ' property
 Private mIcaoLocation As String             ' property
+Private mValidLocation As Integer
 
 Private myMSXML As MSXML2.XMLHTTP
 Private weHaveData As Boolean
@@ -122,6 +123,7 @@ Private Sub Class_Initialize()
     
     Dim icaoToFind As String: icaoToFind = vbNullString
     Dim fullIcaoLocation As String: fullIcaoLocation = vbNullString
+    Dim searchArray() As String
    
     'Dim sunriseSunset As cwSunriseSunset 'unitialised declaration
     Set sunriseSunset = New cwSunriseSunset
@@ -149,7 +151,8 @@ Private Sub Class_Initialize()
     icaoLocation5 = vbNullString
     
     icaoToFind = PzGIcao ' eg. "EGSH"
-    fullIcaoLocation = searchIcaoFile(icaoToFind, icaoLocation1, icaoLocation2, icaoLocation3, icaoLocation4, icaoLocation5)
+    
+    fullIcaoLocation = searchIcaoFile(icaoToFind, "ICAO", icaoLocation1, icaoLocation2, icaoLocation3, icaoLocation4, icaoLocation5)
     mIcaoLocation = icaoLocation1
     
    On Error GoTo 0
@@ -629,11 +632,14 @@ End Property
 Public Property Get ValidICAO() As Boolean
     Dim icaoToFind As String: icaoToFind = vbNullString
     Dim fullIcaoLocation As String: fullIcaoLocation = vbNullString
-        
+    Dim searchArray() As String
+    
     On Error GoTo ValidICAOGet_Error
 
     icaoToFind = mIcaoToTest ' eg. "EGSH"
-    fullIcaoLocation = searchIcaoFile(icaoToFind, icaoLocation1, icaoLocation2, icaoLocation3, icaoLocation4, icaoLocation5)
+    fullIcaoLocation = searchIcaoFile(icaoToFind, "ICAO", icaoLocation1, icaoLocation2, icaoLocation3, icaoLocation4, icaoLocation5)
+    
+            
     mIcaoLocation = icaoLocation1 ' the airport name
 
     If icaoLocation5 <> vbNullString Then ' icao code
@@ -675,6 +681,45 @@ ValidICAOLet_Error:
 End Property
 
 
+'---------------------------------------------------------------------------------------
+' Property  : ValidLocation
+' Author    : Dean Beedell (yereverluvinunclebert)
+' Date      : 17/05/2023
+' Purpose   :
+'---------------------------------------------------------------------------------------
+'
+Public Property Get ValidLocation() As Integer
+    Dim icaoToFind As String: icaoToFind = vbNullString
+    Dim fullIcaoLocation As String: fullIcaoLocation = vbNullString
+    Dim searchArrayTop As Integer
+    
+    On Error GoTo ValidLocationGet_Error
+
+    icaoToFind = mIcaoToTest ' eg. "EGSH"
+    fullIcaoLocation = searchIcaoFile(icaoToFind, "Location", icaoLocation1, icaoLocation2, icaoLocation3, icaoLocation4, icaoLocation5)
+    
+    mIcaoLocation = icaoLocation1 ' the airport name
+
+ '   If icaoLocation5 <> vbNullString Then ' icao code
+        
+        searchArrayTop = UBound(gblValidLocations)
+        mValidLocation = searchArrayTop ' returns a count only
+        
+        ' can't return an array from a property so filling a global array gblValidLocations, instead. Sh1t I know.
+        
+        'mIcaoToTest = icaoLocation5 ' find the icao code and set the private var so it can be accessed via a property
+'    Else
+'        ValidLocation = False
+'        mValidLocation = False
+'    End If
+
+   On Error GoTo 0
+   Exit Property
+
+ValidLocationGet_Error:
+
+    MsgBox "Error " & Err.Number & " (" & Err.Description & ") in Property ValidLocation of Class Module cwOverlayTemp"
+End Property
 '
 '---------------------------------------------------------------------------------------
 ' Property  : icaoLocation
@@ -2713,7 +2758,7 @@ End Sub
 '=======================================================
 ' searches the icao data file for a specific code
 '=======================================================
-Private Function searchIcaoFile(loc As String, ByRef icaoLocation1 As String, ByRef icaoLocation2 As String, ByRef icaoLocation3 As String, ByRef icaoLocation4 As String, ByRef icaoLocation5 As String) As String
+Private Function searchIcaoFile(ByVal loc As String, ByVal metarPref As String, ByRef icaoLocation1 As String, ByRef icaoLocation2 As String, ByRef icaoLocation3 As String, ByRef icaoLocation4 As String, ByRef icaoLocation5 As String) As String
     Dim icaoDataArray() As String ' array
     Dim i As Integer: i = 0
     Dim fnd As Boolean: fnd = False
@@ -2723,7 +2768,6 @@ Private Function searchIcaoFile(loc As String, ByRef icaoLocation1 As String, By
     Dim splitIcaoData() As String
     Dim lReturn As Boolean: lReturn = False
     Dim icaoDataFile As String: icaoDataFile = vbNullString
-    Dim searchArray() As String
     
     Dim answerMsg As String: answerMsg = vbNullString
     Dim answer As VbMsgBoxResult: answer = vbNo
@@ -2734,9 +2778,7 @@ Private Function searchIcaoFile(loc As String, ByRef icaoLocation1 As String, By
     lReturn = FileSystemReadFile(icaoDataArray(), icaoDataFile)
     If lReturn = False Then Exit Function
     
-    Dim a As Integer
-    a = UBound(icaoDataArray)
-    ReDim searchArray(a)
+    ReDim gblValidLocations(UBound(icaoDataArray))
     
     'If debugFlg = 1 Then ' & PzGMetarPref
         Debug.Print ("searchIcaoFile - " & " search started for " & lookFor)
@@ -2775,14 +2817,14 @@ Private Function searchIcaoFile(loc As String, ByRef icaoLocation1 As String, By
                 Debug.Print ("searchIcaoFile - found " & lookFor & " in " & retStr)
             End If
             
-            If PzGMetarPref = "ICAO" Then ' single search result
+            If metarPref = "ICAO" Then ' single search result
                 searchIcaoFile = retStr ' return full string
                 Exit For
             Else
-                searchArray(searchCount) = retStr
+                ' we cannot return an array from a property so filling a global array instead, it is rubbish, I know.
+                gblValidLocations(searchCount) = retStr ' returns an array of matching locations
                 searchCount = searchCount + 1
             End If
-            
         End If
     Next
     If icaoLocation5 = "" Then

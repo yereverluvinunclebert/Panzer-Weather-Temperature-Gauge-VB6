@@ -107,6 +107,9 @@ Begin VB.Form menuForm
       Begin VB.Menu mnuHideWidget 
          Caption         =   "Hide Widget"
       End
+      Begin VB.Menu mnuCloseSelector 
+         Caption         =   "Close  ICAO Selector"
+      End
       Begin VB.Menu mnuQuit 
          Caption         =   "Close Widget"
       End
@@ -236,6 +239,10 @@ mnuChangeLocation_Click_Error:
 
     MsgBox "Error " & Err.Number & " (" & Err.Description & ") in procedure mnuChangeLocation_Click, line " & Erl & "."
 
+End Sub
+
+Private Sub mnuCloseSelector_Click()
+    fSelector.SelectorForm.Hide
 End Sub
 
 ' ----------------------------------------------------------------
@@ -450,6 +457,8 @@ mnuQuit_Click_Error:
 
     MsgBox "Error " & Err.Number & " (" & Err.Description & ") in procedure mnuQuit_Click of Form menuForm"
 End Sub
+
+
 
 
 '---------------------------------------------------------------------------------------

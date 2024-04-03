@@ -708,6 +708,7 @@ Private Sub temperatureGaugeForm_MouseDown(ByRef Button As Integer, ByRef Shift 
    On Error GoTo W_MouseDown_Error
 
     If Button = vbRightButton Then
+        menuForm.mnuCloseSelector.Visible = False
         Call menuForm.PopupMenu(menuForm.mnuMainMenu)
     Else
         If PzGIgnoreMouse = "1" Then Exit Sub

@@ -20,6 +20,7 @@ function to read from a file directly into an array, reading all ICAO locations 
 function to search an ICAO File and find a matching ICAO code - done
 function to download a new ICAO locations file from the internet using an API - done
 New frmLocation passing icao and location to and from the prefs and frmLocation forms
+add sound to the location form (RC6) - done
 
 TODO
 

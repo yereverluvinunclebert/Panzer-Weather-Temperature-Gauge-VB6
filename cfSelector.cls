@@ -24,10 +24,15 @@ Option Explicit 'simple Alpha-Form (...to be filled with (mostly Img-) Content v
 Public WithEvents SelectorForm As cWidgetForm
 Attribute SelectorForm.VB_VarHelpID = -1
 
+Private WithEvents textBox As cwTextBox
+Attribute textBox.VB_VarHelpID = -1
+
 Public collSelectorPSDNonUIElements As cCollection, FX As Long, FY As Long, FZ As Single  'available on the outside, even after the Form was closed
 
 Private PSDWidth As Long
 Private PSDHeight As Long
+
+
 
 
 '---------------------------------------------------------------------------------------
@@ -40,8 +45,8 @@ Private PSDHeight As Long
 Private Sub Class_Initialize()
    On Error GoTo Class_Initialize_Error
 
-    'mGlowing = False ' when the alpha for the overlays arrives this might be usable
     Set collSelectorPSDNonUIElements = New_c.Collection(False)
+    
 
    On Error GoTo 0
    Exit Sub
@@ -119,6 +124,12 @@ Public Sub InitSelectorFromPSD(ByRef PSD_FileNameOrByteArray As Variant)
     
     Set overlaySelectorWidget = SelectorForm.Widgets.Add(New cwOverlaySelect, "Selector", 0, 0, PSDWidth, PSDHeight)
     Set overlaySelectorWidget.cCollOverlaySelectorImages = collSelectorPSDNonUIElements 'make the excluded PSD-Surface-Paths known to the Overlay-Widget
+
+    Set textBox = fSelector.SelectorForm.Widgets.Add(New_W("cwTextBox"), "textBox", 195, 20, 118, 30)
+    textBox.MultiLine = False
+    textBox.Widget.FontSize = 15
+    textBox.Widget.FontName = "times new roman"
+    textBox.Widget.Alpha = 0.5
 
    On Error GoTo 0
    Exit Sub
@@ -468,6 +479,7 @@ Private Sub SelectorForm_MouseDown(ByRef Button As Integer, ByRef Shift As Integ
    On Error GoTo W_MouseDown_Error
 
     If Button = vbRightButton Then
+        menuForm.mnuCloseSelector.Visible = True
         Call menuForm.PopupMenu(menuForm.mnuMainMenu)
     Else
         'If PzGIgnoreMouse = "1" Then Exit Sub

@@ -203,6 +203,8 @@ Private Function testLocation(ByVal location As String) As String
     
     Dim answer As VbMsgBoxResult
     Dim answerMsg  As String: answerMsg = vbNullString
+    Dim cnt As Integer
+    'Dim locationArray() As String
     
     location = Replace(location, " ", "")
 
@@ -214,9 +216,10 @@ Private Function testLocation(ByVal location As String) As String
         ' note: it is possible that a named search location could contain a number
         ' call routine to search
         overlayTemperatureWidget.IcaoToTest = location
-        If overlayTemperatureWidget.ValidICAO = True Then
-            testLocation = overlayTemperatureWidget.IcaoToTest  ' return
-        End If
+        cnt = overlayTemperatureWidget.ValidLocation
+        
+'            testLocation = overlayTemperatureWidget.IcaoToTest  ' return
+'        End If
     End If
     
     'if the station id returned is null then assume the weather information is missing for an unknown reason.
@@ -343,6 +346,11 @@ End Sub
 Private Sub Form_Load()
     txtICAOInput.Text = PzGIcao
     lblDisplaySelection.Caption = overlayTemperatureWidget.icaoLocation
+    If PzGMetarPref = "ICAO" Then
+        optICAO.Value = True
+    Else
+        optLocation.Value = True
+    End If
 End Sub
 
 

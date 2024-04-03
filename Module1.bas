@@ -439,7 +439,7 @@ Private mbDebugMode As Boolean ' .30 DAEB 03/03/2021 frmMain.frm replaced the in
 'Public tzDelta1 As Long
 
 Public msgBoxADynamicSizingFlg As Boolean
-
+Public gblValidLocations() As String
 
 
 
@@ -1893,14 +1893,15 @@ Public Sub makeVisibleFormElements()
     Else
         fTemperature.temperatureGaugeForm.Left = formLeftPixels
         fTemperature.temperatureGaugeForm.Top = formTopPixels
-        fSelector.SelectorForm.Left = formLeftPixels
-        fSelector.SelectorForm.Top = formTopPixels
+
     End If
     
     fTemperature.temperatureGaugeForm.Show
     
     fSelector.SelectorForm.Width = 1000
     fSelector.SelectorForm.Height = 800
+    fSelector.SelectorForm.Left = formLeftPixels + fTemperature.temperatureGaugeForm.Width + 300
+    fSelector.SelectorForm.Top = formTopPixels + 200
     fSelector.SelectorForm.Show
 
 
