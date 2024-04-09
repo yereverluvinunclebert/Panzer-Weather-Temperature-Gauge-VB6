@@ -590,7 +590,7 @@ Private Sub mnuRefreshMetar_Click()
     Dim answer As VbMsgBoxResult
     Dim answerMsg  As String: answerMsg = vbNullString
     
-    overlayTemperatureWidget.GetMetar = True
+    overlayTemperatureWidget.GetMetar = True ' trigger METAR get with new ICAO code
     answerMsg = "Done. "
     answer = msgBoxA(answerMsg, vbOKOnly + vbExclamation, "Update Information", False)
 
