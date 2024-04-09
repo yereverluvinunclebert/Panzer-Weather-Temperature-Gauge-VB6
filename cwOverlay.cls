@@ -99,7 +99,7 @@ Private mThisFace As Integer             ' property mThisFace
 Private mValidICAO As Boolean             ' property
 Private mIcaoToTest As String             ' property
 Private mIcaoLocation As String             ' property
-Private mValidLocation As Integer
+Private mValidLocationCount As Long
 
 Private myMSXML As MSXML2.XMLHTTP
 Private weHaveData As Boolean
@@ -124,8 +124,10 @@ Private Sub Class_Initialize()
     Dim icaoToFind As String: icaoToFind = vbNullString
     Dim fullIcaoLocation As String: fullIcaoLocation = vbNullString
     Dim searchArray() As String
-   
+    Dim searchCount As Long: searchCount = 0
+
     'Dim sunriseSunset As cwSunriseSunset 'unitialised declaration
+    
     Set sunriseSunset = New cwSunriseSunset
 
     Set W = Cairo.WidgetBase
@@ -152,7 +154,7 @@ Private Sub Class_Initialize()
     
     icaoToFind = PzGIcao ' eg. "EGSH"
     
-    fullIcaoLocation = searchIcaoFile(icaoToFind, "ICAO", icaoLocation1, icaoLocation2, icaoLocation3, icaoLocation4, icaoLocation5)
+    fullIcaoLocation = searchIcaoFile(icaoToFind, "ICAO", icaoLocation1, icaoLocation2, icaoLocation3, icaoLocation4, icaoLocation5, searchCount)
     mIcaoLocation = icaoLocation1
     
    On Error GoTo 0
@@ -633,11 +635,12 @@ Public Property Get ValidICAO() As Boolean
     Dim icaoToFind As String: icaoToFind = vbNullString
     Dim fullIcaoLocation As String: fullIcaoLocation = vbNullString
     Dim searchArray() As String
-    
+    Dim searchCount As Long: searchCount = 0
+
     On Error GoTo ValidICAOGet_Error
 
     icaoToFind = mIcaoToTest ' eg. "EGSH"
-    fullIcaoLocation = searchIcaoFile(icaoToFind, "ICAO", icaoLocation1, icaoLocation2, icaoLocation3, icaoLocation4, icaoLocation5)
+    fullIcaoLocation = searchIcaoFile(icaoToFind, "ICAO", icaoLocation1, icaoLocation2, icaoLocation3, icaoLocation4, icaoLocation5, searchCount)
     
             
     mIcaoLocation = icaoLocation1 ' the airport name
@@ -682,43 +685,41 @@ End Property
 
 
 '---------------------------------------------------------------------------------------
-' Property  : ValidLocation
+' Property  : ValidLocationCount
 ' Author    : Dean Beedell (yereverluvinunclebert)
 ' Date      : 17/05/2023
 ' Purpose   :
 '---------------------------------------------------------------------------------------
 '
-Public Property Get ValidLocation() As Integer
+Public Property Get ValidLocationCount() As Long ' returns the number of matching locations
     Dim icaoToFind As String: icaoToFind = vbNullString
     Dim fullIcaoLocation As String: fullIcaoLocation = vbNullString
-    Dim searchArrayTop As Integer
+    Dim searchCount As Long: searchCount = 0
     
-    On Error GoTo ValidLocationGet_Error
+    On Error GoTo ValidLocationCountGet_Error
 
     icaoToFind = mIcaoToTest ' eg. "EGSH"
-    fullIcaoLocation = searchIcaoFile(icaoToFind, "Location", icaoLocation1, icaoLocation2, icaoLocation3, icaoLocation4, icaoLocation5)
+    fullIcaoLocation = searchIcaoFile(icaoToFind, "Location", icaoLocation1, icaoLocation2, icaoLocation3, icaoLocation4, icaoLocation5, searchCount)
     
-    mIcaoLocation = icaoLocation1 ' the airport name
+    'mIcaoLocation = icaoLocation1 ' the airport name
 
  '   If icaoLocation5 <> vbNullString Then ' icao code
-        
-        searchArrayTop = UBound(gblValidLocations)
-        mValidLocation = searchArrayTop ' returns a count only
-        
-        ' can't return an array from a property so filling a global array gblValidLocations, instead. Sh1t I know.
+                
+        mValidLocationCount = searchCount ' returns a count only
+        ValidLocationCount = mValidLocationCount
         
         'mIcaoToTest = icaoLocation5 ' find the icao code and set the private var so it can be accessed via a property
 '    Else
-'        ValidLocation = False
-'        mValidLocation = False
+'        ValidLocationCount = False
+'        mValidLocationCount = False
 '    End If
 
    On Error GoTo 0
    Exit Property
 
-ValidLocationGet_Error:
+ValidLocationCountGet_Error:
 
-    MsgBox "Error " & Err.Number & " (" & Err.Description & ") in Property ValidLocation of Class Module cwOverlayTemp"
+    MsgBox "Error " & Err.Number & " (" & Err.Description & ") in Property ValidLocationCount of Class Module cwOverlayTemp"
 End Property
 '
 '---------------------------------------------------------------------------------------
@@ -2758,11 +2759,11 @@ End Sub
 '=======================================================
 ' searches the icao data file for a specific code
 '=======================================================
-Private Function searchIcaoFile(ByVal loc As String, ByVal metarPref As String, ByRef icaoLocation1 As String, ByRef icaoLocation2 As String, ByRef icaoLocation3 As String, ByRef icaoLocation4 As String, ByRef icaoLocation5 As String) As String
+Private Function searchIcaoFile(ByVal loc As String, ByVal metarPref As String, ByRef icaoLocation1 As String, ByRef icaoLocation2 As String, ByRef icaoLocation3 As String, ByRef icaoLocation4 As String, ByRef icaoLocation5 As String, ByRef searchCount As Long) As String
     Dim icaoDataArray() As String ' array
-    Dim i As Integer: i = 0
+    Dim i As Long: i = 0
     Dim fnd As Boolean: fnd = False
-    Dim searchCount As Integer: searchCount = 0
+    '
     Dim lookFor As String: lookFor = vbNullString
     Dim retStr As String: retStr = vbNullString
     Dim splitIcaoData() As String
@@ -2778,7 +2779,7 @@ Private Function searchIcaoFile(ByVal loc As String, ByVal metarPref As String, 
     lReturn = FileSystemReadFile(icaoDataArray(), icaoDataFile)
     If lReturn = False Then Exit Function
     
-    ReDim gblValidLocations(UBound(icaoDataArray))
+    If metarPref = "Location" Then ReDim gblValidLocations(UBound(icaoDataArray)) ' set the valid list to be able potentially to contain all members of the array
     
     'If debugFlg = 1 Then ' & PzGMetarPref
         Debug.Print ("searchIcaoFile - " & " search started for " & lookFor)
@@ -2827,6 +2828,25 @@ Private Function searchIcaoFile(ByVal loc As String, ByVal metarPref As String, 
             End If
         End If
     Next
+    
+    If metarPref = "Location" Then
+        ReDim Preserve gblValidLocations(searchCount - 1) ' redimension to the actual size
+        
+        ' if the search count is a mere 1 then we have the details
+        If searchCount = 1 Then
+            searchIcaoFile = retStr ' return full string
+            mIcaoLocation = icaoLocation1
+            fnd = True
+        Else
+            searchIcaoFile = "multiple locations found" ' return full string
+            mIcaoLocation = vbNullString
+            fnd = True
+        End If
+        
+        ' if there is more than one in the search count then populate a combobox with the contents
+        
+    End If
+
     If icaoLocation5 = "" Then
         answerMsg = "That city does not have a valid ICAO code assigned. " & vbCrLf & vbCrLf & " Please select another location."
         answer = msgBoxA(answerMsg, vbOKOnly + vbExclamation, "No valid ICAO code", False)

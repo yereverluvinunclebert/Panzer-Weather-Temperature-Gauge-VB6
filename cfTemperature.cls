@@ -711,6 +711,11 @@ Private Sub temperatureGaugeForm_MouseDown(ByRef Button As Integer, ByRef Shift 
         menuForm.mnuCloseSelector.Visible = False
         Call menuForm.PopupMenu(menuForm.mnuMainMenu)
     Else
+        ' ensure that the associated forms pop to the front when the main gauge receives focus
+        If fSelector.SelectorForm.Visible = True Then fSelector.SelectorForm.SetFocus
+        If panzerPrefs.Visible = True Then panzerPrefs.SetFocus
+        If fTemperature.temperatureGaugeForm.Visible = True Then fTemperature.temperatureGaugeForm.SetFocus
+        
         If PzGIgnoreMouse = "1" Then Exit Sub
         ' do whatever you want with a mouseDown here, not doing anything at the moment but we will...
     End If
@@ -723,4 +728,4 @@ W_MouseDown_Error:
     MsgBox "Error " & Err.Number & " (" & Err.Description & ") in procedure W_MouseDown of Class Module cwOverlayTemp"
 End Sub
 
-
+'Private Sub temperatureGaugeForm_

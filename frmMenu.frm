@@ -229,7 +229,7 @@ End Sub
 Private Sub mnuChangeLocation_Click()
     On Error GoTo mnuChangeLocation_Click_Error
     
-    frmLocation.Show
+    frmLocation.Show ' show the temporary VB6 form
     fSelector.SelectorForm.Show
     
     On Error GoTo 0
@@ -284,7 +284,7 @@ Private Sub mnuEditWidget_Click()
     Dim editorPath As String: editorPath = vbNullString
     Dim execStatus As Long: execStatus = 0
     
-   On Error GoTo mnuEditWidget_Click_Error
+    On Error GoTo mnuEditWidget_Click_Error
 
     editorPath = PzGDefaultEditor
     If fFExists(editorPath) Then ' if it is a folder already
@@ -319,11 +319,11 @@ End Sub
 Private Sub mnuHelpHTM_Click()
     On Error GoTo mnuHelpHTM_Click_Error
 
-        If fFExists(App.path & "\help\Help.chm") Then
-            Call ShellExecute(Me.hwnd, "Open", App.path & "\help\Help.chm", vbNullString, App.path, 1)
-        Else
-            MsgBox ("The help file - Help.chm - is missing from the help folder.")
-        End If
+    If fFExists(App.path & "\help\Help.chm") Then
+        Call ShellExecute(Me.hwnd, "Open", App.path & "\help\Help.chm", vbNullString, App.path, 1)
+    Else
+        MsgBox ("The help file - Help.chm - is missing from the help folder.")
+    End If
 
    On Error GoTo 0
    Exit Sub

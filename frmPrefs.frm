@@ -4353,6 +4353,7 @@ Private Sub fraGeneral_MouseDown(Button As Integer, Shift As Integer, X As Singl
     If Button = 2 Then
         Me.PopupMenu prefsMnuPopmenu, vbPopupMenuRightButton
     End If
+
 End Sub
 Private Sub fraGeneral_MouseMove(Button As Integer, Shift As Integer, X As Single, Y As Single)
     If PzGEnableBalloonTooltips = "1" Then CreateToolTip fraGeneral.hwnd, "The General Panel contains the most important user-configurable items required for the program to operate correctly.", _
@@ -4704,6 +4705,7 @@ Private Sub Form_MouseDown(ByRef Button As Integer, ByRef Shift As Integer, ByRe
         Me.PopupMenu prefsMnuPopmenu, vbPopupMenuRightButton
         
     End If
+    
 
    On Error GoTo 0
    Exit Sub

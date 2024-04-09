@@ -482,7 +482,13 @@ Private Sub SelectorForm_MouseDown(ByRef Button As Integer, ByRef Shift As Integ
         menuForm.mnuCloseSelector.Visible = True
         Call menuForm.PopupMenu(menuForm.mnuMainMenu)
     Else
-        'If PzGIgnoreMouse = "1" Then Exit Sub
+    
+        ' ensure that the associated forms pop to the front when the main gauge receives focus
+        If fTemperature.temperatureGaugeForm.Visible = True Then fTemperature.temperatureGaugeForm.SetFocus
+        If panzerPrefs.Visible = True Then panzerPrefs.SetFocus
+        If fSelector.SelectorForm.Visible = True Then fSelector.SelectorForm.SetFocus
+        
+        If PzGIgnoreMouse = "1" Then Exit Sub
         ' do whatever you want with a mouseDown here, not doing anything at the moment but we will...
     End If
 

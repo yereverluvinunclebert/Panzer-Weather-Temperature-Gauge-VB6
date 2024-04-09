@@ -15,16 +15,6 @@ Begin VB.Form frmLocation
    ShowInTaskbar   =   0   'False
    StartUpPosition =   1  'CenterOwner
    Visible         =   0   'False
-   Begin VB.ComboBox cmbMatchingLocations 
-      Appearance      =   0  'Flat
-      Height          =   315
-      Left            =   285
-      TabIndex        =   9
-      Text            =   "Combo1"
-      Top             =   900
-      Visible         =   0   'False
-      Width           =   5130
-   End
    Begin VB.CommandButton btnGo 
       Caption         =   "Search"
       Height          =   345
@@ -80,6 +70,27 @@ Begin VB.Form frmLocation
       Top             =   105
       Width           =   2340
    End
+   Begin VB.ComboBox cmbMatchingLocations 
+      Appearance      =   0  'Flat
+      Height          =   315
+      Left            =   285
+      TabIndex        =   9
+      Text            =   "Combo1"
+      Top             =   645
+      Visible         =   0   'False
+      Width           =   5130
+   End
+   Begin VB.Label lblDisplaySelection 
+      Appearance      =   0  'Flat
+      BackColor       =   &H80000005&
+      BorderStyle     =   1  'Fixed Single
+      ForeColor       =   &H80000008&
+      Height          =   300
+      Left            =   300
+      TabIndex        =   5
+      Top             =   645
+      Width           =   5115
+   End
    Begin VB.Label Label1 
       Caption         =   "Airport by Name"
       Height          =   270
@@ -95,17 +106,6 @@ Begin VB.Form frmLocation
       TabIndex        =   10
       Top             =   1455
       Width           =   1755
-   End
-   Begin VB.Label lblDisplaySelection 
-      Appearance      =   0  'Flat
-      BackColor       =   &H80000005&
-      BorderStyle     =   1  'Fixed Single
-      ForeColor       =   &H80000008&
-      Height          =   300
-      Left            =   300
-      TabIndex        =   5
-      Top             =   645
-      Width           =   5115
    End
    Begin VB.Label lblEnterICAO 
       Caption         =   "Enter ICAO code"
@@ -124,11 +124,13 @@ Attribute VB_Exposed = False
 Option Explicit
 
 
-Private icaoLocation1 As String
-Private icaoLocation2 As String
-Private icaoLocation3 As String
-Private icaoLocation4 As String
-Private icaoLocation5 As String
+'Private icaoLocation1 As String
+'Private icaoLocation2 As String
+'Private icaoLocation3 As String
+'Private icaoLocation4 As String
+'Private icaoLocation5 As String
+
+Private populateCombo As Boolean
 
 Private Sub btnExit_Click()
     frmLocation.Hide
@@ -152,26 +154,43 @@ Private Sub btnGo_Click()
     Dim answerMsg As String: answerMsg = vbNullString
     Dim answer As VbMsgBoxResult: answer = vbNo
     
+    cmbMatchingLocations.Visible = False
+    
     ee = UCase$(txtICAOInput.Text)
     
     ' if the input is an icao then handle it
     If optICAO.Value = True Then '"location"
         result = testICAO(ee)
+        
+            If result <> vbNullString Then
+                answerMsg = "Done - Valid code Found. " & result
+                answer = msgBoxA(answerMsg, vbOKOnly + vbExclamation, "Good code", False)
+                
+                txtICAOInput.Text = result
+                lblDisplaySelection.Caption = overlayTemperatureWidget.icaoLocation
+        
+                
+            End If
+
     End If
     
     ' if the input is an location then handle it
     If optLocation.Value = True Then ' "icao"
         result = testLocation(ee)
+                
+'        mIcaoLocation = icaoLocation1 ' the airport name
+'
+'        If icaoLocation5 <> vbNullString Then ' icao code
+'            mValidICAO = True
+'            ValidICAO = mValidICAO
+'            mIcaoToTest = icaoLocation5 ' find the icao code and set the private var so it can be accessed via a property
+'        Else
+'            ValidICAO = False
+'            mValidICAO = False
+'        End If
+
     End If
     
-    If result <> vbNullString Then
-        answerMsg = "Done - Valid code Found. " & result
-        answer = msgBoxA(answerMsg, vbOKOnly + vbExclamation, "Good code", False)
-        
-        txtICAOInput.Text = result
-        lblDisplaySelection.Caption = overlayTemperatureWidget.icaoLocation
-        
-    End If
     
     txtICAOInput.SetFocus
     
@@ -204,7 +223,7 @@ Private Function testLocation(ByVal location As String) As String
     Dim answer As VbMsgBoxResult
     Dim answerMsg  As String: answerMsg = vbNullString
     Dim cnt As Integer
-    'Dim locationArray() As String
+    Dim i As Integer
     
     location = Replace(location, " ", "")
 
@@ -216,12 +235,36 @@ Private Function testLocation(ByVal location As String) As String
         ' note: it is possible that a named search location could contain a number
         ' call routine to search
         overlayTemperatureWidget.IcaoToTest = location
-        cnt = overlayTemperatureWidget.ValidLocation
+        cnt = overlayTemperatureWidget.ValidLocationCount
+        If cnt = 1 Then
+            If overlayTemperatureWidget.ValidICAO = True Then
+                testLocation = overlayTemperatureWidget.IcaoToTest  ' ret
+            End If
+        Else
+        
+            'if the result contains too many matches, request a better search
+            If cnt > 200 Then
+                answerMsg = "Too many matches, " & cnt & " found, please enter a more unique search string "
+                answer = msgBoxA(answerMsg, vbOKOnly + vbExclamation, "Location Error Information", False)
+                testLocation = vbNullString
+                Exit Function
+            End If
+            
+            testLocation = "multiple locations found"
+            cmbMatchingLocations.Visible = True
+            cmbMatchingLocations.Clear
+            For i = 0 To cnt - 1
+                cmbMatchingLocations.AddItem gblValidLocations(i), i
+                cmbMatchingLocations.ItemData(i) = i
+            Next i
+            cmbMatchingLocations.ListIndex = 0
+        End If
         
 '            testLocation = overlayTemperatureWidget.IcaoToTest  ' return
 '        End If
     End If
     
+
     'if the station id returned is null then assume the weather information is missing for an unknown reason.
     If testLocation = vbNullString Then
         answerMsg = "No matching Location found "
@@ -330,9 +373,18 @@ Private Function IsLetter(ByVal character As String) As Boolean
 End Function
 
 Private Sub btnOK_Click()
+    
     PzGIcao = overlayTemperatureWidget.IcaoToTest
     sPutINISetting "Software\PzTemperatureGauge", "icao", PzGIcao, PzGSettingsFile
     
+    If optLocation.Value = True Then
+        'overlayTemperatureWidget.IcaoToTest = icao
+        ' call routine to search
+        If overlayTemperatureWidget.ValidICAO = True Then
+            'testICAO = icao  ' return
+        End If
+    End If
+            
     If panzerPrefs.Visible = True Then
         panzerPrefs.txtIcao = PzGIcao
     End If
@@ -343,7 +395,39 @@ Private Sub btnOK_Click()
         
 End Sub
 
+Private Sub cmbMatchingLocations_Click()
+
+    Dim icaoDataArray As String ' array
+    Dim splitIcaoData() As String
+    Dim icaoLocation1 As String
+    Dim icaoLocation5 As String
+    
+    icaoDataArray = UCase$(cmbMatchingLocations.List(cmbMatchingLocations.ListIndex))
+
+    splitIcaoData = Split(icaoDataArray, ",")
+    
+    
+    icaoLocation1 = Replace(splitIcaoData(1), """", "") '
+
+    icaoLocation5 = Replace(splitIcaoData(5), """", "") ' // icao code
+    If icaoLocation5 = "\N" Then
+        icaoLocation5 = Replace(splitIcaoData(4), """", "")
+    End If
+    
+    If populateCombo = False Then
+        txtICAOInput.Text = icaoLocation5
+        lblDisplaySelection.Caption = icaoLocation1
+    Else
+        populateCombo = False
+    End If
+    overlayTemperatureWidget.IcaoToTest = icaoLocation5
+End Sub
+
+
+
+
 Private Sub Form_Load()
+    populateCombo = True
     txtICAOInput.Text = PzGIcao
     lblDisplaySelection.Caption = overlayTemperatureWidget.icaoLocation
     If PzGMetarPref = "ICAO" Then
@@ -355,6 +439,8 @@ End Sub
 
 
 Private Sub optICAO_Click()
+
+    cmbMatchingLocations.Visible = False
     PzGMetarPref = "ICAO"
     sPutINISetting "Software\PzTemperatureGauge", "metarPref", PzGMetarPref, PzGSettingsFile
 
@@ -363,4 +449,9 @@ End Sub
 Private Sub optLocation_Click()
     PzGMetarPref = "Location"
     sPutINISetting "Software\PzTemperatureGauge", "metarPref", PzGMetarPref, PzGSettingsFile
+End Sub
+
+Private Sub txtICAOInput_Change()
+    populateCombo = True
+    cmbMatchingLocations.Visible = False
 End Sub
