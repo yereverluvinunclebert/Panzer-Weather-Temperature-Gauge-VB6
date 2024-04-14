@@ -24,8 +24,10 @@ Option Explicit 'simple Alpha-Form (...to be filled with (mostly Img-) Content v
 Public WithEvents SelectorForm As cWidgetForm
 Attribute SelectorForm.VB_VarHelpID = -1
 
-Private WithEvents textBox As cwTextBox
-Attribute textBox.VB_VarHelpID = -1
+Private WithEvents txtICAOInput As cwTextBox
+Attribute txtICAOInput.VB_VarHelpID = -1
+Private WithEvents cmbMatchingLocations As cwDropDownList
+Attribute cmbMatchingLocations.VB_VarHelpID = -1
 
 Public collSelectorPSDNonUIElements As cCollection, FX As Long, FY As Long, FZ As Single  'available on the outside, even after the Form was closed
 
@@ -125,11 +127,23 @@ Public Sub InitSelectorFromPSD(ByRef PSD_FileNameOrByteArray As Variant)
     Set overlaySelectorWidget = SelectorForm.Widgets.Add(New cwOverlaySelect, "Selector", 0, 0, PSDWidth, PSDHeight)
     Set overlaySelectorWidget.cCollOverlaySelectorImages = collSelectorPSDNonUIElements 'make the excluded PSD-Surface-Paths known to the Overlay-Widget
 
-    Set textBox = fSelector.SelectorForm.Widgets.Add(New_W("cwTextBox"), "textBox", 195, 20, 118, 30)
-    textBox.MultiLine = False
-    textBox.Widget.FontSize = 15
-    textBox.Widget.FontName = "times new roman"
-    textBox.Widget.Alpha = 0.5
+    Set txtICAOInput = fSelector.SelectorForm.Widgets.Add(New_W("cwTextBox"), "txtICAOInput", 195, 20, 118, 30)
+    txtICAOInput.MultiLine = False
+    txtICAOInput.Widget.FontSize = 15
+    txtICAOInput.Widget.FontName = "times new roman"
+    txtICAOInput.Widget.Alpha = 0.5
+
+' Cairo.ImageList.AddIconFromResourceFile "btnIco", "shell32", 167 'load some resource-Icon
+
+    Set cmbMatchingLocations = fSelector.SelectorForm.Widgets.Add(New_W("cwDropDownList"), "cmbMatchingLocations", 120, 58, 225, 28)
+    cmbMatchingLocations.Widget.FontSize = 15
+    cmbMatchingLocations.Widget.FontName = "times new roman"
+    cmbMatchingLocations.Widget.Alpha = 0.5
+    
+    'cmbMatchingLocations.Widget.ImageKey = "btnIco"
+    'cmbMatchingLocations.SetDataSource 'New_c.JSONDecodeToCollection(jsonLstStr), "drpList_ds"
+    cmbMatchingLocations.DropDown.Caption = "ICAO"
+
 
    On Error GoTo 0
    Exit Sub
@@ -144,12 +158,12 @@ End Sub
 ' radioknobone
 ' radioknobtwo
 '
-' okbutton
-' exitbutton
-' locationknobgreen
-' locationknobred
-' icaoknobred
-' icaoknobgreen
+' btnselect
+' btnexit
+' optlocationgreen
+' optlocationred
+' opticaored
+' opticaogreen
 
 ' radiobody
 
@@ -167,25 +181,25 @@ Private Sub SelectorForm_BubblingEvent(ByRef sender As Object, ByRef EventName A
     
     If EventName = "W_MouseMove" Then
         Select Case LCase$(sender.Widget.key)
-            Case "okbutton"
+            Case "btnselect"
                 If PzGEnableBalloonTooltips = "1" Then CreateToolTip SelectorForm.hwnd, "Click me to select the currently displayed ICAO location.", _
                      TTIconInfo, widgetName2 & " Select Button Help", , , , True
-            Case "exitbutton"
+            Case "btnexit"
                 If PzGEnableBalloonTooltips = "1" Then CreateToolTip SelectorForm.hwnd, "Click me to close the ICAO selection utility.", _
                      TTIconInfo, widgetName2 & " Exit Button Help", , , , True
-            Case "locationknobgreen"
+            Case "optlocationgreen"
                 If PzGEnableBalloonTooltips = "1" Then CreateToolTip SelectorForm.hwnd, "The selector utility is now searching by location name only.", _
                      TTIconInfo, widgetName2 & " Location Button Help", , , , True
-            Case "locationknobred"
+            Case "optlocationred"
                 If PzGEnableBalloonTooltips = "1" Then CreateToolTip SelectorForm.hwnd, "Click here to enable the option to search by location name (airport).", _
                      TTIconInfo, widgetName2 & " Location Button Help", , , , True
-            Case "icaoknobred"
+            Case "opticaored"
                 If PzGEnableBalloonTooltips = "1" Then CreateToolTip SelectorForm.hwnd, "Click here to enable the option to search by ICAO code.", _
                      TTIconInfo, widgetName2 & " ICAO Button Help", , , , True
-            Case "searchbutton"
+            Case "btnsearch"
                 If PzGEnableBalloonTooltips = "1" Then CreateToolTip SelectorForm.hwnd, "Click here to search using your supplied airport name or ICAO code.", _
                      TTIconInfo, widgetName2 & " Search Button Help", , , , True
-            Case "icaoknobgreen"
+            Case "opticaogreen"
                 If PzGEnableBalloonTooltips = "1" Then CreateToolTip SelectorForm.hwnd, "The selector utility is now searching by ICAO code only.", _
                      TTIconInfo, widgetName2 & " ICAO Button Help", , , , True
             Case "radiobody"
@@ -202,18 +216,18 @@ Private Sub SelectorForm_BubblingEvent(ByRef sender As Object, ByRef EventName A
     
     If EventName = "W_MouseDown" Then
         Select Case LCase$(sender.Widget.key)
-            Case "okbutton"
-               Call okbutton_mouseDown(sender)
-            Case "exitbutton"
-               Call exitbutton_mouseDown(sender)
-            Case "searchbutton"
-               Call searchbutton_mouseDown(sender)
-            Case "locationknobred"
-               Call locationknobred_mouseDown(sender)
-            Case "icaoknobred"
-               Call icaoknobred_mouseDown(sender)
-            'Case "icaoknobgreen"
-               '  Call icaoknobgreen_mouseDown(sender)
+            Case "btnselect"
+               Call btnselect_mouseDown(sender)
+            Case "btnexit"
+               Call btnexit_mouseDown(sender)
+            Case "btnsearch"
+               Call btnsearch_mouseDown(sender)
+            Case "optlocationred"
+               Call optlocationred_mouseDown(sender)
+            Case "opticaored"
+               Call opticaored_mouseDown(sender)
+            'Case "opticaogreen"
+               '  Call opticaogreen_mouseDown(sender)
             Case Else
                 Debug.Print sender.Widget.key
         End Select
@@ -253,16 +267,16 @@ SelectorForm_BubblingEvent_Error:
 End Sub
 
 '---------------------------------------------------------------------------------------
-' Procedure : okbutton_mouseDown
+' Procedure : btnselect_mouseDown
 ' Author    : Dean Beedell (yereverluvinunclebert)
 ' Date      : 03/08/2023
 ' Purpose   :
 '---------------------------------------------------------------------------------------
 '
-Private Sub okbutton_mouseDown(ByRef sender As Object)
+Private Sub btnselect_mouseDown(ByRef sender As Object)
     Dim fileToPlay As String: fileToPlay = vbNullString
     
-    On Error GoTo okbutton_mouseDown_Error
+    On Error GoTo btnselect_mouseDown_Error
     
     'sender.Widget.Refresh ' this removes the delay in the lockButton depressing
     
@@ -274,25 +288,25 @@ Private Sub okbutton_mouseDown(ByRef sender As Object)
    On Error GoTo 0
    Exit Sub
 
-okbutton_mouseDown_Error:
+btnselect_mouseDown_Error:
 
-    MsgBox "Error " & Err.Number & " (" & Err.Description & ") in procedure okbutton_mouseDown of Class Module cfSelector"
+    MsgBox "Error " & Err.Number & " (" & Err.Description & ") in procedure btnselect_mouseDown of Class Module cfSelector"
 
 End Sub
 
 
 
 '---------------------------------------------------------------------------------------
-' Procedure : exitbutton_mouseDown
+' Procedure : btnexit_mouseDown
 ' Author    : Dean Beedell (yereverluvinunclebert)
 ' Date      : 03/08/2023
 ' Purpose   :
 '---------------------------------------------------------------------------------------
 '
-Private Sub exitbutton_mouseDown(ByRef sender As Object)
+Private Sub btnexit_mouseDown(ByRef sender As Object)
     Dim fileToPlay As String: fileToPlay = vbNullString
    
-    On Error GoTo exitbutton_mouseDown_Error
+    On Error GoTo btnexit_mouseDown_Error
     
     SelectorForm.Hide
     
@@ -304,25 +318,25 @@ Private Sub exitbutton_mouseDown(ByRef sender As Object)
    On Error GoTo 0
    Exit Sub
 
-exitbutton_mouseDown_Error:
+btnexit_mouseDown_Error:
 
-    MsgBox "Error " & Err.Number & " (" & Err.Description & ") in procedure exitbutton_mouseDown of Class Module cfSelector"
+    MsgBox "Error " & Err.Number & " (" & Err.Description & ") in procedure btnexit_mouseDown of Class Module cfSelector"
 
 End Sub
 
 
 
 '---------------------------------------------------------------------------------------
-' Procedure : searchbutton_mouseDown
+' Procedure : btnsearch_mouseDown
 ' Author    : Dean Beedell (yereverluvinunclebert)
 ' Date      : 03/08/2023
 ' Purpose   :
 '---------------------------------------------------------------------------------------
 '
-Private Sub searchbutton_mouseDown(ByRef sender As Object)
+Private Sub btnsearch_mouseDown(ByRef sender As Object)
     Dim fileToPlay As String: fileToPlay = vbNullString
    
-    On Error GoTo searchbutton_mouseDown_Error
+    On Error GoTo btnsearch_mouseDown_Error
     
     'SelectorForm.Hide
     
@@ -334,44 +348,44 @@ Private Sub searchbutton_mouseDown(ByRef sender As Object)
    On Error GoTo 0
    Exit Sub
 
-searchbutton_mouseDown_Error:
+btnsearch_mouseDown_Error:
 
-    MsgBox "Error " & Err.Number & " (" & Err.Description & ") in procedure searchbutton_mouseDown of Class Module cfSelector"
+    MsgBox "Error " & Err.Number & " (" & Err.Description & ") in procedure btnsearch_mouseDown of Class Module cfSelector"
 
 End Sub
 
 '---------------------------------------------------------------------------------------
-' Procedure : locationknobred_mouseDown
+' Procedure : optlocationred_mouseDown
 ' Author    : Dean Beedell (yereverluvinunclebert)
 ' Date      : 03/08/2023
 ' Purpose   :
 '---------------------------------------------------------------------------------------
 '
-Private Sub locationknobred_mouseDown(ByRef sender As Object)
+Private Sub optlocationred_mouseDown(ByRef sender As Object)
     Dim fileToPlay As String: fileToPlay = vbNullString
 
-    On Error GoTo locationknobred_mouseDown_Error
+    On Error GoTo optlocationred_mouseDown_Error
    
     ' switch location red knob to nothing
-    With SelectorForm.Widgets("locationknobred").Widget
+    With SelectorForm.Widgets("optlocationred").Widget
         .Visible = False
         .Refresh
     End With
     
    ' switch location knob to green
-    With SelectorForm.Widgets("locationknobgreen").Widget
+    With SelectorForm.Widgets("optlocationgreen").Widget
         .Visible = True
         .Refresh
     End With
     
     ' set icao green knob to invisible
-    With SelectorForm.Widgets("icaoknobgreen").Widget
+    With SelectorForm.Widgets("opticaogreen").Widget
         .Visible = False
         .Refresh
     End With
     
     ' set icao knob to red to show icao is disabled
-    With SelectorForm.Widgets("icaoknobred").Widget
+    With SelectorForm.Widgets("opticaored").Widget
         .Visible = True
         .Refresh
     End With
@@ -396,45 +410,45 @@ Private Sub locationknobred_mouseDown(ByRef sender As Object)
    On Error GoTo 0
    Exit Sub
 
-locationknobred_mouseDown_Error:
+optlocationred_mouseDown_Error:
 
-    MsgBox "Error " & Err.Number & " (" & Err.Description & ") in procedure locationknobred_mouseDown of Class Module cfSelector"
+    MsgBox "Error " & Err.Number & " (" & Err.Description & ") in procedure optlocationred_mouseDown of Class Module cfSelector"
 
 End Sub
 
 
 '---------------------------------------------------------------------------------------
-' Procedure : icaoknobred_mouseDown
+' Procedure : opticaored_mouseDown
 ' Author    : Dean Beedell (yereverluvinunclebert)
 ' Date      : 03/08/2023
 ' Purpose   :
 '---------------------------------------------------------------------------------------
 '
-Private Sub icaoknobred_mouseDown(ByRef sender As Object)
+Private Sub opticaored_mouseDown(ByRef sender As Object)
     Dim fileToPlay As String: fileToPlay = vbNullString
    
-    On Error GoTo icaoknobred_mouseDown_Error
+    On Error GoTo opticaored_mouseDown_Error
    
     ' switch icao red knob to nothing
-    With SelectorForm.Widgets("icaoknobred").Widget
+    With SelectorForm.Widgets("opticaored").Widget
         .Visible = False
         .Refresh
     End With
     
     ' switch icao knob to green
-    With SelectorForm.Widgets("icaoknobgreen").Widget
+    With SelectorForm.Widgets("opticaogreen").Widget
         .Visible = True
         .Refresh
     End With
     
     ' set location green knob to invisible
-    With SelectorForm.Widgets("locationknobgreen").Widget
+    With SelectorForm.Widgets("optlocationgreen").Widget
         .Visible = False
         .Refresh
     End With
     
     ' set location knob to red to show location is disabled
-    With SelectorForm.Widgets("locationknobred").Widget
+    With SelectorForm.Widgets("optlocationred").Widget
         .Visible = True
         .Refresh
     End With
@@ -459,9 +473,9 @@ Private Sub icaoknobred_mouseDown(ByRef sender As Object)
     On Error GoTo 0
    Exit Sub
 
-icaoknobred_mouseDown_Error:
+opticaored_mouseDown_Error:
 
-    MsgBox "Error " & Err.Number & " (" & Err.Description & ") in procedure icaoknobred_mouseDown of Class Module cfSelector"
+    MsgBox "Error " & Err.Number & " (" & Err.Description & ") in procedure opticaored_mouseDown of Class Module cfSelector"
 
 End Sub
 
@@ -480,7 +494,8 @@ Private Sub SelectorForm_MouseDown(ByRef Button As Integer, ByRef Shift As Integ
 
     If Button = vbRightButton Then
         menuForm.mnuCloseSelector.Visible = True
-        Call menuForm.PopupMenu(menuForm.mnuMainMenu)
+        'Call menuForm.PopupMenu(menuForm.mnuMainMenu)
+        Call menuForm.PopupMenu(menuForm.mnuSelectorMenu)
     Else
     
         ' ensure that the associated forms pop to the front when the main gauge receives focus

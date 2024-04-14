@@ -240,6 +240,9 @@ Private Function testLocation(ByVal location As String) As String
                 cmbMatchingLocations.ItemData(i) = i
             Next i
             cmbMatchingLocations.ListIndex = 0 ' the default entry - Causes a click event to fire which is a pain.
+            
+            'fSelector.cmbMatchingLocations.SetDataSource gblValidLocations(i)
+
         End If
     End If
     

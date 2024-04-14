@@ -28,6 +28,10 @@ Begin VB.Form menuForm
       Begin VB.Menu mnublank1 
          Caption         =   "-"
       End
+      Begin VB.Menu mnuCoffee 
+         Caption         =   "Donate a coffee with KoFi"
+         Index           =   2
+      End
       Begin VB.Menu mnublank9 
          Caption         =   ""
       End
@@ -44,13 +48,6 @@ Begin VB.Form menuForm
          Caption         =   "Copy current weather to clipboard"
       End
       Begin VB.Menu mnublank10 
-         Caption         =   ""
-      End
-      Begin VB.Menu mnuCoffee 
-         Caption         =   "Donate a coffee with KoFi"
-         Index           =   2
-      End
-      Begin VB.Menu blank7 
          Caption         =   ""
       End
       Begin VB.Menu mnuHelpSplash 
@@ -107,11 +104,35 @@ Begin VB.Form menuForm
       Begin VB.Menu mnuHideWidget 
          Caption         =   "Hide Widget"
       End
-      Begin VB.Menu mnuCloseSelector 
-         Caption         =   "Close  ICAO Selector"
-      End
       Begin VB.Menu mnuQuit 
          Caption         =   "Close Widget"
+      End
+   End
+   Begin VB.Menu mnuSelectorMenu 
+      Caption         =   "selectorMenu"
+      Begin VB.Menu mnuSelectorAbout 
+         Caption         =   "About Panzer Weather Gauge Cairo widget"
+      End
+      Begin VB.Menu mnuSelectorPreferences 
+         Caption         =   "Widget Preferences"
+      End
+      Begin VB.Menu mnuseparator2 
+         Caption         =   "-"
+      End
+      Begin VB.Menu mnuSelectorCoffee 
+         Caption         =   "Donate a coffee with KoFi"
+      End
+      Begin VB.Menu mnuSelectorSupport 
+         Caption         =   "Contact Support"
+      End
+      Begin VB.Menu mnuseparator3 
+         Caption         =   "-"
+      End
+      Begin VB.Menu mnuSelectorLicence 
+         Caption         =   "Display Licence Agreement"
+      End
+      Begin VB.Menu mnuCloseSelector 
+         Caption         =   "Close  ICAO Selector"
       End
    End
 End
@@ -241,8 +262,26 @@ mnuChangeLocation_Click_Error:
 
 End Sub
 
+' ----------------------------------------------------------------
+' Procedure Name: mnuCloseSelector_Click
+' Purpose:
+' Procedure Kind: Sub
+' Procedure Access: Private
+' Author: beededea
+' Date: 14/04/2024
+' ----------------------------------------------------------------
 Private Sub mnuCloseSelector_Click()
+    On Error GoTo mnuCloseSelector_Click_Error
+    
     fSelector.SelectorForm.Hide
+    
+    On Error GoTo 0
+    Exit Sub
+
+mnuCloseSelector_Click_Error:
+
+    MsgBox "Error " & Err.Number & " (" & Err.Description & ") in procedure mnuCloseSelector_Click, line " & Erl & "."
+
 End Sub
 
 ' ----------------------------------------------------------------
@@ -592,8 +631,7 @@ Private Sub mnuRefreshMetar_Click()
     
     overlayTemperatureWidget.GetMetar = True ' trigger METAR get with new ICAO code
     answerMsg = "Done. "
-    answer = msgBoxA(answerMsg, vbOKOnly + vbExclamation, "Update Information", False)
-
+    answer = msgBoxA(answerMsg, vbOKOnly + vbExclamation, "Refresh METAR Information", True)
     
     On Error GoTo 0
     Exit Sub
@@ -601,6 +639,120 @@ Private Sub mnuRefreshMetar_Click()
 mnuRefreshMetar_Click_Error:
 
     MsgBox "Error " & Err.Number & " (" & Err.Description & ") in procedure mnuRefreshMetar_Click, line " & Erl & "."
+
+End Sub
+
+' ----------------------------------------------------------------
+' Procedure Name: mnuSelectorAbout_Click
+' Purpose:
+' Procedure Kind: Sub
+' Procedure Access: Private
+' Author: beededea
+' Date: 14/04/2024
+' ----------------------------------------------------------------
+Private Sub mnuSelectorAbout_Click()
+
+    On Error GoTo mnuSelectorAbout_Click_Error
+    
+    Call aboutClickEvent
+    
+    On Error GoTo 0
+    Exit Sub
+
+mnuSelectorAbout_Click_Error:
+
+    MsgBox "Error " & Err.Number & " (" & Err.Description & ") in procedure mnuSelectorAbout_Click, line " & Erl & "."
+
+End Sub
+
+' ----------------------------------------------------------------
+' Procedure Name: mnuSelectorCoffee_Click
+' Purpose:
+' Procedure Kind: Sub
+' Procedure Access: Private
+' Author: beededea
+' Date: 14/04/2024
+' ----------------------------------------------------------------
+Private Sub mnuSelectorCoffee_Click()
+
+    On Error GoTo mnuSelectorCoffee_Click_Error
+    
+    Call mnuCoffee_ClickEvent
+    
+    On Error GoTo 0
+    Exit Sub
+
+mnuSelectorCoffee_Click_Error:
+
+    MsgBox "Error " & Err.Number & " (" & Err.Description & ") in procedure mnuSelectorCoffee_Click, line " & Erl & "."
+
+End Sub
+
+' ----------------------------------------------------------------
+' Procedure Name: mnuSelectorLicence_Click
+' Purpose:
+' Procedure Kind: Sub
+' Procedure Access: Private
+' Author: beededea
+' Date: 14/04/2024
+' ----------------------------------------------------------------
+Private Sub mnuSelectorLicence_Click()
+
+    On Error GoTo mnuSelectorLicence_Click_Error
+    
+    Call mnuLicence_ClickEvent
+    
+    On Error GoTo 0
+    Exit Sub
+
+mnuSelectorLicence_Click_Error:
+
+    MsgBox "Error " & Err.Number & " (" & Err.Description & ") in procedure mnuSelectorLicence_Click, line " & Erl & "."
+
+End Sub
+
+' ----------------------------------------------------------------
+' Procedure Name: mnuSelectorPreferences_Click
+' Purpose:
+' Procedure Kind: Sub
+' Procedure Access: Private
+' Author: beededea
+' Date: 14/04/2024
+' ----------------------------------------------------------------
+Private Sub mnuSelectorPreferences_Click()
+
+    On Error GoTo mnuSelectorPreferences_Click_Error
+    
+    Call makeProgramPreferencesAvailable
+    
+    On Error GoTo 0
+    Exit Sub
+
+mnuSelectorPreferences_Click_Error:
+
+    MsgBox "Error " & Err.Number & " (" & Err.Description & ") in procedure mnuSelectorPreferences_Click, line " & Erl & "."
+
+End Sub
+
+' ----------------------------------------------------------------
+' Procedure Name: mnuSelectorSupport_Click
+' Purpose:
+' Procedure Kind: Sub
+' Procedure Access: Private
+' Author: beededea
+' Date: 14/04/2024
+' ----------------------------------------------------------------
+Private Sub mnuSelectorSupport_Click()
+    On Error GoTo mnuSelectorSupport_Click_Error
+    
+    Call mnuSupport_ClickEvent
+    
+    On Error GoTo 0
+    Exit Sub
+
+mnuSelectorSupport_Click_Error:
+
+    MsgBox "Error " & Err.Number & " (" & Err.Description & ") in procedure mnuSelectorSupport_Click, line " & Erl & "."
 
 End Sub
 
@@ -709,7 +861,6 @@ End Sub
 Private Sub mnuWidgets_Click()
     
     Dim answer As VbMsgBoxResult: answer = vbNo
-    
     Dim answerMsg As String: answerMsg = vbNullString
     
     On Error GoTo mnuWidgets_Click_Error

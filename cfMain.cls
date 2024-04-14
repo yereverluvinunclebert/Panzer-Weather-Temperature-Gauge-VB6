@@ -36,8 +36,8 @@ Private WithEvents btnAccept As cwButton
 Attribute btnAccept.VB_VarHelpID = -1
 Private WithEvents btnDecline As cwButton
 Attribute btnDecline.VB_VarHelpID = -1
-Private WithEvents textBox As cwTextBox
-Attribute textBox.VB_VarHelpID = -1
+Private WithEvents TextBox As cwTextBox
+Attribute TextBox.VB_VarHelpID = -1
 Private lblDeclineOrNot As cwLabel
 
  
@@ -254,18 +254,18 @@ Public Sub initAndShowLicenceForm(Optional ByVal Caption As String)
     If PzGDpiAwareness = "1" Then
         Set btnDecline = licenceForm.Widgets.Add(New_W("cwButton"), "btnDecline", 352, 397, 70, 29)
         Set btnAccept = licenceForm.Widgets.Add(New_W("cwButton"), "btnAccept", 428, 397, 70, 29)
-        Set textBox = licenceForm.Widgets.Add(New_W("cwTextBox"), "textBox", 50, 60, 440, 280)
+        Set TextBox = licenceForm.Widgets.Add(New_W("cwTextBox"), "textBox", 50, 60, 440, 280)
         Set lblDeclineOrNot = licenceForm.Widgets.Add(New_W("cwLabel"), "lblDeclineOrNot", 50, 345, 440, 35)
-        textBox.Widget.FontSize = 11
+        TextBox.Widget.FontSize = 11
         btnDecline.Widget.FontSize = 10
         btnAccept.Widget.FontSize = 10
         lblDeclineOrNot.Widget.FontSize = 8
     Else
         Set btnDecline = licenceForm.Widgets.Add(New_W("cwButton"), "btnDecline", 189, 210, 40, 18)
         Set btnAccept = licenceForm.Widgets.Add(New_W("cwButton"), "btnAccept", 228, 210, 40, 18)
-        Set textBox = licenceForm.Widgets.Add(New_W("cwTextBox"), "textBox", 25, 30, 240, 155)
+        Set TextBox = licenceForm.Widgets.Add(New_W("cwTextBox"), "textBox", 25, 30, 240, 155)
         Set lblDeclineOrNot = licenceForm.Widgets.Add(New_W("cwLabel"), "lblDeclineOrNot", 25, 188, 240, 20)
-        textBox.Widget.FontSize = 8
+        TextBox.Widget.FontSize = 8
         btnDecline.Widget.FontSize = 7
         btnAccept.Widget.FontSize = 7
         lblDeclineOrNot.Widget.FontSize = 6
@@ -281,14 +281,14 @@ Public Sub initAndShowLicenceForm(Optional ByVal Caption As String)
     btnAccept.Widget.Alpha = 0.05
     btnAccept.Widget.ToolTip = "Press this button to accept the terms of the GPL licence."
     
-    textBox.MultiLine = True
-    textBox.ScrollBars = vbVertical
-    textBox.Widget.BackColor = &H4000&
-    textBox.Widget.ForeColor = vbWhite
+    TextBox.MultiLine = True
+    TextBox.ScrollBars = vbVertical
+    TextBox.Widget.BackColor = &H4000&
+    TextBox.Widget.ForeColor = vbWhite
     
-    Call LoadFileToTB(textBox, App.path & "\resources\txt\licence.txt", False)
+    Call LoadFileToTB(TextBox, App.path & "\resources\txt\licence.txt", False)
 
-    textBox.Text = widgetName1 & vbCrLf & vbCrLf & _
+    TextBox.Text = widgetName1 & vbCrLf & vbCrLf & _
     "Copyright © 1992-2023 Dean Beedell" & vbCrLf & vbCrLf & _
     "This program is free software; you can redistribute it and/or modify it under the terms of the GNU General Public Licence as published by the Free Software Foundation; either version 2 of the License, or (at your option) any later version." & vbCrLf & vbCrLf & _
         "This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more details." & vbCrLf & vbCrLf & _

@@ -430,41 +430,41 @@ End Sub
 Private Sub adjustSelectorMainControls()
     
     On Error GoTo adjustSelectorMainControls_Error
-    With fSelector.SelectorForm.Widgets("locationknobgreen").Widget
+    With fSelector.SelectorForm.Widgets("optlocationgreen").Widget
         .HoverColor = 0 ' set the hover colour to grey - this may change later with new RC6
         .MousePointer = IDC_HAND
         .Alpha = val(PzGOpacity) / 100
         .Tag = 0.25
     End With
     
-    With fSelector.SelectorForm.Widgets("locationknobred").Widget
+    With fSelector.SelectorForm.Widgets("optlocationred").Widget
         .HoverColor = 0 ' set the hover colour to grey - this may change later with new RC6
         .MousePointer = IDC_HAND
         .Alpha = val(PzGOpacity) / 100
         .Tag = 0.25
     End With
     
-    With fSelector.SelectorForm.Widgets("icaoknobgreen").Widget
+    With fSelector.SelectorForm.Widgets("opticaogreen").Widget
         .HoverColor = 0 ' set the hover colour to grey - this may change later with new RC6
         .MousePointer = IDC_HAND
         .Alpha = val(PzGOpacity) / 100
         .Tag = 0.25
     End With
     
-    With fSelector.SelectorForm.Widgets("icaoknobred").Widget
+    With fSelector.SelectorForm.Widgets("opticaored").Widget
         .HoverColor = 0 ' set the hover colour to grey - this may change later with new RC6
         .MousePointer = IDC_HAND
         .Alpha = val(PzGOpacity) / 100
         .Tag = 0.25
     End With
     
-    With fSelector.SelectorForm.Widgets("exitbutton").Widget
+    With fSelector.SelectorForm.Widgets("btnexit").Widget
         .HoverColor = 0 ' set the hover colour to grey - this may change later with new RC6
         .MousePointer = IDC_HAND
         .Alpha = val(PzGOpacity) / 100
     End With
     
-    With fSelector.SelectorForm.Widgets("okbutton").Widget
+    With fSelector.SelectorForm.Widgets("btnselect").Widget
         .HoverColor = 0 ' set the hover colour to grey - this may change later with new RC6
         .MousePointer = IDC_HAND
         .Alpha = val(PzGOpacity) / 100
@@ -482,7 +482,7 @@ Private Sub adjustSelectorMainControls()
         .Alpha = val(PzGOpacity) / 100
     End With
 
-    With fSelector.SelectorForm.Widgets("searchbutton").Widget
+    With fSelector.SelectorForm.Widgets("btnsearch").Widget
         .HoverColor = 0 ' set the hover colour to grey - this may change later with new RC6
         .MousePointer = IDC_HAND
         .Alpha = val(PzGOpacity) / 100
@@ -508,7 +508,7 @@ Private Sub adjustSelectorMainControls()
 
 adjustSelectorMainControls_Error:
 
-    MsgBox "Error " & Err.Number & " (" & Err.Description & ") in procedure adjustSelectorMainControls, line " & Erl & "."
+    MsgBox "Error " & Err.Number & " (" & Err.Description & ") in procedure adjustSelectorMainControls, line " & Erl & ". " & "Most likely a badly-named layer in the PSD file."
 
 End Sub
 '---------------------------------------------------------------------------------------
