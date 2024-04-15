@@ -292,6 +292,9 @@ Public PzGGaugeFunctions As String
 'Public PzGAnimationInterval As String
 Public PzGPointerAnimate As String
 Public PzGSamplingInterval As String
+Public PzGStormTestInterval As String
+Public PzGAirportsURL As String
+
 Public PzGTemperatureScale As String
 Public PzGPressureScale As String
 Public PzGWindSpeedScale As String

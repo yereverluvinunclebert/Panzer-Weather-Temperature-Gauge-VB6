@@ -251,8 +251,10 @@ Private Sub initialiseGlobalVars()
     PzGGaugeFunctions = vbNullString
     PzGPointerAnimate = vbNullString
     PzGSamplingInterval = vbNullString
+    PzGStormTestInterval = vbNullString
+    PzGAirportsURL = vbNullString
+    
     PzGIcao = vbNullString
-
 
     ' config
     PzGEnableTooltips = vbNullString
@@ -386,8 +388,8 @@ Private Sub addGeneralImagesToImageLists()
     Cairo.ImageList.AddImage "config-icon-light", App.path & "\Resources\images\config-icon-light-1010.jpg"
     Cairo.ImageList.AddImage "development-icon-light", App.path & "\Resources\images\development-icon-light-1010.jpg"
     Cairo.ImageList.AddImage "development-icon-dark", App.path & "\Resources\images\development-icon-dark-1010.jpg"
-    Cairo.ImageList.AddImage "general-icon-dark", App.path & "\Resources\images\general-icon-dark-1010.jpg"
-    Cairo.ImageList.AddImage "general-icon-light", App.path & "\Resources\images\general-icon-light-1010.jpg"
+    Cairo.ImageList.AddImage "metar-icon-dark", App.path & "\Resources\images\metar-icon-dark-1010.jpg"
+    Cairo.ImageList.AddImage "metar-icon-light", App.path & "\Resources\images\metar-icon-light-1010.jpg"
     Cairo.ImageList.AddImage "sounds-icon-light", App.path & "\Resources\images\sounds-icon-light-1010.jpg"
     Cairo.ImageList.AddImage "sounds-icon-dark", App.path & "\Resources\images\sounds-icon-dark-1010.jpg"
     Cairo.ImageList.AddImage "windows-icon-light", App.path & "\Resources\images\windows-icon-light-1010.jpg"
@@ -397,7 +399,7 @@ Private Sub addGeneralImagesToImageLists()
     Cairo.ImageList.AddImage "position-icon-light", App.path & "\Resources\images\position-icon-light-1010.jpg"
     Cairo.ImageList.AddImage "position-icon-dark", App.path & "\Resources\images\position-icon-dark-1010.jpg"
     
-    Cairo.ImageList.AddImage "general-icon-dark-clicked", App.path & "\Resources\images\general-icon-dark-600-clicked.jpg"
+    Cairo.ImageList.AddImage "metar-icon-dark-clicked", App.path & "\Resources\images\metar-icon-dark-600-clicked.jpg"
     Cairo.ImageList.AddImage "config-icon-dark-clicked", App.path & "\Resources\images\config-icon-dark-600-clicked.jpg"
     Cairo.ImageList.AddImage "font-icon-dark-clicked", App.path & "\Resources\images\font-icon-dark-600-clicked.jpg"
     Cairo.ImageList.AddImage "sounds-icon-dark-clicked", App.path & "\Resources\images\sounds-icon-dark-600-clicked.jpg"
@@ -406,7 +408,7 @@ Private Sub addGeneralImagesToImageLists()
     Cairo.ImageList.AddImage "windows-icon-dark-clicked", App.path & "\Resources\images\windows-icon-dark-600-clicked.jpg"
     Cairo.ImageList.AddImage "about-icon-dark-clicked", App.path & "\Resources\images\about-icon-dark-600-clicked.jpg"
     
-    Cairo.ImageList.AddImage "general-icon-light-clicked", App.path & "\Resources\images\general-icon-light-600-clicked.jpg"
+    Cairo.ImageList.AddImage "metar-icon-light-clicked", App.path & "\Resources\images\metar-icon-light-600-clicked.jpg"
     Cairo.ImageList.AddImage "config-icon-light-clicked", App.path & "\Resources\images\config-icon-light-600-clicked.jpg"
     Cairo.ImageList.AddImage "font-icon-light-clicked", App.path & "\Resources\images\font-icon-light-600-clicked.jpg"
     Cairo.ImageList.AddImage "sounds-icon-light-clicked", App.path & "\Resources\images\sounds-icon-light-600-clicked.jpg"
@@ -694,6 +696,9 @@ Public Sub readSettingsFile(ByVal location As String, ByVal PzGSettingsFile As S
         PzGGaugeFunctions = fGetINISetting(location, "gaugeFunctions", PzGSettingsFile)
         PzGPointerAnimate = fGetINISetting(location, "pointerAnimate", PzGSettingsFile)
         PzGSamplingInterval = fGetINISetting(location, "samplingInterval", PzGSettingsFile)
+        PzGStormTestInterval = fGetINISetting(location, "stormTestInterval", PzGSettingsFile)
+        PzGAirportsURL = fGetINISetting(location, "airportsURL", PzGSettingsFile)
+        
         PzGTemperatureScale = fGetINISetting(location, "temperatureScale", PzGSettingsFile)
         PzGPressureScale = fGetINISetting(location, "pressureScale", PzGSettingsFile)
         PzGWindSpeedScale = fGetINISetting(location, "windSpeedScale", PzGSettingsFile)
@@ -793,74 +798,76 @@ Public Sub validateInputs()
    On Error GoTo validateInputs_Error
             
         ' general
-        If PzGGaugeFunctions = vbNullString Then PzGGaugeFunctions = "1" ' always turn
+    If PzGGaugeFunctions = vbNullString Then PzGGaugeFunctions = "1" ' always turn
 '        If PzGAnimationInterval = vbNullString Then PzGAnimationInterval = "130"
-        If PzGStartup = vbNullString Then PzGStartup = "1"
-        If PzGPointerAnimate = vbNullString Then PzGPointerAnimate = "0"
-        If PzGSamplingInterval = vbNullString Then PzGSamplingInterval = "3"
-        If PzGTemperatureScale = vbNullString Then PzGTemperatureScale = "0"
-        If PzGPressureScale = vbNullString Then PzGPressureScale = "0" ' "Millibars"
-        If PzGWindSpeedScale = vbNullString Then PzGWindSpeedScale = "0"
-        If PzGMetricImperial = vbNullString Then PzGMetricImperial = "0"
-        
-        If PzGIcao = vbNullString Then PzGIcao = "EGSH"
+    If PzGStartup = vbNullString Then PzGStartup = "1"
+    If PzGPointerAnimate = vbNullString Then PzGPointerAnimate = "0"
+    If PzGSamplingInterval = vbNullString Then PzGSamplingInterval = "60"
+    If PzGStormTestInterval = vbNullString Then PzGStormTestInterval = "3600"
+    If PzGAirportsURL = vbNullString Then PzGAirportsURL = "https://raw.githubusercontent.com/jpatokal/openflights/master/data/airports.dat"
+    
+    If PzGTemperatureScale = vbNullString Then PzGTemperatureScale = "0"
+    If PzGPressureScale = vbNullString Then PzGPressureScale = "0" ' "Millibars"
+    If PzGWindSpeedScale = vbNullString Then PzGWindSpeedScale = "0"
+    If PzGMetricImperial = vbNullString Then PzGMetricImperial = "0"
+    
+    If PzGIcao = vbNullString Then PzGIcao = "EGSH"
 
+    ' Configuration
+    If PzGEnableTooltips = vbNullString Then PzGEnableTooltips = "0"
+    If PzGEnablePrefsTooltips = vbNullString Then PzGEnablePrefsTooltips = "1"
+    If PzGEnableBalloonTooltips = vbNullString Then PzGEnableBalloonTooltips = "1"
+    If PzGShowTaskbar = vbNullString Then PzGShowTaskbar = "0"
+    If PzGDpiAwareness = vbNullString Then PzGDpiAwareness = "0"
+    If PzGGaugeSize = vbNullString Then PzGGaugeSize = "25"
+    If PzGScrollWheelDirection = vbNullString Then PzGScrollWheelDirection = "1"
+           
+    ' fonts
+    If PzGPrefsFont = vbNullString Then PzGPrefsFont = "times new roman"
+    If PzGClockFont = vbNullString Then PzGClockFont = PzGPrefsFont
+    If PzGPrefsFontSizeHighDPI = vbNullString Then PzGPrefsFontSizeHighDPI = "8"
+    If PzGPrefsFontSizeLowDPI = vbNullString Then PzGPrefsFontSizeLowDPI = "8"
+    If PzGPrefsFontItalics = vbNullString Then PzGPrefsFontItalics = "false"
+    If PzGPrefsFontColour = vbNullString Then PzGPrefsFontColour = "0"
 
-        ' Configuration
-        If PzGEnableTooltips = vbNullString Then PzGEnableTooltips = "0"
-        If PzGEnablePrefsTooltips = vbNullString Then PzGEnablePrefsTooltips = "1"
-        If PzGEnableBalloonTooltips = vbNullString Then PzGEnableBalloonTooltips = "1"
-        If PzGShowTaskbar = vbNullString Then PzGShowTaskbar = "0"
-        If PzGDpiAwareness = vbNullString Then PzGDpiAwareness = "0"
-        If PzGGaugeSize = vbNullString Then PzGGaugeSize = "25"
-        If PzGScrollWheelDirection = vbNullString Then PzGScrollWheelDirection = "1"
-               
-        ' fonts
-        If PzGPrefsFont = vbNullString Then PzGPrefsFont = "times new roman"
-        If PzGClockFont = vbNullString Then PzGClockFont = PzGPrefsFont
-        If PzGPrefsFontSizeHighDPI = vbNullString Then PzGPrefsFontSizeHighDPI = "8"
-        If PzGPrefsFontSizeLowDPI = vbNullString Then PzGPrefsFontSizeLowDPI = "8"
-        If PzGPrefsFontItalics = vbNullString Then PzGPrefsFontItalics = "false"
-        If PzGPrefsFontColour = vbNullString Then PzGPrefsFontColour = "0"
+    ' sounds
+    If PzGEnableSounds = vbNullString Then PzGEnableSounds = "1"
 
-        ' sounds
-        If PzGEnableSounds = vbNullString Then PzGEnableSounds = "1"
-
-        ' position
-        If PzGAspectHidden = vbNullString Then PzGAspectHidden = "0"
-        If PzGWidgetPosition = vbNullString Then PzGWidgetPosition = "0"
-        If PzGWidgetLandscape = vbNullString Then PzGWidgetLandscape = "0"
-        If PzGWidgetPortrait = vbNullString Then PzGWidgetPortrait = "0"
-        If PzGLandscapeFormHoffset = vbNullString Then PzGLandscapeFormHoffset = vbNullString
-        If PzGLandscapeFormVoffset = vbNullString Then PzGLandscapeFormVoffset = vbNullString
-        If PzGPortraitHoffset = vbNullString Then PzGPortraitHoffset = vbNullString
-        If PzGPortraitYoffset = vbNullString Then PzGPortraitYoffset = vbNullString
-        If PzGvLocationPercPrefValue = vbNullString Then PzGvLocationPercPrefValue = vbNullString
-        If PzGhLocationPercPrefValue = vbNullString Then PzGhLocationPercPrefValue = vbNullString
-                
-        ' development
-        If PzGDebug = vbNullString Then PzGDebug = "0"
-        If PzGDblClickCommand = vbNullString Then PzGDblClickCommand = "%systemroot%\system32\timedate.cpl"
-        If PzGOpenFile = vbNullString Then PzGOpenFile = vbNullString
-        If PzGDefaultEditor = vbNullString Then PzGDefaultEditor = vbNullString
-        
-        ' window
-        If PzGWindowLevel = vbNullString Then PzGWindowLevel = "1" 'WindowLevel", PzGSettingsFile)
-        If PzGOpacity = vbNullString Then PzGOpacity = "100"
-        If PzGWidgetHidden = vbNullString Then PzGWidgetHidden = "0"
-        If PzGHidingTime = vbNullString Then PzGHidingTime = "0"
-        If PzGIgnoreMouse = vbNullString Then PzGIgnoreMouse = "0"
-        If PzGPreventDragging = vbNullString Then PzGPreventDragging = "0"
-        
-        
-        
-        ' other
-        If PzGFirstTimeRun = vbNullString Then PzGFirstTimeRun = "true"
-        If PzGLastSelectedTab = vbNullString Then PzGLastSelectedTab = "general"
-        If PzGSkinTheme = vbNullString Then PzGSkinTheme = "dark"
-        
-        If PzGLastUpdated = vbNullString Then PzGLastUpdated = Now()
-        If PzGMetarPref = vbNullString Then PzGMetarPref = "ICAO"
+    ' position
+    If PzGAspectHidden = vbNullString Then PzGAspectHidden = "0"
+    If PzGWidgetPosition = vbNullString Then PzGWidgetPosition = "0"
+    If PzGWidgetLandscape = vbNullString Then PzGWidgetLandscape = "0"
+    If PzGWidgetPortrait = vbNullString Then PzGWidgetPortrait = "0"
+    If PzGLandscapeFormHoffset = vbNullString Then PzGLandscapeFormHoffset = vbNullString
+    If PzGLandscapeFormVoffset = vbNullString Then PzGLandscapeFormVoffset = vbNullString
+    If PzGPortraitHoffset = vbNullString Then PzGPortraitHoffset = vbNullString
+    If PzGPortraitYoffset = vbNullString Then PzGPortraitYoffset = vbNullString
+    If PzGvLocationPercPrefValue = vbNullString Then PzGvLocationPercPrefValue = vbNullString
+    If PzGhLocationPercPrefValue = vbNullString Then PzGhLocationPercPrefValue = vbNullString
+            
+    ' development
+    If PzGDebug = vbNullString Then PzGDebug = "0"
+    If PzGDblClickCommand = vbNullString Then PzGDblClickCommand = "%systemroot%\system32\timedate.cpl"
+    If PzGOpenFile = vbNullString Then PzGOpenFile = vbNullString
+    If PzGDefaultEditor = vbNullString Then PzGDefaultEditor = vbNullString
+    
+    ' window
+    If PzGWindowLevel = vbNullString Then PzGWindowLevel = "1" 'WindowLevel", PzGSettingsFile)
+    If PzGOpacity = vbNullString Then PzGOpacity = "100"
+    If PzGWidgetHidden = vbNullString Then PzGWidgetHidden = "0"
+    If PzGHidingTime = vbNullString Then PzGHidingTime = "0"
+    If PzGIgnoreMouse = vbNullString Then PzGIgnoreMouse = "0"
+    If PzGPreventDragging = vbNullString Then PzGPreventDragging = "0"
+    
+    
+    
+    ' other
+    If PzGFirstTimeRun = vbNullString Then PzGFirstTimeRun = "true"
+    If PzGLastSelectedTab = vbNullString Then PzGLastSelectedTab = "general"
+    If PzGSkinTheme = vbNullString Then PzGSkinTheme = "dark"
+    
+    If PzGLastUpdated = vbNullString Then PzGLastUpdated = Now()
+    If PzGMetarPref = vbNullString Then PzGMetarPref = "ICAO"
         
  
  

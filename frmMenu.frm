@@ -42,7 +42,7 @@ Begin VB.Form menuForm
          Caption         =   "Refresh Metar Feed"
       End
       Begin VB.Menu mnuDownloadICAO 
-         Caption         =   "Download new ICAO code locations file"
+         Caption         =   "Download new ICAO code locations file (airports.dat)"
       End
       Begin VB.Menu mnuCopyWeather 
          Caption         =   "Copy current weather to clipboard"
