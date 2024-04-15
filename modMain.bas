@@ -46,6 +46,7 @@ Public sunriseSunset As cwSunriseSunset
 Public widgetName1 As String
 Public widgetName2 As String
 
+
     
 
 
@@ -104,6 +105,9 @@ Public Sub mainRoutine(ByVal restart As Boolean)
     
     ' initialise global vars
     Call initialiseGlobalVars
+    
+    ' create dictionary collection instead of an array to load dropdown list
+    Set collValidLocations = CreateObject("Scripting.Dictionary")
     
     'add Resources to the global ImageList
     Call addGeneralImagesToImageLists

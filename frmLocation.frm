@@ -235,8 +235,10 @@ Private Function testLocation(ByVal location As String) As String
             testLocation = "multiple locations found" ' vbNullString means none found
             cmbMatchingLocations.Visible = True
             cmbMatchingLocations.Clear ' remove old from previous usage
+                        
             For i = 0 To cnt - 1
-                cmbMatchingLocations.AddItem gblValidLocations(i), i
+                'cmbMatchingLocations.AddItem gblValidLocations(i), i
+                cmbMatchingLocations.AddItem collValidLocations("key" & CStr(i + 1)) ' the cnt is the key
                 cmbMatchingLocations.ItemData(i) = i
             Next i
             cmbMatchingLocations.ListIndex = 0 ' the default entry - Causes a click event to fire which is a pain.

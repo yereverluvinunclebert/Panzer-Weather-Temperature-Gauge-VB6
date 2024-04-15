@@ -439,8 +439,11 @@ Private mbDebugMode As Boolean ' .30 DAEB 03/03/2021 frmMain.frm replaced the in
 'Public tzDelta1 As Long
 
 Public msgBoxADynamicSizingFlg As Boolean
-Public gblValidLocations() As String
+'Public gblValidLocations() As String
 
+' dictionary
+Public collValidLocations As Object
+'Public validLocationStringObj As Variant
 
 
 '---------------------------------------------------------------------------------------
@@ -1352,7 +1355,7 @@ Public Sub changeFormFont(ByVal formName As Object, ByVal suppliedFont As String
       
     ' loop through all the controls and identify the labels and text boxes
     For Each Ctrl In formName.Controls
-        If (TypeOf Ctrl Is CommandButton) Or (TypeOf Ctrl Is textBox) Or (TypeOf Ctrl Is FileListBox) Or (TypeOf Ctrl Is Label) Or (TypeOf Ctrl Is ComboBox) Or (TypeOf Ctrl Is CheckBox) Or (TypeOf Ctrl Is OptionButton) Or (TypeOf Ctrl Is Frame) Or (TypeOf Ctrl Is ListBox) Then
+        If (TypeOf Ctrl Is CommandButton) Or (TypeOf Ctrl Is TextBox) Or (TypeOf Ctrl Is FileListBox) Or (TypeOf Ctrl Is Label) Or (TypeOf Ctrl Is ComboBox) Or (TypeOf Ctrl Is CheckBox) Or (TypeOf Ctrl Is OptionButton) Or (TypeOf Ctrl Is Frame) Or (TypeOf Ctrl Is ListBox) Then
             '@Ignore MemberNotOnInterface
             If Ctrl.Name <> "lblDragCorner" Then
                 '@Ignore MemberNotOnInterface
@@ -1794,7 +1797,7 @@ Public Sub setMainTooltips()
 
     If PzGEnableTooltips = "1" Then
 
-        overlayTemperatureWidget.Widget.ToolTip = "Double tap on me to get new weather" & vbCrLf & "Use CTRL+mouse scrollwheel up/down to resize."
+        overlayTemperatureWidget.Widget.ToolTip = "" & vbCrLf & "Use CTRL+mouse scrollwheel up/down to resize."
         helpWidget.Widget.ToolTip = "Click on me to make me go away."
         aboutWidget.Widget.ToolTip = "Click on me to make me go away."
         

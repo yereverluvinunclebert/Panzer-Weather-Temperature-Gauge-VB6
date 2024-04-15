@@ -1,7 +1,7 @@
 modMain = 26, 26, 1178, 843, 
 cfTemperature = 42, 12, 965, 909, 
 modRegFree = 78, 78, 1004, 746, 
-cwOverlayTemp = 52, 52, 1267, 681, Z
+cwOverlayTemp = 52, 52, 1267, 681, 
 frmTimer = 364, 364, 1808, 1249, , 52, 52, 975, 681, C
 modTooltips = 260, 260, 897, 845, 
 Module1 = 102, 68, 1541, 1022, 
@@ -17,5 +17,6 @@ modResize = 19, 677, 1449, 1307,
 cwAlphaImg = 260, 260, 819, 1014, 
 cwSunriseSunset = 78, 78, 1360, 708, 
 frmLocation = 338, 338, 1259, 1090, , 234, 234, 1223, 986, C
-cfSelector = 16, 18, 1345, 1044, 
+cfSelector = -5, -1, 1324, 1025, Z
 cwOverlaySelect = 312, 312, 1193, 980, 
+selectorMenuForm = 0, 0, 0, 0, C, 130, 130, 1008, 798, C

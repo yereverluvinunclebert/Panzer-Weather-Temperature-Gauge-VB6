@@ -167,8 +167,6 @@ Private Sub temperatureGaugeForm_BubblingEvent(ByRef sender As Object, ByRef Eve
             Case Else
                 If PzGEnableBalloonTooltips = "1" Then CreateToolTip temperatureGaugeForm.hwnd, " " & overlayTemperatureWidget.TemperatureDetails _
                     & vbCrLf & "" _
-                    & "Double tap on me to get new weather" _
-                    & vbCrLf & "" _
                     & vbCrLf & "Right Click to open the menu and the preferences. CTRL+ Mouse scrollwheel UP/DOWN to resize." _
                     , TTIconInfo, widgetName1 & " METAR summary Information.", , , , True
         End Select
@@ -708,7 +706,6 @@ Private Sub temperatureGaugeForm_MouseDown(ByRef Button As Integer, ByRef Shift 
    On Error GoTo W_MouseDown_Error
 
     If Button = vbRightButton Then
-        menuForm.mnuCloseSelector.Visible = False
         Call menuForm.PopupMenu(menuForm.mnuMainMenu)
     Else
         ' ensure that the associated forms pop to the front when the main gauge receives focus

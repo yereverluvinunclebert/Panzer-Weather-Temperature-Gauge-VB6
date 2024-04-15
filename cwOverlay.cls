@@ -1178,6 +1178,7 @@ Private Sub tmrAsyncResponse_Timer()
     On Error GoTo tmrSampler_Timer_Error
     
     Debug.Print myMSXML.readyState
+
     If myMSXML.readyState = 4 Then ' asynchronous xml request complete
         
         If debugFlg = 1 Then Debug.Print myMSXML.responseText
@@ -1212,6 +1213,8 @@ Private Sub myStatusProc()
     Dim difString As String: difString = vbNullString
     Dim num_results As Integer: num_results = 0
     Dim observation_time As String: observation_time = vbNullString
+    
+    Dim raw_text As String: raw_text = vbNullString
     Dim station_id As String: station_id = vbNullString
     Dim temp_c As String: temp_c = vbNullString
     Dim altim_in_hg As String: altim_in_hg = vbNullString
@@ -1282,11 +1285,11 @@ Private Sub myStatusProc()
     Set MetarNode = objxmldoc.selectSingleNode("response/data/METAR") ' There's only the one METAR node
     
     If num_results = 0 Then ' And Preferences.msgboxPref.value = "enabled" Then
-        If answer = vbNo Then
+        'If answer = vbNo Then
             answer = vbYes
             answerMsg = "The source weather feed is currently producing no valid data for " & panzerPrefs.sliSamplingInterval.Value & " secs."
             answer = msgBoxA(answerMsg, vbOKOnly, "Poll Warning", True, "myStatusProcPollingWarning")
-        End If
+        'End If
         weHaveData = False
         Exit Sub ' Return
     End If
@@ -1300,7 +1303,10 @@ Private Sub myStatusProc()
             
             observation_time = node.selectSingleNode("observation_time").Text
             If debugFlg = 1 Then Debug.Print ("%myStatusProc - observation_time " + observation_time)
-        
+            
+            raw_text = node.selectSingleNode("raw_text").Text
+            If debugFlg = 1 Then Debug.Print "%myStatusProc - raw_text " & raw_text
+            
             station_id = node.selectSingleNode("station_id").Text
             If debugFlg = 1 Then Debug.Print "%myStatusProc - station_id " & station_id
             
@@ -1432,7 +1438,7 @@ Private Sub myStatusProc()
     secsDif = Int(DateDiff("s", TheDate, usableObsTime))
 
     ' format the interval for display in the tooltip
-    difString = niceFormatInterval(secsDif)
+    difString = niceFormatInterval(secsDif, TheDate)
 
     ' store the last updated value in the settings
     PzGLastUpdated = usableObsTime
@@ -1440,7 +1446,9 @@ Private Sub myStatusProc()
 
     ' set the hover over tooltips on the gauges
     thisTooltip = setHoverTooltip(skyClarityString, humidityValue, temperatureValue, pressureValue, weekDayDate, wind_dir_degrees, wind_speed_kt, precip_in, wx_string)
-    thisTooltip = thisTooltip & vbCrLf & difString
+    thisTooltip = thisTooltip & vbCrLf & vbCrLf & raw_text
+    thisTooltip = thisTooltip & vbCrLf & vbCrLf & difString
+
     
     ' save the tooltip value so it can be used during the regular timed 60 second tooltip updates.
     'PzGLastTooltip = thisTooltip
@@ -1525,17 +1533,19 @@ End Function
 ' Author: Dean Beedell (yereverluvinunclebert)
 ' Date: 15/03/2024
 ' ----------------------------------------------------------------
-Function niceFormatInterval(duration As Integer) As String
+Function niceFormatInterval(ByVal duration As Integer, ByVal dateTimeNow As Date) As String
     On Error GoTo niceFormatInterval_Error
     
     Dim hours As Integer: hours = 0
-    
+    Dim addString As String: addString = vbNullString
     Dim minutes As Integer: minutes = 0
     Dim res As String: res = vbNullString
     
     duration = Abs(duration)
     hours = Int(duration / 3600)
     minutes = Int((duration - hours * 3600) / 60)
+    
+    addString = "prior to last poll at " & dateTimeNow
     
     If hours > 72 Then
         'print("%Update " & String(hours) & " hours and " & String(minutes) & " minutes ago")
@@ -1547,30 +1557,30 @@ Function niceFormatInterval(duration As Integer) As String
         If hours = 1 Then
             res = res & " " & "one hour"
         Else
-            res = res & " " & Str$(hours) & " " & "hours"
+            res = res & " " & CStr(hours) & " " & "hours"
         End If
         If minutes = 1 Then
             res = res & " " & "and one minute"
         ElseIf minutes > 1 Then
-            res = res & " " & "and" & " " & Str$(minutes) & " " & "minutes"
+            res = res & " " & "and" & " " & CStr(minutes) & " " & "minutes"
         End If
-        niceFormatInterval = res & " " & "ago"
+        niceFormatInterval = res & " " & addString
         Exit Function ' return
     End If
     If minutes > 0 Then
         If minutes = 1 Then
-            niceFormatInterval = "Updated one minute ago"
+            niceFormatInterval = "Updated one minute " & addString
             Exit Function ' return
         End If
-        niceFormatInterval = "Updated" & " " & Str$(minutes) & " " & "minutes ago"
+        niceFormatInterval = "Updated" & " " & CStr(minutes) & " " & "minutes " & addString
         Exit Function ' return
     End If
     If duration = 1 Then
-        niceFormatInterval = "Updated one second ago"
+        niceFormatInterval = "Updated one second " & addString
         Exit Function ' return
     End If
     
-    niceFormatInterval = "Updated" & " " & Str$(duration) & " " & "seconds ago" ' return
+    niceFormatInterval = "Updated" & " " & CStr(duration) & " " & "seconds " & addString ' return
     
     On Error GoTo 0
     Exit Function
@@ -1647,7 +1657,7 @@ End Function
 ' Author: Dean Beedell (yereverluvinunclebert)
 ' Date: 29/01/2024
 ' ----------------------------------------------------------------
-Function fGetPressure(altim_in_hg As String) As Integer
+Function fGetPressure(ByVal altim_in_hg As String) As Integer
 
     On Error GoTo fGetPressure_Error
 
@@ -2467,7 +2477,7 @@ End Sub
 ' Author: Dean Beedell (yereverluvinunclebert)
 ' Date: 15/03/2024
 ' ----------------------------------------------------------------
-Function getMetarDescription(wx_string As String) As String
+Function getMetarDescription(ByVal wx_string As String) As String
     Dim presentConditions As String: presentConditions = ""
     Dim wSeverity As String: wSeverity = ""
     Dim wModifier As String: wModifier = ""
@@ -2759,7 +2769,25 @@ End Sub
 '=======================================================
 ' searches the icao data file for a specific code
 '=======================================================
+' ----------------------------------------------------------------
+' Procedure Name: searchIcaoFile
+' Purpose:
+' Procedure Kind: Function
+' Procedure Access: Private
+' Parameter loc (String):
+' Parameter metarPref (String):
+' Parameter icaoLocation1 (String):
+' Parameter icaoLocation2 (String):
+' Parameter icaoLocation3 (String):
+' Parameter icaoLocation4 (String):
+' Parameter icaoLocation5 (String):
+' Parameter searchCount (Long):
+' Return Type: String
+' Author: beededea
+' Date: 14/04/2024
+' ----------------------------------------------------------------
 Private Function searchIcaoFile(ByVal loc As String, ByVal metarPref As String, ByRef icaoLocation1 As String, ByRef icaoLocation2 As String, ByRef icaoLocation3 As String, ByRef icaoLocation4 As String, ByRef icaoLocation5 As String, ByRef searchCount As Long) As String
+    On Error GoTo searchIcaoFile_Error
     Dim icaoDataArray() As String ' array
     Dim i As Long: i = 0
     Dim fnd As Boolean: fnd = False
@@ -2779,7 +2807,10 @@ Private Function searchIcaoFile(ByVal loc As String, ByVal metarPref As String, 
     lReturn = FileSystemReadFile(icaoDataArray(), icaoDataFile)
     If lReturn = False Then Exit Function
     
-    If metarPref = "Location" Then ReDim gblValidLocations(UBound(icaoDataArray)) ' set the valid list to be able potentially to contain all members of the array
+    'If metarPref = "Location" Then ReDim gblValidLocations(UBound(icaoDataArray)) ' set the valid list to be able potentially to contain all members of the array
+    ' no need to redim the collValidLocations collection
+    'Set collValidLocations = New Scripting.Dictionary
+    collValidLocations.RemoveAll
     
     'If debugFlg = 1 Then ' & PzGMetarPref
         Debug.Print ("searchIcaoFile - " & " search started for " & lookFor)
@@ -2819,18 +2850,19 @@ Private Function searchIcaoFile(ByVal loc As String, ByVal metarPref As String, 
             End If
             
             If metarPref = "ICAO" Then ' single search result
-                searchIcaoFile = retStr ' return full string
+                collValidLocations.Add "key" & "1", retStr ' key is the loop int. returns a single item in a collection
                 Exit For
             Else
-                ' we cannot return an array from a property so filling a global array instead, it is rubbish, I know.
-                gblValidLocations(searchCount) = retStr ' returns an array of matching locations
+                'gblValidLocations(searchCount) = retStr ' returns a global array of matching locations, properties cannot return arrays
                 searchCount = searchCount + 1
+                collValidLocations.Add "key" & CStr(searchCount), retStr ' key is the loop int. returns a collection of matching locations
             End If
         End If
     Next
     
     If metarPref = "Location" Then
-        ReDim Preserve gblValidLocations(searchCount - 1) ' redimension to the actual size
+        'ReDim Preserve gblValidLocations(searchCount - 1) ' redimension to the actual size
+        ' no need to redim the collValidLocations collection
         
         ' if the search count is a mere 1 then we have the details
         If searchCount = 1 Then
@@ -2861,6 +2893,15 @@ Private Function searchIcaoFile(ByVal loc As String, ByVal metarPref As String, 
         searchIcaoFile = ""
         icaoLocation5 = ""
     End If
+    
+
+    On Error GoTo 0
+    Exit Function
+
+searchIcaoFile_Error:
+
+    MsgBox "Error " & Err.Number & " (" & Err.Description & ") in procedure searchIcaoFile, line " & Erl & "."
+
 End Function
 '==================================
 'End function
@@ -2915,3 +2956,13 @@ ErrFailed:
 End Function
 
 
+
+'Private Function StrToObject(Str As String) As Object
+'    Dim O As Object
+'    'For Each O In Me
+'        'If O.Name = Str Then
+'            Set StrToObject = O
+'            StrToObject.Name = Str
+'        'End If
+'    'Next
+'End Function

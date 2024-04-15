@@ -26,8 +26,8 @@ Attribute SelectorForm.VB_VarHelpID = -1
 
 Private WithEvents txtICAOInput As cwTextBox
 Attribute txtICAOInput.VB_VarHelpID = -1
-Private WithEvents cmbMatchingLocations As cwDropDownList
-Attribute cmbMatchingLocations.VB_VarHelpID = -1
+Private WithEvents fcmbMatchingLocations As cwDropDownList
+Attribute fcmbMatchingLocations.VB_VarHelpID = -1
 
 Public collSelectorPSDNonUIElements As cCollection, FX As Long, FY As Long, FZ As Single  'available on the outside, even after the Form was closed
 
@@ -135,14 +135,13 @@ Public Sub InitSelectorFromPSD(ByRef PSD_FileNameOrByteArray As Variant)
 
 ' Cairo.ImageList.AddIconFromResourceFile "btnIco", "shell32", 167 'load some resource-Icon
 
-    Set cmbMatchingLocations = fSelector.SelectorForm.Widgets.Add(New_W("cwDropDownList"), "cmbMatchingLocations", 120, 58, 225, 28)
-    cmbMatchingLocations.Widget.FontSize = 15
-    cmbMatchingLocations.Widget.FontName = "times new roman"
-    cmbMatchingLocations.Widget.Alpha = 0.5
+    Set fcmbMatchingLocations = fSelector.SelectorForm.Widgets.Add(New_W("cwDropDownList"), "fcmbMatchingLocations", 120, 58, 225, 28)
+    fcmbMatchingLocations.Widget.FontSize = 15
+    fcmbMatchingLocations.Widget.FontName = "times new roman"
+    fcmbMatchingLocations.Widget.Alpha = 0.5
     
-    'cmbMatchingLocations.Widget.ImageKey = "btnIco"
     'cmbMatchingLocations.SetDataSource 'New_c.JSONDecodeToCollection(jsonLstStr), "drpList_ds"
-    cmbMatchingLocations.DropDown.Caption = "ICAO"
+    fcmbMatchingLocations.DropDown.Caption = "ICAO"
 
 
    On Error GoTo 0
@@ -209,7 +208,7 @@ Private Sub SelectorForm_BubblingEvent(ByRef sender As Object, ByRef EventName A
                     & "file for either an ICAO code or search for the airport by name, for example: HEATHROW." & vbCrLf & vbCrLf _
                     & "When you have a matching ICAO code, press OK to select and the main gauges will start to display weather information derived from that feed." _
                     & vbCrLf & "" _
-                    & vbCrLf & "Right Click to open the menu and the preferences. CTRL+ Mouse scrollwheel UP/DOWN to resize." _
+                    & vbCrLf & "(Right Click to open the menu and the preferences. CTRL+ Mouse scrollwheel UP/DOWN to resize)" _
                     , TTIconInfo, widgetName2 & " Airport Selection Information.", , , , True
         End Select
     End If
@@ -493,8 +492,6 @@ Private Sub SelectorForm_MouseDown(ByRef Button As Integer, ByRef Shift As Integ
    On Error GoTo W_MouseDown_Error
 
     If Button = vbRightButton Then
-        menuForm.mnuCloseSelector.Visible = True
-        'Call menuForm.PopupMenu(menuForm.mnuMainMenu)
         Call menuForm.PopupMenu(menuForm.mnuSelectorMenu)
     Else
     
