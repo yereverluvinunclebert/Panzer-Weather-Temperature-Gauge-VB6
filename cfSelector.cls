@@ -24,10 +24,10 @@ Option Explicit 'simple Alpha-Form (...to be filled with (mostly Img-) Content v
 Public WithEvents SelectorForm As cWidgetForm
 Attribute SelectorForm.VB_VarHelpID = -1
 
-Private WithEvents txtICAOInput As cwTextBox
-Attribute txtICAOInput.VB_VarHelpID = -1
-Private WithEvents fcmbMatchingLocations As cwDropDownList
-Attribute fcmbMatchingLocations.VB_VarHelpID = -1
+Private WithEvents sTxtICAOInput As cwTextBox
+Attribute sTxtICAOInput.VB_VarHelpID = -1
+Public WithEvents sCmbMatchingLocations As cwDropDownList
+Attribute sCmbMatchingLocations.VB_VarHelpID = -1
 
 Public collSelectorPSDNonUIElements As cCollection, FX As Long, FY As Long, FZ As Single  'available on the outside, even after the Form was closed
 
@@ -127,22 +127,19 @@ Public Sub InitSelectorFromPSD(ByRef PSD_FileNameOrByteArray As Variant)
     Set overlaySelectorWidget = SelectorForm.Widgets.Add(New cwOverlaySelect, "Selector", 0, 0, PSDWidth, PSDHeight)
     Set overlaySelectorWidget.cCollOverlaySelectorImages = collSelectorPSDNonUIElements 'make the excluded PSD-Surface-Paths known to the Overlay-Widget
 
-    Set txtICAOInput = fSelector.SelectorForm.Widgets.Add(New_W("cwTextBox"), "txtICAOInput", 195, 20, 118, 30)
-    txtICAOInput.MultiLine = False
-    txtICAOInput.Widget.FontSize = 15
-    txtICAOInput.Widget.FontName = "times new roman"
-    txtICAOInput.Widget.Alpha = 0.5
+    Set sTxtICAOInput = fSelector.SelectorForm.Widgets.Add(New_W("cwTextBox"), "sTxtICAOInput", 195, 20, 118, 30)
+    sTxtICAOInput.MultiLine = False
+    sTxtICAOInput.Widget.FontSize = 15
+    sTxtICAOInput.Widget.FontName = "times new roman"
+    sTxtICAOInput.Widget.Alpha = 0.5
 
 ' Cairo.ImageList.AddIconFromResourceFile "btnIco", "shell32", 167 'load some resource-Icon
 
-    Set fcmbMatchingLocations = fSelector.SelectorForm.Widgets.Add(New_W("cwDropDownList"), "fcmbMatchingLocations", 120, 58, 225, 28)
-    fcmbMatchingLocations.Widget.FontSize = 15
-    fcmbMatchingLocations.Widget.FontName = "times new roman"
-    fcmbMatchingLocations.Widget.Alpha = 0.5
-    
-    'cmbMatchingLocations.SetDataSource 'New_c.JSONDecodeToCollection(jsonLstStr), "drpList_ds"
-    fcmbMatchingLocations.DropDown.Caption = "ICAO"
-
+    Set sCmbMatchingLocations = fSelector.SelectorForm.Widgets.Add(New_W("cwDropDownList"), "sCmbMatchingLocations", 120, 58, 225, 28)
+    sCmbMatchingLocations.Widget.FontSize = 15
+    sCmbMatchingLocations.Widget.FontName = "times new roman"
+    sCmbMatchingLocations.Widget.Alpha = 0.5
+    sCmbMatchingLocations.DropDown.Caption = "ICAO"
 
    On Error GoTo 0
    Exit Sub
@@ -151,20 +148,11 @@ InitSelectorFromPSD_Error:
 
     MsgBox "Error " & Err.Number & " (" & Err.Description & ") in procedure InitSelectorFromPSD of Class Module cfSelector"
 End Sub
-
-' enterlocation
-' entericao
-' radioknobone
-' radioknobtwo
-'
-' btnselect
-' btnexit
-' optlocationgreen
-' optlocationred
-' opticaored
-' opticaogreen
-
-' radiobody
+Private Sub sCmbMatchingLocations_Click()
+  With sCmbMatchingLocations.DataSource
+    MsgBox !key & "  (ItemData=" & !Value & ")"
+  End With
+End Sub
 
 '---------------------------------------------------------------------------------------
 ' Procedure : SelectorForm_BubblingEvent

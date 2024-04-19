@@ -69,6 +69,8 @@ Private WithEvents tmrAsyncResponse As cTimer
 Attribute tmrAsyncResponse.VB_VarHelpID = -1
 Private WithEvents tmrAnimator As cTimer
 Attribute tmrAnimator.VB_VarHelpID = -1
+Private WithEvents tmrPressureDrop As cTimer
+Attribute tmrPressureDrop.VB_VarHelpID = -1
 
 Private SDeg As Double
 Private thisTemperature As Long
@@ -110,6 +112,9 @@ Private icaoLocation3 As String
 Private icaoLocation4 As String
 Private icaoLocation5 As String
 
+'Private pressureValue As Double
+
+
 '---------------------------------------------------------------------------------------
 ' Procedure : Class_Initialize
 ' Author    : Dean Beedell (yereverluvinunclebert)
@@ -145,6 +150,9 @@ Private Sub Class_Initialize()
  
     Set tmrAsyncResponse = Nothing
     Set tmrAsyncResponse = New_c.Timer(100, False)
+    
+    Set tmrPressureDrop = Nothing
+    Set tmrPressureDrop = New_c.Timer(val(PzGStormTestInterval) * 1000, False) ' one hour
     
     icaoLocation1 = vbNullString
     icaoLocation2 = vbNullString
@@ -206,25 +214,6 @@ End Property
 
 
 '---------------------------------------------------------------------------------------
-' Property : Ticking
-' Author    : Dean Beedell (yereverluvinunclebert)
-' Date      : 17/05/2023
-' Purpose   :
-'---------------------------------------------------------------------------------------
-'
-Public Property Get Ticking() As Boolean
-   On Error GoTo TickingGet_Error
-
-  Ticking = mTicking
-
-   On Error GoTo 0
-   Exit Property
-
-TickingGet_Error:
-
-    MsgBox "Error " & Err.Number & " (" & Err.Description & ") in Property Ticking of Class Module cwOverlayTempTemperature"
-End Property
-'---------------------------------------------------------------------------------------
 ' Property  : GetMetar
 ' Author    :
 ' Date      : 09/05/2023
@@ -283,6 +272,7 @@ Public Property Let Ticking(ByVal newValue As Boolean)
     If mTicking <> newValue Then mTicking = newValue Else Exit Property
     
     tmrSampler.Enabled = mTicking
+    tmrPressureDrop.Enabled = mTicking
 
    On Error GoTo 0
    Exit Property
@@ -290,7 +280,28 @@ Public Property Let Ticking(ByVal newValue As Boolean)
 TickingLet_Error:
 
     MsgBox "Error " & Err.Number & " (" & Err.Description & ") in Property Ticking of Class Module cwOverlayTempTemperature"
-End Property ' the earth Ticking flag
+End Property ' the Ticking flag
+
+
+'---------------------------------------------------------------------------------------
+' Property : Ticking
+' Author    : Dean Beedell (yereverluvinunclebert)
+' Date      : 17/05/2023
+' Purpose   :
+'---------------------------------------------------------------------------------------
+'
+Public Property Get Ticking() As Boolean
+   On Error GoTo TickingGet_Error
+
+  Ticking = mTicking
+
+   On Error GoTo 0
+   Exit Property
+
+TickingGet_Error:
+
+    MsgBox "Error " & Err.Number & " (" & Err.Description & ") in Property Ticking of Class Module cwOverlayTempTemperature"
+End Property
 
 '---------------------------------------------------------------------------------------
 ' Property : thisOpacity
@@ -943,8 +954,77 @@ W_Paint_Error:
 
     MsgBox "Error " & Err.Number & " (" & Err.Description & ") in procedure W_Paint of Class Module cwOverlayTemp"
 End Sub
- 
+
+Private Sub tmrPressureDrop_Timer()
+    Call TestPressureDrop
+End Sub
     
+    
+'========================
+' checked via timer to light the barometer storm warning bulb
+'========================
+Sub TestPressureDrop()
+
+    ' dangerous pressure drop leading to volatile weather
+    '    store the last pressure from the previous poll
+    '    store the time of the last poll
+    '    compare the pressure drop, of great compare the two times
+    '    if the timeframe is short then light lamp
+
+    Dim oldPressureStorage As Double: oldPressureStorage = 0
+    Dim currentPressureValue As Double: currentPressureValue = 0
+    Dim oldPressureStorageDate As Date: oldPressureStorageDate = #1/1/2000 12:00:00 PM#
+    Dim currentDate As Date: currentDate = #1/1/2000 12:00:00 PM#
+
+    oldPressureStorage = PzGOldPressureStorage
+    currentPressureValue = PzGCurrentPressureValue ' we read this from the prefs as it will be regularly written by the main getData timer
+    oldPressureStorageDate = PzGPressureStorageDate
+    
+    currentDate = Now
+    
+    ' 24 hectopascals/millibars in 24 hours.
+    ' A storm system often falls at a rate of more than 1 millibar per hour.
+    ' If the air pressure falls 24 mb (or more) in 24 hours, the system is called a bomb cyclone.
+
+    If debugFlg = 1 Then
+        Debug.Print ("oldPressureStorageDate " & oldPressureStorageDate)
+        'Debug.Print ("currentdate - 3960 " & (currentDate - 3960))
+    End If
+
+    ' if the pressure drops by 1 millibar and it is a recent reading
+    ' this caters for the computer waking up from a sleep or a restart
+
+    If oldPressureStorage = 0 Then
+        PzGOldPressureStorage = currentPressureValue
+        PzGPressureStorageDate = Now    ' time in seconds
+        Exit Sub
+    End If
+    
+    If oldPressureStorage - currentPressureValue >= 1.33322 Then    ' one milibar drop < 1 hour - a storm is brewing
+        If Int(DateDiff("s", oldPressureStorageDate, currentDate)) < 3600 Then
+
+            Debug.Print ("pressure reading is a recent one, certainly within the last 60 mins")
+            Debug.Print ("The lamp is lit as the pressure is dropping fast enough for a serious storm. The old pressure value was " & oldPressureStorage & " the new pressure value is " & currentPressureValue)
+            ' barometerDangerLampGreen.alpha = 0
+            ' barometerDangerLampRed.alpha = 1
+            ' barometerDangerLamp.ToolTip = "The lamp is lit as the pressure is dropping fast enough for a serious storm. The old pressure value was " & oldPressureStorage & " the new pressure value is " & currentPressureValue
+        Else
+            Debug.Print ("Note: The pressure reading was taken more than 60 mins ago so it can be ignored")
+            ' barometerDangerLamp.ToolTip = "The pressure has dropped but is NOT dropping at the level that would indicate a storm"
+            'barometerDangerLampGreen.alpha = 1
+            'barometerDangerLampRed.alpha = 0
+        End If
+    Else
+        'barometerDangerLamp.ToolTip = "If the lamp is ever lit bright red then the pressure is dropping fast enough for a storm, green indicates normal pressure changes."
+        'barometerDangerLampGreen.alpha = 1
+        'barometerDangerLampRed.alpha = 0
+    End If
+    PzGOldPressureStorage = currentPressureValue
+    PzGPressureStorageDate = Now    ' time in seconds
+End Sub
+'========================
+' function ends
+'========================
 '---------------------------------------------------------------------------------------
 ' Procedure : tmrAnimator_Timer
 ' Author    :
@@ -1274,6 +1354,7 @@ Private Sub myStatusProc()
     debugFlg = 1
     
     tmrAsyncResponse.Enabled = False
+    pressureValue = 0
     
     objxmldoc.async = True
     objxmldoc.LoadXML (myMSXML.responseText)
@@ -1399,6 +1480,10 @@ Private Sub myStatusProc()
     
     ' get pressure
     pressureValue = fGetPressure(altim_in_hg)
+    
+    'write the current pressure value so that it can be made available to the storm checker timer, straight away.
+    PzGCurrentPressureValue = pressureValue
+    sPutINISetting "Software\PzTemperatureGauge", "currentPressureValue", PzGCurrentPressureValue, PzGSettingsFile
 
     ' set temperature
     temperatureValue = val(temp_c)
@@ -1421,7 +1506,7 @@ Private Sub myStatusProc()
 '    'wx_string = "+FG" 'testing string
 '
     ' set the general weather conditions into the icon displayed
-    Call determineWeatherConditionIcon(skyClarity, wx_string, sky_cover(), isDay)
+    Call determineWeatherConditionIcon(skyClarity, wx_string, sky_cover(), isDay, uboundSkyConditions)
 
     ' get the observation time string, eg. 2024-01-28T23:50:00Z and make a standard VB6 date var
     initialObsTime = Left$(observation_time, 10) & " " & Mid$(observation_time, 12, 8)
@@ -2094,7 +2179,7 @@ End Function
 ' Author: Dean Beedell (yereverluvinunclebert)
 ' Date: 14/03/2024
 ' ----------------------------------------------------------------
-Private Sub determineWeatherConditionIcon(ByRef skyClarity As String, ByVal thisWxString As String, ByRef sky_cover() As String, ByVal thisIsDay As Boolean)
+Private Sub determineWeatherConditionIcon(ByRef skyClarity As String, ByVal thisWxString As String, ByRef sky_cover() As String, ByVal thisIsDay As Boolean, ByVal uboundSkyConditions As Integer)
     On Error GoTo determineWeatherConditionIcon_Error
    'thisWxString = "+PRFG" 'testing string
    'sky_cover(0) = "BKN"
@@ -2115,7 +2200,7 @@ Private Sub determineWeatherConditionIcon(ByRef skyClarity As String, ByVal this
    Dim precedingSrc As String: precedingSrc = vbNullString
    Dim followingSrc As String: followingSrc = vbNullString
    
-   If UBound(sky_cover()) >= 0 Then
+   If uboundSkyConditions >= 0 Then
         If (sky_cover(0) = "SKC") Then skycover1 = "SKC"
         If (sky_cover(0) = "CLR") Then skycover1 = "CLR"
         If (sky_cover(0) = "FEW") Then skycover1 = "FEW"
@@ -2127,7 +2212,7 @@ Private Sub determineWeatherConditionIcon(ByRef skyClarity As String, ByVal this
     End If
         
    
-   If UBound(sky_cover()) >= 1 Then
+   If uboundSkyConditions >= 1 Then
         If (sky_cover(1) = "SKC") Then skycover2 = "SKC"
         If (sky_cover(1) = "CLR") Then skycover2 = "CLR"
         If (sky_cover(1) = "FEW") Then skycover2 = "FEW"
@@ -2139,7 +2224,7 @@ Private Sub determineWeatherConditionIcon(ByRef skyClarity As String, ByVal this
     End If
     
    
-   If UBound(sky_cover()) >= 2 Then
+   If uboundSkyConditions >= 2 Then
         If (sky_cover(2) = "SKC") Then skycover3 = "SKC"
         If (sky_cover(2) = "CLR") Then skycover3 = "CLR"
         If (sky_cover(2) = "FEW") Then skycover3 = "FEW"
@@ -2150,7 +2235,7 @@ Private Sub determineWeatherConditionIcon(ByRef skyClarity As String, ByVal this
         If (sky_cover(2) = "CAVOK") Then skycover3 = "CAVOK"
     End If
 
-   If (debugFlg = 1) Then Debug.Print ("%determineWeatherCondition - sky_cover " & sky_cover(0))
+   If (debugFlg = 1 And uboundSkyConditions >= 0) Then Debug.Print ("%determineWeatherCondition - sky_cover " & sky_cover(0))
 
     If InStr(thisWxString, "-") <> 0 Then
         wSeverity = "light"
@@ -2204,6 +2289,7 @@ Private Sub determineWeatherConditionIcon(ByRef skyClarity As String, ByVal this
    ' FEW = 1 or 2 eighths cover SCT = 3 or 4 eighths cover BKN = 5, 6 or 7 eighths cover & OVC = 8/8 cover
 
    'use the cloud code to determine cloud cover
+    'kyClarity = "Uknown Sky Cover"
     If (skycover1 = "SKC" Or skycover2 = "SKC" Or skycover3 = "SKC") Then skyClarity = "Clear skies"       ' default clear
     If (skycover1 = "CLR" Or skycover2 = "CLR" Or skycover3 = "CLR") Then skyClarity = "Clear skies"       ' default
     If (skycover1 = "VV " Or skycover2 = "VV " Or skycover3 = "VV ") Then skyClarity = "Vertical visibility"          ' default
@@ -2725,10 +2811,14 @@ Public Sub getNewIcaoLocations()
 
     If answer = vbYes Then
         
-        webAddress = "https://raw.githubusercontent.com/jpatokal/openflights/master/data/airports.dat"
+        If PzGAirportsURL = vbNullString Then
+            webAddress = "https://raw.githubusercontent.com/jpatokal/openflights/master/data/airports.dat"
+        Else
+            webAddress = PzGAirportsURL
+        End If
 
         If Not fDirExists(App.path & "\dat") Then
-            answerMsg = "Error: The data file folder does not exist."
+            answerMsg = "Error: The output data file folder does not exist."
             answer = msgBoxA(answerMsg, vbOKOnly + vbExclamation, "Downloaded file failed", False)
             Exit Sub
         End If
@@ -2791,7 +2881,7 @@ Private Function searchIcaoFile(ByVal loc As String, ByVal metarPref As String, 
     Dim icaoDataArray() As String ' array
     Dim i As Long: i = 0
     Dim fnd As Boolean: fnd = False
-    '
+    Dim thisKey As String: thisKey = vbNullString
     Dim lookFor As String: lookFor = vbNullString
     Dim retStr As String: retStr = vbNullString
     Dim splitIcaoData() As String
@@ -2807,14 +2897,13 @@ Private Function searchIcaoFile(ByVal loc As String, ByVal metarPref As String, 
     lReturn = FileSystemReadFile(icaoDataArray(), icaoDataFile)
     If lReturn = False Then Exit Function
     
-    'If metarPref = "Location" Then ReDim gblValidLocations(UBound(icaoDataArray)) ' set the valid list to be able potentially to contain all members of the array
-    ' no need to redim the collValidLocations collection
-    'Set collValidLocations = New Scripting.Dictionary
+    ' If metarPref = "Location" Then ReDim gblValidLocations(UBound(icaoDataArray)) ' set the valid list to be able potentially to contain all members of the array, also wipe it.
+    
+    ' no need to redim the collValidLocations collection we just empty it
     collValidLocations.RemoveAll
     
-    'If debugFlg = 1 Then ' & PzGMetarPref
-        Debug.Print ("searchIcaoFile - " & " search started for " & lookFor)
-    'End If
+    Debug.Print ("searchIcaoFile - " & " search started for " & lookFor)
+    
     For i = 0 To UBound(icaoDataArray) - 1 Step 1
         icaoDataArray(i) = UCase$(icaoDataArray(i))
         fnd = InStr(icaoDataArray(i), lookFor)
@@ -2849,20 +2938,23 @@ Private Function searchIcaoFile(ByVal loc As String, ByVal metarPref As String, 
                 Debug.Print ("searchIcaoFile - found " & lookFor & " in " & retStr)
             End If
             
+            ' with a scripting dictionary collection the string/key pair is the other way around! ie. thisKey, retStr
             If metarPref = "ICAO" Then ' single search result
-                collValidLocations.Add "key" & "1", retStr ' key is the loop int. returns a single item in a collection
+                collValidLocations.Add retStr, "key" & "1"  ' key is the loop int. returns a single item in a collection
                 Exit For
             Else
                 'gblValidLocations(searchCount) = retStr ' returns a global array of matching locations, properties cannot return arrays
                 searchCount = searchCount + 1
-                collValidLocations.Add "key" & CStr(searchCount), retStr ' key is the loop int. returns a collection of matching locations
+                
+                thisKey = "key" & CStr(searchCount)
+                collValidLocations.Add retStr, thisKey  ' key is the search count returning a collection of matching locations
             End If
         End If
     Next
     
     If metarPref = "Location" Then
-        'ReDim Preserve gblValidLocations(searchCount - 1) ' redimension to the actual size
-        ' no need to redim the collValidLocations collection
+        ' ReDim Preserve gblValidLocations(searchCount - 1) ' redimension to the actual size
+        ' no need to redim the collValidLocations collection as it did not need to be dimmed in the first place
         
         ' if the search count is a mere 1 then we have the details
         If searchCount = 1 Then

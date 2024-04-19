@@ -107,7 +107,8 @@ Public Sub mainRoutine(ByVal restart As Boolean)
     Call initialiseGlobalVars
     
     ' create dictionary collection instead of an array to load dropdown list
-    Set collValidLocations = CreateObject("Scripting.Dictionary")
+    'Set collValidLocations = CreateObject("Scripting.Dictionary") ' tested with all three
+    Set collValidLocations = New_c.Collection(False)
     
     'add Resources to the global ImageList
     Call addGeneralImagesToImageLists
@@ -325,6 +326,11 @@ Private Sub initialiseGlobalVars()
     PzGLastUpdated = vbNullString
     PzGMetarPref = vbNullString
     PzGPressureScale = vbNullString
+    
+    PzGOldPressureStorage = vbNullString
+    PzGPressureStorageDate = vbNullString
+    PzGCurrentPressureValue = vbNullString
+    
     
     ' general variables declared
     'toolSettingsFile = vbNullString
@@ -763,7 +769,11 @@ Public Sub readSettingsFile(ByVal location As String, ByVal PzGSettingsFile As S
         PzGLastUpdated = fGetINISetting(location, "lastUpdated", PzGSettingsFile)
         PzGMetarPref = fGetINISetting(location, "metarPref", PzGSettingsFile)
         
-
+        PzGOldPressureStorage = fGetINISetting(location, "oldPressureStorage", PzGSettingsFile)
+        PzGPressureStorageDate = fGetINISetting(location, "pressureStorageDate", PzGSettingsFile)
+        PzGCurrentPressureValue = fGetINISetting(location, "currentPressureValue", PzGSettingsFile)
+        
+    
         ' we do not want the widget to hide at startup
         'PzGWidgetHidden = fGetINISetting(location, "widgetHidden", PzGSettingsFile)
         PzGWidgetHidden = "0"
@@ -866,10 +876,13 @@ Public Sub validateInputs()
     If PzGLastSelectedTab = vbNullString Then PzGLastSelectedTab = "general"
     If PzGSkinTheme = vbNullString Then PzGSkinTheme = "dark"
     
-    If PzGLastUpdated = vbNullString Then PzGLastUpdated = Now()
+    If PzGLastUpdated = vbNullString Then PzGLastUpdated = CStr(Now())
     If PzGMetarPref = vbNullString Then PzGMetarPref = "ICAO"
         
- 
+    If PzGOldPressureStorage = vbNullString Then PzGOldPressureStorage = "0"
+    If PzGPressureStorageDate = vbNullString Then PzGPressureStorageDate = CStr(Now())
+    If PzGCurrentPressureValue = vbNullString Then PzGCurrentPressureValue = "0"
+    
  
    On Error GoTo 0
    Exit Sub

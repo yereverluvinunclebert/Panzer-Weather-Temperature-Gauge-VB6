@@ -237,14 +237,18 @@ Private Function testLocation(ByVal location As String) As String
             cmbMatchingLocations.Clear ' remove old from previous usage
                         
             For i = 0 To cnt - 1
-                'cmbMatchingLocations.AddItem gblValidLocations(i), i
                 cmbMatchingLocations.AddItem collValidLocations("key" & CStr(i + 1)) ' the cnt is the key
                 cmbMatchingLocations.ItemData(i) = i
             Next i
             cmbMatchingLocations.ListIndex = 0 ' the default entry - Causes a click event to fire which is a pain.
             
-            'fSelector.cmbMatchingLocations.SetDataSource gblValidLocations(i)
-
+            ' just a trial
+            
+            fSelector.sCmbMatchingLocations.SetDataSource collValidLocations, "collValidLocations"
+            fSelector.sCmbMatchingLocations.DataSource.Sort = "Col-Add-Order"
+            
+            'fSelector.sCmbMatchingLocations.DropDown.Caption = fSelector.sCmbMatchingLocations.DataSource!key
+            
         End If
     End If
     
@@ -426,6 +430,8 @@ Private Sub cmbMatchingLocations_Click()
     btnSearch.Enabled = False
     
     icaoData = UCase$(cmbMatchingLocations.List(cmbMatchingLocations.ListIndex))
+    If icaoData = vbNullString Then Exit Sub
+    
     splitIcaoData = Split(icaoData, ",")
     
     icaoLocation1 = Replace(splitIcaoData(1), """", "") ' location

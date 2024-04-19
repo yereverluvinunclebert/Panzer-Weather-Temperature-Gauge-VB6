@@ -379,6 +379,11 @@ Public PzGFormLowDpiYPosTwips As String
 Public PzGLastUpdated As String
 Public PzGMetarPref As String
 
+Public PzGOldPressureStorage As String
+Public PzGPressureStorageDate As String
+Public PzGCurrentPressureValue As String
+
+
 
 '------------------------------------------------------ ENDS
 
@@ -445,7 +450,7 @@ Public msgBoxADynamicSizingFlg As Boolean
 'Public gblValidLocations() As String
 
 ' dictionary
-Public collValidLocations As Object
+Public collValidLocations As cCollection
 'Public validLocationStringObj As Variant
 
 
