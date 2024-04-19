@@ -4,6 +4,8 @@ A FOSS Weather Temperature Gauge VB6 WoW64 Widget for Reactos, XP, Win7, 8 and 1
 
 My current VB6/RC6 PSD program being finished now, 84% complete now on a single gauge only but complete with a partially working source selector and fully functional preference form, awaiting work generating  correct sunrise/sunset times, the addition of four other gauges and a textual information sub-form. Then testing on laptops, testing on Windows XP/ReactOS and Win7 32bit, some multi-monitor checking, completion of the CHM help file and the creation of the setup.exe. Quite a lot to do but it works and is operating on my desktop now.
 
+![metar-prefs-001](https://github.com/yereverluvinunclebert/Panzer-Weather-Temperature-Gauge-VB6/assets/2788342/5a096cad-b8d0-4f85-aa6b-7d564a4cb194)
+
 This VB6 Panzer widget is based upon the Yahoo widget of the same visual design and very similar operation.
 
 Why VB6? Well, with a 64 bit, modern-language improvement upgrade on the way with 100% compatible TwinBasic coupled with support for transparent PNGs via RC/Cairo, VB6 code has an amazing future.
