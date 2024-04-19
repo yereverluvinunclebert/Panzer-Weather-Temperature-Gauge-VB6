@@ -154,6 +154,10 @@ Private Sub Class_Initialize()
     Set tmrPressureDrop = Nothing
     Set tmrPressureDrop = New_c.Timer(val(PzGStormTestInterval) * 1000, False) ' one hour
     
+'    Set tmrPressureDrop = Nothing
+'    Set tmrPressureDrop = New_c.Timer(val(PzGStormTestInterval) * 1000, False) ' one hour
+'    PzGErrorInterval
+    
     icaoLocation1 = vbNullString
     icaoLocation2 = vbNullString
     icaoLocation3 = vbNullString
@@ -1318,6 +1322,8 @@ Private Sub myStatusProc()
     Dim skyNodeValue As String: skyNodeValue = vbNullString
     Dim cloudNodeValue As String: cloudNodeValue = vbNullString
     Dim uboundSkyConditions As Integer: uboundSkyConditions = 0
+    Dim visibilityDistance As String: visibilityDistance = vbNullString
+    Dim precipitationDepth As String: precipitationDepth = vbNullString
     
     Dim nodeList As MSXML2.IXMLDOMNodeList
     
@@ -1338,7 +1344,6 @@ Private Sub myStatusProc()
     Dim usableObsTime As Date: usableObsTime = #1/1/2000 12:00:00 PM#
     Dim weekDayDate As String: weekDayDate = vbNullString
     Dim thisTooltip As String: thisTooltip = vbNullString
-    
     
     
 '    Dim humidityBackgroundToolTip As String: humidityBackgroundToolTip = vbNullString
@@ -1367,9 +1372,9 @@ Private Sub myStatusProc()
     
     If num_results = 0 Then ' And Preferences.msgboxPref.value = "enabled" Then
         'If answer = vbNo Then
-            answer = vbYes
-            answerMsg = "The source weather feed is currently producing no valid data for " & panzerPrefs.sliSamplingInterval.Value & " secs."
-            answer = msgBoxA(answerMsg, vbOKOnly, "Poll Warning", True, "myStatusProcPollingWarning")
+'            answer = vbYes
+'            answerMsg = "The source weather feed is currently producing no valid data for " & panzerPrefs.sliSamplingInterval.Value & " secs."
+'            answer = msgBoxA(answerMsg, vbOKOnly, "Poll Warning", True, "myStatusProcPollingWarning")
         'End If
         weHaveData = False
         Exit Sub ' Return
@@ -1490,6 +1495,12 @@ Private Sub myStatusProc()
 
     ' calculate humidity
     humidityValue = fGetHumidity(temp_c, dewpoint_c)
+    
+    ' determine the visibility distance
+    visibilityDistance = fGetDistance(visibility_statute_mi)
+    
+    ' determine the precipitation
+    precipitationDepth = fGetPrecipitation(precip_in)
 
     ' decode the visibility types when a cloud cover field found
     skyClarity = getCloudCover(sky_condition_items(), uboundSkyConditions)
@@ -1530,11 +1541,10 @@ Private Sub myStatusProc()
     If (debugFlg = 1) Then Debug.Print ("%myStatusProc - difString " & difString)
 
     ' set the hover over tooltips on the gauges
-    thisTooltip = setHoverTooltip(skyClarityString, humidityValue, temperatureValue, pressureValue, weekDayDate, wind_dir_degrees, wind_speed_kt, precip_in, wx_string)
-    thisTooltip = thisTooltip & vbCrLf & vbCrLf & raw_text
+    thisTooltip = setHoverTooltip(precipitationDepth, visibilityDistance, skyClarityString, humidityValue, temperatureValue, pressureValue, weekDayDate, wind_dir_degrees, wind_speed_kt, precip_in, wx_string)
+    thisTooltip = thisTooltip & vbCrLf & raw_text
     thisTooltip = thisTooltip & vbCrLf & vbCrLf & difString
 
-    
     ' save the tooltip value so it can be used during the regular timed 60 second tooltip updates.
     'PzGLastTooltip = thisTooltip
     
@@ -2095,7 +2105,7 @@ End Function
 ' Author: Dean Beedell (yereverluvinunclebert)
 ' Date: 17/03/2024
 ' ----------------------------------------------------------------
-Private Function setHoverTooltip(ByVal skyClarityString As String, ByVal humidityValue As Double, ByVal temperatureValue As Double, ByVal pressureValue As Double, ByVal weekDayDate As String, ByVal wind_dir_degrees As String, ByVal wind_speed_kt As String, ByVal precip_in As String, ByVal wx_string As String) As String
+Private Function setHoverTooltip(ByVal precipitationDepth As String, ByVal visibilityDistance As String, ByVal skyClarityString As String, ByVal humidityValue As Double, ByVal temperatureValue As Double, ByVal pressureValue As Double, ByVal weekDayDate As String, ByVal wind_dir_degrees As String, ByVal wind_speed_kt As String, ByVal precip_in As String, ByVal wx_string As String) As String
     
     Dim force As String: force = vbNullString
     Dim tooltipString As String: tooltipString = vbNullString
@@ -2132,25 +2142,28 @@ Private Function setHoverTooltip(ByVal skyClarityString As String, ByVal humidit
         tooltipString = tooltipString & "Temperature" & ": " & Round(Int(temperatureValue + 273.15), 2) & " K " & vbCrLf
     End If
     
-    tooltipString = tooltipString & "Humidity" & ": " & humidityValue & " % " & vbCrLf & skyClarityString & " " & vbCrLf
-   
+    tooltipString = tooltipString & "Humidity : " & humidityValue & " % " & vbCrLf
+    tooltipString = tooltipString & "Clouds : " & skyClarityString & " " & vbCrLf
+    tooltipString = tooltipString & "Visibility : " & visibilityDistance & vbCrLf
+    
     If PzGWindSpeedScale = "0" Then  ' knots
         tooltipString = tooltipString & "Wind speed is" & " " & wind_speed_kt & " knots, "
     Else
         tooltipString = tooltipString & "Wind speed is" & " " & Int(wind_speed_kt * 0.51444) & " m/sec, "
     End If
-
-    tooltipString = tooltipString & "strength force " & force & ", " & "Direction" & " " & compassDirection
-
-    If (precip_in <> vbNullString) Then
-       tooltipString = tooltipString & " " & "precipitation is" & " " & precip_in & " inches"
-    End If
+    tooltipString = tooltipString & "strength force " & force & ", " & "Direction" & " " & compassDirection & vbCrLf
 
     If (wx_string <> "") Then
       wx_str = getMetarDescription(wx_string)    ' get the interpreted wx string data
-      tooltipString = tooltipString & "  " & wx_str & "  " & vbCrLf
+      wx_str = UCase$(Left$(wx_str, 1)) & Mid$(wx_str, 2, Len(wx_str))
+      tooltipString = tooltipString & "Rainfall: " & wx_str & "  "
     End If
-    
+    If (precip_in <> vbNullString) Then
+       tooltipString = tooltipString & " measured in " & precipitationDepth & vbCrLf
+    Else
+        If (wx_string <> "") Then tooltipString = tooltipString & vbCrLf
+    End If
+     
     setHoverTooltip = tooltipString ' return
 
     On Error GoTo 0
@@ -2599,7 +2612,7 @@ Function getMetarDescription(ByVal wx_string As String) As String
     End If
     If InStr(wx_string, "VC") <> 0 Then
         'presentConditions = presentConditions &  "nearby "
-        wModifier = wModifier & "in_the_vicinity"
+        wModifier = wModifier & " in the vicinity"
     End If
     If InStr(wx_string, "FZ") <> 0 Then
         'presentConditions = presentConditions &  "freezing "
@@ -2636,15 +2649,15 @@ Function getMetarDescription(ByVal wx_string As String) As String
     End If
     
     If InStr(wx_string, "SG") <> 0 Then
-        presentConditions = presentConditions & "snow_grains" & " "
+        presentConditions = presentConditions & "snow grains" & " "
     End If
     
     If InStr(wx_string, "IC") <> 0 Then
-        presentConditions = presentConditions & "ice_crystals" & " "
+        presentConditions = presentConditions & "ice crystals" & " "
     End If
     
     If InStr(wx_string, "PE") <> 0 Then
-        presentConditions = presentConditions & "ice_pellets" & " "
+        presentConditions = presentConditions & "ice pellets" & " "
     End If
     
     If InStr(wx_string, "GR") <> 0 Then
@@ -2652,7 +2665,7 @@ Function getMetarDescription(ByVal wx_string As String) As String
     End If
     
     If InStr(wx_string, "GS") <> 0 Then
-        presentConditions = presentConditions & "small_hail" & " "
+        presentConditions = presentConditions & "small hail" & " "
     End If
     
     If InStr(wx_string, "UP") <> 0 Then
@@ -2672,11 +2685,11 @@ Function getMetarDescription(ByVal wx_string As String) As String
     End If
     
     If InStr(wx_string, "VA") <> 0 Then
-        presentConditions = presentConditions & "volcanic_ash" & " "
+        presentConditions = presentConditions & "volcanic ash" & " "
     End If
     
     If InStr(wx_string, "DU") <> 0 Then
-        presentConditions = presentConditions & "widespread_dust" & " "
+        presentConditions = presentConditions & "widespread dust" & " "
     End If
     
     If InStr(wx_string, "SA") <> 0 Then
@@ -2696,7 +2709,7 @@ Function getMetarDescription(ByVal wx_string As String) As String
     End If
     
     If InStr(wx_string, "SQ") <> 0 Then
-        presentConditions = presentConditions & "strong_winds" & " "
+        presentConditions = presentConditions & "strong winds" & " "
     End If
     
     If InStr(wx_string, "FC") <> 0 Then
@@ -2704,7 +2717,7 @@ Function getMetarDescription(ByVal wx_string As String) As String
     End If
     
     If InStr(wx_string, "SS") <> 0 Then
-        presentConditions = presentConditions & "sandstorm_duststorm" & " "
+        presentConditions = presentConditions & "sandstorm/duststorm" & " "
     End If
     
     If debugFlg = 1 And presentConditions <> "" Then
@@ -3058,3 +3071,75 @@ End Function
 '        'End If
 '    'Next
 'End Function
+
+
+' ----------------------------------------------------------------
+' Procedure Name: fGetDistance
+' Purpose:
+' Procedure Kind: Function
+' Procedure Access: Private
+' Parameter visibility_statute_mi ():
+' Author: beededea
+' Date: 19/04/2024
+' ----------------------------------------------------------------
+Private Function fGetDistance(ByVal visibility_statute_mi As String) As String
+    Dim metricEquivalent As String: metricEquivalent = vbNullString
+    Dim resultingString As String: resultingString = vbNullString
+    
+    On Error GoTo fGetDistance_Error
+    
+    If PzGMetricImperial = "1" Then ' "metric"
+        ' change the value to metric measurements
+        metricEquivalent = CStr(Int(val(visibility_statute_mi) * 1.609))
+        resultingString = metricEquivalent & "km, or more"
+    Else
+        resultingString = visibility_statute_mi & "miles, or more"
+    End If
+    
+    fGetDistance = resultingString
+    
+    On Error GoTo 0
+    Exit Function
+
+fGetDistance_Error:
+
+    MsgBox "Error " & Err.Number & " (" & Err.Description & ") in procedure fGetDistance, line " & Erl & "."
+
+End Function
+  
+    ' determine the precipitation
+' ----------------------------------------------------------------
+' Procedure Name: fGetPrecipitation
+' Purpose:
+' Procedure Kind: Function
+' Procedure Access: Private
+' Parameter precip_in (String):
+' Return Type: String
+' Author: beededea
+' Date: 19/04/2024
+' ----------------------------------------------------------------
+Private Function fGetPrecipitation(ByVal precip_in As String) As String
+    On Error GoTo fGetPrecipitation_Error
+    Dim metricEquivalent As String: metricEquivalent = vbNullString
+    Dim resultingString As String: resultingString = vbNullString
+    
+    If PzGMetricImperial = "1" Then ' "metric"
+        ' change the value to metric measurements
+        metricEquivalent = CStr(Int(val(precip_in) * 2.54))
+        resultingString = metricEquivalent & "cm"
+    Else
+        resultingString = precip_in & "inches"
+    End If
+    
+    fGetPrecipitation = resultingString
+    
+    On Error GoTo 0
+    Exit Function
+
+fGetPrecipitation_Error:
+
+    MsgBox "Error " & Err.Number & " (" & Err.Description & ") in procedure fGetPrecipitation, line " & Erl & "."
+
+End Function
+
+

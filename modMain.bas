@@ -253,6 +253,7 @@ Private Sub initialiseGlobalVars()
     PzGPointerAnimate = vbNullString
     PzGSamplingInterval = vbNullString
     PzGStormTestInterval = vbNullString
+    PzGErrorInterval = vbNullString
     PzGAirportsURL = vbNullString
     
     PzGIcao = vbNullString
@@ -703,6 +704,8 @@ Public Sub readSettingsFile(ByVal location As String, ByVal PzGSettingsFile As S
         PzGPointerAnimate = fGetINISetting(location, "pointerAnimate", PzGSettingsFile)
         PzGSamplingInterval = fGetINISetting(location, "samplingInterval", PzGSettingsFile)
         PzGStormTestInterval = fGetINISetting(location, "stormTestInterval", PzGSettingsFile)
+        PzGErrorInterval = fGetINISetting(location, "errorInterval", PzGSettingsFile)
+        
         PzGAirportsURL = fGetINISetting(location, "airportsURL", PzGSettingsFile)
         
         PzGTemperatureScale = fGetINISetting(location, "temperatureScale", PzGSettingsFile)
@@ -814,6 +817,8 @@ Public Sub validateInputs()
     If PzGPointerAnimate = vbNullString Then PzGPointerAnimate = "0"
     If PzGSamplingInterval = vbNullString Then PzGSamplingInterval = "60"
     If PzGStormTestInterval = vbNullString Then PzGStormTestInterval = "3600"
+    If PzGErrorInterval = vbNullString Then PzGErrorInterval = "3600"
+    
     If PzGAirportsURL = vbNullString Then PzGAirportsURL = "https://raw.githubusercontent.com/jpatokal/openflights/master/data/airports.dat"
     
     If PzGTemperatureScale = vbNullString Then PzGTemperatureScale = "0"

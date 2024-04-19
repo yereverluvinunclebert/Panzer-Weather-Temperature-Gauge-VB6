@@ -36,7 +36,7 @@ Begin VB.Form panzerPrefs
             Locked          =   -1  'True
             TabIndex        =   182
             Text            =   "https://raw.githubusercontent.com/jpatokal/openflights/master/data/airports.dat"
-            Top             =   6600
+            Top             =   6675
             Width           =   4755
          End
          Begin VB.CommandButton btnLocation 
@@ -102,7 +102,7 @@ Begin VB.Form panzerPrefs
             Left            =   1890
             TabIndex        =   147
             ToolTipText     =   "Setting the sampling interval affects the frequency of the pointer updates."
-            Top             =   3870
+            Top             =   3255
             Width           =   3870
             _ExtentX        =   6826
             _ExtentY        =   688
@@ -117,7 +117,7 @@ Begin VB.Form panzerPrefs
             Left            =   1890
             TabIndex        =   176
             ToolTipText     =   "Setting the sampling interval affects the frequency of the pointer updates."
-            Top             =   5100
+            Top             =   4485
             Width           =   3870
             _ExtentX        =   6826
             _ExtentY        =   688
@@ -129,14 +129,22 @@ Begin VB.Form panzerPrefs
             LargeChange     =   10
             SelStart        =   1800
          End
-         Begin VB.Label lblGeneral 
-            Caption         =   "Cloud Height Scale "
-            Height          =   480
-            Index           =   16
-            Left            =   3885
+         Begin vb6projectCCRSlider.Slider sliErrorInterval 
+            Height          =   390
+            Left            =   1890
             TabIndex        =   185
-            Top             =   2400
-            Width           =   2610
+            ToolTipText     =   "Setting the sampling interval affects the frequency of the pointer updates."
+            Top             =   5730
+            Width           =   4080
+            _ExtentX        =   7197
+            _ExtentY        =   688
+            Min             =   1800
+            Max             =   7200
+            Value           =   1800
+            TickFrequency   =   120
+            SmallChange     =   5
+            LargeChange     =   10
+            SelStart        =   1800
          End
          Begin VB.Label lblWindowLevel 
             Caption         =   $"frmPrefs.frx":10DA
@@ -144,8 +152,53 @@ Begin VB.Form panzerPrefs
             Index           =   20
             Left            =   2070
             TabIndex        =   184
-            Top             =   7065
+            Top             =   7140
             Width           =   4635
+         End
+         Begin VB.Label lblWindowLevel 
+            Caption         =   "Error Interval :"
+            Height          =   480
+            Index           =   24
+            Left            =   765
+            TabIndex        =   189
+            Top             =   5790
+            Width           =   1350
+         End
+         Begin VB.Label lblWindowLevel 
+            Caption         =   "secs"
+            Height          =   300
+            Index           =   23
+            Left            =   3615
+            TabIndex        =   188
+            Top             =   6195
+            Width           =   1050
+         End
+         Begin VB.Label lblWindowLevel 
+            Caption         =   "7200"
+            Height          =   300
+            Index           =   22
+            Left            =   5385
+            TabIndex        =   187
+            Top             =   6195
+            Width           =   615
+         End
+         Begin VB.Label lblWindowLevel 
+            Caption         =   "1800"
+            Height          =   300
+            Index           =   21
+            Left            =   2070
+            TabIndex        =   186
+            Top             =   6210
+            Width           =   750
+         End
+         Begin VB.Label lblGeneral 
+            Caption         =   $"frmPrefs.frx":11C6
+            Height          =   1005
+            Index           =   12
+            Left            =   3900
+            TabIndex        =   164
+            Top             =   2340
+            Width           =   3240
          End
          Begin VB.Label lblGeneral 
             Caption         =   "ICAO Airports URL :"
@@ -153,7 +206,7 @@ Begin VB.Form panzerPrefs
             Index           =   15
             Left            =   360
             TabIndex        =   183
-            Top             =   6645
+            Top             =   6720
             Width           =   1545
          End
          Begin VB.Label lblWindowLevel 
@@ -162,7 +215,7 @@ Begin VB.Form panzerPrefs
             Index           =   19
             Left            =   2070
             TabIndex        =   181
-            Top             =   5580
+            Top             =   4965
             Width           =   540
          End
          Begin VB.Label lblWindowLevel 
@@ -171,7 +224,7 @@ Begin VB.Form panzerPrefs
             Index           =   18
             Left            =   5385
             TabIndex        =   180
-            Top             =   5565
+            Top             =   4950
             Width           =   405
          End
          Begin VB.Label lblWindowLevel 
@@ -180,7 +233,7 @@ Begin VB.Form panzerPrefs
             Index           =   17
             Left            =   3615
             TabIndex        =   179
-            Top             =   5565
+            Top             =   4950
             Width           =   840
          End
          Begin VB.Label lblWindowLevel 
@@ -189,16 +242,16 @@ Begin VB.Form panzerPrefs
             Index           =   16
             Left            =   300
             TabIndex        =   178
-            Top             =   5160
+            Top             =   4545
             Width           =   1635
          End
          Begin VB.Label lblWindowLevel 
-            Caption         =   "Adjust to determine storm checking frequency (seconds)."
+            Caption         =   "Adjust to determine storm checking frequency."
             Height          =   540
             Index           =   15
             Left            =   2100
             TabIndex        =   177
-            Top             =   5865
+            Top             =   5250
             Width           =   3810
          End
          Begin VB.Label lblGeneral 
@@ -218,15 +271,6 @@ Begin VB.Form panzerPrefs
             TabIndex        =   165
             Top             =   1365
             Width           =   2610
-         End
-         Begin VB.Label lblGeneral 
-            Caption         =   $"frmPrefs.frx":11C6
-            Height          =   1005
-            Index           =   12
-            Left            =   2025
-            TabIndex        =   164
-            Top             =   2850
-            Width           =   3555
          End
          Begin VB.Label lblGeneral 
             Alignment       =   1  'Right Justify
@@ -291,7 +335,7 @@ Begin VB.Form panzerPrefs
             Index           =   14
             Left            =   2100
             TabIndex        =   152
-            Top             =   4635
+            Top             =   4020
             Width           =   3810
          End
          Begin VB.Label lblWindowLevel 
@@ -300,7 +344,7 @@ Begin VB.Form panzerPrefs
             Index           =   13
             Left            =   495
             TabIndex        =   151
-            Top             =   3930
+            Top             =   3315
             Width           =   1410
          End
          Begin VB.Label lblWindowLevel 
@@ -309,7 +353,7 @@ Begin VB.Form panzerPrefs
             Index           =   12
             Left            =   3615
             TabIndex        =   150
-            Top             =   4335
+            Top             =   3720
             Width           =   840
          End
          Begin VB.Label lblWindowLevel 
@@ -318,7 +362,7 @@ Begin VB.Form panzerPrefs
             Index           =   11
             Left            =   5385
             TabIndex        =   149
-            Top             =   4335
+            Top             =   3720
             Width           =   405
          End
          Begin VB.Label lblWindowLevel 
@@ -327,7 +371,7 @@ Begin VB.Form panzerPrefs
             Index           =   10
             Left            =   2070
             TabIndex        =   148
-            Top             =   4335
+            Top             =   3720
             Width           =   345
          End
       End
@@ -3589,6 +3633,8 @@ Private Sub btnSave_Click()
     PzGPointerAnimate = cmbTickSwitchPref.ListIndex
     PzGSamplingInterval = LTrim$(Str$(sliSamplingInterval.Value))
     PzGStormTestInterval = LTrim$(Str$(sliStormTestInterval.Value))
+    PzGErrorInterval = LTrim$(Str$(sliErrorInterval.Value))
+    
     PzGAirportsURL = txtAirportsURL.Text
     
     PzGTemperatureScale = cmbTemperatureScale.ListIndex
@@ -3672,6 +3718,8 @@ Private Sub btnSave_Click()
         sPutINISetting "Software\PzTemperatureGauge", "pointerAnimate", PzGPointerAnimate, PzGSettingsFile
         sPutINISetting "Software\PzTemperatureGauge", "samplingInterval", PzGSamplingInterval, PzGSettingsFile
         sPutINISetting "Software\PzTemperatureGauge", "stormTestInterval", PzGStormTestInterval, PzGSettingsFile
+        sPutINISetting "Software\PzTemperatureGauge", "errorInterval", PzGErrorInterval, PzGSettingsFile
+        
         sPutINISetting "Software\PzTemperatureGauge", "airportsURL", PzGAirportsURL, PzGSettingsFile
         
         sPutINISetting "Software\PzTemperatureGauge", "temperatureScale", PzGTemperatureScale, PzGSettingsFile
@@ -3942,6 +3990,8 @@ Private Sub adjustPrefsControls()
  
     sliSamplingInterval.Value = val(PzGSamplingInterval)
     sliStormTestInterval.Value = val(PzGStormTestInterval)
+    sliErrorInterval.Value = val(PzGErrorInterval)
+     
     txtAirportsURL.Text = PzGAirportsURL
     
     txtIcao.Text = PzGIcao
@@ -4562,6 +4612,40 @@ End Sub
 
 
 
+' ----------------------------------------------------------------
+' Procedure Name: sliErrorInterval_Click
+' Purpose:
+' Procedure Kind: Sub
+' Procedure Access: Private
+' Author: beededea
+' Date: 19/04/2024
+' ----------------------------------------------------------------
+Private Sub sliErrorInterval_Click()
+    On Error GoTo sliErrorInterval_Click_Error
+    btnSave.Enabled = True ' enable the save button
+ 
+    If prefsStartupFlg = False Then
+        PzGErrorInterval = LTrim$(Str$(sliErrorInterval.Value))
+        'overlayTemperatureWidget.samplingInterval = sliSamplingInterval.Value
+        sPutINISetting "Software\PzTemperatureGauge", "sliErrorInterval", PzGErrorInterval, PzGSettingsFile
+        
+    End If
+
+    
+    On Error GoTo 0
+    Exit Sub
+
+sliErrorInterval_Click_Error:
+
+    MsgBox "Error " & Err.Number & " (" & Err.Description & ") in procedure sliErrorInterval_Click, line " & Erl & "."
+
+End Sub
+
+Private Sub sliErrorInterval_MouseMove(Button As Integer, Shift As Integer, X As Single, Y As Single)
+    If PzGEnableBalloonTooltips = "1" Then CreateToolTip sliErrorInterval.hwnd, "Adjust to error reporting frequency (seconds). This is the interval by which the program determines if a feed is in error by failing to supply data. If the interval is reached and the feed provides no data, then an error message is displayed.", _
+                  TTIconInfo, "Help on the Error Interval", , , , True
+End Sub
+
 Private Sub sliOpacity_Change()
     btnSave.Enabled = True ' enable the save button
 End Sub
@@ -4602,7 +4686,16 @@ Private Sub sliSamplingInterval_MouseMove(Button As Integer, Shift As Integer, X
 End Sub
 
 
+' ----------------------------------------------------------------
+' Procedure Name: sliStormTestInterval_Click
+' Purpose:
+' Procedure Kind: Sub
+' Procedure Access: Private
+' Author: beededea
+' Date: 19/04/2024
+' ----------------------------------------------------------------
 Private Sub sliStormTestInterval_Click()
+    On Error GoTo sliStormTestInterval_Click_Error
     btnSave.Enabled = True ' enable the save button
  
     If prefsStartupFlg = False Then
@@ -4612,10 +4705,18 @@ Private Sub sliStormTestInterval_Click()
         
     End If
 
+    
+    On Error GoTo 0
+    Exit Sub
+
+sliStormTestInterval_Click_Error:
+
+    MsgBox "Error " & Err.Number & " (" & Err.Description & ") in procedure sliStormTestInterval_Click, line " & Erl & "."
+
 End Sub
 
 Private Sub sliStormTestInterval_MouseMove(Button As Integer, Shift As Integer, X As Single, Y As Single)
-    If PzGEnableBalloonTooltips = "1" Then CreateToolTip sliStormTestInterval.hwnd, "Adjust to determine storm checking frequency (seconds). This is the polling interval by which the widget compares pressure drops of 1 millibar (default 3600 seconds or one hour) indicating the increased chance of a storm.", _
+    If PzGEnableBalloonTooltips = "1" Then CreateToolTip sliStormTestInterval.hwnd, "Adjust to determine storm checking frequency (seconds). This is the interval by which the widget compares pressure drops of 1 millibar (default 3600 seconds or one hour) indicating the increased chance of a storm. If this condition is detected, it will light a red lamp on the barometer gauge", _
                   TTIconInfo, "Help on Storm Test Interval", , , , True
 
 End Sub
@@ -5003,7 +5104,7 @@ Public Sub setPrefsTooltips()
         sliOpacity.ToolTipText = "Set the transparency of the program. Any change in opacity takes place instantly."
         sliSamplingInterval.ToolTipText = "Setting the sampling interval affects the frequency of the pointer updates."
         sliStormTestInterval.ToolTipText = "Adjust to determine storm checking frequency (seconds). This is the polling interval by which the widget compares pressure drops of 1 millibar (default 3600 seconds or one hour) indicating the increased chance of a storm."
-        
+        sliErrorInterval.ToolTipText = "Adjust to error reporting frequency (seconds). This is the interval by which the program determines if a feed is in error by failing to supply data. If the interval is reached and the feed provides no data, then an error message is displayed."
         cmbScrollWheelDirection.ToolTipText = "To change the direction of the mouse scroll wheel when resizing the gauge."
         chkEnableBalloonTooltips.ToolTipText = "Check the box to enable larger balloon tooltips for all controls on the main program"
         chkShowTaskbar.ToolTipText = "Check the box to show the widget in the taskbar"
@@ -5088,6 +5189,7 @@ Public Sub setPrefsTooltips()
         sliOpacity.ToolTipText = vbNullString
         sliSamplingInterval.ToolTipText = vbNullString
         sliStormTestInterval.ToolTipText = vbNullString
+        sliErrorInterval.ToolTipText = vbNullString
         cmbScrollWheelDirection.ToolTipText = vbNullString
         chkEnableBalloonTooltips.ToolTipText = vbNullString
         chkShowTaskbar.ToolTipText = vbNullString
@@ -5620,6 +5722,7 @@ Private Sub setThemeShade(ByVal redC As Integer, ByVal greenC As Integer, ByVal 
     txtAboutText.BackColor = RGB(redC, greenC, blueC)
     sliSamplingInterval.BackColor = RGB(redC, greenC, blueC)
     sliStormTestInterval.BackColor = RGB(redC, greenC, blueC)
+    sliErrorInterval.BackColor = RGB(redC, greenC, blueC)
     
     sPutINISetting "Software\PzTemperatureGauge", "skinTheme", PzGSkinTheme, PzGSettingsFile
 
@@ -5880,7 +5983,7 @@ Private Sub setframeHeights()
             Call SaveSizes(Me, prefsControlPositions(), prefsCurrentWidth, prefsCurrentHeight)
         'End If
     Else
-        fraGeneral.Height = 8640
+        fraGeneral.Height = 8869
         fraConfig.Height = 6632
         fraSounds.Height = 1992
         fraPosition.Height = 7544
