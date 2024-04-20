@@ -135,16 +135,24 @@ Begin VB.Form panzerPrefs
             TabIndex        =   185
             ToolTipText     =   "Setting the sampling interval affects the frequency of the pointer updates."
             Top             =   5730
-            Width           =   4080
-            _ExtentX        =   7197
+            Width           =   3870
+            _ExtentX        =   6826
             _ExtentY        =   688
-            Min             =   1800
-            Max             =   7200
-            Value           =   1800
-            TickFrequency   =   120
+            Min             =   1
+            Max             =   8
+            Value           =   1
             SmallChange     =   5
             LargeChange     =   10
-            SelStart        =   1800
+            SelStart        =   8
+         End
+         Begin VB.Label lblWindowLevel 
+            Caption         =   "hours"
+            Height          =   315
+            Index           =   23
+            Left            =   3615
+            TabIndex        =   189
+            Top             =   6210
+            Width           =   840
          End
          Begin VB.Label lblWindowLevel 
             Caption         =   $"frmPrefs.frx":10DA
@@ -156,37 +164,28 @@ Begin VB.Form panzerPrefs
             Width           =   4635
          End
          Begin VB.Label lblWindowLevel 
-            Caption         =   "Error Interval :"
-            Height          =   480
+            Caption         =   "Error Message Interval :"
+            Height          =   360
             Index           =   24
-            Left            =   765
-            TabIndex        =   189
-            Top             =   5790
-            Width           =   1350
-         End
-         Begin VB.Label lblWindowLevel 
-            Caption         =   "secs"
-            Height          =   300
-            Index           =   23
-            Left            =   3615
+            Left            =   180
             TabIndex        =   188
-            Top             =   6195
-            Width           =   1050
+            Top             =   5790
+            Width           =   1770
          End
          Begin VB.Label lblWindowLevel 
-            Caption         =   "7200"
+            Caption         =   "8hrs"
             Height          =   300
             Index           =   22
-            Left            =   5385
+            Left            =   5490
             TabIndex        =   187
-            Top             =   6195
-            Width           =   615
+            Top             =   6210
+            Width           =   465
          End
          Begin VB.Label lblWindowLevel 
-            Caption         =   "1800"
+            Caption         =   "1hr"
             Height          =   300
             Index           =   21
-            Left            =   2070
+            Left            =   1995
             TabIndex        =   186
             Top             =   6210
             Width           =   750
@@ -3382,46 +3381,14 @@ End Property
 Private Sub showLastTab()
 
    On Error GoTo showLastTab_Error
-
-    
-    
-    
     
     If PzGLastSelectedTab = "general" Then Call picButtonMouseUpEvent("general", imgGeneral, imgGeneralClicked, fraGeneral, fraGeneralButton)  ' was imgGeneralMouseUpEvent
-    
-    
-    
-    
     If PzGLastSelectedTab = "config" Then Call picButtonMouseUpEvent("config", imgConfig, imgConfigClicked, fraConfig, fraConfigButton)     ' was imgConfigMouseUpEvent
-    
-    
-    
-    
     If PzGLastSelectedTab = "position" Then Call picButtonMouseUpEvent("position", imgPosition, imgPositionClicked, fraPosition, fraPositionButton)
-    
-    
-    
-    
     If PzGLastSelectedTab = "development" Then Call picButtonMouseUpEvent("development", imgDevelopment, imgDevelopmentClicked, fraDevelopment, fraDevelopmentButton)
-    
-    
-    
-    
     If PzGLastSelectedTab = "fonts" Then Call picButtonMouseUpEvent("fonts", imgFonts, imgFontsClicked, fraFonts, fraFontsButton)
-    
-    
-    
-    
     If PzGLastSelectedTab = "sounds" Then Call picButtonMouseUpEvent("sounds", imgSounds, imgSoundsClicked, fraSounds, fraSoundsButton)
-    
-    
-    
-    
     If PzGLastSelectedTab = "window" Then Call picButtonMouseUpEvent("window", imgWindow, imgWindowClicked, fraWindow, fraWindowButton)
-    
-    
-    
-    
     If PzGLastSelectedTab = "about" Then Call picButtonMouseUpEvent("about", imgAbout, imgAboutClicked, fraAbout, fraAboutButton)
 
    On Error GoTo 0

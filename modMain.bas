@@ -45,7 +45,9 @@ Public overlaySelectorWidget As cwOverlaySelect
 Public sunriseSunset As cwSunriseSunset
 Public widgetName1 As String
 Public widgetName2 As String
+'Public startupFlg As Boolean
 
+Public firstPoll As Boolean
 
     
 
@@ -100,6 +102,10 @@ Public Sub mainRoutine(ByVal restart As Boolean)
     prefsCurrentWidth = 9075
     prefsCurrentHeight = 16450
     
+    firstPoll = True
+    
+    'startupFlg = True ' this is used to prevent some control initialisations from running code at startup
+
     extractCommand = Command$ ' capture any parameter passed, remove if a soft reload
     If restart = True Then extractCommand = vbNullString
     
@@ -194,6 +200,8 @@ Public Sub mainRoutine(ByVal restart As Boolean)
  
     ' configure any global timers here
     Call configureTimers
+    
+    'startupFlg = False
         
     ' RC message pump will auto-exit when Cairo Forms > 0 so we run it only when 0, this prevents message interruption
     ' when running twice on reload.
@@ -817,7 +825,7 @@ Public Sub validateInputs()
     If PzGPointerAnimate = vbNullString Then PzGPointerAnimate = "0"
     If PzGSamplingInterval = vbNullString Then PzGSamplingInterval = "60"
     If PzGStormTestInterval = vbNullString Then PzGStormTestInterval = "3600"
-    If PzGErrorInterval = vbNullString Then PzGErrorInterval = "3600"
+    If PzGErrorInterval = vbNullString Then PzGErrorInterval = "3"
     
     If PzGAirportsURL = vbNullString Then PzGAirportsURL = "https://raw.githubusercontent.com/jpatokal/openflights/master/data/airports.dat"
     

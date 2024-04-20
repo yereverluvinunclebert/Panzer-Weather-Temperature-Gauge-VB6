@@ -1293,7 +1293,7 @@ Private Sub myStatusProc()
     Dim humidityValue  As Long: humidityValue = 0
     Dim pressureValue As Double: pressureValue = 0
     Dim TheDate As Date: TheDate = #1/1/2000 12:00:00 PM#
-    Dim secsDif As Integer: secsDif = 0
+    Dim secsDif As Double: secsDif = 0
     Dim difString As String: difString = vbNullString
     Dim num_results As Integer: num_results = 0
     Dim observation_time As String: observation_time = vbNullString
@@ -1371,11 +1371,15 @@ Private Sub myStatusProc()
     Set MetarNode = objxmldoc.selectSingleNode("response/data/METAR") ' There's only the one METAR node
     
     If num_results = 0 Then ' And Preferences.msgboxPref.value = "enabled" Then
-        'If answer = vbNo Then
-'            answer = vbYes
-'            answerMsg = "The source weather feed is currently producing no valid data for " & panzerPrefs.sliSamplingInterval.Value & " secs."
-'            answer = msgBoxA(answerMsg, vbOKOnly, "Poll Warning", True, "myStatusProcPollingWarning")
-        'End If
+       
+        ' compare last PzGLastUpdated to current date time and if that exceeds the error interval then raise an error.
+        TheDate = Now
+        secsDif = Int(DateDiff("s", CDate(PzGLastUpdated), TheDate))
+        If secsDif >= (val(PzGErrorInterval) * 3600) And firstPoll = False Then
+            answerMsg = "The source weather feed has been producing no valid data for " & secsDif & " secs."
+            answer = msgBoxA(answerMsg, vbOKOnly, "Poll Warning", True, "myStatusProcPollingWarning")
+        End If
+        
         weHaveData = False
         Exit Sub ' Return
     End If
@@ -1538,6 +1542,8 @@ Private Sub myStatusProc()
 
     ' store the last updated value in the settings
     PzGLastUpdated = usableObsTime
+    sPutINISetting "Software\PzTemperatureGauge", "lastUpdated", PzGLastUpdated, PzGSettingsFile
+
     If (debugFlg = 1) Then Debug.Print ("%myStatusProc - difString " & difString)
 
     ' set the hover over tooltips on the gauges
@@ -1565,6 +1571,7 @@ Private Sub myStatusProc()
 
     thisTemperature = temp_c
     weHaveData = True
+    firstPoll = False
     
     ' set the animation variables and call the routine to move the gauge pointer
     Call calcAnimationData
