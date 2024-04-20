@@ -479,13 +479,13 @@ Private Sub adjustSelectorMainControls()
         .Tag = 0.25
     End With
     
-    With fSelector.SelectorForm.Widgets("btnexit").Widget
+    With fSelector.SelectorForm.Widgets("sbtnexit").Widget
         .HoverColor = 0 ' set the hover colour to grey - this may change later with new RC6
         .MousePointer = IDC_HAND
         .Alpha = val(PzGOpacity) / 100
     End With
     
-    With fSelector.SelectorForm.Widgets("btnselect").Widget
+    With fSelector.SelectorForm.Widgets("sbtnselect").Widget
         .HoverColor = 0 ' set the hover colour to grey - this may change later with new RC6
         .MousePointer = IDC_HAND
         .Alpha = val(PzGOpacity) / 100
@@ -503,7 +503,7 @@ Private Sub adjustSelectorMainControls()
         .Alpha = val(PzGOpacity) / 100
     End With
 
-    With fSelector.SelectorForm.Widgets("btnsearch").Widget
+    With fSelector.SelectorForm.Widgets("sbtnsearch").Widget
         .HoverColor = 0 ' set the hover colour to grey - this may change later with new RC6
         .MousePointer = IDC_HAND
         .Alpha = val(PzGOpacity) / 100

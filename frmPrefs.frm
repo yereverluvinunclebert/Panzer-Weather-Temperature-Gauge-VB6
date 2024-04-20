@@ -203,7 +203,7 @@ Begin VB.Form panzerPrefs
             Caption         =   "ICAO Airports URL :"
             Height          =   255
             Index           =   15
-            Left            =   360
+            Left            =   255
             TabIndex        =   183
             Top             =   6720
             Width           =   1545

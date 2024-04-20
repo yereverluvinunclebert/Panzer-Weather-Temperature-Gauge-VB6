@@ -34,6 +34,11 @@ Public collSelectorPSDNonUIElements As cCollection, FX As Long, FY As Long, FZ A
 Private PSDWidth As Long
 Private PSDHeight As Long
 
+Private optICAOSelected As Boolean
+Private optLocationSelected As Boolean
+
+
+
 
 
 
@@ -47,6 +52,9 @@ Private PSDHeight As Long
 Private Sub Class_Initialize()
    On Error GoTo Class_Initialize_Error
 
+    optICAOSelected = True
+    optLocationSelected = False
+    
     Set collSelectorPSDNonUIElements = New_c.Collection(False)
     
 
@@ -168,10 +176,10 @@ Private Sub SelectorForm_BubblingEvent(ByRef sender As Object, ByRef EventName A
     
     If EventName = "W_MouseMove" Then
         Select Case LCase$(sender.Widget.key)
-            Case "btnselect"
+            Case "sbtnselect"
                 If PzGEnableBalloonTooltips = "1" Then CreateToolTip SelectorForm.hwnd, "Click me to select the currently displayed ICAO location.", _
                      TTIconInfo, widgetName2 & " Select Button Help", , , , True
-            Case "btnexit"
+            Case "sbtnexit"
                 If PzGEnableBalloonTooltips = "1" Then CreateToolTip SelectorForm.hwnd, "Click me to close the ICAO selection utility.", _
                      TTIconInfo, widgetName2 & " Exit Button Help", , , , True
             Case "optlocationgreen"
@@ -183,7 +191,7 @@ Private Sub SelectorForm_BubblingEvent(ByRef sender As Object, ByRef EventName A
             Case "opticaored"
                 If PzGEnableBalloonTooltips = "1" Then CreateToolTip SelectorForm.hwnd, "Click here to enable the option to search by ICAO code.", _
                      TTIconInfo, widgetName2 & " ICAO Button Help", , , , True
-            Case "btnsearch"
+            Case "sbtnsearch"
                 If PzGEnableBalloonTooltips = "1" Then CreateToolTip SelectorForm.hwnd, "Click here to search using your supplied airport name or ICAO code.", _
                      TTIconInfo, widgetName2 & " Search Button Help", , , , True
             Case "opticaogreen"
@@ -203,18 +211,18 @@ Private Sub SelectorForm_BubblingEvent(ByRef sender As Object, ByRef EventName A
     
     If EventName = "W_MouseDown" Then
         Select Case LCase$(sender.Widget.key)
-            Case "btnselect"
-               Call btnselect_mouseDown(sender)
-            Case "btnexit"
-               Call btnexit_mouseDown(sender)
-            Case "btnsearch"
-               Call btnsearch_mouseDown(sender)
+            Case "sbtnselect"
+               Call sbtnselect_mouseDown(sender)
+            Case "sbtnexit"
+               Call sbtnexit_mouseDown(sender)
+            Case "sbtnsearch"
+               Call sbtnsearch_mouseDown(sender)
             Case "optlocationred"
                Call optlocationred_mouseDown(sender)
             Case "opticaored"
                Call opticaored_mouseDown(sender)
-            'Case "opticaogreen"
-               '  Call opticaogreen_mouseDown(sender)
+'            Case "opticaogreen"
+'                 Call opticaogreen_mouseDown(sender)
             Case Else
                 Debug.Print sender.Widget.key
         End Select
@@ -254,16 +262,16 @@ SelectorForm_BubblingEvent_Error:
 End Sub
 
 '---------------------------------------------------------------------------------------
-' Procedure : btnselect_mouseDown
+' Procedure : sbtnselect_mouseDown
 ' Author    : Dean Beedell (yereverluvinunclebert)
 ' Date      : 03/08/2023
 ' Purpose   :
 '---------------------------------------------------------------------------------------
 '
-Private Sub btnselect_mouseDown(ByRef sender As Object)
+Private Sub sbtnselect_mouseDown(ByRef sender As Object)
     Dim fileToPlay As String: fileToPlay = vbNullString
     
-    On Error GoTo btnselect_mouseDown_Error
+    On Error GoTo sbtnselect_mouseDown_Error
     
     'sender.Widget.Refresh ' this removes the delay in the lockButton depressing
     
@@ -275,27 +283,33 @@ Private Sub btnselect_mouseDown(ByRef sender As Object)
    On Error GoTo 0
    Exit Sub
 
-btnselect_mouseDown_Error:
+sbtnselect_mouseDown_Error:
 
-    MsgBox "Error " & Err.Number & " (" & Err.Description & ") in procedure btnselect_mouseDown of Class Module cfSelector"
+    MsgBox "Error " & Err.Number & " (" & Err.Description & ") in procedure sbtnselect_mouseDown of Class Module cfSelector"
 
 End Sub
 
 
 
 '---------------------------------------------------------------------------------------
-' Procedure : btnexit_mouseDown
+' Procedure : sbtnexit_mouseDown
 ' Author    : Dean Beedell (yereverluvinunclebert)
 ' Date      : 03/08/2023
 ' Purpose   :
 '---------------------------------------------------------------------------------------
 '
-Private Sub btnexit_mouseDown(ByRef sender As Object)
+Private Sub sbtnexit_mouseDown(ByRef sender As Object)
     Dim fileToPlay As String: fileToPlay = vbNullString
    
-    On Error GoTo btnexit_mouseDown_Error
+    On Error GoTo sbtnexit_mouseDown_Error
     
     SelectorForm.Hide
+    
+    SelectorForm.Widgets("sbtnselect").Widget.Enabled = True
+    SelectorForm.Widgets("sbtnsearch").Widget.Enabled = False
+    
+    PzGMetarPref = "Location"
+    sPutINISetting "Software\PzTemperatureGauge", "metarPref", PzGMetarPref, PzGSettingsFile
     
     fileToPlay = "shutdown.wav"
     If PzGEnableSounds = "1" And fFExists(App.path & "\resources\sounds\" & fileToPlay) Then
@@ -305,41 +319,106 @@ Private Sub btnexit_mouseDown(ByRef sender As Object)
    On Error GoTo 0
    Exit Sub
 
-btnexit_mouseDown_Error:
+sbtnexit_mouseDown_Error:
 
-    MsgBox "Error " & Err.Number & " (" & Err.Description & ") in procedure btnexit_mouseDown of Class Module cfSelector"
+    MsgBox "Error " & Err.Number & " (" & Err.Description & ") in procedure sbtnexit_mouseDown of Class Module cfSelector"
 
 End Sub
 
 
 
-'---------------------------------------------------------------------------------------
-' Procedure : btnsearch_mouseDown
-' Author    : Dean Beedell (yereverluvinunclebert)
-' Date      : 03/08/2023
-' Purpose   :
-'---------------------------------------------------------------------------------------
+''---------------------------------------------------------------------------------------
+'' Procedure : sbtnsearch_mouseDown
+'' Author    : Dean Beedell (yereverluvinunclebert)
+'' Date      : 03/08/2023
+'' Purpose   :
+''---------------------------------------------------------------------------------------
+''
+'Private Sub sbtnsearch_mouseDown(ByRef sender As Object)
+'    Dim fileToPlay As String: fileToPlay = vbNullString
 '
-Private Sub btnsearch_mouseDown(ByRef sender As Object)
-    Dim fileToPlay As String: fileToPlay = vbNullString
-   
-    On Error GoTo btnsearch_mouseDown_Error
+'    On Error GoTo sbtnsearch_mouseDown_Error
+'
+'    'SelectorForm.Hide
+'
+'    fileToPlay = "click.wav"
+'    If PzGEnableSounds = "1" And fFExists(App.path & "\resources\sounds\" & fileToPlay) Then
+'        PlaySound App.path & "\resources\sounds\" & fileToPlay, ByVal 0&, SND_FILENAME Or SND_ASYNC
+'    End If
+'
+'   On Error GoTo 0
+'   Exit Sub
+'
+'sbtnsearch_mouseDown_Error:
+'
+'    MsgBox "Error " & Err.Number & " (" & Err.Description & ") in procedure sbtnsearch_mouseDown of Class Module cfSelector"
+'
+'End Sub
+
+
+' ----------------------------------------------------------------
+' Procedure Name: sbtnsearch_mouseDown
+' Purpose:
+' Procedure Kind: Sub
+' Procedure Access: Private
+' Author: beededea
+' Date: 29/03/2024
+' ----------------------------------------------------------------
+Private Sub sbtnsearch_mouseDown(ByRef sender As Object)
+    On Error GoTo btnGo_Click_Error
     
-    'SelectorForm.Hide
+    Dim fileToPlay As String: fileToPlay = vbNullString
+    Dim ee As String: ee = vbNullString
+    Dim key As String: key = vbNullString
+    Dim ff As String: ff = vbNullString
+    Dim gg As String: gg = vbNullString
+    Dim result As String: result = vbNullString
+    Dim answerMsg As String: answerMsg = vbNullString
+    Dim answer As VbMsgBoxResult: answer = vbNo
+
+    fSelector.sCmbMatchingLocations.Widget.Visible = False ' dropdown is not visible
+
+    ee = UCase$(sTxtICAOInput.Text)
     
     fileToPlay = "click.wav"
     If PzGEnableSounds = "1" And fFExists(App.path & "\resources\sounds\" & fileToPlay) Then
         PlaySound App.path & "\resources\sounds\" & fileToPlay, ByVal 0&, SND_FILENAME Or SND_ASYNC
     End If
+    
+    ' if the input is an icao then handle it
+    If optICAOSelected = True Then '"location"
+        result = testICAO(ee)
+        
+        If result <> vbNullString Then ' icao
+            answerMsg = "Done - Valid code Found. " & result
+            answer = msgBoxA(answerMsg, vbOKOnly + vbExclamation, "Location Search Found", True, "sbtnsearchClick")
+            
+            sTxtICAOInput.Text = result
+            'lblDisplaySelection.Caption = overlayTemperatureWidget.icaoLocation ' there is a lable underneath the combobox
+            
+            SelectorForm.Widgets("sbtnselect").Widget.Enabled = True
+            SelectorForm.Widgets("sbtnsearch").Widget.Enabled = False
+        End If
+    End If
+    
+    ' if the input is an location then handle it
+    If optLocationSelected = True Then ' "location"
+        result = testLocation(ee)
+        SelectorForm.Widgets("sbtnselect").Widget.Enabled = False
+        SelectorForm.Widgets("sbtnsearch").Widget.Enabled = False
+    End If
+    
+    'SelectorForm.Widgets("sbtnsearch").Widget.sTxtICAOInput.SetFocus ' need to implement this?
+    
+    On Error GoTo 0
+    Exit Sub
 
-   On Error GoTo 0
-   Exit Sub
+btnGo_Click_Error:
 
-btnsearch_mouseDown_Error:
-
-    MsgBox "Error " & Err.Number & " (" & Err.Description & ") in procedure btnsearch_mouseDown of Class Module cfSelector"
+    MsgBox "Error " & Err.Number & " (" & Err.Description & ") in procedure sbtnsearch_mouseDown, line " & Erl & "."
 
 End Sub
+
 
 '---------------------------------------------------------------------------------------
 ' Procedure : optlocationred_mouseDown
@@ -352,6 +431,9 @@ Private Sub optlocationred_mouseDown(ByRef sender As Object)
     Dim fileToPlay As String: fileToPlay = vbNullString
 
     On Error GoTo optlocationred_mouseDown_Error
+   
+    optICAOSelected = False
+    optLocationSelected = True
    
     ' switch location red knob to nothing
     With SelectorForm.Widgets("optlocationred").Widget
@@ -416,6 +498,9 @@ Private Sub opticaored_mouseDown(ByRef sender As Object)
    
     On Error GoTo opticaored_mouseDown_Error
    
+    optICAOSelected = True
+    optLocationSelected = False
+   
     ' switch icao red knob to nothing
     With SelectorForm.Widgets("opticaored").Widget
         .Visible = False
@@ -456,6 +541,14 @@ Private Sub opticaored_mouseDown(ByRef sender As Object)
     If PzGEnableSounds = "1" And fFExists(App.path & "\resources\sounds\" & fileToPlay) Then
         PlaySound App.path & "\resources\sounds\" & fileToPlay, ByVal 0&, SND_FILENAME Or SND_ASYNC
     End If
+    
+    SelectorForm.Widgets("sbtnselect").Widget.Enabled = False
+    SelectorForm.Widgets("sbtnsearch").Widget.Enabled = True
+    fSelector.sCmbMatchingLocations.Widget.Visible = False
+        
+    PzGMetarPref = "ICAO"
+    sPutINISetting "Software\PzTemperatureGauge", "metarPref", PzGMetarPref, PzGSettingsFile
+    
        
     On Error GoTo 0
    Exit Sub
@@ -532,3 +625,187 @@ SelectorForm_MouseMove_Error:
 
     MsgBox "Error " & Err.Number & " (" & Err.Description & ") in procedure SelectorForm_MouseMove of Class Module cfSelector"
 End Sub
+
+
+' ----------------------------------------------------------------
+' Procedure Name: testICAO
+' Purpose:
+' Procedure Kind: Function
+' Procedure Access: Private
+' Parameter icao (String):
+' Return Type: String
+' Author: beededea
+' Date: 28/03/2024
+' ----------------------------------------------------------------
+Private Function testICAO(ByVal icao As String) As String
+    On Error GoTo testICAO_Error
+    
+    Dim i As Integer: i = 0
+    Dim testChar As String: testChar = vbNullString
+    Dim allLetters As Boolean: allLetters = False
+    Dim answer As VbMsgBoxResult: answer = vbNo
+    Dim answerMsg  As String: answerMsg = vbNullString
+    
+    'shorten the input to 4 characters if cut /pasted in with too many characters
+    If Len(icao) > 4 Then
+        icao = Mid$(icao, 0, 4)
+        answerMsg = "Valid ICAO codes are only four digits long. Use the options buttons below to select either an ICAO or a city search. "
+        answer = msgBoxA(answerMsg, vbOKOnly + vbExclamation, "Location Error Information", False)
+        If debugFlg = 1 Then
+            Debug.Print ("%txtICAOInput - txtICAOInput.data " & icao)
+        End If
+        testICAO = vbNullString ' return
+        Exit Function
+    End If
+    
+    icao = Replace(icao, " ", "")
+    If icao <> "" Then   ' no empty strings
+        If debugFlg = 1 Then
+            Debug.Print ("%txtICAOInput - calling searchIcaoFile")
+        End If
+        For i = 1 To 4
+            testChar = Mid$(icao, i, 1)
+            If IsLetter(testChar) = False Then
+                allLetters = False
+                Exit For
+            End If
+            allLetters = True
+        Next i
+        If allLetters = True Then
+
+            overlayTemperatureWidget.IcaoToTest = icao ' load the icao to test
+            ' call routine to search
+            If overlayTemperatureWidget.ValidICAO = True Then ' call routine to search all the ICAO codes in airport.dat
+                testICAO = icao  ' return
+            End If
+        Else
+            answerMsg = "The ICAO code search string cannot contain numeric or non alpha characters. "
+            answer = msgBoxA(answerMsg, vbOKOnly + vbExclamation, "Location Error Information", False)
+            testICAO = vbNullString
+            Exit Function
+        End If
+    End If
+    'if the station id returned is null then assume the weather information is missing for an unknown reason.
+    If testICAO = vbNullString Then
+        answerMsg = "No matching ICAO found "
+        answer = msgBoxA(answerMsg, vbOKOnly + vbExclamation, "Location Error Information", False)
+        testICAO = vbNullString
+        Exit Function
+    End If
+
+    
+    On Error GoTo 0
+    Exit Function
+
+testICAO_Error:
+
+    MsgBox "Error " & Err.Number & " (" & Err.Description & ") in procedure testICAO, line " & Erl & "."
+
+End Function
+
+
+
+' ----------------------------------------------------------------
+' Procedure Name: testLocation
+' Purpose:
+' Procedure Kind: Function
+' Procedure Access: Private
+' Parameter location (String):
+' Return Type: String
+' Author: beededea
+' Date: 28/03/2024
+' ----------------------------------------------------------------
+Private Function testLocation(ByVal location As String) As String
+    On Error GoTo testLocation_Error
+    
+    Dim answer As VbMsgBoxResult: answer = vbNo
+    Dim answerMsg As String: answerMsg = vbNullString
+    Dim cnt As Long: cnt = 0
+    Dim i As Integer: i = 0
+
+    location = Replace(location, " ", "")
+
+    If location <> "" Then
+        If debugFlg = 1 Then
+            Debug.Print ("%txtICAOInput - calling searchIcaoFile")
+        End If
+
+        ' note: it is possible that a named search location could contain a number
+        ' call routine to search
+        overlayTemperatureWidget.IcaoToTest = location ' load the icao to test
+        cnt = overlayTemperatureWidget.ValidLocationCount
+        If cnt = 1 Then
+            If overlayTemperatureWidget.ValidICAO = True Then ' call routine to search all the ICAO codes in airport.dat
+                testLocation = overlayTemperatureWidget.IcaoToTest  ' return
+                Exit Function
+            End If
+        Else
+
+            ' if the result contains too many matches, request a better search
+            If cnt > 200 Then
+                answerMsg = "Too many matches, " & cnt & " entries found matching that pattern, please enter a more unique search string "
+                answer = msgBoxA(answerMsg, vbOKOnly + vbExclamation, "Location Error Information", False)
+                testLocation = vbNullString  ' return
+                Exit Function
+            End If
+
+            ' populate the combobox with the <=200 items found
+            testLocation = "multiple locations found" ' vbNullString means none found
+            fSelector.sCmbMatchingLocations.Widget.Visible = True
+            'fSelector.sCmbMatchingLocations.DataSource. .Clear ' remove old from previous usage
+
+'            For i = 0 To cnt - 1
+'                fSelector.sCmbMatchingLocations.AddItem collValidLocations("key" & CStr(i + 1)) ' the cnt is the key
+'                fSelector.sCmbMatchingLocations.ItemData(i) = i
+'            Next i
+            fSelector.sCmbMatchingLocations.ListIndex = 0 ' the default entry - Causes a click event to fire which is a pain.
+
+            ' just a trial
+            fSelector.sCmbMatchingLocations.SetDataSource collValidLocations, "collValidLocations"
+            fSelector.sCmbMatchingLocations.DataSource.Sort = "Col-Add-Order"
+
+        End If
+    End If
+
+    'if the station id returned is null then assume the weather information is missing for an unknown reason.
+    If testLocation = vbNullString Then
+        answerMsg = "No matching Location found "
+        answer = msgBoxA(answerMsg, vbOKOnly + vbExclamation, "Location Error Information", False)
+        testLocation = vbNullString
+        Exit Function
+    End If
+'
+    On Error GoTo 0
+    Exit Function
+
+testLocation_Error:
+
+    MsgBox "Error " & Err.Number & " (" & Err.Description & ") in procedure testLocation, line " & Erl & "."
+
+End Function
+
+
+
+' ----------------------------------------------------------------
+' Procedure Name: IsLetter
+' Purpose:
+' Procedure Kind: Function
+' Procedure Access: Private
+' Parameter character (String):
+' Return Type: Boolean
+' Author: rpetrich
+' Date: 28/03/2024
+' ----------------------------------------------------------------
+Private Function IsLetter(ByVal character As String) As Boolean
+    On Error GoTo IsLetter_Error
+    
+    IsLetter = UCase$(character) <> LCase$(character)
+    
+    On Error GoTo 0
+    Exit Function
+
+IsLetter_Error:
+
+    MsgBox "Error " & Err.Number & " (" & Err.Description & ") in procedure IsLetter, line " & Erl & "."
+
+End Function

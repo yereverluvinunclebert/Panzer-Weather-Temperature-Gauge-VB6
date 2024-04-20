@@ -631,7 +631,7 @@ Private Sub mnuRefreshMetar_Click()
     
     overlayTemperatureWidget.GetMetar = True ' trigger METAR get with new ICAO code
     answerMsg = "Done. "
-    answer = msgBoxA(answerMsg, vbOKOnly + vbExclamation, "Refresh METAR Information", True)
+    answer = msgBoxA(answerMsg, vbOKOnly + vbExclamation, "Refresh METAR Information", True, "mnuRefreshMetarClick")
     
     On Error GoTo 0
     Exit Sub

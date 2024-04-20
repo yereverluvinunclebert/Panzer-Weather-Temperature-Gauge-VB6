@@ -76,7 +76,7 @@ Begin VB.Form frmLocation
       Left            =   285
       TabIndex        =   9
       Text            =   "Combo1"
-      Top             =   645
+      Top             =   630
       Visible         =   0   'False
       Width           =   5130
    End
@@ -150,12 +150,12 @@ Private Sub btnSearch_Click()
     ee = UCase$(txtICAOInput.Text)
     
     ' if the input is an icao then handle it
-    If optICAO.Value = True Then '"location"
+    If optICAO.Value = True Then '"icao"
         result = testICAO(ee)
         
         If result <> vbNullString Then
             answerMsg = "Done - Valid code Found. " & result
-            answer = msgBoxA(answerMsg, vbOKOnly + vbExclamation, "Location Search Found", True)
+            answer = msgBoxA(answerMsg, vbOKOnly + vbExclamation, "Location Search Found", True, "btnSearchClick")
             
             txtICAOInput.Text = result
             lblDisplaySelection.Caption = overlayTemperatureWidget.icaoLocation
@@ -166,7 +166,7 @@ Private Sub btnSearch_Click()
     End If
     
     ' if the input is an location then handle it
-    If optLocation.Value = True Then ' "icao"
+    If optLocation.Value = True Then ' "location"
         result = testLocation(ee)
         btnSearch.Enabled = False
         btnSelect.Enabled = False

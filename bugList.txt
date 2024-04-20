@@ -22,10 +22,18 @@ function to download a new ICAO locations file from the internet using an API - 
 New frmLocation passing icao and location to and from the prefs and frmLocation forms
 add sound to the location form (RC6) - done
 populate a combobox for multiple search results - done
+storm test interval - done
+error message interval - done
+visibility in miles/kms - done
+precipitation - done
+tooltips - up to Harry's quality - done
 
 TODO
 
  temporary location form, add msgboxes for Done events.
+ order of pointer and lamps
+ help image
+
 
 create a new RC6 form for the ICAO input - done
        the RC6 form will replace the temporary VB6 form - wip
