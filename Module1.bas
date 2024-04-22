@@ -792,7 +792,6 @@ Public Sub LoadFileToTB(ByVal TxtBox As Object, ByVal FilePath As String, Option
     
     
     Dim iFile As Integer: iFile = 0
-    
     Dim s As String: s = vbNullString
     
     On Error GoTo LoadFileToTB_Error

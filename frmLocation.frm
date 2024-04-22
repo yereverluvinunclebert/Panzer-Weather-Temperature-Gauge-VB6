@@ -205,6 +205,8 @@ Private Function testLocation(ByVal location As String) As String
     Dim cnt As Long: cnt = 0
     Dim i As Integer: i = 0
     
+    debugFlg = 0
+    
     location = Replace(location, " ", "")
 
     If location <> "" Then
@@ -287,6 +289,8 @@ Private Function testICAO(ByVal icao As String) As String
     Dim allLetters As Boolean: allLetters = False
     Dim answer As VbMsgBoxResult: answer = vbNo
     Dim answerMsg  As String: answerMsg = vbNullString
+    
+    debugFlg = 0
     
     'shorten the input to 4 characters if cut /pasted in with too many characters
     If Len(icao) > 4 Then

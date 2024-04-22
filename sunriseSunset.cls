@@ -44,8 +44,8 @@ Private thisYear As String
 Private thisDay As String
 
 Private lnghour As Double
-Private sunDeclination As Double
-Private cosDec As Double
+Private sinDeclination As Double
+Private cosDeclination As Double
 Private rightAscension As Double
 Private approximateTime As Double
 Private returnSunString As String
@@ -102,27 +102,33 @@ End Sub
 Public Property Get isDayLight() As Boolean
     Dim ret As Double: ret = 0
     
-    Dim sunriseHours  As Double: sunriseHours = 0
-    
-    Dim sunsetHours  As Double: sunsetHours = 0
+    Dim sunriseHours As Double: sunriseHours = 0
+    Dim sunsetHours As Double: sunsetHours = 0
 
     On Error GoTo isDayLightGet_Error
+    
+    debugFlg = 1
 
     ' set to true for sunrise
     Call calcSunPosition(True, Date, ret)
-    sunriseHours = getLocalMeanTime(True, lnghour, sunDeclination, cosDec, rightAscension, approximateTime, returnSunString)
+    sunriseHours = getLocalMeanTime(True, lnghour, sinDeclination, cosDeclination, rightAscension, approximateTime, returnSunString)
     
     ' set to false for sunset
     Call calcSunPosition(False, Date, ret)
-    sunsetHours = getLocalMeanTime(False, lnghour, sunDeclination, cosDec, rightAscension, approximateTime, returnSunString)
+    sunsetHours = getLocalMeanTime(False, lnghour, sinDeclination, cosDeclination, rightAscension, approximateTime, returnSunString)
 
-    Debug.Print (" sunriseHours " & sunriseHours)
-    Debug.Print (" sunsetHours " & sunsetHours)
+    debugFlg = 1
+
+    If debugFlg = 1 Then Debug.Print (" sunriseHours " & sunriseHours)
+    If debugFlg = 1 Then Debug.Print (" sunsetHours " & sunsetHours)
+    
+    debugFlg = 0
     
     isDayLight = testIsDaylight(sunsetHours, sunriseHours)
     
     mIsDayLight = isDayLight
 
+    
    On Error GoTo 0
    Exit Property
 
@@ -404,7 +410,7 @@ Private Sub calcSunPosition(ByVal rising As Boolean, ByVal dateInput As Date, By
     On Error GoTo calcSunPosition_Error
     
         
-    debugFlg = 1
+    debugFlg = 0
     
     thisDateInput = dateInput
     thisMonth = Month(thisDateInput) - 1
@@ -484,17 +490,17 @@ Private Sub calcSunPosition(ByVal rising As Boolean, ByVal dateInput As Date, By
     If debugFlg = 1 Then Debug.Print ("%SFN-I rightAscension " & rightAscension)
     
     'longi = trueLongitude()
-    'sunDeclination = 0.39782 * thisSin(trueLongitude)
+    'sinDeclination = 0.39782 * thisSin(trueLongitude)
     
     ' calculate the Sun's declination
     
-    sunDeclination = 0.39782 * Sin(to_rad * trueLongitude)
+    sinDeclination = 0.39782 * Sin(to_rad * trueLongitude)
     
-    'cosDec = Cos(thisAsin(sunDeclination))
-    cosDec = Cos(Asn(sunDeclination))
+    'cosDeclination = Cos(thisAsin(sinDeclination))
+    cosDeclination = Cos(Asn(sinDeclination))
         
-    If debugFlg = 1 Then Debug.Print ("%SFN-I sunDeclination " & sunDeclination)
-    If debugFlg = 1 Then Debug.Print ("%SFN-I cosDec " & cosDec)
+    If debugFlg = 1 Then Debug.Print ("%SFN-I sinDeclination " & sinDeclination)
+    If debugFlg = 1 Then Debug.Print ("%SFN-I cosDeclination " & cosDeclination)
     
     If debugFlg = 1 Then Debug.Print ("************************************************************")
 
@@ -528,6 +534,8 @@ Private Function testIsDaylight(ByVal sunsetHours As Double, ByRef sunriseHours 
     
     On Error GoTo testIsDaylight_Error
     
+    debugFlg = 1
+    
     ' decimal time
     utcCurrentHours = Hour(Now) + (Minute(Now) / 60)
                 
@@ -546,8 +554,9 @@ Private Function testIsDaylight(ByVal sunsetHours As Double, ByRef sunriseHours 
         testIsDaylight = utcCurrentHours < sunsetHours ' true/false
     End If
 
-    Debug.Print ("%SFN-I testIsDaylight " & testIsDaylight)
-
+    If debugFlg = 1 Then Debug.Print ("%SFN-I testIsDaylight " & testIsDaylight)
+    
+    debugFlg = 0
     
     On Error GoTo 0
     Exit Function
@@ -559,13 +568,13 @@ testIsDaylight_Error:
 End Function
 
 ' ----------------------------------------------------------------
-' Procedure Name: getLocalMeanTime
+' Procedure Name: getLocalMeanTime (.js version LocalMeanTime)
 ' Purpose:
 ' Procedure Kind: Function
 ' Procedure Access: Private
 ' Parameter rising (Boolean):
-' Parameter sunDeclination (Double):
-' Parameter cosDec (Double):
+' Parameter sinDeclination (Double):
+' Parameter cosDeclination (Double):
 ' Parameter rightAscension (Double):
 ' Parameter approximateTime (Double):
 ' Parameter returnSunString (String):
@@ -573,7 +582,7 @@ End Function
 ' Author: Dean Beedell (yereverluvinunclebert)
 ' Date: 12/02/2024
 ' ----------------------------------------------------------------
-Private Function getLocalMeanTime(ByVal rising As Boolean, ByVal lnghour As Double, ByVal sunDeclination As Double, ByVal cosDec As Double, ByVal rightAscension As Double, ByVal approximateTime As Double, ByRef returnSunString As String) As Double
+Private Function getLocalMeanTime(ByVal rising As Boolean, ByVal lnghour As Double, ByVal sinDeclination As Double, ByVal cosDeclination As Double, ByVal rightAscension As Double, ByVal approximateTime As Double, ByRef returnSunString As String) As Double
     Dim Tt As Double: Tt = 0
     Dim T As Double: T = 0
     Dim H As Double
@@ -583,12 +592,30 @@ Private Function getLocalMeanTime(ByVal rising As Boolean, ByVal lnghour As Doub
     
     On Error GoTo getLocalMeanTime_Error
     
-     If debugFlg = 1 And rising Then Debug.Print ("%SFN-I getLocalMeanTime <<<<<<<<<<<<<<<<<<<<<<<<<<<<<< STARTS ")
-
-     ' calculate the Sun's local hour angle
+    debugFlg = 1
+    
+    If debugFlg = 1 And rising Then Debug.Print ("%SFN-I getLocalMeanTime <<<<<<<<<<<<<<<<<<<<<<<<<<<<<< STARTS ")
      
-     ' cosH = (thisCos(zenith) - (sunDeclination() * thisSin(mLatitude)))
-     cosH = (Cos(to_rad * zenith) - (sunDeclination * Sin(to_rad * mLatitude)) / (cosDec * Cos(to_rad * mLatitude)))
+    ' calculate the Sun's local hour angle
+    ' cosH = Cos(to_rad * zenith) - (sinDeclination * Sin(to_rad * mLatitude)) / (cosDeclination * Cos(to_rad * mLatitude)) ' FAILS
+    
+    Dim a As Double
+    a = Cos(to_rad * zenith)
+    
+    Dim b As Double
+    b = sinDeclination * Sin(to_rad * mLatitude)
+    
+    Dim c As Double
+    c = cosDeclination * Cos(to_rad * mLatitude)
+    
+    Dim d As Double
+    d = a - b
+    
+    cosH = d / c
+    
+    ' the earlier calculation of cosH above has a coercion problem that results in a completely incorrect value...
+    ' I have forced the vars to doubles - I am not going to research further - this fix will do
+             
      If debugFlg = 1 And rising Then Debug.Print ("%SFN-I getLocalMeanTime cosH = " & cosH)
      
      If (cosH > 1) Then
@@ -603,7 +630,11 @@ Private Function getLocalMeanTime(ByVal rising As Boolean, ByVal lnghour As Doub
          
          If debugFlg = 1 And rising Then Debug.Print ("%SFN-I getLocalMeanTime rising = " & rising)
          If rising Then
-             H = 360 - thisAcos(cosH)
+            Dim e As Double
+            e = thisAcos(cosH)
+             H = 360 - e
+             If (rising And debugFlg = 1) Then Debug.Print ("%SRS-O localMeanTime thisAcos(cosH) " & e)
+             'H = 360 - thisAcos(cosH)
              'H = 360 - (1 / to_rad) * thisAcos(cosH)
          Else
              H = thisAcos(cosH)
@@ -640,6 +671,8 @@ Private Function getLocalMeanTime(ByVal rising As Boolean, ByVal lnghour As Doub
     If debugFlg = 1 And rising Then Debug.Print ("%SFN-I getLocalMeanTime  = " & getLocalMeanTime)
     'Debug.Print ("%SFN-I getLocalMeanTime <<<<<<<<<<<<<<<<<<<<<<<<<<<<<< ENDS ")
     
+    debugFlg = 0
+    
     On Error GoTo 0
     Exit Function
 
@@ -661,11 +694,11 @@ End Function
 Private Function thisAcos(x As Double) As Double
 
     On Error GoTo thisAcos_Error
-    
-    thisAcos = (180 / pi) * x
-    
+
+    thisAcos = (180 / pi) * Acos(x)
+
     'Debug.Print ("%SRS-O thisAcos " & thisAcos)
-    
+
     On Error GoTo 0
     Exit Function
 
@@ -675,7 +708,22 @@ thisAcos_Error:
 
 End Function
 
+Public Function Acos(x As Variant) As Variant
 
+    Select Case x
+        Case -1
+            Acos = 4 * Atn(1)
+             
+        Case 0:
+            Acos = 2 * Atn(1)
+             
+        Case 1:
+            Acos = 0
+             
+        Case Else:
+            Acos = Atn(-x / Sqr(-x * x + 1)) + 2 * Atn(1)
+    End Select
+End Function
 
 '---------------------------------------------------------------------------------------
 ' Function   : fUtcMonth

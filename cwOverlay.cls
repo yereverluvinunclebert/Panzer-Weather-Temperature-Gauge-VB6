@@ -979,6 +979,8 @@ Sub TestPressureDrop()
     Dim currentPressureValue As Double: currentPressureValue = 0
     Dim oldPressureStorageDate As Date: oldPressureStorageDate = #1/1/2000 12:00:00 PM#
     Dim currentDate As Date: currentDate = #1/1/2000 12:00:00 PM#
+    
+    debugFlg = 0
 
     oldPressureStorage = PzGOldPressureStorage
     currentPressureValue = PzGCurrentPressureValue ' we read this from the prefs as it will be regularly written by the main getData timer
@@ -1261,6 +1263,8 @@ Private Sub tmrAsyncResponse_Timer()
     
     On Error GoTo tmrSampler_Timer_Error
     
+    debugFlg = 0
+    
     Debug.Print myMSXML.readyState
 
     If myMSXML.readyState = 4 Then ' asynchronous xml request complete
@@ -1356,7 +1360,7 @@ Private Sub myStatusProc()
     
     On Error GoTo myStatusProc_Error
     
-    debugFlg = 1
+    debugFlg = 0
     
     tmrAsyncResponse.Enabled = False
     pressureValue = 0
@@ -1762,6 +1766,8 @@ End Function
 Function fGetPressure(ByVal altim_in_hg As String) As Integer
 
     On Error GoTo fGetPressure_Error
+    
+    debugFlg = 0
 
     Dim pressureValue As Double: pressureValue = 0
     Dim strPressureValue As String: strPressureValue = vbNullString
@@ -1796,6 +1802,8 @@ End Function
 Function fGetHumidity(ByVal temp_c As String, ByVal dewpoint_c As String) As Long
 
     Dim Humidity As Long: Humidity = 0
+    
+    debugFlg = 0
 
     On Error GoTo fGetHumidity_Error
     
@@ -1834,6 +1842,8 @@ Function fAddBaseCloudToSkyClarity(ByVal baseCloud As Integer, ByVal skyClarity 
     Dim interimString As String: interimString = vbNullString
     
     On Error GoTo fAddBaseCloudToSkyClarity_Error
+    
+    debugFlg = 0
     
     thisSkyClarity = skyClarity
     thisBaseCloud = baseCloud
@@ -2590,6 +2600,8 @@ Function getMetarDescription(ByVal wx_string As String) As String
 
     On Error GoTo getMetarDescription_Error
     
+    debugFlg = 0
+    
     If InStr(wx_string, "UP") <> 0 Then
         presentConditions = presentConditions + "unknown "
     End If
@@ -2912,6 +2924,7 @@ Private Function searchIcaoFile(ByVal loc As String, ByVal metarPref As String, 
     Dim answer As VbMsgBoxResult: answer = vbNo
     
     debugFlg = 0
+    
     lookFor = loc
     icaoDataFile = App.path & "\dat\icao_codes.dat"
     lReturn = FileSystemReadFile(icaoDataArray(), icaoDataFile)
@@ -2922,7 +2935,7 @@ Private Function searchIcaoFile(ByVal loc As String, ByVal metarPref As String, 
     ' no need to redim the collValidLocations collection we just empty it
     collValidLocations.RemoveAll
     
-    Debug.Print ("searchIcaoFile - " & " search started for " & lookFor)
+    If debugFlg = 1 Then Debug.Print ("searchIcaoFile - " & " search started for " & lookFor)
     
     For i = 0 To UBound(icaoDataArray) - 1 Step 1
         icaoDataArray(i) = UCase$(icaoDataArray(i))

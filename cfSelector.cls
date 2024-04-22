@@ -643,6 +643,8 @@ Private Function testICAO(ByVal icao As String) As String
     Dim answer As VbMsgBoxResult: answer = vbNo
     Dim answerMsg  As String: answerMsg = vbNullString
     
+    debugFlg = 0
+    
     'shorten the input to 4 characters if cut /pasted in with too many characters
     If Len(icao) > 4 Then
         icao = Mid$(icao, 0, 4)
@@ -719,6 +721,8 @@ Private Function testLocation(ByVal location As String) As String
     Dim answerMsg As String: answerMsg = vbNullString
     Dim cnt As Long: cnt = 0
     Dim i As Integer: i = 0
+    
+    debugFlg = 0
 
     location = Replace(location, " ", "")
 
