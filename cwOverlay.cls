@@ -786,7 +786,7 @@ End Property
 '             For this Overlay-Widget alone, we make everything "fully click-through"
 '---------------------------------------------------------------------------------------------
 '
-Private Sub W_HitTest(ByVal X As Single, ByVal Y As Single, HitResultHit As Boolean) 'ensure ClickThrough-behaviour in ImagePixels which are "fully Alpha"
+Private Sub W_HitTest(ByVal x As Single, ByVal Y As Single, HitResultHit As Boolean) 'ensure ClickThrough-behaviour in ImagePixels which are "fully Alpha"
    On Error GoTo W_HitTest_Error
 
    HitResultHit = False
@@ -1343,7 +1343,7 @@ Private Sub myStatusProc()
     Dim answer As VbMsgBoxResult
     Dim answerMsg  As String: answerMsg = vbNullString
     
-    Dim isDay As Boolean: isDay = False
+    Dim isday As Boolean: isday = False
     Dim initialObsTime As String: initialObsTime = vbNullString
     Dim usableObsTime As Date: usableObsTime = #1/1/2000 12:00:00 PM#
     Dim weekDayDate As String: weekDayDate = vbNullString
@@ -1504,9 +1504,6 @@ Private Sub myStatusProc()
     ' calculate humidity
     humidityValue = fGetHumidity(temp_c, dewpoint_c)
     
-    ' determine the visibility distance
-    visibilityDistance = fGetDistance(visibility_statute_mi)
-    
     ' determine the precipitation
     precipitationDepth = fGetPrecipitation(precip_in)
 
@@ -1519,13 +1516,16 @@ Private Sub myStatusProc()
     ' get the current decimalTime and use it to test for sunrise or sunset
     sunriseSunset.Longitude = Longitude
     sunriseSunset.Latitude = Latitude
-    isDay = sunriseSunset.isDayLight
-    If debugFlg = 1 Then Debug.Print ("%myStatusProc - daylight " & isDay)
+    isday = sunriseSunset.isDayLight
+    If debugFlg = 1 Then Debug.Print ("%myStatusProc - daylight " & isday)
+        
+    ' determine the visibility distance
+    visibilityDistance = fGetDistance(visibility_statute_mi, isday)
 
 '    'wx_string = "+FG" 'testing string
 '
     ' set the general weather conditions into the icon displayed
-    Call determineWeatherConditionIcon(skyClarity, wx_string, sky_cover(), isDay, uboundSkyConditions)
+    Call determineWeatherConditionIcon(skyClarity, wx_string, sky_cover(), isday, uboundSkyConditions)
 
     ' get the observation time string, eg. 2024-01-28T23:50:00Z and make a standard VB6 date var
     initialObsTime = Left$(observation_time, 10) & " " & Mid$(observation_time, 12, 8)
@@ -3102,18 +3102,35 @@ End Function
 ' Author: beededea
 ' Date: 19/04/2024
 ' ----------------------------------------------------------------
-Private Function fGetDistance(ByVal visibility_statute_mi As String) As String
+Private Function fGetDistance(ByVal visibility_statute_mi As String, ByVal isday As Boolean) As String
     Dim metricEquivalent As String: metricEquivalent = vbNullString
     Dim resultingString As String: resultingString = vbNullString
+    Dim additionalText As String: additionalText = vbNullString
+    Dim startText As String: startText = vbNullString
+    Dim findPlus As Integer: findPlus = 0
     
     On Error GoTo fGetDistance_Error
+    
+    ' remove the + at night
+    findPlus = InStr(visibility_statute_mi, "+")
+    If findPlus > 0 And isday = False Then
+        visibility_statute_mi = Left$(visibility_statute_mi, findPlus - 1)
+    End If
+        
+    If isday = True Then
+        startText = "Daylight, "
+        additionalText = ""
+    Else
+        startText = "Night time, "
+        additionalText = ", visibility reduced"
+    End If
     
     If PzGMetricImperial = "1" Then ' "metric"
         ' change the value to metric measurements
         metricEquivalent = CStr(Int(val(visibility_statute_mi) * 1.609))
-        resultingString = metricEquivalent & "km, or more"
+        resultingString = startText & metricEquivalent & " km" & additionalText
     Else
-        resultingString = visibility_statute_mi & "miles, or more"
+        resultingString = startText & visibility_statute_mi & " miles" & additionalText
     End If
     
     fGetDistance = resultingString

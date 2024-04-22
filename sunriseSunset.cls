@@ -568,7 +568,7 @@ testIsDaylight_Error:
 End Function
 
 ' ----------------------------------------------------------------
-' Procedure Name: getLocalMeanTime (.js version LocalMeanTime)
+' Procedure Name: getLocalMeanTime (.js version is LocalMeanTime)
 ' Purpose:
 ' Procedure Kind: Function
 ' Procedure Access: Private
@@ -585,10 +585,14 @@ End Function
 Private Function getLocalMeanTime(ByVal rising As Boolean, ByVal lnghour As Double, ByVal sinDeclination As Double, ByVal cosDeclination As Double, ByVal rightAscension As Double, ByVal approximateTime As Double, ByRef returnSunString As String) As Double
     Dim Tt As Double: Tt = 0
     Dim T As Double: T = 0
-    Dim H As Double
-    Dim UT As Double
-    Dim RA As Double
-    Dim cosH As Double
+    Dim H As Double: H = 0
+    Dim UT As Double: UT = 0
+    Dim RA As Double: RA = 0
+    Dim cosH As Double: cosH = 0
+    Dim cosRadZenith As Double: cosRadZenith = 0
+    Dim sinDecLatitude As Double: sinDecLatitude = 0
+    Dim cosDecLatitude As Double: cosDecLatitude = 0
+    Dim zenLat As Double: zenLat = 0
     
     On Error GoTo getLocalMeanTime_Error
     
@@ -599,19 +603,12 @@ Private Function getLocalMeanTime(ByVal rising As Boolean, ByVal lnghour As Doub
     ' calculate the Sun's local hour angle
     ' cosH = Cos(to_rad * zenith) - (sinDeclination * Sin(to_rad * mLatitude)) / (cosDeclination * Cos(to_rad * mLatitude)) ' FAILS
     
-    Dim a As Double
-    a = Cos(to_rad * zenith)
+    cosRadZenith = Cos(to_rad * zenith)
+    sinDecLatitude = sinDeclination * Sin(to_rad * mLatitude)
+    cosDecLatitude = cosDeclination * Cos(to_rad * mLatitude)
+    zenLat = cosRadZenith - sinDecLatitude
     
-    Dim b As Double
-    b = sinDeclination * Sin(to_rad * mLatitude)
-    
-    Dim c As Double
-    c = cosDeclination * Cos(to_rad * mLatitude)
-    
-    Dim d As Double
-    d = a - b
-    
-    cosH = d / c
+    cosH = zenLat / cosDecLatitude
     
     ' the earlier calculation of cosH above has a coercion problem that results in a completely incorrect value...
     ' I have forced the vars to doubles - I am not going to research further - this fix will do
