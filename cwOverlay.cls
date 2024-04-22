@@ -1370,7 +1370,7 @@ Private Sub myStatusProc()
     
     Set MetarNode = objxmldoc.selectSingleNode("response/data/METAR") ' There's only the one METAR node
     
-    If num_results = 0 Then ' And Preferences.msgboxPref.value = "enabled" Then
+    If num_results = 0 And val(PzGErrorInterval) <> 0 Then
        
         ' compare last PzGLastUpdated to current date time and if that exceeds the error interval then raise an error.
         TheDate = Now

@@ -138,7 +138,6 @@ Begin VB.Form panzerPrefs
             Width           =   3870
             _ExtentX        =   6826
             _ExtentY        =   688
-            Min             =   1
             Max             =   8
             Value           =   1
             SmallChange     =   5
@@ -182,13 +181,13 @@ Begin VB.Form panzerPrefs
             Width           =   465
          End
          Begin VB.Label lblWindowLevel 
-            Caption         =   "1hr"
+            Caption         =   "0 (disabled)"
             Height          =   300
             Index           =   21
             Left            =   1995
             TabIndex        =   186
             Top             =   6210
-            Width           =   750
+            Width           =   945
          End
          Begin VB.Label lblGeneral 
             Caption         =   $"frmPrefs.frx":11C6
@@ -197,7 +196,7 @@ Begin VB.Form panzerPrefs
             Left            =   3900
             TabIndex        =   164
             Top             =   2340
-            Width           =   3240
+            Width           =   3270
          End
          Begin VB.Label lblGeneral 
             Caption         =   "ICAO Airports URL :"
@@ -469,7 +468,7 @@ Begin VB.Form panzerPrefs
             Width           =   2400
          End
          Begin VB.Label lblFontsTab 
-            Caption         =   $"frmPrefs.frx":1277
+            Caption         =   $"frmPrefs.frx":1264
             Height          =   1710
             Index           =   0
             Left            =   1725
@@ -562,7 +561,7 @@ Begin VB.Form panzerPrefs
                Width           =   3660
             End
             Begin VB.Label lblGitHub 
-               Caption         =   $"frmPrefs.frx":13B5
+               Caption         =   $"frmPrefs.frx":13A2
                ForeColor       =   &H8000000D&
                Height          =   915
                Left            =   1560
@@ -572,7 +571,7 @@ Begin VB.Form panzerPrefs
                Width           =   4935
             End
             Begin VB.Label lblDebug 
-               Caption         =   $"frmPrefs.frx":144E
+               Caption         =   $"frmPrefs.frx":143B
                Height          =   930
                Index           =   9
                Left            =   1545
@@ -619,9 +618,9 @@ Begin VB.Form panzerPrefs
          End
          Begin VB.ComboBox cmbDebug 
             Height          =   315
-            ItemData        =   "frmPrefs.frx":14F2
+            ItemData        =   "frmPrefs.frx":14DF
             Left            =   1530
-            List            =   "frmPrefs.frx":14F4
+            List            =   "frmPrefs.frx":14E1
             Style           =   2  'Dropdown List
             TabIndex        =   52
             ToolTipText     =   "Choose to set debug mode."
@@ -707,7 +706,7 @@ Begin VB.Form panzerPrefs
       Begin VB.Image imgDevelopment 
          Height          =   600
          Left            =   150
-         Picture         =   "frmPrefs.frx":14F6
+         Picture         =   "frmPrefs.frx":14E3
          Stretch         =   -1  'True
          Top             =   225
          Width           =   600
@@ -715,7 +714,7 @@ Begin VB.Form panzerPrefs
       Begin VB.Image imgDevelopmentClicked 
          Height          =   600
          Left            =   160
-         Picture         =   "frmPrefs.frx":1AAE
+         Picture         =   "frmPrefs.frx":1A9B
          Stretch         =   -1  'True
          Top             =   225
          Width           =   600
@@ -755,7 +754,7 @@ Begin VB.Form panzerPrefs
       Begin VB.Image imgAbout 
          Height          =   600
          Left            =   160
-         Picture         =   "frmPrefs.frx":1E34
+         Picture         =   "frmPrefs.frx":1E21
          Stretch         =   -1  'True
          Top             =   225
          Width           =   600
@@ -763,7 +762,7 @@ Begin VB.Form panzerPrefs
       Begin VB.Image imgAboutClicked 
          Height          =   600
          Left            =   160
-         Picture         =   "frmPrefs.frx":23BC
+         Picture         =   "frmPrefs.frx":23A9
          Stretch         =   -1  'True
          Top             =   225
          Width           =   600
@@ -788,7 +787,7 @@ Begin VB.Form panzerPrefs
       Begin VB.Image imgConfig 
          Height          =   600
          Left            =   165
-         Picture         =   "frmPrefs.frx":28A7
+         Picture         =   "frmPrefs.frx":2894
          Stretch         =   -1  'True
          Top             =   225
          Width           =   600
@@ -796,7 +795,7 @@ Begin VB.Form panzerPrefs
       Begin VB.Image imgConfigClicked 
          Height          =   600
          Left            =   165
-         Picture         =   "frmPrefs.frx":2E86
+         Picture         =   "frmPrefs.frx":2E73
          Stretch         =   -1  'True
          Top             =   225
          Width           =   600
@@ -821,7 +820,7 @@ Begin VB.Form panzerPrefs
       Begin VB.Image imgPosition 
          Height          =   600
          Left            =   160
-         Picture         =   "frmPrefs.frx":338B
+         Picture         =   "frmPrefs.frx":3378
          Stretch         =   -1  'True
          Top             =   225
          Width           =   600
@@ -829,7 +828,7 @@ Begin VB.Form panzerPrefs
       Begin VB.Image imgPositionClicked 
          Height          =   600
          Left            =   160
-         Picture         =   "frmPrefs.frx":395C
+         Picture         =   "frmPrefs.frx":3949
          Stretch         =   -1  'True
          Top             =   225
          Width           =   600
@@ -874,7 +873,7 @@ Begin VB.Form panzerPrefs
       Begin VB.Image imgSounds 
          Height          =   600
          Left            =   160
-         Picture         =   "frmPrefs.frx":3CFA
+         Picture         =   "frmPrefs.frx":3CE7
          Stretch         =   -1  'True
          Top             =   225
          Width           =   600
@@ -882,7 +881,7 @@ Begin VB.Form panzerPrefs
       Begin VB.Image imgSoundsClicked 
          Height          =   600
          Left            =   160
-         Picture         =   "frmPrefs.frx":42B9
+         Picture         =   "frmPrefs.frx":42A6
          Stretch         =   -1  'True
          Top             =   225
          Width           =   600
@@ -922,7 +921,7 @@ Begin VB.Form panzerPrefs
       Begin VB.Image imgWindow 
          Height          =   600
          Left            =   160
-         Picture         =   "frmPrefs.frx":4789
+         Picture         =   "frmPrefs.frx":4776
          Stretch         =   -1  'True
          Top             =   225
          Width           =   600
@@ -930,7 +929,7 @@ Begin VB.Form panzerPrefs
       Begin VB.Image imgWindowClicked 
          Height          =   600
          Left            =   160
-         Picture         =   "frmPrefs.frx":4C53
+         Picture         =   "frmPrefs.frx":4C40
          Stretch         =   -1  'True
          Top             =   225
          Width           =   600
@@ -954,7 +953,7 @@ Begin VB.Form panzerPrefs
       Begin VB.Image imgFonts 
          Height          =   600
          Left            =   180
-         Picture         =   "frmPrefs.frx":4FFF
+         Picture         =   "frmPrefs.frx":4FEC
          Stretch         =   -1  'True
          Top             =   195
          Width           =   600
@@ -962,7 +961,7 @@ Begin VB.Form panzerPrefs
       Begin VB.Image imgFontsClicked 
          Height          =   600
          Left            =   180
-         Picture         =   "frmPrefs.frx":5555
+         Picture         =   "frmPrefs.frx":5542
          Stretch         =   -1  'True
          Top             =   195
          Width           =   600
@@ -977,7 +976,7 @@ Begin VB.Form panzerPrefs
       Begin VB.Image imgGeneral 
          Height          =   600
          Left            =   180
-         Picture         =   "frmPrefs.frx":59EE
+         Picture         =   "frmPrefs.frx":59DB
          Stretch         =   -1  'True
          Top             =   225
          Width           =   600
@@ -1092,7 +1091,7 @@ Begin VB.Form panzerPrefs
                Width           =   720
             End
             Begin VB.Label lblWindowLevel 
-               Caption         =   $"frmPrefs.frx":5E58
+               Caption         =   $"frmPrefs.frx":5E45
                Height          =   975
                Index           =   1
                Left            =   855
@@ -1231,7 +1230,7 @@ Begin VB.Form panzerPrefs
          MultiLine       =   -1  'True
          ScrollBars      =   2  'Vertical
          TabIndex        =   109
-         Text            =   "frmPrefs.frx":5EFB
+         Text            =   "frmPrefs.frx":5EE8
          Top             =   2205
          Width           =   8010
       End
@@ -1720,7 +1719,7 @@ Begin VB.Form panzerPrefs
             Width           =   2115
          End
          Begin VB.Label lblPosition 
-            Caption         =   $"frmPrefs.frx":6EB2
+            Caption         =   $"frmPrefs.frx":6E9F
             Height          =   3435
             Index           =   12
             Left            =   5145
@@ -1740,7 +1739,7 @@ Begin VB.Form panzerPrefs
             Width           =   2040
          End
          Begin VB.Label lblPosition 
-            Caption         =   $"frmPrefs.frx":7084
+            Caption         =   $"frmPrefs.frx":7071
             Height          =   705
             Index           =   10
             Left            =   2250
@@ -1760,7 +1759,7 @@ Begin VB.Form panzerPrefs
             Width           =   2355
          End
          Begin VB.Label lblPosition 
-            Caption         =   $"frmPrefs.frx":7123
+            Caption         =   $"frmPrefs.frx":7110
             Height          =   3045
             Index           =   6
             Left            =   2265
@@ -1797,9 +1796,9 @@ Begin VB.Form panzerPrefs
          Width           =   6450
          Begin VB.ComboBox cmbTickSwitchPref 
             Height          =   315
-            ItemData        =   "frmPrefs.frx":72C8
+            ItemData        =   "frmPrefs.frx":72B5
             Left            =   2025
-            List            =   "frmPrefs.frx":72CA
+            List            =   "frmPrefs.frx":72B7
             Style           =   2  'Dropdown List
             TabIndex        =   171
             Top             =   6435
@@ -1941,7 +1940,7 @@ Begin VB.Form panzerPrefs
             Width           =   1740
          End
          Begin VB.Label lblConfiguration 
-            Caption         =   $"frmPrefs.frx":72CC
+            Caption         =   $"frmPrefs.frx":72B9
             Height          =   930
             Index           =   0
             Left            =   1980
@@ -4556,7 +4555,6 @@ End Sub
 
 
 
-
 Private Sub imgGeneral_Click()
     imgGeneral.Visible = False
     imgGeneralClicked.Visible = True
@@ -4566,10 +4564,6 @@ Private Sub imgGeneral_MouseUp(Button As Integer, Shift As Integer, X As Single,
     
     Call picButtonMouseUpEvent("general", imgGeneral, imgGeneralClicked, fraGeneral, fraGeneralButton) ' was imgGeneralMouseUpEvent
 End Sub
-
-
-
-
 
 
 
@@ -4595,9 +4589,7 @@ Private Sub sliErrorInterval_Click()
         PzGErrorInterval = LTrim$(Str$(sliErrorInterval.Value))
         'overlayTemperatureWidget.samplingInterval = sliSamplingInterval.Value
         sPutINISetting "Software\PzTemperatureGauge", "sliErrorInterval", PzGErrorInterval, PzGSettingsFile
-        
     End If
-
     
     On Error GoTo 0
     Exit Sub
@@ -4609,7 +4601,7 @@ sliErrorInterval_Click_Error:
 End Sub
 
 Private Sub sliErrorInterval_MouseMove(Button As Integer, Shift As Integer, X As Single, Y As Single)
-    If PzGEnableBalloonTooltips = "1" Then CreateToolTip sliErrorInterval.hwnd, "Adjust to error reporting frequency (seconds). This is the interval by which the program determines if a feed is in error by failing to supply data. If the interval is reached and the feed provides no data, then an error message is displayed.", _
+    If PzGEnableBalloonTooltips = "1" Then CreateToolTip sliErrorInterval.hwnd, "Adjust to error reporting frequency (seconds). This is the interval by which the program determines if a feed is in error by failing to supply data. If the interval is reached and the feed provides no data, then an error message is displayed. A value of zero means that no error messages will be displayed.", _
                   TTIconInfo, "Help on the Error Interval", , , , True
 End Sub
 
@@ -4743,9 +4735,6 @@ End Sub
 
 Private Sub imgFonts_MouseUp(Button As Integer, Shift As Integer, X As Single, Y As Single)
     
-    
-    
-    
     Call picButtonMouseUpEvent("fonts", imgFonts, imgFontsClicked, fraFonts, fraFontsButton)
 End Sub
 
@@ -4755,10 +4744,7 @@ Private Sub imgConfig_MouseDown(Button As Integer, Shift As Integer, X As Single
 End Sub
 
 Private Sub imgConfig_MouseUp(Button As Integer, Shift As Integer, X As Single, Y As Single)
-    
-    
-    
-    
+        
     Call picButtonMouseUpEvent("config", imgConfig, imgConfigClicked, fraConfig, fraConfigButton) ' was imgConfigMouseUpEvent
 End Sub
 
@@ -4774,10 +4760,7 @@ Private Sub imgPosition_MouseDown(Button As Integer, Shift As Integer, X As Sing
 End Sub
 
 Private Sub imgPosition_MouseUp(Button As Integer, Shift As Integer, X As Single, Y As Single)
-    
-    
-    
-    
+
     Call picButtonMouseUpEvent("position", imgPosition, imgPositionClicked, fraPosition, fraPositionButton)
 End Sub
 
@@ -4789,10 +4772,7 @@ End Sub
 
 Private Sub imgSounds_MouseUp(Button As Integer, Shift As Integer, X As Single, Y As Single)
     'Call imgSoundsMouseUpEvent
-    
-    
-    
-    
+
     Call picButtonMouseUpEvent("sounds", imgSounds, imgSoundsClicked, fraSounds, fraSoundsButton)
 End Sub
 

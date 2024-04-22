@@ -57,7 +57,6 @@ Private Sub Class_Initialize()
     
     Set collSelectorPSDNonUIElements = New_c.Collection(False)
     
-
    On Error GoTo 0
    Exit Sub
 
@@ -221,8 +220,6 @@ Private Sub SelectorForm_BubblingEvent(ByRef sender As Object, ByRef EventName A
                Call optlocationred_mouseDown(sender)
             Case "opticaored"
                Call opticaored_mouseDown(sender)
-'            Case "opticaogreen"
-'                 Call opticaogreen_mouseDown(sender)
             Case Else
                 Debug.Print sender.Widget.key
         End Select
@@ -305,8 +302,8 @@ Private Sub sbtnexit_mouseDown(ByRef sender As Object)
     
     SelectorForm.Hide
     
-    SelectorForm.Widgets("sbtnselect").Widget.Enabled = True
-    SelectorForm.Widgets("sbtnsearch").Widget.Enabled = False
+    SelectorForm.Widgets("sbtnselect").Widget.Enabled = False
+    SelectorForm.Widgets("sbtnsearch").Widget.Enabled = True
     
     PzGMetarPref = "Location"
     sPutINISetting "Software\PzTemperatureGauge", "metarPref", PzGMetarPref, PzGSettingsFile

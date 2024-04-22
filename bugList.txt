@@ -27,18 +27,17 @@ error message interval - done
 visibility in miles/kms - done
 precipitation - done
 tooltips - up to Harry's quality - done
+help image - done
 
 TODO
 
  temporary location form, add msgboxes for Done events.
  order of pointer and lamps
- help image
-
 
 create a new RC6 form for the ICAO input - done
        the RC6 form will replace the temporary VB6 form - wip
 
-convert the temporary location form code to RC6 code/events
+convert the temporary location form code to RC6 code/events - wip
 
 ' the approach now is to create the temperature gauge and to make it operate, extracting all the data that is required for ALL gauges.
 ' later on, we may have a master gauge that obtains the data. So, all the gauges may have the same extraction code.
