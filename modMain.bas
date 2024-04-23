@@ -102,6 +102,8 @@ Public Sub mainRoutine(ByVal restart As Boolean)
     prefsCurrentWidth = 9075
     prefsCurrentHeight = 16450
     
+    gblOriginatingForm = "temperatureForm"
+    
     firstPoll = True
     
     'startupFlg = True ' this is used to prevent some control initialisations from running code at startup
@@ -392,7 +394,13 @@ Private Sub addGeneralImagesToImageLists()
 '    add Resources to the global ImageList that are not being pulled from the PSD directly
     
     Cairo.ImageList.AddImage "about", App.path & "\Resources\images\about.png"
-    Cairo.ImageList.AddImage "help", App.path & "\Resources\images\panzergauge-help.png"
+    Cairo.ImageList.AddImage "helpTemperature", App.path & "\Resources\images\panzerTemperature-help.png"
+    Cairo.ImageList.AddImage "helpHumidity", App.path & "\Resources\images\panzerHumidity-help.png"
+    Cairo.ImageList.AddImage "helpBarometer", App.path & "\Resources\images\panzerBarometer-help.png"
+    Cairo.ImageList.AddImage "helpAnemometer", App.path & "\Resources\images\panzerAnemometer-help.png"
+    Cairo.ImageList.AddImage "helpSelector", App.path & "\Resources\images\panzerClipboard-help.png"
+    Cairo.ImageList.AddImage "helpClipboard", App.path & "\Resources\images\panzerClipboard-help.png"
+    Cairo.ImageList.AddImage "helpWeather", App.path & "\Resources\images\panzerWeather-help.png"
     Cairo.ImageList.AddImage "licence", App.path & "\Resources\images\frame.png"
     
     ' prefs icons
@@ -437,7 +445,7 @@ Private Sub addGeneralImagesToImageLists()
 
 addGeneralImagesToImageLists_Error:
 
-    MsgBox "Error " & Err.Number & " (" & Err.Description & ") in procedure addGeneralImagesToImageLists of Module modMain"
+    MsgBox "Error " & Err.Number & " (" & Err.Description & ") in procedure addGeneralImagesToImageLists of Module modMain - probably a missing file or an incorrect named reference."
 
 End Sub
         

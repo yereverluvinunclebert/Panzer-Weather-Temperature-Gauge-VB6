@@ -122,6 +122,9 @@ Begin VB.Form menuForm
       Begin VB.Menu mnuSelectorCoffee 
          Caption         =   "Donate a coffee with KoFi"
       End
+      Begin VB.Menu mnuSelectorHelp 
+         Caption         =   "Panzer Weather Gauge Help"
+      End
       Begin VB.Menu mnuSelectorSupport 
          Caption         =   "Contact Support"
       End
@@ -685,6 +688,29 @@ Private Sub mnuSelectorCoffee_Click()
 mnuSelectorCoffee_Click_Error:
 
     MsgBox "Error " & Err.Number & " (" & Err.Description & ") in procedure mnuSelectorCoffee_Click, line " & Erl & "."
+
+End Sub
+
+
+
+'---------------------------------------------------------------------------------------
+' Procedure : mnuSelectorHelp_Click
+' Author    : Dean Beedell (yereverluvinunclebert)
+' Date      : 03/08/2023
+' Purpose   :
+'---------------------------------------------------------------------------------------
+'
+Private Sub mnuSelectorHelp_Click()
+   On Error GoTo mnuSelectorHelp_Click_Error
+
+    Call helpSplash
+
+   On Error GoTo 0
+   Exit Sub
+
+mnuSelectorHelp_Click_Error:
+
+    MsgBox "Error " & Err.Number & " (" & Err.Description & ") in procedure mnuSelectorHelp_Click of Form menuForm"
 
 End Sub
 

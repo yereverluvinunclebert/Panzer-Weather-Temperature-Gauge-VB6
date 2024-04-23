@@ -570,6 +570,7 @@ Private Sub SelectorForm_MouseDown(ByRef Button As Integer, ByRef Shift As Integ
    On Error GoTo W_MouseDown_Error
 
     If Button = vbRightButton Then
+        gblOriginatingForm = "selectorForm"
         Call menuForm.PopupMenu(menuForm.mnuSelectorMenu)
     Else
     

@@ -706,6 +706,7 @@ Private Sub temperatureGaugeForm_MouseDown(ByRef Button As Integer, ByRef Shift 
    On Error GoTo W_MouseDown_Error
 
     If Button = vbRightButton Then
+        gblOriginatingForm = "temperatureForm"
         Call menuForm.PopupMenu(menuForm.mnuMainMenu)
     Else
         ' ensure that the associated forms pop to the front when the main gauge receives focus

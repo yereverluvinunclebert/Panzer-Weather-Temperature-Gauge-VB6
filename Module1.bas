@@ -454,6 +454,7 @@ Public msgBoxADynamicSizingFlg As Boolean
 Public collValidLocations As cCollection
 'Public validLocationStringObj As Variant
 
+Public gblOriginatingForm As String
 
 '---------------------------------------------------------------------------------------
 ' Procedure : fFExists

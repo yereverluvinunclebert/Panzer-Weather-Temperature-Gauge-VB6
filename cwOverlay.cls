@@ -812,18 +812,10 @@ Private Sub W_Paint(CC As RC6.cCairoContext, ByVal xAbs As Single, ByVal yAbs As
     Dim arr As Variant
     Dim key As String: key = vbNullString
     Dim Pat As cCairoPattern
-    
-    'Dim txtTemperaturetotal As String: txtTemperaturetotal = vbNullString
-    
     Dim txtThisTemperature As String: txtThisTemperature = vbNullString
-    
-    'Dim textDrawn As Boolean:   textDrawn = False
-    
     Dim someOpacity As Double: someOpacity = 0
     Dim boxLeft As Integer: boxLeft = 0
-    
     Dim cream As String: cream = vbNullString
-    
     Dim scaleString As String: scaleString = vbNullString
        
     On Error GoTo W_Paint_Error
@@ -840,7 +832,6 @@ Private Sub W_Paint(CC As RC6.cCairoContext, ByVal xAbs As Single, ByVal yAbs As
     someOpacity = (val(mThisOpacity) / 100) * 0.75
     
     txtThisTemperature = CStr(Int(thisTemperature))
-
 
     For i = 0 To cCollOverlayTempImages.Count - 1 ' this is the ExcludedPaths collection populated in cfTemperature by duplicating collTemperaturePSDNonUIElements.
       arr = cCollOverlayTempImages.ItemByIndex(i)
@@ -963,12 +954,19 @@ Private Sub tmrPressureDrop_Timer()
     Call TestPressureDrop
 End Sub
     
-    
-'========================
-' checked via timer to light the barometer storm warning bulb
-'========================
+
+' ----------------------------------------------------------------
+' Procedure Name: TestPressureDrop
+' Purpose: checked via timer to light the barometer storm warning bulb
+' Procedure Kind: Sub
+' Procedure Access: Public
+' Author: beededea
+' Date: 22/04/2024
+' ----------------------------------------------------------------
 Sub TestPressureDrop()
 
+    On Error GoTo TestPressureDrop_Error
+    
     ' dangerous pressure drop leading to volatile weather
     '    store the last pressure from the previous poll
     '    store the time of the last poll
@@ -1027,10 +1025,20 @@ Sub TestPressureDrop()
     End If
     PzGOldPressureStorage = currentPressureValue
     PzGPressureStorageDate = Now    ' time in seconds
+    
+    On Error GoTo 0
+    Exit Sub
+
+TestPressureDrop_Error:
+
+    MsgBox "Error " & Err.Number & " (" & Err.Description & ") in procedure TestPressureDrop, line " & Erl & "."
+
 End Sub
 '========================
 ' function ends
 '========================
+
+
 '---------------------------------------------------------------------------------------
 ' Procedure : tmrAnimator_Timer
 ' Author    :

@@ -118,7 +118,7 @@ End Property
 ' Purpose   :
 '---------------------------------------------------------------------------------------
 '
-Private Sub W_MouseDown(Button As Integer, Shift As Integer, ByVal x As Single, ByVal y As Single)
+Private Sub W_MouseDown(Button As Integer, Shift As Integer, ByVal X As Single, ByVal Y As Single)
    On Error GoTo W_MouseDown_Error
 
     tmrHelpFadeOut.Enabled = True ' this is not currently making the opacity reduce
@@ -302,6 +302,8 @@ End Sub
 '---------------------------------------------------------------------------------------
 '
 Private Sub Draw(ByRef CC As cCairoContext, ByVal mMyOpacity As Double)
+    Dim helpFileToShow As String: helpFileToShow = vbNullString
+    
     On Error GoTo Draw_Error
 
     CC.ScaleDrawings mZoom, mZoom
@@ -313,7 +315,9 @@ Private Sub Draw(ByRef CC As cCairoContext, ByVal mMyOpacity As Double)
     CC.Operator = CAIRO_OPERATOR_OVER 'switch back to the default-Operator
     ' extra code not needed when using RC5 but now required in RC6 - ends
     
-    CC.RenderSurfaceContent "help", helpxo, helpyo, , , , mMyOpacity
+    If gblOriginatingForm = "temperatureForm" Then helpFileToShow = "helpTemperature"
+    If gblOriginatingForm = "selectorForm" Then helpFileToShow = "helpClipboard"
+    CC.RenderSurfaceContent helpFileToShow, helpxo, helpyo, , , , mMyOpacity
         
    ' W.Refresh
 
