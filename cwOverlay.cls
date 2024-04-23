@@ -786,7 +786,7 @@ End Property
 '             For this Overlay-Widget alone, we make everything "fully click-through"
 '---------------------------------------------------------------------------------------------
 '
-Private Sub W_HitTest(ByVal x As Single, ByVal Y As Single, HitResultHit As Boolean) 'ensure ClickThrough-behaviour in ImagePixels which are "fully Alpha"
+Private Sub W_HitTest(ByVal X As Single, ByVal Y As Single, HitResultHit As Boolean) 'ensure ClickThrough-behaviour in ImagePixels which are "fully Alpha"
    On Error GoTo W_HitTest_Error
 
    HitResultHit = False
@@ -1647,7 +1647,7 @@ End Function
 ' Author: Dean Beedell (yereverluvinunclebert)
 ' Date: 15/03/2024
 ' ----------------------------------------------------------------
-Function niceFormatInterval(ByVal duration As Integer, ByVal dateTimeNow As Date) As String
+Private Function niceFormatInterval(ByVal duration As Integer, ByVal dateTimeNow As Date) As String
     On Error GoTo niceFormatInterval_Error
     
     Dim hours As Integer: hours = 0
@@ -1723,7 +1723,7 @@ End Function
 ' 1 m = 3.28084 ft)
 ' FEW = 1 or 2 eighths cover SCT = 3 or 4 eighths cover BKN = 5, 6 or 7 eighths cover & OVC = 8/8 cover
 ' ----------------------------------------------------------------
-Function getCloudCover(ByRef sky_condition_items() As String, ByVal uboundSkyConditions As Integer) As String
+Private Function getCloudCover(ByRef sky_condition_items() As String, ByVal uboundSkyConditions As Integer) As String
     Dim thisSkyClarity As String: thisSkyClarity = ""
    
     On Error GoTo getCloudCover_Error
@@ -1771,7 +1771,7 @@ End Function
 ' Author: Dean Beedell (yereverluvinunclebert)
 ' Date: 29/01/2024
 ' ----------------------------------------------------------------
-Function fGetPressure(ByVal altim_in_hg As String) As Integer
+Private Function fGetPressure(ByVal altim_in_hg As String) As Integer
 
     On Error GoTo fGetPressure_Error
     
@@ -1807,7 +1807,7 @@ End Function
 ' Author: Dean Beedell (yereverluvinunclebert)
 ' Date: 29/01/2024
 ' ----------------------------------------------------------------
-Function fGetHumidity(ByVal temp_c As String, ByVal dewpoint_c As String) As Long
+Private Function fGetHumidity(ByVal temp_c As String, ByVal dewpoint_c As String) As Long
 
     Dim Humidity As Long: Humidity = 0
     
@@ -1842,7 +1842,7 @@ End Function
 ' Author: Dean Beedell (yereverluvinunclebert)
 ' Date: 30/01/2024
 ' ----------------------------------------------------------------
-Function fAddBaseCloudToSkyClarity(ByVal baseCloud As Integer, ByVal skyClarity As String, ByRef cloud_base_ft_agl() As String) As String
+Private Function fAddBaseCloudToSkyClarity(ByVal baseCloud As Integer, ByVal skyClarity As String, ByRef cloud_base_ft_agl() As String) As String
     
     Dim skyClarityString As String: skyClarityString = vbNullString
     Dim thisSkyClarity As String: thisSkyClarity = vbNullString
@@ -1969,7 +1969,7 @@ End Function
 ' Author: Dean Beedell (yereverluvinunclebert)
 ' Date: 15/03/2024
 ' ----------------------------------------------------------------
-Function degToCompass(ByVal num As String) As String
+Private Function degToCompass(ByVal num As String) As String
     On Error GoTo degToCompass_Error
     
     Dim val As Integer: val = 0
@@ -2003,7 +2003,7 @@ End Function
 ' Author: Dean Beedell (yereverluvinunclebert)
 ' Date: 15/03/2024
 ' ----------------------------------------------------------------
-Function beaufortConversion(ByVal wind_speed_kt As Integer) As Integer
+Private Function beaufortConversion(ByVal wind_speed_kt As Integer) As Integer
     
     Dim windIconSrc As String: windIconSrc = vbNullString
     
@@ -2601,7 +2601,7 @@ End Sub
 ' Author: Dean Beedell (yereverluvinunclebert)
 ' Date: 15/03/2024
 ' ----------------------------------------------------------------
-Function getMetarDescription(ByVal wx_string As String) As String
+Private Function getMetarDescription(ByVal wx_string As String) As String
     Dim presentConditions As String: presentConditions = ""
     Dim wSeverity As String: wSeverity = ""
     Dim wModifier As String: wModifier = ""

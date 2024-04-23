@@ -29,7 +29,7 @@ Attribute sTxtICAOInput.VB_VarHelpID = -1
 Public WithEvents sCmbMatchingLocations As cwDropDownList
 Attribute sCmbMatchingLocations.VB_VarHelpID = -1
 
-Public collSelectorPSDNonUIElements As cCollection, FX As Long, FY As Long, FZ As Single  'available on the outside, even after the Form was closed
+Public collSelectorPSDNonUIElements As cCollection, SelectorFX As Long, SelectorFY As Long, SelectorFZ As Single  'available on the outside, even after the Form was closed
 
 Private PSDWidth As Long
 Private PSDHeight As Long
@@ -610,9 +610,9 @@ Private Sub SelectorForm_MouseMove(ByRef Button As Integer, ByRef Shift As Integ
 
     If Button = vbLeftButton And Not SelectorForm.ActiveWidget Is Nothing Then 'Form-Dragging (under certain conditions)
 
-      FX = (X - x0) * SelectorForm.WidgetRoot.Zoom + SelectorForm.Left
-      FY = (Y - y0) * SelectorForm.WidgetRoot.Zoom + SelectorForm.Top
-      SelectorForm.Move FX, FY
+      SelectorFX = (X - x0) * SelectorForm.WidgetRoot.Zoom + SelectorForm.Left
+      SelectorFY = (Y - y0) * SelectorForm.WidgetRoot.Zoom + SelectorForm.Top
+      SelectorForm.Move SelectorFX, SelectorFY
     End If
 
 
@@ -625,6 +625,67 @@ SelectorForm_MouseMove_Error:
 End Sub
 
 
+'---------------------------------------------------------------------------------------
+' Procedure : SelectorForm_MouseWheel
+' Author    : Dean Beedell (yereverluvinunclebert)
+' Date      : 31/07/2023
+' Purpose   : rotate forward positive = smaller
+'---------------------------------------------------------------------------------------
+'
+Private Sub SelectorForm_MouseWheel(ByVal MouseKeys As Long, ByVal Rotation As Long, ByVal Xpos As Single, ByVal Ypos As Single)
+   Dim RotationDirection As Long: RotationDirection = 0
+   
+   On Error GoTo SelectorForm_MouseWheel_Error
+
+    If PzGScrollWheelDirection = "1" Then
+        If Rotation > 0 Then
+            RotationDirection = 0 - Abs(Rotation)
+        Else
+            RotationDirection = Abs(Rotation)
+        End If
+    Else
+        RotationDirection = Rotation
+    End If
+    
+   If MouseKeys = 8 Then Call SelectorAdjustZoom(SelectorFZ + RotationDirection / 2400)   'change the Zoom only, when the Ctrl-Key is down
+
+   On Error GoTo 0
+   Exit Sub
+
+SelectorForm_MouseWheel_Error:
+
+    MsgBox "Error " & Err.Number & " (" & Err.Description & ") in procedure SelectorForm_MouseWheel of Class Module cfTemperature"
+End Sub
+
+
+
+'---------------------------------------------------------------------------------------
+' Procedure : SelectorAdjustZoom
+' Author    : olaf schmidt
+' Date      : 31/07/2023
+' Purpose   :
+'---------------------------------------------------------------------------------------
+'
+Public Sub SelectorAdjustZoom(ByVal NewZoom As Single)
+   On Error GoTo SelectorAdjustZoom_Error
+
+      SelectorFZ = NewZoom
+      If SelectorFZ < 0.5 Then SelectorFZ = 0.5 Else If SelectorFZ > 3 Then SelectorFZ = 3 'keep SelectorFZ within a sane ZoomInterval
+      SelectorForm.WidgetRoot.Zoom = SelectorFZ '* SelectorForm.WidgetRoot.CurrentMonitor.Zoom '<-- if the multiplicator is activated, we'd have DPI-awareness on high-res monitors
+      SelectorForm.Move SelectorForm.Left, SelectorForm.Top, PSDWidth * SelectorForm.WidgetRoot.Zoom, PSDHeight * SelectorForm.WidgetRoot.Zoom
+    
+      ' when resized from the gauge scroll up/down it needs to write it back so the size is correct when prefs opened.
+      'PzGGaugeSize = LTrim$(Str$(NewZoom * 100))
+      'If panzerPrefs.IsVisible = True Then panzerPrefs.sliGaugeSize.Value = val(PzGGaugeSize)
+
+    
+   On Error GoTo 0
+   Exit Sub
+
+SelectorAdjustZoom_Error:
+
+    MsgBox "Error " & Err.Number & " (" & Err.Description & ") in procedure SelectorAdjustZoom of Class Module cfTemperature"
+End Sub
 ' ----------------------------------------------------------------
 ' Procedure Name: testICAO
 ' Purpose:

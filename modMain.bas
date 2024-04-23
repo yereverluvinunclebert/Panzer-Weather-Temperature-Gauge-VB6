@@ -555,6 +555,7 @@ Public Sub adjustTempMainControls()
     Call validateInputs
     
     fTemperature.AdjustZoom val(PzGGaugeSize) / 100
+    fSelector.SelectorAdjustZoom val(100) / 100
 
     If PzGGaugeFunctions = "1" Then
         overlayTemperatureWidget.Ticking = True
