@@ -434,6 +434,7 @@ Private Declare Function OpenFile Lib "kernel32" (ByVal lpFileName As String, _
                             lpReOpenBuff As OFSTRUCT, ByVal wStyle As Long) As Long
 Private Declare Function PathFileExists Lib "shlwapi" Alias "PathFileExistsA" (ByVal pszPath As String) As Long
 Private Declare Function PathIsDirectory Lib "shlwapi" Alias "PathIsDirectoryA" (ByVal pszPath As String) As Long
+
 Public PzGWindowLevelWasChanged As Boolean
 
 '------------------------------------------------------ ENDS
@@ -455,6 +456,8 @@ Public collValidLocations As cCollection
 'Public validLocationStringObj As Variant
 
 Public gblOriginatingForm As String
+
+Public gblJustAwoken As Boolean
 
 '---------------------------------------------------------------------------------------
 ' Procedure : fFExists

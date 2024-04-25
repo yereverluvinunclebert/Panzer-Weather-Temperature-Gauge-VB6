@@ -71,6 +71,8 @@ Private WithEvents tmrAnimator As cTimer
 Attribute tmrAnimator.VB_VarHelpID = -1
 Private WithEvents tmrPressureDrop As cTimer
 Attribute tmrPressureDrop.VB_VarHelpID = -1
+Private WithEvents tmrSleepTester As cTimer
+Attribute tmrSleepTester.VB_VarHelpID = -1
 
 Private SDeg As Double
 Private thisTemperature As Long
@@ -112,6 +114,8 @@ Private icaoLocation3 As String
 Private icaoLocation4 As String
 Private icaoLocation5 As String
 
+Private strTimeThen As Date
+
 'Private pressureValue As Double
 
 
@@ -131,6 +135,8 @@ Private Sub Class_Initialize()
     Dim searchArray() As String
     Dim searchCount As Long: searchCount = 0
 
+    strTimeThen = Now()
+    
     'Dim sunriseSunset As cwSunriseSunset 'unitialised declaration
     
     Set sunriseSunset = New cwSunriseSunset
@@ -154,10 +160,9 @@ Private Sub Class_Initialize()
     Set tmrPressureDrop = Nothing
     Set tmrPressureDrop = New_c.Timer(val(PzGStormTestInterval) * 1000, False) ' one hour
     
-'    Set tmrPressureDrop = Nothing
-'    Set tmrPressureDrop = New_c.Timer(val(PzGStormTestInterval) * 1000, False) ' one hour
-'    PzGErrorInterval
-    
+    Set tmrSleepTester = Nothing
+    Set tmrSleepTester = New_c.Timer(2000, True)  ' two seconds
+
     icaoLocation1 = vbNullString
     icaoLocation2 = vbNullString
     icaoLocation3 = vbNullString
@@ -1388,8 +1393,14 @@ Private Sub myStatusProc()
         TheDate = Now
         secsDif = Int(DateDiff("s", CDate(PzGLastUpdated), TheDate))
         If secsDif >= (val(PzGErrorInterval) * 3600) And firstPoll = False Then
-            answerMsg = "The source weather feed has been producing no valid data for " & secsDif & " secs."
-            answer = msgBoxA(answerMsg, vbOKOnly, "Poll Warning", True, "myStatusProcPollingWarning")
+            'if has just awoken from sleep then suppress the no data error message
+            If gblJustAwoken = True Then
+                gblJustAwoken = False
+            Else
+                answerMsg = "The source weather feed has been producing no valid data for " & secsDif & " secs."
+                answer = msgBoxA(answerMsg, vbOKOnly + vbExclamation, "Poll Warning", True, "myStatusProcPollingWarning")
+            End If
+            
         End If
         
         weHaveData = False
@@ -3188,3 +3199,47 @@ fGetPrecipitation_Error:
 End Function
 
 
+
+
+
+'---------------------------------------------------------------------------------------
+' Procedure : tmrSleepTester_Timer
+' Author    : beededea
+' Date      : 21/04/2021
+' Purpose   : timer that stores the last time to see if the system has just emerged from sleep
+' if the current time is greater than the last time stored by more than 30 seconds we can assume the system
+' has been sent to sleep, if the two are significantly different then we reorganise the dock
+'---------------------------------------------------------------------------------------
+'
+Private Sub tmrSleepTester_Timer()
+    Dim strTimeNow As Date: strTimeNow = #1/1/2000 12:00:00 PM#  'set a variable to compare for the NOW time
+    Dim lngSecondsGap As Double: lngSecondsGap = 0  ' set a variable for the difference in time
+    'Dim answer As VbMsgBoxResult: answer = vbNo
+    'Dim answerMsg As String: answerMsg = vbNullString
+    
+    On Error GoTo tmrSleepTester_Timer_Error
+    
+    tmrSleepTester.Enabled = False
+    strTimeNow = Now()
+    
+    lngSecondsGap = DateDiff("s", strTimeThen, strTimeNow)
+    strTimeThen = Now()
+
+    If lngSecondsGap > 30 Then
+        gblJustAwoken = True
+        'answer = vbYes
+        'answerMsg = "System has just woken up from a sleep "
+        'answer = msgBoxA(answerMsg, vbExclamation + vbYesNo, "Panzer Weather Gauges Information Message", True, "tmrSleepTesterTimer")
+        'answer = MsgBox(answerMsg, vbExclamation + vbYesNo)
+    End If
+    
+    tmrSleepTester.Enabled = True
+    
+    On Error GoTo 0
+    Exit Sub
+
+tmrSleepTester_Timer_Error:
+
+    MsgBox "Error " & Err.Number & " (" & Err.Description & ") in procedure tmrSleepTester_Timer of Form dock"
+
+End Sub

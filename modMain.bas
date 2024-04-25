@@ -369,6 +369,8 @@ Private Sub initialiseGlobalVars()
     aspectRatio = vbNullString
     revealWidgetTimerCount = 0
     oldPzGSettingsModificationTime = #1/1/2000 12:00:00 PM#
+    
+    gblJustAwoken = False
 
    On Error GoTo 0
    Exit Sub
@@ -574,7 +576,6 @@ Public Sub adjustTempMainControls()
         menuForm.mnuEditWidget.Visible = False
     End If
     
-    
     If PzGShowTaskbar = "0" Then
         fTemperature.temperatureGaugeForm.ShowInTaskbar = False
     Else
@@ -630,9 +631,6 @@ Public Sub adjustTempMainControls()
         .MousePointer = IDC_SIZEALL
         .Alpha = val(PzGOpacity) / 100
     End With
-
-    
-    
     
     If PzGPointerAnimate = "0" Then
         overlayTemperatureWidget.pointerAnimate = False

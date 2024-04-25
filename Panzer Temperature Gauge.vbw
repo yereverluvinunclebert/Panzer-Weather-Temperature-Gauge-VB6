@@ -1,4 +1,4 @@
-modMain = 26, 26, 1178, 843, 
+modMain = 26, 26, 1178, 843, Z
 cfTemperature = 42, 12, 965, 909, 
 modRegFree = 78, 78, 1004, 746, 
 cwOverlayTemp = 52, 52, 1267, 681, 
@@ -17,6 +17,5 @@ modResize = 19, 677, 1449, 1307,
 cwAlphaImg = 260, 260, 819, 1014, 
 cwSunriseSunset = 78, 78, 1360, 708, 
 frmLocation = 338, 338, 1259, 1090, , 234, 234, 1223, 986, C
-cfSelector = -5, -1, 1324, 1025, Z
+cfSelector = -5, -1, 1324, 1025, 
 cwOverlaySelect = 312, 312, 1193, 980, 
-selectorMenuForm = 0, 0, 0, 0, C, 130, 130, 1008, 798, C
