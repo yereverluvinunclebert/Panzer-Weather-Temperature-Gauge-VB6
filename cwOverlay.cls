@@ -102,6 +102,7 @@ Private mSamplingInterval As String ' property SamplingInterval
 Private mThisFace As Integer             ' property mThisFace
 Private mValidICAO As Boolean             ' property
 Private mIcaoToTest As String             ' property
+Private mStringToTest As String
 Private mIcaoLocation As String             ' property
 Private mValidLocationCount As Long
 
@@ -645,6 +646,47 @@ IcaoToTestLet_Error:
 End Property
 
 '---------------------------------------------------------------------------------------
+' Property  : StringToTest
+' Author    : Dean Beedell (yereverluvinunclebert)
+' Date      : 17/05/2023
+' Purpose   :
+'---------------------------------------------------------------------------------------
+'
+Public Property Get StringToTest() As String
+   
+    On Error GoTo StringToTestGet_Error
+
+    StringToTest = mStringToTest
+
+   On Error GoTo 0
+   Exit Property
+
+StringToTestGet_Error:
+
+    MsgBox "Error " & Err.Number & " (" & Err.Description & ") in Property StringToTest of Class Module cwOverlayTemp"
+End Property
+'---------------------------------------------------------------------------------------
+' Property  : StringToTest
+' Author    : Dean Beedell (yereverluvinunclebert)
+' Date      : 10/05/2023
+' Purpose   :
+'---------------------------------------------------------------------------------------
+'
+Public Property Let StringToTest(ByVal newValue As String)
+    
+    On Error GoTo StringToTestLet_Error
+
+    If mStringToTest <> newValue Then mStringToTest = newValue Else Exit Property
+
+   On Error GoTo 0
+   Exit Property
+
+StringToTestLet_Error:
+
+    MsgBox "Error " & Err.Number & " (" & Err.Description & ") in Property StringToTest of Class Module cwOverlayTemp"
+End Property
+
+'---------------------------------------------------------------------------------------
 ' Property  : ValidICAO
 ' Author    : Dean Beedell (yereverluvinunclebert)
 ' Date      : 17/05/2023
@@ -662,16 +704,18 @@ Public Property Get ValidICAO() As Boolean
     icaoToFind = mIcaoToTest ' eg. "EGSH"
     fullIcaoLocation = searchIcaoFile(icaoToFind, "ICAO", icaoLocation1, icaoLocation2, icaoLocation3, icaoLocation4, icaoLocation5, searchCount)
     
-            
     mIcaoLocation = icaoLocation1 ' the airport name
 
     If icaoLocation5 <> vbNullString Then ' icao code
         mValidICAO = True
         ValidICAO = mValidICAO
         mIcaoToTest = icaoLocation5 ' find the icao code and set the private var so it can be accessed via a property
+        fSelector.SelectorForm.Widgets("sbtnselect").Widget.Enabled = True
     Else
         ValidICAO = False
         mValidICAO = False
+        fSelector.SelectorForm.Widgets("sbtnselect").Widget.Enabled = False
+
     End If
 
    On Error GoTo 0
@@ -718,7 +762,7 @@ Public Property Get ValidLocationCount() As Long ' returns the number of matchin
     
     On Error GoTo ValidLocationCountGet_Error
 
-    icaoToFind = mIcaoToTest ' eg. "EGSH"
+    icaoToFind = mStringToTest ' eg. "EGSH"
     fullIcaoLocation = searchIcaoFile(icaoToFind, "Location", icaoLocation1, icaoLocation2, icaoLocation3, icaoLocation4, icaoLocation5, searchCount)
     
     'mIcaoLocation = icaoLocation1 ' the airport name
@@ -727,6 +771,9 @@ Public Property Get ValidLocationCount() As Long ' returns the number of matchin
                 
         mValidLocationCount = searchCount ' returns a count only
         ValidLocationCount = mValidLocationCount
+        
+        If mValidLocationCount = 0 Then fSelector.SelectorForm.Widgets("sbtnselect").Widget.Enabled = False
+
         
         'mIcaoToTest = icaoLocation5 ' find the icao code and set the private var so it can be accessed via a property
 '    Else
@@ -2664,9 +2711,9 @@ Private Function getMetarDescription(ByVal wx_string As String) As String
     End If
     
     If InStr(wx_string, "-") <> 0 Then
-        wSeverity = "light" & " "
+        wSeverity = " light" & " "
     ElseIf InStr(wx_string, "+") <> 0 Then
-        wSeverity = "heavy" & " "
+        wSeverity = " heavy" & " "
     Else
         wSeverity = "" ' moderate conditions have no descriptor
     End If
@@ -2992,6 +3039,7 @@ Private Function searchIcaoFile(ByVal loc As String, ByVal metarPref As String, 
             
             ' with a scripting dictionary collection the string/key pair is the other way around! ie. thisKey, retStr
             If metarPref = "ICAO" Then ' single search result
+                searchIcaoFile = retStr
                 collValidLocations.Add retStr, "key" & "1"  ' key is the loop int. returns a single item in a collection
                 Exit For
             Else

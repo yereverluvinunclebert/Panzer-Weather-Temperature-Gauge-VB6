@@ -499,8 +499,9 @@ Private Sub adjustSelectorMainControls()
         .HoverColor = 0 ' set the hover colour to grey - this may change later with new RC6
         .MousePointer = IDC_HAND
         .Alpha = val(PzGOpacity) / 100
+        .Enabled = False
     End With
-    
+        
     With fSelector.SelectorForm.Widgets("entericao").Widget
         .HoverColor = 0 ' set the hover colour to grey - this may change later with new RC6
         .MousePointer = IDC_HAND

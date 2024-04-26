@@ -2221,7 +2221,7 @@ Public Sub unloadAllForms(ByVal endItAll As Boolean)
     Unload panzerPrefs
     Unload frmTimer
     Unload menuForm
-    Unload frmLocation
+    'Unload frmLocation
     
     ' unload the RC6 forms
 
@@ -2244,7 +2244,7 @@ Public Sub unloadAllForms(ByVal endItAll As Boolean)
     
     Set frmTimer = Nothing
     Set menuForm = Nothing
-    Set frmLocation = Nothing
+    'Set frmLocation = Nothing
     
     If endItAll = True Then End
 

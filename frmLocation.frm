@@ -216,7 +216,7 @@ Private Function testLocation(ByVal location As String) As String
         
         ' note: it is possible that a named search location could contain a number
         ' call routine to search
-        overlayTemperatureWidget.IcaoToTest = location ' load the icao to test
+        overlayTemperatureWidget.StringToTest = location ' load the string to test
         cnt = overlayTemperatureWidget.ValidLocationCount
         If cnt = 1 Then
             If overlayTemperatureWidget.ValidICAO = True Then ' call routine to search all the ICAO codes in airport.dat

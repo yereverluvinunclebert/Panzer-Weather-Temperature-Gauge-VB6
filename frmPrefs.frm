@@ -2326,9 +2326,9 @@ Private gblAllowSizeChangeFlg As Boolean
 
 
 
-Private Sub btnLocation_Click()
-    frmLocation.Show
-End Sub
+'Private Sub btnLocation_Click()
+'    frmLocation.Show
+'End Sub
 
 Private Sub btnLocation_MouseMove(Button As Integer, Shift As Integer, X As Single, Y As Single)
     If PzGEnableBalloonTooltips = "1" Then CreateToolTip btnLocation.hwnd, "Press to select the current ICAO code used to identify the weather feed source data.*", _

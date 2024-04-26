@@ -142,11 +142,16 @@ Public Sub InitSelectorFromPSD(ByRef PSD_FileNameOrByteArray As Variant)
 
 ' Cairo.ImageList.AddIconFromResourceFile "btnIco", "shell32", 167 'load some resource-Icon
 
-    Set sCmbMatchingLocations = fSelector.SelectorForm.Widgets.Add(New_W("cwDropDownList"), "sCmbMatchingLocations", 120, 58, 225, 28)
+    Set sCmbMatchingLocations = fSelector.SelectorForm.Widgets.Add(New_W("cwDropDownList"), "sCmbMatchingLocations", 110, 58, 235, 28)
     sCmbMatchingLocations.Widget.FontSize = 15
     sCmbMatchingLocations.Widget.FontName = "times new roman"
     sCmbMatchingLocations.Widget.Alpha = 0.5
     sCmbMatchingLocations.DropDown.Caption = "ICAO"
+    
+    'SelectorForm.Widgets("sCmbMatchingLocations").Widget.vi = False
+    
+     sCmbMatchingLocations.Widget.Visible = False ' dropdown is not visible
+
 
    On Error GoTo 0
    Exit Sub
@@ -155,10 +160,63 @@ InitSelectorFromPSD_Error:
 
     MsgBox "Error " & Err.Number & " (" & Err.Description & ") in procedure InitSelectorFromPSD of Class Module cfSelector"
 End Sub
+' ----------------------------------------------------------------
+' Procedure Name: sCmbMatchingLocations_Click
+' Purpose:
+' Procedure Kind: Sub
+' Procedure Access: Private
+' Author: beededea
+' Date: 25/04/2024
+' ----------------------------------------------------------------
 Private Sub sCmbMatchingLocations_Click()
-  With sCmbMatchingLocations.DataSource
-    MsgBox !key & "  (ItemData=" & !Value & ")"
-  End With
+    On Error GoTo sCmbMatchingLocations_Click_Error
+    
+    Dim icaoLocation1 As String: icaoLocation1 = vbNullString
+    Dim icaoLocation2 As String: icaoLocation2 = vbNullString
+    Dim icaoLocation3 As String: icaoLocation3 = vbNullString
+    Dim icaoLocation4 As String: icaoLocation4 = vbNullString
+    Dim icaoLocation5 As String: icaoLocation5 = vbNullString
+    Dim icaoData As String: icaoData = vbNullString
+    Dim splitIcaoData() As String ' array
+    
+    With sCmbMatchingLocations.DataSource
+      MsgBox !key & "  (ItemData=" & !Value & ")"
+      
+        icaoData = !Value
+        
+        splitIcaoData = Split(icaoData, ",")
+        
+        icaoLocation1 = Replace(splitIcaoData(1), """", "") ' location
+        icaoLocation5 = Replace(splitIcaoData(5), """", "") ' icao code
+        
+        If icaoLocation5 = "\N" Then
+            icaoLocation5 = Replace(splitIcaoData(4), """", "")
+        End If
+        
+        ' to prevent a click event causing the next few tasks to occur,
+        ' happens when populating and selecting the default value for a combobox
+        
+        ' so we add a bypass flag to indicate these tasks should not occur at population time
+'        If populateCombo = True Then
+'            populateCombo = False
+'        Else
+            sTxtICAOInput.Text = icaoLocation5
+            'slblDisplaySelection.Caption = icaoLocation1
+            SelectorForm.Widgets("sbtnselect").Widget.Enabled = False
+            SelectorForm.Widgets("sbtnsearch").Widget.Enabled = True
+'        End If
+        
+        overlayTemperatureWidget.IcaoToTest = icaoLocation5 ' load the icao to test
+      
+    End With
+    
+    On Error GoTo 0
+    Exit Sub
+
+sCmbMatchingLocations_Click_Error:
+
+    MsgBox "Error " & Err.Number & " (" & Err.Description & ") in procedure sCmbMatchingLocations_Click, line " & Erl & "."
+
 End Sub
 
 '---------------------------------------------------------------------------------------
@@ -272,6 +330,28 @@ Private Sub sbtnselect_mouseDown(ByRef sender As Object)
     
     'sender.Widget.Refresh ' this removes the delay in the lockButton depressing
     
+    SelectorForm.Widgets("sbtnselect").Widget.Enabled = False
+    SelectorForm.Widgets("sbtnsearch").Widget.Enabled = True
+
+    PzGIcao = overlayTemperatureWidget.IcaoToTest
+    sPutINISetting "Software\PzTemperatureGauge", "icao", PzGIcao, PzGSettingsFile
+    
+    If optLocationSelected = True Then
+        ' call routine to search all the ICAO codes in airport.dat
+        If overlayTemperatureWidget.ValidICAO = True Then
+            sPutINISetting "Software\PzTemperatureGauge", "icao", PzGIcao, PzGSettingsFile
+        End If
+    End If
+            
+    If panzerPrefs.Visible = True Then
+        panzerPrefs.txtIcao = PzGIcao
+    End If
+    
+    ' trigger METAR get with new ICAO code
+    overlayTemperatureWidget.GetMetar = True
+    
+    SelectorForm.Hide
+    
     fileToPlay = "shutdown.wav"
     If PzGEnableSounds = "1" And fFExists(App.path & "\resources\sounds\" & fileToPlay) Then
         PlaySound App.path & "\resources\sounds\" & fileToPlay, ByVal 0&, SND_FILENAME Or SND_ASYNC
@@ -364,7 +444,7 @@ End Sub
 Private Sub sbtnsearch_mouseDown(ByRef sender As Object)
     On Error GoTo btnGo_Click_Error
     
-    Dim fileToPlay As String: fileToPlay = vbNullString
+'    Dim fileToPlay As String: fileToPlay = vbNullString
     Dim ee As String: ee = vbNullString
     Dim key As String: key = vbNullString
     Dim ff As String: ff = vbNullString
@@ -377,9 +457,15 @@ Private Sub sbtnsearch_mouseDown(ByRef sender As Object)
 
     ee = UCase$(sTxtICAOInput.Text)
     
-    fileToPlay = "click.wav"
-    If PzGEnableSounds = "1" And fFExists(App.path & "\resources\sounds\" & fileToPlay) Then
-        PlaySound App.path & "\resources\sounds\" & fileToPlay, ByVal 0&, SND_FILENAME Or SND_ASYNC
+'    fileToPlay = "thhhh.wav"
+'    If PzGEnableSounds = "1" And fFExists(App.path & "\resources\sounds\" & fileToPlay) Then
+'        PlaySound App.path & "\resources\sounds\" & fileToPlay, ByVal 0&, SND_FILENAME Or SND_ASYNC
+'    End If
+    
+    If ee = vbNullString Then
+        answerMsg = "Please enter an ICAO code or an airport name. " & result
+        answer = msgBoxA(answerMsg, vbOKOnly + vbExclamation, "Missing Location Search", True, "sbtnsearchClick1")
+        Exit Sub
     End If
     
     ' if the input is an icao then handle it
@@ -388,21 +474,19 @@ Private Sub sbtnsearch_mouseDown(ByRef sender As Object)
         
         If result <> vbNullString Then ' icao
             answerMsg = "Done - Valid code Found. " & result
-            answer = msgBoxA(answerMsg, vbOKOnly + vbExclamation, "Location Search Found", True, "sbtnsearchClick")
+            answer = msgBoxA(answerMsg, vbOKOnly + vbExclamation, "Location Search Found", True, "sbtnsearchClick2")
             
             sTxtICAOInput.Text = result
             'lblDisplaySelection.Caption = overlayTemperatureWidget.icaoLocation ' there is a lable underneath the combobox
             
             SelectorForm.Widgets("sbtnselect").Widget.Enabled = True
-            SelectorForm.Widgets("sbtnsearch").Widget.Enabled = False
         End If
     End If
     
     ' if the input is an location then handle it
     If optLocationSelected = True Then ' "location"
         result = testLocation(ee)
-        SelectorForm.Widgets("sbtnselect").Widget.Enabled = False
-        SelectorForm.Widgets("sbtnsearch").Widget.Enabled = False
+        'SelectorForm.Widgets("sbtnselect").Widget.Enabled = False
     End If
     
     'SelectorForm.Widgets("sbtnsearch").Widget.sTxtICAOInput.SetFocus ' need to implement this?
@@ -539,7 +623,7 @@ Private Sub opticaored_mouseDown(ByRef sender As Object)
         PlaySound App.path & "\resources\sounds\" & fileToPlay, ByVal 0&, SND_FILENAME Or SND_ASYNC
     End If
     
-    SelectorForm.Widgets("sbtnselect").Widget.Enabled = False
+    'SelectorForm.Widgets("sbtnselect").Widget.Enabled = False
     SelectorForm.Widgets("sbtnsearch").Widget.Enabled = True
     fSelector.sCmbMatchingLocations.Widget.Visible = False
         
@@ -795,11 +879,12 @@ Private Function testLocation(ByVal location As String) As String
 
         ' note: it is possible that a named search location could contain a number
         ' call routine to search
-        overlayTemperatureWidget.IcaoToTest = location ' load the icao to test
+        overlayTemperatureWidget.StringToTest = location ' load the string to test
         cnt = overlayTemperatureWidget.ValidLocationCount
         If cnt = 1 Then
             If overlayTemperatureWidget.ValidICAO = True Then ' call routine to search all the ICAO codes in airport.dat
-                testLocation = overlayTemperatureWidget.IcaoToTest  ' return
+                overlayTemperatureWidget.IcaoToTest = location
+                testLocation = location ' return
                 Exit Function
             End If
         Else

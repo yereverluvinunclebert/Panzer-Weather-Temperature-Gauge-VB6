@@ -253,7 +253,7 @@ End Sub
 Private Sub mnuChangeLocation_Click()
     On Error GoTo mnuChangeLocation_Click_Error
     
-    frmLocation.Show ' show the temporary VB6 form
+    'frmLocation.Show ' show the temporary VB6 form
     fSelector.SelectorForm.Show
     
     On Error GoTo 0
