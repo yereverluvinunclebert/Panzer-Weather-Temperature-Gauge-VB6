@@ -759,8 +759,8 @@ Public Sub SelectorAdjustZoom(ByVal NewZoom As Single)
       SelectorForm.Move SelectorForm.Left, SelectorForm.Top, PSDWidth * SelectorForm.WidgetRoot.Zoom, PSDHeight * SelectorForm.WidgetRoot.Zoom
     
       ' when resized from the gauge scroll up/down it needs to write it back so the size is correct when prefs opened.
-      'PzGGaugeSize = LTrim$(Str$(NewZoom * 100))
-      'If panzerPrefs.IsVisible = True Then panzerPrefs.sliGaugeSize.Value = val(PzGGaugeSize)
+      'PzGTemperatureGaugeSize = LTrim$(Str$(NewZoom * 100))
+      'If panzerPrefs.IsVisible = True Then panzerPrefs.sliTemperatureGaugeSize.Value = val(PzGTemperatureGaugeSize)
 
     
    On Error GoTo 0

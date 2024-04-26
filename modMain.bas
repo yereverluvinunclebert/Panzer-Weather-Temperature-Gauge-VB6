@@ -275,7 +275,7 @@ Private Sub initialiseGlobalVars()
     PzGShowTaskbar = vbNullString
     PzGDpiAwareness = vbNullString
     
-    PzGGaugeSize = vbNullString
+    PzGTemperatureGaugeSize = vbNullString
     PzGScrollWheelDirection = vbNullString
     
     ' position
@@ -557,7 +557,7 @@ Public Sub adjustTempMainControls()
     ' validate the inputs of any data from the input settings file
     Call validateInputs
     
-    fTemperature.AdjustZoom val(PzGGaugeSize) / 100
+    fTemperature.AdjustZoom val(PzGTemperatureGaugeSize) / 100
     fSelector.SelectorAdjustZoom val(100) / 100
 
     If PzGGaugeFunctions = "1" Then
@@ -737,8 +737,7 @@ Public Sub readSettingsFile(ByVal location As String, ByVal PzGSettingsFile As S
         PzGShowTaskbar = fGetINISetting(location, "showTaskbar", PzGSettingsFile)
         PzGDpiAwareness = fGetINISetting(location, "dpiAwareness", PzGSettingsFile)
         
-        
-        PzGGaugeSize = fGetINISetting(location, "gaugeSize", PzGSettingsFile)
+        PzGTemperatureGaugeSize = fGetINISetting(location, "temperatureGaugeSize", PzGSettingsFile)
         PzGScrollWheelDirection = fGetINISetting(location, "scrollWheelDirection", PzGSettingsFile)
         
         ' position
@@ -850,7 +849,7 @@ Public Sub validateInputs()
     If PzGEnableBalloonTooltips = vbNullString Then PzGEnableBalloonTooltips = "1"
     If PzGShowTaskbar = vbNullString Then PzGShowTaskbar = "0"
     If PzGDpiAwareness = vbNullString Then PzGDpiAwareness = "0"
-    If PzGGaugeSize = vbNullString Then PzGGaugeSize = "25"
+    If PzGTemperatureGaugeSize = vbNullString Then PzGTemperatureGaugeSize = "25"
     If PzGScrollWheelDirection = vbNullString Then PzGScrollWheelDirection = "1"
            
     ' fonts

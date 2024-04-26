@@ -57,7 +57,7 @@ Private Declare Function URLDownloadToFile Lib "urlmon" _
 
 'these Public Properties are set in the Parent (here, cfTemperature)
 Public cCollOverlayTempImages As cCollection
-Public cCollOverlaySelectorImages As cCollection
+
 Public cxPerc As Single
 Public cyPerc As Single
 

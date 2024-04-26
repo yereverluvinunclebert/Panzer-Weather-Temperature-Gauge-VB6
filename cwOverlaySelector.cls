@@ -27,6 +27,7 @@ Option Explicit
 
 'these Public Properties are set in the Parent (here, cfTemperature)
 Public cCollOverlaySelectorImages As cCollection
+
 Public cxPerc As Single
 Public cyPerc As Single
 

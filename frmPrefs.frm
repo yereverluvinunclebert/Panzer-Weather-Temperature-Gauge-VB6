@@ -14,362 +14,264 @@ Begin VB.Form panzerPrefs
    ScaleWidth      =   8880
    StartUpPosition =   3  'Windows Default
    Visible         =   0   'False
-   Begin VB.Frame fraGeneral 
-      Caption         =   "General"
-      ForeColor       =   &H80000008&
-      Height          =   8745
-      Left            =   75
-      TabIndex        =   50
+   Begin VB.Frame fraConfig 
+      Caption         =   "Configuration"
+      Height          =   8865
+      Left            =   240
+      TabIndex        =   8
       Top             =   1200
-      Visible         =   0   'False
-      Width           =   7995
-      Begin VB.Frame fraGeneralInner 
+      Width           =   7140
+      Begin VB.Frame fraConfigInner 
          BorderStyle     =   0  'None
-         Height          =   8040
-         Left            =   450
-         TabIndex        =   51
-         Top             =   315
-         Width           =   7215
-         Begin VB.TextBox txtAirportsURL 
-            Height          =   315
-            Left            =   2055
-            Locked          =   -1  'True
-            TabIndex        =   182
-            Text            =   "https://raw.githubusercontent.com/jpatokal/openflights/master/data/airports.dat"
-            Top             =   6675
-            Width           =   4755
-         End
-         Begin VB.CommandButton btnLocation 
-            Caption         =   "Select ICAO"
-            Height          =   315
-            Left            =   3840
-            Style           =   1  'Graphical
-            TabIndex        =   167
-            Top             =   195
-            Width           =   1215
-         End
-         Begin VB.ComboBox cmbMetricImperial 
+         Height          =   7965
+         Left            =   435
+         TabIndex        =   34
+         Top             =   435
+         Width           =   6450
+         Begin VB.ComboBox cmbTickSwitchPref 
             Height          =   315
             ItemData        =   "frmPrefs.frx":10CA
-            Left            =   2010
+            Left            =   2025
             List            =   "frmPrefs.frx":10CC
             Style           =   2  'Dropdown List
-            TabIndex        =   162
-            Top             =   2370
-            Width           =   1740
+            TabIndex        =   171
+            Top             =   6435
+            Width           =   1620
          End
-         Begin VB.ComboBox cmbWindSpeedScale 
-            Height          =   315
-            ItemData        =   "frmPrefs.frx":10CE
+         Begin VB.CheckBox chkGaugeFunctions 
+            Caption         =   "Pointer operation toggle *"
+            Height          =   225
             Left            =   2010
-            List            =   "frmPrefs.frx":10D0
-            Style           =   2  'Dropdown List
-            TabIndex        =   160
-            Top             =   1860
-            Width           =   1740
+            TabIndex        =   170
+            ToolTipText     =   "When checked this box enables the pointer. That's it!"
+            Top             =   5640
+            Width           =   3405
          End
-         Begin VB.ComboBox cmbPressureScale 
-            Height          =   315
-            ItemData        =   "frmPrefs.frx":10D2
+         Begin VB.CheckBox chkGenStartup 
+            Caption         =   "Run the Temperature Widget at Windows Startup "
+            Height          =   465
             Left            =   2010
-            List            =   "frmPrefs.frx":10D4
-            Style           =   2  'Dropdown List
-            TabIndex        =   158
-            Top             =   1320
-            Width           =   1740
+            TabIndex        =   168
+            ToolTipText     =   "Check this box to enable the automatic start of the program when Windows is started."
+            Top             =   7365
+            Width           =   4020
          End
-         Begin VB.TextBox txtIcao 
-            Height          =   315
+         Begin VB.CheckBox chkEnablePrefsTooltips 
+            Caption         =   "Enable Preference Utility Tooltips *"
+            Height          =   225
             Left            =   2010
-            Locked          =   -1  'True
-            TabIndex        =   156
-            Text            =   "EGSH"
-            Top             =   195
-            Width           =   1725
+            TabIndex        =   139
+            ToolTipText     =   "Check the box to enable tooltips for all controls in the preferences utility"
+            Top             =   3720
+            Width           =   3345
          End
-         Begin VB.ComboBox cmbTemperatureScale 
-            Height          =   315
-            ItemData        =   "frmPrefs.frx":10D6
+         Begin VB.CheckBox chkDpiAwareness 
+            Caption         =   "DPI Awareness Enable *"
+            Height          =   225
             Left            =   2010
-            List            =   "frmPrefs.frx":10D8
-            Style           =   2  'Dropdown List
-            TabIndex        =   153
-            Top             =   750
-            Width           =   1740
+            TabIndex        =   137
+            ToolTipText     =   "Check the box to make the program DPI aware. RESTART required."
+            Top             =   4500
+            Width           =   3405
          End
-         Begin vb6projectCCRSlider.Slider sliSamplingInterval 
-            Height          =   390
-            Left            =   1890
-            TabIndex        =   147
-            ToolTipText     =   "Setting the sampling interval affects the frequency of the pointer updates."
-            Top             =   3255
-            Width           =   3870
-            _ExtentX        =   6826
-            _ExtentY        =   688
-            Min             =   60
-            Max             =   4800
-            Value           =   60
-            TickFrequency   =   100
-            SelStart        =   60
+         Begin VB.CheckBox chkShowTaskbar 
+            Caption         =   "Show Widget in Taskbar"
+            Height          =   225
+            Left            =   2010
+            TabIndex        =   135
+            ToolTipText     =   "Check the box to show the widget in the taskbar"
+            Top             =   4110
+            Width           =   3405
          End
-         Begin vb6projectCCRSlider.Slider sliStormTestInterval 
-            Height          =   390
-            Left            =   1890
-            TabIndex        =   176
-            ToolTipText     =   "Setting the sampling interval affects the frequency of the pointer updates."
-            Top             =   4485
-            Width           =   3870
-            _ExtentX        =   6826
-            _ExtentY        =   688
-            Min             =   1800
-            Max             =   7200
-            Value           =   1800
-            TickFrequency   =   120
-            SmallChange     =   5
-            LargeChange     =   10
-            SelStart        =   1800
-         End
-         Begin vb6projectCCRSlider.Slider sliErrorInterval 
-            Height          =   390
-            Left            =   1890
-            TabIndex        =   185
-            ToolTipText     =   "Setting the sampling interval affects the frequency of the pointer updates."
-            Top             =   5730
-            Width           =   3870
-            _ExtentX        =   6826
-            _ExtentY        =   688
-            Max             =   8
-            Value           =   1
-            SmallChange     =   5
-            LargeChange     =   10
-            SelStart        =   8
-         End
-         Begin VB.Label lblWindowLevel 
-            Caption         =   "hours"
+         Begin VB.ComboBox cmbScrollWheelDirection 
             Height          =   315
-            Index           =   23
-            Left            =   3615
-            TabIndex        =   189
-            Top             =   6210
-            Width           =   840
-         End
-         Begin VB.Label lblWindowLevel 
-            Caption         =   $"frmPrefs.frx":10DA
-            Height          =   795
-            Index           =   20
-            Left            =   2070
-            TabIndex        =   184
-            Top             =   7140
-            Width           =   4635
-         End
-         Begin VB.Label lblWindowLevel 
-            Caption         =   "Error Message Interval :"
-            Height          =   360
-            Index           =   24
-            Left            =   180
-            TabIndex        =   188
-            Top             =   5790
-            Width           =   1770
-         End
-         Begin VB.Label lblWindowLevel 
-            Caption         =   "8hrs"
-            Height          =   300
-            Index           =   22
-            Left            =   5490
-            TabIndex        =   187
-            Top             =   6210
-            Width           =   465
-         End
-         Begin VB.Label lblWindowLevel 
-            Caption         =   "0 (disabled)"
-            Height          =   300
-            Index           =   21
             Left            =   1995
-            TabIndex        =   186
-            Top             =   6210
-            Width           =   945
+            Style           =   2  'Dropdown List
+            TabIndex        =   86
+            ToolTipText     =   "To change the direction of the mouse scroll wheel when resiziing the globe gauge."
+            Top             =   1695
+            Width           =   2490
+         End
+         Begin VB.CheckBox chkEnableBalloonTooltips 
+            Caption         =   "Enable Balloon Tooltips on all Controls *"
+            Height          =   225
+            Left            =   2010
+            TabIndex        =   39
+            ToolTipText     =   "Check the box to enable larger balloon tooltips for all controls on the main program"
+            Top             =   3345
+            Width           =   4035
+         End
+         Begin VB.CheckBox chkEnableTooltips 
+            Caption         =   "Enable Main Program Tooltips"
+            Height          =   225
+            Left            =   2010
+            TabIndex        =   35
+            ToolTipText     =   "Check the box to enable tooltips for all controls on the main program"
+            Top             =   2910
+            Width           =   3345
+         End
+         Begin vb6projectCCRSlider.Slider sliTemperatureGaugeSize 
+            Height          =   390
+            Left            =   1920
+            TabIndex        =   91
+            ToolTipText     =   "Adjust to a percentage of the original size. You can also use Ctrl+Mousewheel."
+            Top             =   60
+            Width           =   3870
+            _ExtentX        =   6826
+            _ExtentY        =   688
+            Min             =   5
+            Max             =   220
+            Value           =   5
+            TickFrequency   =   5
+            LargeChange     =   5
+            SelStart        =   5
          End
          Begin VB.Label lblGeneral 
-            Caption         =   $"frmPrefs.frx":11C6
-            Height          =   1005
-            Index           =   12
-            Left            =   3900
-            TabIndex        =   164
-            Top             =   2340
-            Width           =   3270
+            Caption         =   "When checked this box enables the pointer. *"
+            Height          =   660
+            Index           =   2
+            Left            =   2040
+            TabIndex        =   175
+            Tag             =   "lblEnableSoundsDesc"
+            Top             =   6000
+            Width           =   3615
          End
          Begin VB.Label lblGeneral 
-            Caption         =   "ICAO Airports URL :"
-            Height          =   255
-            Index           =   15
-            Left            =   255
-            TabIndex        =   183
-            Top             =   6720
-            Width           =   1545
-         End
-         Begin VB.Label lblWindowLevel 
-            Caption         =   "1800"
+            Caption         =   "Gauge Functions :"
             Height          =   315
-            Index           =   19
-            Left            =   2070
-            TabIndex        =   181
-            Top             =   4965
-            Width           =   540
+            Index           =   6
+            Left            =   525
+            TabIndex        =   174
+            Top             =   5625
+            Width           =   1320
          End
-         Begin VB.Label lblWindowLevel 
-            Caption         =   "7200"
-            Height          =   315
-            Index           =   18
-            Left            =   5385
-            TabIndex        =   180
-            Top             =   4950
-            Width           =   405
+         Begin VB.Label lblGeneral 
+            Caption         =   "Smooth Movement :"
+            Height          =   480
+            Index           =   3
+            Left            =   375
+            TabIndex        =   173
+            Top             =   6495
+            Width           =   1605
          End
-         Begin VB.Label lblWindowLevel 
-            Caption         =   "secs"
-            Height          =   315
-            Index           =   17
-            Left            =   3615
-            TabIndex        =   179
-            Top             =   4950
-            Width           =   840
-         End
-         Begin VB.Label lblWindowLevel 
-            Caption         =   "Storm Test Interval :"
-            Height          =   315
-            Index           =   16
-            Left            =   300
-            TabIndex        =   178
-            Top             =   4545
-            Width           =   1635
-         End
-         Begin VB.Label lblWindowLevel 
-            Caption         =   "Adjust to determine storm checking frequency."
-            Height          =   540
-            Index           =   15
-            Left            =   2100
-            TabIndex        =   177
-            Top             =   5250
+         Begin VB.Label lblGeneral 
+            Caption         =   "The pointer can be set to smooth or flick, the smooth movement uses more CPU."
+            Height          =   660
+            Index           =   9
+            Left            =   2040
+            TabIndex        =   172
+            Top             =   6870
             Width           =   3810
          End
          Begin VB.Label lblGeneral 
-            Caption         =   "The Wind Speed Scale"
-            Height          =   480
-            Index           =   14
-            Left            =   3885
-            TabIndex        =   166
-            Top             =   1920
-            Width           =   2610
-         End
-         Begin VB.Label lblGeneral 
-            Caption         =   "The Air Pressure Scale"
-            Height          =   480
-            Index           =   13
-            Left            =   3885
-            TabIndex        =   165
-            Top             =   1365
-            Width           =   2610
-         End
-         Begin VB.Label lblGeneral 
-            Alignment       =   1  'Right Justify
-            Caption         =   "Metric or Imperial :"
-            Height          =   480
-            Index           =   8
-            Left            =   255
-            TabIndex        =   163
-            Top             =   2400
-            Width           =   1545
-         End
-         Begin VB.Label lblGeneral 
-            Alignment       =   1  'Right Justify
-            Caption         =   "Anemometer :"
-            Height          =   480
-            Index           =   7
-            Left            =   255
-            TabIndex        =   161
-            Top             =   1890
-            Width           =   1545
-         End
-         Begin VB.Label lblGeneral 
-            Alignment       =   1  'Right Justify
-            Caption         =   "Barometer :"
-            Height          =   345
-            Index           =   4
-            Left            =   255
-            TabIndex        =   159
-            Top             =   1350
-            Width           =   1545
-         End
-         Begin VB.Label lblGeneral 
-            Caption         =   "ICAO Station ID :"
-            Height          =   255
-            Index           =   1
-            Left            =   585
-            TabIndex        =   157
-            Top             =   255
-            Width           =   1545
-         End
-         Begin VB.Label lblGeneral 
-            Caption         =   "Temperature :"
-            Height          =   480
-            Index           =   5
-            Left            =   810
-            TabIndex        =   155
-            Top             =   810
-            Width           =   1545
-         End
-         Begin VB.Label lblGeneral 
-            Caption         =   "Select Celsius / Fahrenheit / Kelvin"
-            Height          =   480
-            Index           =   10
-            Left            =   3855
-            TabIndex        =   154
-            Top             =   795
-            Width           =   2610
-         End
-         Begin VB.Label lblWindowLevel 
-            Caption         =   "Adjust to determine gauge sampling frequency.*"
-            Height          =   270
-            Index           =   14
-            Left            =   2100
-            TabIndex        =   152
-            Top             =   4020
-            Width           =   3810
-         End
-         Begin VB.Label lblWindowLevel 
-            Caption         =   "Sampling Interval :"
-            Height          =   315
-            Index           =   13
-            Left            =   495
-            TabIndex        =   151
-            Top             =   3315
-            Width           =   1410
-         End
-         Begin VB.Label lblWindowLevel 
-            Caption         =   "secs"
-            Height          =   315
-            Index           =   12
-            Left            =   3615
-            TabIndex        =   150
-            Top             =   3720
-            Width           =   840
-         End
-         Begin VB.Label lblWindowLevel 
-            Caption         =   "4800"
-            Height          =   315
+            Caption         =   "Auto Start :"
+            Height          =   375
             Index           =   11
-            Left            =   5385
-            TabIndex        =   149
-            Top             =   3720
-            Width           =   405
+            Left            =   975
+            TabIndex        =   169
+            Tag             =   "lblRefreshInterval"
+            Top             =   7485
+            Width           =   1740
          End
-         Begin VB.Label lblWindowLevel 
-            Caption         =   "60"
+         Begin VB.Label lblConfiguration 
+            Caption         =   $"frmPrefs.frx":10CE
+            Height          =   930
+            Index           =   0
+            Left            =   1980
+            TabIndex        =   138
+            Top             =   4830
+            Width           =   4335
+         End
+         Begin VB.Label lblConfiguration 
+            Caption         =   "The scroll-wheel resizing direction can be determined here. The direction chosen causes the gauge to grow. *"
+            Height          =   690
+            Index           =   6
+            Left            =   2025
+            TabIndex        =   115
+            Top             =   2115
+            Width           =   3930
+         End
+         Begin VB.Label lblGaugeSize 
+            Caption         =   "180"
             Height          =   315
-            Index           =   10
+            Index           =   4
+            Left            =   4770
+            TabIndex        =   90
+            Top             =   555
+            Width           =   345
+         End
+         Begin VB.Label lblGaugeSize 
+            Caption         =   "130"
+            Height          =   315
+            Index           =   3
+            Left            =   3990
+            TabIndex        =   89
+            Top             =   555
+            Width           =   345
+         End
+         Begin VB.Label lblGaugeSize 
+            Caption         =   "50"
+            Height          =   315
+            Index           =   1
+            Left            =   2730
+            TabIndex        =   88
+            Top             =   555
+            Width           =   345
+         End
+         Begin VB.Label lblConfiguration 
+            Caption         =   "Mouse Wheel Resize :"
+            Height          =   345
+            Index           =   3
+            Left            =   255
+            TabIndex        =   87
+            ToolTipText     =   "To change the direction of the mouse scroll wheel when resiziing the globe gauge."
+            Top             =   1740
+            Width           =   2055
+         End
+         Begin VB.Label lblConfiguration 
+            Caption         =   "Adjust to a percentage of the original size. You can also use Ctrl+Mousewheel. Immediate. *"
+            Height          =   555
+            Index           =   2
             Left            =   2070
-            TabIndex        =   148
-            Top             =   3720
+            TabIndex        =   85
+            ToolTipText     =   "Adjust to a percentage of the original size. You can also use Ctrl+Mousewheel."
+            Top             =   870
+            Width           =   3810
+         End
+         Begin VB.Label lblConfiguration 
+            Caption         =   "Gauge Size :"
+            Height          =   315
+            Index           =   1
+            Left            =   885
+            TabIndex        =   84
+            Top             =   105
+            Width           =   975
+         End
+         Begin VB.Label lblGaugeSize 
+            Caption         =   "90"
+            Height          =   315
+            Index           =   2
+            Left            =   3345
+            TabIndex        =   83
+            Top             =   555
+            Width           =   840
+         End
+         Begin VB.Label lblGaugeSize 
+            Caption         =   "220 (%)"
+            Height          =   315
+            Index           =   5
+            Left            =   5385
+            TabIndex        =   82
+            Top             =   555
+            Width           =   735
+         End
+         Begin VB.Label lblGaugeSize 
+            Caption         =   "5"
+            Height          =   315
+            Index           =   0
+            Left            =   2070
+            TabIndex        =   81
+            Top             =   540
             Width           =   345
          End
       End
@@ -468,7 +370,7 @@ Begin VB.Form panzerPrefs
             Width           =   2400
          End
          Begin VB.Label lblFontsTab 
-            Caption         =   $"frmPrefs.frx":1264
+            Caption         =   $"frmPrefs.frx":1182
             Height          =   1710
             Index           =   0
             Left            =   1725
@@ -561,7 +463,7 @@ Begin VB.Form panzerPrefs
                Width           =   3660
             End
             Begin VB.Label lblGitHub 
-               Caption         =   $"frmPrefs.frx":13A2
+               Caption         =   $"frmPrefs.frx":12C0
                ForeColor       =   &H8000000D&
                Height          =   915
                Left            =   1560
@@ -571,7 +473,7 @@ Begin VB.Form panzerPrefs
                Width           =   4935
             End
             Begin VB.Label lblDebug 
-               Caption         =   $"frmPrefs.frx":143B
+               Caption         =   $"frmPrefs.frx":1359
                Height          =   930
                Index           =   9
                Left            =   1545
@@ -618,9 +520,9 @@ Begin VB.Form panzerPrefs
          End
          Begin VB.ComboBox cmbDebug 
             Height          =   315
-            ItemData        =   "frmPrefs.frx":14DF
+            ItemData        =   "frmPrefs.frx":13FD
             Left            =   1530
-            List            =   "frmPrefs.frx":14E1
+            List            =   "frmPrefs.frx":13FF
             Style           =   2  'Dropdown List
             TabIndex        =   52
             ToolTipText     =   "Choose to set debug mode."
@@ -706,7 +608,7 @@ Begin VB.Form panzerPrefs
       Begin VB.Image imgDevelopment 
          Height          =   600
          Left            =   150
-         Picture         =   "frmPrefs.frx":14E3
+         Picture         =   "frmPrefs.frx":1401
          Stretch         =   -1  'True
          Top             =   225
          Width           =   600
@@ -714,7 +616,7 @@ Begin VB.Form panzerPrefs
       Begin VB.Image imgDevelopmentClicked 
          Height          =   600
          Left            =   160
-         Picture         =   "frmPrefs.frx":1A9B
+         Picture         =   "frmPrefs.frx":19B9
          Stretch         =   -1  'True
          Top             =   225
          Width           =   600
@@ -754,7 +656,7 @@ Begin VB.Form panzerPrefs
       Begin VB.Image imgAbout 
          Height          =   600
          Left            =   160
-         Picture         =   "frmPrefs.frx":1E21
+         Picture         =   "frmPrefs.frx":1D3F
          Stretch         =   -1  'True
          Top             =   225
          Width           =   600
@@ -762,7 +664,7 @@ Begin VB.Form panzerPrefs
       Begin VB.Image imgAboutClicked 
          Height          =   600
          Left            =   160
-         Picture         =   "frmPrefs.frx":23A9
+         Picture         =   "frmPrefs.frx":22C7
          Stretch         =   -1  'True
          Top             =   225
          Width           =   600
@@ -787,7 +689,7 @@ Begin VB.Form panzerPrefs
       Begin VB.Image imgConfig 
          Height          =   600
          Left            =   165
-         Picture         =   "frmPrefs.frx":2894
+         Picture         =   "frmPrefs.frx":27B2
          Stretch         =   -1  'True
          Top             =   225
          Width           =   600
@@ -795,7 +697,7 @@ Begin VB.Form panzerPrefs
       Begin VB.Image imgConfigClicked 
          Height          =   600
          Left            =   165
-         Picture         =   "frmPrefs.frx":2E73
+         Picture         =   "frmPrefs.frx":2D91
          Stretch         =   -1  'True
          Top             =   225
          Width           =   600
@@ -820,7 +722,7 @@ Begin VB.Form panzerPrefs
       Begin VB.Image imgPosition 
          Height          =   600
          Left            =   160
-         Picture         =   "frmPrefs.frx":3378
+         Picture         =   "frmPrefs.frx":3296
          Stretch         =   -1  'True
          Top             =   225
          Width           =   600
@@ -828,7 +730,7 @@ Begin VB.Form panzerPrefs
       Begin VB.Image imgPositionClicked 
          Height          =   600
          Left            =   160
-         Picture         =   "frmPrefs.frx":3949
+         Picture         =   "frmPrefs.frx":3867
          Stretch         =   -1  'True
          Top             =   225
          Width           =   600
@@ -873,7 +775,7 @@ Begin VB.Form panzerPrefs
       Begin VB.Image imgSounds 
          Height          =   600
          Left            =   160
-         Picture         =   "frmPrefs.frx":3CE7
+         Picture         =   "frmPrefs.frx":3C05
          Stretch         =   -1  'True
          Top             =   225
          Width           =   600
@@ -881,7 +783,7 @@ Begin VB.Form panzerPrefs
       Begin VB.Image imgSoundsClicked 
          Height          =   600
          Left            =   160
-         Picture         =   "frmPrefs.frx":42A6
+         Picture         =   "frmPrefs.frx":41C4
          Stretch         =   -1  'True
          Top             =   225
          Width           =   600
@@ -921,7 +823,7 @@ Begin VB.Form panzerPrefs
       Begin VB.Image imgWindow 
          Height          =   600
          Left            =   160
-         Picture         =   "frmPrefs.frx":4776
+         Picture         =   "frmPrefs.frx":4694
          Stretch         =   -1  'True
          Top             =   225
          Width           =   600
@@ -929,7 +831,7 @@ Begin VB.Form panzerPrefs
       Begin VB.Image imgWindowClicked 
          Height          =   600
          Left            =   160
-         Picture         =   "frmPrefs.frx":4C40
+         Picture         =   "frmPrefs.frx":4B5E
          Stretch         =   -1  'True
          Top             =   225
          Width           =   600
@@ -953,7 +855,7 @@ Begin VB.Form panzerPrefs
       Begin VB.Image imgFonts 
          Height          =   600
          Left            =   180
-         Picture         =   "frmPrefs.frx":4FEC
+         Picture         =   "frmPrefs.frx":4F0A
          Stretch         =   -1  'True
          Top             =   195
          Width           =   600
@@ -961,7 +863,7 @@ Begin VB.Form panzerPrefs
       Begin VB.Image imgFontsClicked 
          Height          =   600
          Left            =   180
-         Picture         =   "frmPrefs.frx":5542
+         Picture         =   "frmPrefs.frx":5460
          Stretch         =   -1  'True
          Top             =   195
          Width           =   600
@@ -976,7 +878,7 @@ Begin VB.Form panzerPrefs
       Begin VB.Image imgGeneral 
          Height          =   600
          Left            =   180
-         Picture         =   "frmPrefs.frx":59DB
+         Picture         =   "frmPrefs.frx":58F9
          Stretch         =   -1  'True
          Top             =   225
          Width           =   600
@@ -1091,7 +993,7 @@ Begin VB.Form panzerPrefs
                Width           =   720
             End
             Begin VB.Label lblWindowLevel 
-               Caption         =   $"frmPrefs.frx":5E45
+               Caption         =   $"frmPrefs.frx":5D63
                Height          =   975
                Index           =   1
                Left            =   855
@@ -1230,7 +1132,7 @@ Begin VB.Form panzerPrefs
          MultiLine       =   -1  'True
          ScrollBars      =   2  'Vertical
          TabIndex        =   109
-         Text            =   "frmPrefs.frx":5EE8
+         Text            =   "frmPrefs.frx":5E06
          Top             =   2205
          Width           =   8010
       End
@@ -1719,7 +1621,7 @@ Begin VB.Form panzerPrefs
             Width           =   2115
          End
          Begin VB.Label lblPosition 
-            Caption         =   $"frmPrefs.frx":6E9F
+            Caption         =   $"frmPrefs.frx":6DBD
             Height          =   3435
             Index           =   12
             Left            =   5145
@@ -1739,7 +1641,7 @@ Begin VB.Form panzerPrefs
             Width           =   2040
          End
          Begin VB.Label lblPosition 
-            Caption         =   $"frmPrefs.frx":7071
+            Caption         =   $"frmPrefs.frx":6F8F
             Height          =   705
             Index           =   10
             Left            =   2250
@@ -1759,7 +1661,7 @@ Begin VB.Form panzerPrefs
             Width           =   2355
          End
          Begin VB.Label lblPosition 
-            Caption         =   $"frmPrefs.frx":7110
+            Caption         =   $"frmPrefs.frx":702E
             Height          =   3045
             Index           =   6
             Left            =   2265
@@ -1780,264 +1682,362 @@ Begin VB.Form panzerPrefs
          End
       End
    End
-   Begin VB.Frame fraConfig 
-      Caption         =   "Configuration"
-      Height          =   8865
-      Left            =   240
-      TabIndex        =   8
+   Begin VB.Frame fraGeneral 
+      Caption         =   "General"
+      ForeColor       =   &H80000008&
+      Height          =   8745
+      Left            =   75
+      TabIndex        =   50
       Top             =   1200
-      Width           =   7140
-      Begin VB.Frame fraConfigInner 
+      Visible         =   0   'False
+      Width           =   7995
+      Begin VB.Frame fraGeneralInner 
          BorderStyle     =   0  'None
-         Height          =   7965
-         Left            =   435
-         TabIndex        =   34
-         Top             =   435
-         Width           =   6450
-         Begin VB.ComboBox cmbTickSwitchPref 
+         Height          =   8040
+         Left            =   450
+         TabIndex        =   51
+         Top             =   315
+         Width           =   7215
+         Begin VB.TextBox txtAirportsURL 
             Height          =   315
-            ItemData        =   "frmPrefs.frx":72B5
-            Left            =   2025
-            List            =   "frmPrefs.frx":72B7
-            Style           =   2  'Dropdown List
-            TabIndex        =   171
-            Top             =   6435
-            Width           =   1620
+            Left            =   2055
+            Locked          =   -1  'True
+            TabIndex        =   182
+            Text            =   "https://raw.githubusercontent.com/jpatokal/openflights/master/data/airports.dat"
+            Top             =   6675
+            Width           =   4755
          End
-         Begin VB.CheckBox chkGaugeFunctions 
-            Caption         =   "Pointer operation toggle *"
-            Height          =   225
-            Left            =   2010
-            TabIndex        =   170
-            ToolTipText     =   "When checked this box enables the pointer. That's it!"
-            Top             =   5640
-            Width           =   3405
-         End
-         Begin VB.CheckBox chkGenStartup 
-            Caption         =   "Run the Temperature Widget at Windows Startup "
-            Height          =   465
-            Left            =   2010
-            TabIndex        =   168
-            ToolTipText     =   "Check this box to enable the automatic start of the program when Windows is started."
-            Top             =   7365
-            Width           =   4020
-         End
-         Begin VB.CheckBox chkEnablePrefsTooltips 
-            Caption         =   "Enable Preference Utility Tooltips *"
-            Height          =   225
-            Left            =   2010
-            TabIndex        =   139
-            ToolTipText     =   "Check the box to enable tooltips for all controls in the preferences utility"
-            Top             =   3720
-            Width           =   3345
-         End
-         Begin VB.CheckBox chkDpiAwareness 
-            Caption         =   "DPI Awareness Enable *"
-            Height          =   225
-            Left            =   2010
-            TabIndex        =   137
-            ToolTipText     =   "Check the box to make the program DPI aware. RESTART required."
-            Top             =   4500
-            Width           =   3405
-         End
-         Begin VB.CheckBox chkShowTaskbar 
-            Caption         =   "Show Widget in Taskbar"
-            Height          =   225
-            Left            =   2010
-            TabIndex        =   135
-            ToolTipText     =   "Check the box to show the widget in the taskbar"
-            Top             =   4110
-            Width           =   3405
-         End
-         Begin VB.ComboBox cmbScrollWheelDirection 
+         Begin VB.CommandButton btnLocation 
+            Caption         =   "Select ICAO"
             Height          =   315
-            Left            =   1995
+            Left            =   3840
+            Style           =   1  'Graphical
+            TabIndex        =   167
+            Top             =   195
+            Width           =   1215
+         End
+         Begin VB.ComboBox cmbMetricImperial 
+            Height          =   315
+            ItemData        =   "frmPrefs.frx":71D3
+            Left            =   2010
+            List            =   "frmPrefs.frx":71D5
             Style           =   2  'Dropdown List
-            TabIndex        =   86
-            ToolTipText     =   "To change the direction of the mouse scroll wheel when resiziing the globe gauge."
-            Top             =   1695
-            Width           =   2490
+            TabIndex        =   162
+            Top             =   2370
+            Width           =   1740
          End
-         Begin VB.CheckBox chkEnableBalloonTooltips 
-            Caption         =   "Enable Balloon Tooltips on all Controls *"
-            Height          =   225
+         Begin VB.ComboBox cmbWindSpeedScale 
+            Height          =   315
+            ItemData        =   "frmPrefs.frx":71D7
             Left            =   2010
-            TabIndex        =   39
-            ToolTipText     =   "Check the box to enable larger balloon tooltips for all controls on the main program"
-            Top             =   3345
-            Width           =   4035
+            List            =   "frmPrefs.frx":71D9
+            Style           =   2  'Dropdown List
+            TabIndex        =   160
+            Top             =   1860
+            Width           =   1740
          End
-         Begin VB.CheckBox chkEnableTooltips 
-            Caption         =   "Enable Main Program Tooltips"
-            Height          =   225
+         Begin VB.ComboBox cmbPressureScale 
+            Height          =   315
+            ItemData        =   "frmPrefs.frx":71DB
             Left            =   2010
-            TabIndex        =   35
-            ToolTipText     =   "Check the box to enable tooltips for all controls on the main program"
-            Top             =   2910
-            Width           =   3345
+            List            =   "frmPrefs.frx":71DD
+            Style           =   2  'Dropdown List
+            TabIndex        =   158
+            Top             =   1320
+            Width           =   1740
          End
-         Begin vb6projectCCRSlider.Slider sliGaugeSize 
+         Begin VB.TextBox txtIcao 
+            Height          =   315
+            Left            =   2010
+            Locked          =   -1  'True
+            TabIndex        =   156
+            Text            =   "EGSH"
+            Top             =   195
+            Width           =   1725
+         End
+         Begin VB.ComboBox cmbTemperatureScale 
+            Height          =   315
+            ItemData        =   "frmPrefs.frx":71DF
+            Left            =   2010
+            List            =   "frmPrefs.frx":71E1
+            Style           =   2  'Dropdown List
+            TabIndex        =   153
+            Top             =   750
+            Width           =   1740
+         End
+         Begin vb6projectCCRSlider.Slider sliSamplingInterval 
             Height          =   390
-            Left            =   1920
-            TabIndex        =   91
-            ToolTipText     =   "Adjust to a percentage of the original size. You can also use Ctrl+Mousewheel."
-            Top             =   60
+            Left            =   1890
+            TabIndex        =   147
+            ToolTipText     =   "Setting the sampling interval affects the frequency of the pointer updates."
+            Top             =   3255
             Width           =   3870
             _ExtentX        =   6826
             _ExtentY        =   688
-            Min             =   5
-            Max             =   220
-            Value           =   5
-            TickFrequency   =   5
-            LargeChange     =   5
-            SelStart        =   5
+            Min             =   60
+            Max             =   4800
+            Value           =   60
+            TickFrequency   =   100
+            SelStart        =   60
          End
-         Begin VB.Label lblGeneral 
-            Caption         =   "When checked this box enables the pointer. *"
-            Height          =   660
-            Index           =   2
-            Left            =   2040
-            TabIndex        =   175
-            Tag             =   "lblEnableSoundsDesc"
-            Top             =   6000
-            Width           =   3615
+         Begin vb6projectCCRSlider.Slider sliStormTestInterval 
+            Height          =   390
+            Left            =   1890
+            TabIndex        =   176
+            ToolTipText     =   "Setting the sampling interval affects the frequency of the pointer updates."
+            Top             =   4485
+            Width           =   3870
+            _ExtentX        =   6826
+            _ExtentY        =   688
+            Min             =   1800
+            Max             =   7200
+            Value           =   1800
+            TickFrequency   =   120
+            SmallChange     =   5
+            LargeChange     =   10
+            SelStart        =   1800
          End
-         Begin VB.Label lblGeneral 
-            Caption         =   "Gauge Functions :"
+         Begin vb6projectCCRSlider.Slider sliErrorInterval 
+            Height          =   390
+            Left            =   1890
+            TabIndex        =   185
+            ToolTipText     =   "Setting the sampling interval affects the frequency of the pointer updates."
+            Top             =   5730
+            Width           =   3870
+            _ExtentX        =   6826
+            _ExtentY        =   688
+            Max             =   8
+            Value           =   1
+            SmallChange     =   5
+            LargeChange     =   10
+            SelStart        =   8
+         End
+         Begin VB.Label lblWindowLevel 
+            Caption         =   "hours"
             Height          =   315
-            Index           =   6
-            Left            =   525
-            TabIndex        =   174
-            Top             =   5625
-            Width           =   1320
-         End
-         Begin VB.Label lblGeneral 
-            Caption         =   "Smooth Movement :"
-            Height          =   480
-            Index           =   3
-            Left            =   375
-            TabIndex        =   173
-            Top             =   6495
-            Width           =   1605
-         End
-         Begin VB.Label lblGeneral 
-            Caption         =   "The pointer can be set to smooth or flick, the smooth movement uses more CPU."
-            Height          =   660
-            Index           =   9
-            Left            =   2040
-            TabIndex        =   172
-            Top             =   6870
-            Width           =   3810
-         End
-         Begin VB.Label lblGeneral 
-            Caption         =   "Auto Start :"
-            Height          =   375
-            Index           =   11
-            Left            =   975
-            TabIndex        =   169
-            Tag             =   "lblRefreshInterval"
-            Top             =   7485
-            Width           =   1740
-         End
-         Begin VB.Label lblConfiguration 
-            Caption         =   $"frmPrefs.frx":72B9
-            Height          =   930
-            Index           =   0
-            Left            =   1980
-            TabIndex        =   138
-            Top             =   4830
-            Width           =   4335
-         End
-         Begin VB.Label lblConfiguration 
-            Caption         =   "The scroll-wheel resizing direction can be determined here. The direction chosen causes the gauge to grow. *"
-            Height          =   690
-            Index           =   6
-            Left            =   2025
-            TabIndex        =   115
-            Top             =   2115
-            Width           =   3930
-         End
-         Begin VB.Label lblGaugeSize 
-            Caption         =   "180"
-            Height          =   315
-            Index           =   4
-            Left            =   4770
-            TabIndex        =   90
-            Top             =   555
-            Width           =   345
-         End
-         Begin VB.Label lblGaugeSize 
-            Caption         =   "130"
-            Height          =   315
-            Index           =   3
-            Left            =   3990
-            TabIndex        =   89
-            Top             =   555
-            Width           =   345
-         End
-         Begin VB.Label lblGaugeSize 
-            Caption         =   "50"
-            Height          =   315
-            Index           =   1
-            Left            =   2730
-            TabIndex        =   88
-            Top             =   555
-            Width           =   345
-         End
-         Begin VB.Label lblConfiguration 
-            Caption         =   "Mouse Wheel Resize :"
-            Height          =   345
-            Index           =   3
-            Left            =   255
-            TabIndex        =   87
-            ToolTipText     =   "To change the direction of the mouse scroll wheel when resiziing the globe gauge."
-            Top             =   1740
-            Width           =   2055
-         End
-         Begin VB.Label lblConfiguration 
-            Caption         =   "Adjust to a percentage of the original size. You can also use Ctrl+Mousewheel. Immediate. *"
-            Height          =   555
-            Index           =   2
-            Left            =   2070
-            TabIndex        =   85
-            ToolTipText     =   "Adjust to a percentage of the original size. You can also use Ctrl+Mousewheel."
-            Top             =   870
-            Width           =   3810
-         End
-         Begin VB.Label lblConfiguration 
-            Caption         =   "Gauge Size :"
-            Height          =   315
-            Index           =   1
-            Left            =   885
-            TabIndex        =   84
-            Top             =   105
-            Width           =   975
-         End
-         Begin VB.Label lblGaugeSize 
-            Caption         =   "90"
-            Height          =   315
-            Index           =   2
-            Left            =   3345
-            TabIndex        =   83
-            Top             =   555
+            Index           =   23
+            Left            =   3615
+            TabIndex        =   189
+            Top             =   6210
             Width           =   840
          End
-         Begin VB.Label lblGaugeSize 
-            Caption         =   "220 (%)"
-            Height          =   315
-            Index           =   5
-            Left            =   5385
-            TabIndex        =   82
-            Top             =   555
-            Width           =   735
-         End
-         Begin VB.Label lblGaugeSize 
-            Caption         =   "5"
-            Height          =   315
-            Index           =   0
+         Begin VB.Label lblWindowLevel 
+            Caption         =   $"frmPrefs.frx":71E3
+            Height          =   795
+            Index           =   20
             Left            =   2070
-            TabIndex        =   81
-            Top             =   540
+            TabIndex        =   184
+            Top             =   7140
+            Width           =   4635
+         End
+         Begin VB.Label lblWindowLevel 
+            Caption         =   "Error Message Interval :"
+            Height          =   360
+            Index           =   24
+            Left            =   180
+            TabIndex        =   188
+            Top             =   5790
+            Width           =   1770
+         End
+         Begin VB.Label lblWindowLevel 
+            Caption         =   "8hrs"
+            Height          =   300
+            Index           =   22
+            Left            =   5490
+            TabIndex        =   187
+            Top             =   6210
+            Width           =   465
+         End
+         Begin VB.Label lblWindowLevel 
+            Caption         =   "0 (disabled)"
+            Height          =   300
+            Index           =   21
+            Left            =   1995
+            TabIndex        =   186
+            Top             =   6210
+            Width           =   945
+         End
+         Begin VB.Label lblGeneral 
+            Caption         =   $"frmPrefs.frx":72CF
+            Height          =   1005
+            Index           =   12
+            Left            =   3900
+            TabIndex        =   164
+            Top             =   2340
+            Width           =   3270
+         End
+         Begin VB.Label lblGeneral 
+            Caption         =   "ICAO Airports URL :"
+            Height          =   255
+            Index           =   15
+            Left            =   255
+            TabIndex        =   183
+            Top             =   6720
+            Width           =   1545
+         End
+         Begin VB.Label lblWindowLevel 
+            Caption         =   "1800"
+            Height          =   315
+            Index           =   19
+            Left            =   2070
+            TabIndex        =   181
+            Top             =   4965
+            Width           =   540
+         End
+         Begin VB.Label lblWindowLevel 
+            Caption         =   "7200"
+            Height          =   315
+            Index           =   18
+            Left            =   5385
+            TabIndex        =   180
+            Top             =   4950
+            Width           =   405
+         End
+         Begin VB.Label lblWindowLevel 
+            Caption         =   "secs"
+            Height          =   315
+            Index           =   17
+            Left            =   3615
+            TabIndex        =   179
+            Top             =   4950
+            Width           =   840
+         End
+         Begin VB.Label lblWindowLevel 
+            Caption         =   "Storm Test Interval :"
+            Height          =   315
+            Index           =   16
+            Left            =   300
+            TabIndex        =   178
+            Top             =   4545
+            Width           =   1635
+         End
+         Begin VB.Label lblWindowLevel 
+            Caption         =   "Adjust to determine storm checking frequency."
+            Height          =   540
+            Index           =   15
+            Left            =   2100
+            TabIndex        =   177
+            Top             =   5250
+            Width           =   3810
+         End
+         Begin VB.Label lblGeneral 
+            Caption         =   "The Wind Speed Scale"
+            Height          =   480
+            Index           =   14
+            Left            =   3885
+            TabIndex        =   166
+            Top             =   1920
+            Width           =   2610
+         End
+         Begin VB.Label lblGeneral 
+            Caption         =   "The Air Pressure Scale"
+            Height          =   480
+            Index           =   13
+            Left            =   3885
+            TabIndex        =   165
+            Top             =   1365
+            Width           =   2610
+         End
+         Begin VB.Label lblGeneral 
+            Alignment       =   1  'Right Justify
+            Caption         =   "Metric or Imperial :"
+            Height          =   480
+            Index           =   8
+            Left            =   255
+            TabIndex        =   163
+            Top             =   2400
+            Width           =   1545
+         End
+         Begin VB.Label lblGeneral 
+            Alignment       =   1  'Right Justify
+            Caption         =   "Anemometer :"
+            Height          =   480
+            Index           =   7
+            Left            =   255
+            TabIndex        =   161
+            Top             =   1890
+            Width           =   1545
+         End
+         Begin VB.Label lblGeneral 
+            Alignment       =   1  'Right Justify
+            Caption         =   "Barometer :"
+            Height          =   345
+            Index           =   4
+            Left            =   255
+            TabIndex        =   159
+            Top             =   1350
+            Width           =   1545
+         End
+         Begin VB.Label lblGeneral 
+            Caption         =   "ICAO Station ID :"
+            Height          =   255
+            Index           =   1
+            Left            =   585
+            TabIndex        =   157
+            Top             =   255
+            Width           =   1545
+         End
+         Begin VB.Label lblGeneral 
+            Caption         =   "Temperature :"
+            Height          =   480
+            Index           =   5
+            Left            =   810
+            TabIndex        =   155
+            Top             =   810
+            Width           =   1545
+         End
+         Begin VB.Label lblGeneral 
+            Caption         =   "Select Celsius / Fahrenheit / Kelvin"
+            Height          =   480
+            Index           =   10
+            Left            =   3855
+            TabIndex        =   154
+            Top             =   795
+            Width           =   2610
+         End
+         Begin VB.Label lblWindowLevel 
+            Caption         =   "Adjust to determine gauge sampling frequency.*"
+            Height          =   270
+            Index           =   14
+            Left            =   2100
+            TabIndex        =   152
+            Top             =   4020
+            Width           =   3810
+         End
+         Begin VB.Label lblWindowLevel 
+            Caption         =   "Sampling Interval :"
+            Height          =   315
+            Index           =   13
+            Left            =   495
+            TabIndex        =   151
+            Top             =   3315
+            Width           =   1410
+         End
+         Begin VB.Label lblWindowLevel 
+            Caption         =   "secs"
+            Height          =   315
+            Index           =   12
+            Left            =   3615
+            TabIndex        =   150
+            Top             =   3720
+            Width           =   840
+         End
+         Begin VB.Label lblWindowLevel 
+            Caption         =   "4800"
+            Height          =   315
+            Index           =   11
+            Left            =   5385
+            TabIndex        =   149
+            Top             =   3720
+            Width           =   405
+         End
+         Begin VB.Label lblWindowLevel 
+            Caption         =   "60"
+            Height          =   315
+            Index           =   10
+            Left            =   2070
+            TabIndex        =   148
+            Top             =   3720
             Width           =   345
          End
       End
@@ -3586,7 +3586,7 @@ Private Sub btnSave_Click()
     PzGEnableBalloonTooltips = LTrim$(Str$(chkEnableBalloonTooltips.Value))
     PzGShowTaskbar = LTrim$(Str$(chkShowTaskbar.Value))
     PzGDpiAwareness = LTrim$(Str$(chkDpiAwareness.Value))
-    PzGGaugeSize = LTrim$(Str$(sliGaugeSize.Value))
+    PzGTemperatureGaugeSize = LTrim$(Str$(sliTemperatureGaugeSize.Value))
     PzGScrollWheelDirection = LTrim$(Str$(cmbScrollWheelDirection.ListIndex))
     
     ' general
@@ -3677,7 +3677,7 @@ Private Sub btnSave_Click()
         sPutINISetting "Software\PzTemperatureGauge", "dpiAwareness", PzGDpiAwareness, PzGSettingsFile
         
         
-        sPutINISetting "Software\PzTemperatureGauge", "gaugeSize", PzGGaugeSize, PzGSettingsFile
+        sPutINISetting "Software\PzTemperatureGauge", "temperatureGaugeSize", PzGTemperatureGaugeSize, PzGSettingsFile
         sPutINISetting "Software\PzTemperatureGauge", "scrollWheelDirection", PzGScrollWheelDirection, PzGSettingsFile
                 
         sPutINISetting "Software\PzTemperatureGauge", "gaugeFunctions", PzGGaugeFunctions, PzGSettingsFile
@@ -3926,7 +3926,7 @@ Private Sub adjustPrefsControls()
     Dim fntWeight As Integer: fntWeight = 0
     Dim fntStyle As Boolean: fntStyle = False
     
-    Dim sliGaugeSizeOldValue As Long: sliGaugeSizeOldValue = 0
+    Dim sliTemperatureGaugeSizeOldValue As Long: sliTemperatureGaugeSizeOldValue = 0
     
     'Dim testDST As Boolean: testDST = False
     
@@ -3965,9 +3965,9 @@ Private Sub adjustPrefsControls()
     ' configuration tab
    
     ' check whether the size has been previously altered via ctrl+mousewheel on the widget
-    sliGaugeSizeOldValue = sliGaugeSize.Value
-    sliGaugeSize.Value = val(PzGGaugeSize)
-    If sliGaugeSize.Value <> sliGaugeSizeOldValue Then
+    sliTemperatureGaugeSizeOldValue = sliTemperatureGaugeSize.Value
+    sliTemperatureGaugeSize.Value = val(PzGTemperatureGaugeSize)
+    If sliTemperatureGaugeSize.Value <> sliTemperatureGaugeSizeOldValue Then
         btnSave.Visible = True
     End If
     
@@ -4794,33 +4794,33 @@ End Sub
 
 
 
-Private Sub sliGaugeSize_GotFocus()
+Private Sub sliTemperatureGaugeSize_GotFocus()
     gblAllowSizeChangeFlg = True
 End Sub
 
-Private Sub sliGaugeSize_LostFocus()
+Private Sub sliTemperatureGaugeSize_LostFocus()
     gblAllowSizeChangeFlg = False
 End Sub
 '---------------------------------------------------------------------------------------
-' Procedure : sliGaugeSize_Change
+' Procedure : sliTemperatureGaugeSize_Change
 ' Author    : Dean Beedell (yereverluvinunclebert)
 ' Date      : 30/09/2023
 ' Purpose   :
 '---------------------------------------------------------------------------------------
 '
-Private Sub sliGaugeSize_Change()
-    On Error GoTo sliGaugeSize_Change_Error
+Private Sub sliTemperatureGaugeSize_Change()
+    On Error GoTo sliTemperatureGaugeSize_Change_Error
 
     btnSave.Enabled = True ' enable the save button
     
-    If gblAllowSizeChangeFlg = True Then Call fTemperature.AdjustZoom(sliGaugeSize.Value / 100)
+    If gblAllowSizeChangeFlg = True Then Call fTemperature.AdjustZoom(sliTemperatureGaugeSize.Value / 100)
 
     On Error GoTo 0
     Exit Sub
 
-sliGaugeSize_Change_Error:
+sliTemperatureGaugeSize_Change_Error:
 
-     MsgBox "Error " & Err.Number & " (" & Err.Description & ") in procedure sliGaugeSize_Change of Form panzerPrefs"
+     MsgBox "Error " & Err.Number & " (" & Err.Description & ") in procedure sliTemperatureGaugeSize_Change of Form panzerPrefs"
 
 End Sub
 
@@ -5056,7 +5056,7 @@ Public Sub setPrefsTooltips()
         chkEnableBalloonTooltips.ToolTipText = "Check the box to enable larger balloon tooltips for all controls on the main program"
         chkShowTaskbar.ToolTipText = "Check the box to show the widget in the taskbar"
         chkEnableTooltips.ToolTipText = "Check the box to enable tooltips for all controls on the main program"
-        sliGaugeSize.ToolTipText = "Adjust to a percentage of the original size. Any adjustment in size takes place instantly (you can also use Ctrl+Mousewheel hovering over the gauge itself)."
+        sliTemperatureGaugeSize.ToolTipText = "Adjust to a percentage of the original size. Any adjustment in size takes place instantly (you can also use Ctrl+Mousewheel hovering over the gauge itself)."
         'sliWidgetSkew.ToolTipText = "Adjust to a degree skew of the original position. Any adjustment in direction takes place instantly (you can also use the Mousewheel hovering over the gauge itself."
         btnFacebook.ToolTipText = "This will link you to the our Steampunk/Dieselpunk program users Group."
         imgAbout.ToolTipText = "Opens the About tab"
@@ -5141,7 +5141,7 @@ Public Sub setPrefsTooltips()
         chkEnableBalloonTooltips.ToolTipText = vbNullString
         chkShowTaskbar.ToolTipText = vbNullString
         chkEnableTooltips.ToolTipText = vbNullString
-        sliGaugeSize.ToolTipText = vbNullString
+        sliTemperatureGaugeSize.ToolTipText = vbNullString
         'sliWidgetSkew.ToolTipText = ""
         btnFacebook.ToolTipText = vbNullString
         imgAbout.ToolTipText = vbNullString
@@ -5664,7 +5664,7 @@ Private Sub setThemeShade(ByVal redC As Integer, ByVal greenC As Integer, ByVal 
     'now change the color of the sliders.
 '    panzerPrefs.sliAnimationInterval.BackColor = RGB(redC, greenC, blueC)
     'panzerPrefs.'sliWidgetSkew.BackColor = RGB(redC, greenC, blueC)
-    sliGaugeSize.BackColor = RGB(redC, greenC, blueC)
+    sliTemperatureGaugeSize.BackColor = RGB(redC, greenC, blueC)
     sliOpacity.BackColor = RGB(redC, greenC, blueC)
     txtAboutText.BackColor = RGB(redC, greenC, blueC)
     sliSamplingInterval.BackColor = RGB(redC, greenC, blueC)

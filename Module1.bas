@@ -312,7 +312,7 @@ Public PzGEnableBalloonTooltips As String
 Public PzGShowTaskbar As String
 Public PzGDpiAwareness As String
 
-Public PzGGaugeSize As String
+Public PzGTemperatureGaugeSize As String
 Public PzGScrollWheelDirection As String
 
 ' position
@@ -2312,8 +2312,8 @@ Public Sub savePosition()
         sPutINISetting "Software\PzTemperatureGauge", "clockLowDpiYPos", PzGClockLowDpiYPos, PzGSettingsFile
     End If
     
-    PzGGaugeSize = Str$(fTemperature.temperatureGaugeForm.WidgetRoot.Zoom * 100)
-    sPutINISetting "Software\PzTemperatureGauge", "gaugeSize", PzGGaugeSize, PzGSettingsFile
+    PzGTemperatureGaugeSize = Str$(fTemperature.temperatureGaugeForm.WidgetRoot.Zoom * 100)
+    sPutINISetting "Software\PzTemperatureGauge", "temperatureGaugeSize", PzGTemperatureGaugeSize, PzGSettingsFile
 
    On Error GoTo 0
    Exit Sub
