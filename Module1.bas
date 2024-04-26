@@ -1917,7 +1917,7 @@ Public Sub makeVisibleFormElements()
     fSelector.SelectorForm.Height = 800
     fSelector.SelectorForm.Left = formLeftPixels + fTemperature.temperatureGaugeForm.Width + 300
     fSelector.SelectorForm.Top = formTopPixels + 200
-    fSelector.SelectorForm.Show
+    'fSelector.SelectorForm.Show
 
 
     On Error GoTo 0

@@ -202,7 +202,7 @@ Private Sub sCmbMatchingLocations_Click()
 '        Else
             sTxtICAOInput.Text = icaoLocation5
             'slblDisplaySelection.Caption = icaoLocation1
-            SelectorForm.Widgets("sbtnselect").Widget.Enabled = False
+
             SelectorForm.Widgets("sbtnsearch").Widget.Enabled = True
 '        End If
         
@@ -486,7 +486,7 @@ Private Sub sbtnsearch_mouseDown(ByRef sender As Object)
     ' if the input is an location then handle it
     If optLocationSelected = True Then ' "location"
         result = testLocation(ee)
-        'SelectorForm.Widgets("sbtnselect").Widget.Enabled = False
+        
     End If
     
     'SelectorForm.Widgets("sbtnsearch").Widget.sTxtICAOInput.SetFocus ' need to implement this?
@@ -884,6 +884,7 @@ Private Function testLocation(ByVal location As String) As String
         If cnt = 1 Then
             If overlayTemperatureWidget.ValidICAO = True Then ' call routine to search all the ICAO codes in airport.dat
                 overlayTemperatureWidget.IcaoToTest = location
+                SelectorForm.Widgets("sbtnselect").Widget.Enabled = True
                 testLocation = location ' return
                 Exit Function
             End If
@@ -920,6 +921,7 @@ Private Function testLocation(ByVal location As String) As String
         answerMsg = "No matching Location found "
         answer = msgBoxA(answerMsg, vbOKOnly + vbExclamation, "Location Error Information", False)
         testLocation = vbNullString
+        'SelectorForm.Widgets("sbtnselect").Widget.Enabled = False
         Exit Function
     End If
 '

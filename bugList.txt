@@ -29,19 +29,16 @@ precipitation - done
 tooltips - up to Harry's quality - done
 help image - done
 sunrise/sunset/isDayLight bugs x 2 fixed
+create a new RC6 form for the ICAO input - done
+convert the temporary location form code to RC6 code/events - done
+resize the ICAO Selector - done
+help - done
+help CHM - done
 
 TODO
 
-temporary location form, add msgboxes for Done events.
 order of pointer and lamps on the main gauge
-
-create a new RC6 form for the ICAO input - done
-       the RC6 form will replace the temporary VB6 form - wip
-       
 fix population of the RC6 combobox - wip
-
-convert the temporary location form code to RC6 code/events - wip
-resize the ICAO Selector
 
 add the clipboard
 add the text
@@ -54,8 +51,7 @@ The above approach, not yet confirmed.
 
 ' we may have a last poll date that each checks beforehand.
 
-' help - WIP
-' help CHM -
+
 
 update html code documentation using MZTools
 
