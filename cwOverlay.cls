@@ -1147,8 +1147,8 @@ End Sub
 '
 Private Sub calcAnimationData()
     Dim degDiff As Double: degDiff = 0
-    Dim min  As Integer: min = 0
-    Dim max  As Integer: max = 0
+'    Dim min  As Integer: min = 0
+'    Dim max  As Integer: max = 0
     Dim tempPercent As Double: tempPercent = 0
     
     On Error GoTo calcAnimationData_Error
@@ -1160,7 +1160,7 @@ Private Sub calcAnimationData()
             ' oldSDeg stored
             oldSDeg = SDeg
                     
-            ' obtain the new temperature percentage
+            ' obtain the new temperature in percentage
             tempPercent = ((temperatureValue + 30) / 80) * 100
             
             ' calculate the new cpu amount in degrees
@@ -1220,16 +1220,16 @@ End Sub
 ' ----------------------------------------------------------------
 Private Sub obtainTemperature()
     
-    Dim min  As Integer: min = 0
-    Dim max  As Integer: max = 0
+    Dim tempPercent As Double: tempPercent = 0
     
     On Error GoTo obtainTemperature_Error
 
-    min = -30
-    max = 50
+    ' obtain the new temperature in percentage
+    tempPercent = ((temperatureValue + 30) / 80) * 100
     
+    ' calculate the new cpu amount in degrees
     If weHaveData = True Then
-        SDeg = (temperatureValue - min) / (max - min) * 360
+        SDeg = (tempPercent * 3) + 30
     Else
         SDeg = 30
     End If
