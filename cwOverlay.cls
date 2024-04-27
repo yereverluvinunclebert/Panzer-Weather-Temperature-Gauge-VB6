@@ -1149,11 +1149,10 @@ Private Sub calcAnimationData()
     Dim degDiff As Double: degDiff = 0
     Dim min  As Integer: min = 0
     Dim max  As Integer: max = 0
+    Dim tempPercent As Double: tempPercent = 0
     
     On Error GoTo calcAnimationData_Error
-
-    min = -30
-    max = 50
+    ' temperatureValue = -14 ' debug
 
     If mPointerAnimate = True Then
         If tmrAnimator.Enabled = False Then
@@ -1161,14 +1160,12 @@ Private Sub calcAnimationData()
             ' oldSDeg stored
             oldSDeg = SDeg
                     
-            ' obtain the new temperature amount
-        
-'            min = -30
-'            max = 50
+            ' obtain the new temperature percentage
+            tempPercent = ((temperatureValue + 30) / 80) * 100
             
             ' calculate the new cpu amount in degrees
             If weHaveData = True Then
-                newSDeg = (temperatureValue - min) / (max - min) * 360
+                newSDeg = (tempPercent * 3) + 30
             Else
                 newSDeg = 30
             End If
@@ -1566,6 +1563,8 @@ Private Sub myStatusProc()
 
     ' set temperature
     temperatureValue = val(temp_c)
+    
+    'temperatureValue = 40
 
     ' calculate humidity
     humidityValue = fGetHumidity(temp_c, dewpoint_c)

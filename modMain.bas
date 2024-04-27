@@ -1144,9 +1144,6 @@ Private Sub loadTemperatureExcludePathCollection()
         .Add Empty, "kelvinface"
         
         .Add Empty, "faceweathering"
-        
-        .Add Empty, "secondshadow" 'clock-hand-seconds-shadow
-        .Add Empty, "secondhand"   'clock-hand-seconds
 
         .Add Empty, "bigreflection"     'all reflections
         .Add Empty, "windowreflection"
@@ -1156,6 +1153,9 @@ Private Sub loadTemperatureExcludePathCollection()
 
         .Add Empty, "redlamptrue"
         .Add Empty, "redlampfalse"
+        
+        .Add Empty, "secondshadow" 'clock-hand-seconds-shadow
+        .Add Empty, "secondhand"   'clock-hand-seconds
 
     End With
 

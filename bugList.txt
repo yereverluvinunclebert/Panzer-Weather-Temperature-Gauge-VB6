@@ -34,11 +34,15 @@ convert the temporary location form code to RC6 code/events - done
 resize the ICAO Selector - done
 help - done
 help CHM - done
+tested without using overlaySelect - done
+order of pointer and lamps on the main gauge - done
 
 TODO
 
-order of pointer and lamps on the main gauge
 fix population of the RC6 combobox - wip
+
+move the weather code to a separate module.bas or a class
+check the temperature values and the pointer relationship - test all
 
 add the clipboard
 add the text
@@ -51,9 +55,7 @@ The above approach, not yet confirmed.
 
 ' we may have a last poll date that each checks beforehand.
 
-
-
-update html code documentation using MZTools
+update html code documentation using MZTools documenter
 
 ' add second monitor - wip find cable!
 
