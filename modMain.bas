@@ -578,7 +578,7 @@ Private Sub adjustClipBMainControls()
     
     On Error GoTo adjustClipBMainControls_Error
     
-    fClipB.ClipBAdjustZoom val(100) / 100
+    fClipB.ClipBAdjustZoom 0.75
 
 '    With fClipB.ClipBForm.Widgets("hourhand").Widget
 '        .HoverColor = 0 ' set the hover colour to grey - this may change later with new RC6
@@ -601,12 +601,12 @@ Private Sub adjustClipBMainControls()
 '        .Tag = 0.25
 '    End With
 '
-    With fClipB.clipBForm.Widgets("clipboard").Widget
-        .HoverColor = 0 ' set the hover colour to grey - this may change later with new RC6
-        .MousePointer = IDC_HAND
-        .Alpha = val(PzGOpacity) / 100
-        .Tag = 0.25
-    End With
+'    With fClipB.clipBForm.Widgets("clipboard").Widget
+'        .HoverColor = 0 ' set the hover colour to grey - this may change later with new RC6
+'        .MousePointer = IDC_HAND
+'        .Alpha = val(PzGOpacity) / 100
+'        .Tag = 0.25
+'    End With
 
     overlayClipbWidget.thisOpacity = val(PzGOpacity)
     

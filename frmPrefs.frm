@@ -14,6 +14,676 @@ Begin VB.Form panzerPrefs
    ScaleWidth      =   8880
    StartUpPosition =   3  'Windows Default
    Visible         =   0   'False
+   Begin VB.Frame fraDevelopmentButton 
+      BorderStyle     =   0  'None
+      Height          =   1140
+      Left            =   5490
+      TabIndex        =   42
+      Top             =   0
+      Width           =   1065
+      Begin VB.Label lblDevelopment 
+         Caption         =   "Development"
+         Height          =   240
+         Left            =   45
+         TabIndex        =   43
+         Top             =   855
+         Width           =   960
+      End
+      Begin VB.Image imgDevelopment 
+         Height          =   600
+         Left            =   150
+         Picture         =   "frmPrefs.frx":10CA
+         Stretch         =   -1  'True
+         Top             =   225
+         Width           =   600
+      End
+      Begin VB.Image imgDevelopmentClicked 
+         Height          =   600
+         Left            =   160
+         Picture         =   "frmPrefs.frx":1682
+         Stretch         =   -1  'True
+         Top             =   225
+         Width           =   600
+      End
+   End
+   Begin VB.Timer positionTimer 
+      Enabled         =   0   'False
+      Interval        =   5000
+      Left            =   1170
+      Top             =   9690
+   End
+   Begin VB.CheckBox chkEnableResizing 
+      Caption         =   "Enable Corner Resize"
+      Height          =   210
+      Left            =   3240
+      TabIndex        =   127
+      Top             =   10125
+      Visible         =   0   'False
+      Width           =   2250
+   End
+   Begin VB.Frame fraAboutButton 
+      BorderStyle     =   0  'None
+      Height          =   1140
+      Left            =   7695
+      TabIndex        =   94
+      Top             =   0
+      Width           =   975
+      Begin VB.Label lblAbout 
+         Caption         =   "About"
+         Height          =   240
+         Index           =   0
+         Left            =   255
+         TabIndex        =   95
+         Top             =   855
+         Width           =   615
+      End
+      Begin VB.Image imgAbout 
+         Height          =   600
+         Left            =   160
+         Picture         =   "frmPrefs.frx":1A08
+         Stretch         =   -1  'True
+         Top             =   225
+         Width           =   600
+      End
+      Begin VB.Image imgAboutClicked 
+         Height          =   600
+         Left            =   160
+         Picture         =   "frmPrefs.frx":1F90
+         Stretch         =   -1  'True
+         Top             =   225
+         Width           =   600
+      End
+   End
+   Begin VB.Frame fraConfigButton 
+      BorderStyle     =   0  'None
+      Height          =   1140
+      Left            =   1215
+      TabIndex        =   44
+      Top             =   -15
+      Width           =   930
+      Begin VB.Label lblConfig 
+         Caption         =   "Config."
+         Height          =   240
+         Index           =   0
+         Left            =   270
+         TabIndex        =   45
+         Top             =   855
+         Width           =   510
+      End
+      Begin VB.Image imgConfig 
+         Height          =   600
+         Left            =   165
+         Picture         =   "frmPrefs.frx":247B
+         Stretch         =   -1  'True
+         Top             =   225
+         Width           =   600
+      End
+      Begin VB.Image imgConfigClicked 
+         Height          =   600
+         Left            =   165
+         Picture         =   "frmPrefs.frx":2A5A
+         Stretch         =   -1  'True
+         Top             =   225
+         Width           =   600
+      End
+   End
+   Begin VB.Frame fraPositionButton 
+      BorderStyle     =   0  'None
+      Height          =   1140
+      Left            =   4410
+      TabIndex        =   40
+      Top             =   0
+      Width           =   930
+      Begin VB.Label lblPosition 
+         Caption         =   "Position"
+         Height          =   240
+         Index           =   0
+         Left            =   180
+         TabIndex        =   41
+         Top             =   855
+         Width           =   615
+      End
+      Begin VB.Image imgPosition 
+         Height          =   600
+         Left            =   160
+         Picture         =   "frmPrefs.frx":2F5F
+         Stretch         =   -1  'True
+         Top             =   225
+         Width           =   600
+      End
+      Begin VB.Image imgPositionClicked 
+         Height          =   600
+         Left            =   160
+         Picture         =   "frmPrefs.frx":3530
+         Stretch         =   -1  'True
+         Top             =   225
+         Width           =   600
+      End
+   End
+   Begin VB.CommandButton btnSave 
+      Caption         =   "&Save"
+      Enabled         =   0   'False
+      Height          =   360
+      Left            =   6075
+      Style           =   1  'Graphical
+      TabIndex        =   6
+      ToolTipText     =   "Save the changes you have made to the preferences"
+      Top             =   10020
+      Width           =   1320
+   End
+   Begin VB.CommandButton btnHelp 
+      Caption         =   "Help"
+      Height          =   360
+      Left            =   120
+      Style           =   1  'Graphical
+      TabIndex        =   38
+      ToolTipText     =   "Open the help utility"
+      Top             =   10035
+      Width           =   1320
+   End
+   Begin VB.Frame fraSoundsButton 
+      BorderStyle     =   0  'None
+      Height          =   1140
+      Left            =   3315
+      TabIndex        =   11
+      Top             =   -15
+      Width           =   930
+      Begin VB.Label lblSounds 
+         Caption         =   "Sounds"
+         Height          =   240
+         Left            =   210
+         TabIndex        =   12
+         Top             =   870
+         Width           =   615
+      End
+      Begin VB.Image imgSounds 
+         Height          =   600
+         Left            =   160
+         Picture         =   "frmPrefs.frx":38CE
+         Stretch         =   -1  'True
+         Top             =   225
+         Width           =   600
+      End
+      Begin VB.Image imgSoundsClicked 
+         Height          =   600
+         Left            =   160
+         Picture         =   "frmPrefs.frx":3E8D
+         Stretch         =   -1  'True
+         Top             =   225
+         Width           =   600
+      End
+   End
+   Begin VB.Timer themeTimer 
+      Enabled         =   0   'False
+      Interval        =   10000
+      Left            =   660
+      Top             =   9705
+   End
+   Begin VB.CommandButton btnClose 
+      Caption         =   "&Close"
+      Height          =   360
+      Left            =   7440
+      Style           =   1  'Graphical
+      TabIndex        =   7
+      ToolTipText     =   "Close the utility"
+      Top             =   10020
+      Width           =   1320
+   End
+   Begin VB.Frame fraWindowButton 
+      BorderStyle     =   0  'None
+      Height          =   1140
+      Left            =   6615
+      TabIndex        =   4
+      Top             =   0
+      Width           =   975
+      Begin VB.Label lblWindow 
+         Caption         =   "Window"
+         Height          =   240
+         Left            =   180
+         TabIndex        =   5
+         Top             =   855
+         Width           =   615
+      End
+      Begin VB.Image imgWindow 
+         Height          =   600
+         Left            =   160
+         Picture         =   "frmPrefs.frx":435D
+         Stretch         =   -1  'True
+         Top             =   225
+         Width           =   600
+      End
+      Begin VB.Image imgWindowClicked 
+         Height          =   600
+         Left            =   160
+         Picture         =   "frmPrefs.frx":4827
+         Stretch         =   -1  'True
+         Top             =   225
+         Width           =   600
+      End
+   End
+   Begin VB.Frame fraFontsButton 
+      BorderStyle     =   0  'None
+      Height          =   1140
+      Left            =   2280
+      TabIndex        =   2
+      Top             =   0
+      Width           =   930
+      Begin VB.Label lblFonts 
+         Caption         =   "Fonts"
+         Height          =   240
+         Left            =   270
+         TabIndex        =   3
+         Top             =   855
+         Width           =   510
+      End
+      Begin VB.Image imgFonts 
+         Height          =   600
+         Left            =   180
+         Picture         =   "frmPrefs.frx":4BD3
+         Stretch         =   -1  'True
+         Top             =   195
+         Width           =   600
+      End
+      Begin VB.Image imgFontsClicked 
+         Height          =   600
+         Left            =   180
+         Picture         =   "frmPrefs.frx":5129
+         Stretch         =   -1  'True
+         Top             =   195
+         Width           =   600
+      End
+   End
+   Begin VB.Frame fraGeneralButton 
+      Height          =   1140
+      Left            =   240
+      TabIndex        =   0
+      Top             =   -15
+      Width           =   930
+      Begin VB.Image imgGeneral 
+         Height          =   600
+         Left            =   180
+         Picture         =   "frmPrefs.frx":55C2
+         Stretch         =   -1  'True
+         Top             =   225
+         Width           =   600
+      End
+      Begin VB.Label lblGeneral 
+         Caption         =   "General"
+         Height          =   240
+         Index           =   0
+         Left            =   195
+         TabIndex        =   1
+         Top             =   855
+         Width           =   705
+      End
+      Begin VB.Image imgGeneralClicked 
+         Height          =   600
+         Left            =   165
+         Stretch         =   -1  'True
+         Top             =   240
+         Width           =   600
+      End
+   End
+   Begin VB.Frame fraGeneral 
+      Caption         =   "General"
+      ForeColor       =   &H80000008&
+      Height          =   8745
+      Left            =   75
+      TabIndex        =   50
+      Top             =   1200
+      Visible         =   0   'False
+      Width           =   7995
+      Begin VB.Frame fraGeneralInner 
+         BorderStyle     =   0  'None
+         Height          =   8040
+         Left            =   450
+         TabIndex        =   51
+         Top             =   315
+         Width           =   7215
+         Begin VB.TextBox txtAirportsURL 
+            Height          =   315
+            Left            =   2055
+            Locked          =   -1  'True
+            TabIndex        =   182
+            Text            =   "https://raw.githubusercontent.com/jpatokal/openflights/master/data/airports.dat"
+            Top             =   6675
+            Width           =   4755
+         End
+         Begin VB.CommandButton btnLocation 
+            Caption         =   "Select ICAO"
+            Height          =   315
+            Left            =   3840
+            Style           =   1  'Graphical
+            TabIndex        =   167
+            Top             =   195
+            Width           =   1215
+         End
+         Begin VB.ComboBox cmbMetricImperial 
+            Height          =   315
+            ItemData        =   "frmPrefs.frx":5A2C
+            Left            =   2010
+            List            =   "frmPrefs.frx":5A2E
+            Style           =   2  'Dropdown List
+            TabIndex        =   162
+            Top             =   2370
+            Width           =   1740
+         End
+         Begin VB.ComboBox cmbWindSpeedScale 
+            Height          =   315
+            ItemData        =   "frmPrefs.frx":5A30
+            Left            =   2010
+            List            =   "frmPrefs.frx":5A32
+            Style           =   2  'Dropdown List
+            TabIndex        =   160
+            Top             =   1860
+            Width           =   1740
+         End
+         Begin VB.ComboBox cmbPressureScale 
+            Height          =   315
+            ItemData        =   "frmPrefs.frx":5A34
+            Left            =   2010
+            List            =   "frmPrefs.frx":5A36
+            Style           =   2  'Dropdown List
+            TabIndex        =   158
+            Top             =   1320
+            Width           =   1740
+         End
+         Begin VB.TextBox txtIcao 
+            Height          =   315
+            Left            =   2010
+            Locked          =   -1  'True
+            TabIndex        =   156
+            Text            =   "EGSH"
+            Top             =   195
+            Width           =   1725
+         End
+         Begin VB.ComboBox cmbTemperatureScale 
+            Height          =   315
+            ItemData        =   "frmPrefs.frx":5A38
+            Left            =   2010
+            List            =   "frmPrefs.frx":5A3A
+            Style           =   2  'Dropdown List
+            TabIndex        =   153
+            Top             =   750
+            Width           =   1740
+         End
+         Begin vb6projectCCRSlider.Slider sliSamplingInterval 
+            Height          =   390
+            Left            =   1890
+            TabIndex        =   147
+            ToolTipText     =   "Setting the sampling interval affects the frequency of the pointer updates."
+            Top             =   3255
+            Width           =   3870
+            _ExtentX        =   6826
+            _ExtentY        =   688
+            Min             =   60
+            Max             =   4800
+            Value           =   60
+            TickFrequency   =   100
+            SelStart        =   60
+         End
+         Begin vb6projectCCRSlider.Slider sliStormTestInterval 
+            Height          =   390
+            Left            =   1890
+            TabIndex        =   176
+            ToolTipText     =   "Setting the sampling interval affects the frequency of the pointer updates."
+            Top             =   4485
+            Width           =   3870
+            _ExtentX        =   6826
+            _ExtentY        =   688
+            Min             =   1800
+            Max             =   7200
+            Value           =   1800
+            TickFrequency   =   120
+            SmallChange     =   5
+            LargeChange     =   10
+            SelStart        =   1800
+         End
+         Begin vb6projectCCRSlider.Slider sliErrorInterval 
+            Height          =   390
+            Left            =   1890
+            TabIndex        =   185
+            ToolTipText     =   "Setting the sampling interval affects the frequency of the pointer updates."
+            Top             =   5730
+            Width           =   3870
+            _ExtentX        =   6826
+            _ExtentY        =   688
+            Max             =   8
+            Value           =   1
+            SmallChange     =   5
+            LargeChange     =   10
+            SelStart        =   8
+         End
+         Begin VB.Label lblWindowLevel 
+            Caption         =   "hours"
+            Height          =   315
+            Index           =   23
+            Left            =   3615
+            TabIndex        =   189
+            Top             =   6210
+            Width           =   840
+         End
+         Begin VB.Label lblWindowLevel 
+            Caption         =   $"frmPrefs.frx":5A3C
+            Height          =   795
+            Index           =   20
+            Left            =   2070
+            TabIndex        =   184
+            Top             =   7140
+            Width           =   4635
+         End
+         Begin VB.Label lblWindowLevel 
+            Caption         =   "Error Message Interval :"
+            Height          =   360
+            Index           =   24
+            Left            =   180
+            TabIndex        =   188
+            Top             =   5790
+            Width           =   1770
+         End
+         Begin VB.Label lblWindowLevel 
+            Caption         =   "8hrs"
+            Height          =   300
+            Index           =   22
+            Left            =   5490
+            TabIndex        =   187
+            Top             =   6210
+            Width           =   465
+         End
+         Begin VB.Label lblWindowLevel 
+            Caption         =   "0 (disabled)"
+            Height          =   300
+            Index           =   21
+            Left            =   1995
+            TabIndex        =   186
+            Top             =   6210
+            Width           =   945
+         End
+         Begin VB.Label lblGeneral 
+            Caption         =   $"frmPrefs.frx":5B28
+            Height          =   1005
+            Index           =   12
+            Left            =   3900
+            TabIndex        =   164
+            Top             =   2340
+            Width           =   3270
+         End
+         Begin VB.Label lblGeneral 
+            Caption         =   "ICAO Airports URL :"
+            Height          =   255
+            Index           =   15
+            Left            =   255
+            TabIndex        =   183
+            Top             =   6720
+            Width           =   1545
+         End
+         Begin VB.Label lblWindowLevel 
+            Caption         =   "1800"
+            Height          =   315
+            Index           =   19
+            Left            =   2070
+            TabIndex        =   181
+            Top             =   4965
+            Width           =   540
+         End
+         Begin VB.Label lblWindowLevel 
+            Caption         =   "7200"
+            Height          =   315
+            Index           =   18
+            Left            =   5385
+            TabIndex        =   180
+            Top             =   4950
+            Width           =   405
+         End
+         Begin VB.Label lblWindowLevel 
+            Caption         =   "secs"
+            Height          =   315
+            Index           =   17
+            Left            =   3615
+            TabIndex        =   179
+            Top             =   4950
+            Width           =   840
+         End
+         Begin VB.Label lblWindowLevel 
+            Caption         =   "Storm Test Interval :"
+            Height          =   315
+            Index           =   16
+            Left            =   300
+            TabIndex        =   178
+            Top             =   4545
+            Width           =   1635
+         End
+         Begin VB.Label lblWindowLevel 
+            Caption         =   "Adjust to determine storm checking frequency."
+            Height          =   540
+            Index           =   15
+            Left            =   2100
+            TabIndex        =   177
+            Top             =   5250
+            Width           =   3810
+         End
+         Begin VB.Label lblGeneral 
+            Caption         =   "The Wind Speed Scale"
+            Height          =   480
+            Index           =   14
+            Left            =   3885
+            TabIndex        =   166
+            Top             =   1920
+            Width           =   2610
+         End
+         Begin VB.Label lblGeneral 
+            Caption         =   "The Air Pressure Scale"
+            Height          =   480
+            Index           =   13
+            Left            =   3885
+            TabIndex        =   165
+            Top             =   1365
+            Width           =   2610
+         End
+         Begin VB.Label lblGeneral 
+            Alignment       =   1  'Right Justify
+            Caption         =   "Metric or Imperial :"
+            Height          =   480
+            Index           =   8
+            Left            =   255
+            TabIndex        =   163
+            Top             =   2400
+            Width           =   1545
+         End
+         Begin VB.Label lblGeneral 
+            Alignment       =   1  'Right Justify
+            Caption         =   "Anemometer :"
+            Height          =   480
+            Index           =   7
+            Left            =   255
+            TabIndex        =   161
+            Top             =   1890
+            Width           =   1545
+         End
+         Begin VB.Label lblGeneral 
+            Alignment       =   1  'Right Justify
+            Caption         =   "Barometer :"
+            Height          =   345
+            Index           =   4
+            Left            =   255
+            TabIndex        =   159
+            Top             =   1350
+            Width           =   1545
+         End
+         Begin VB.Label lblGeneral 
+            Caption         =   "ICAO Station ID :"
+            Height          =   255
+            Index           =   1
+            Left            =   585
+            TabIndex        =   157
+            Top             =   255
+            Width           =   1545
+         End
+         Begin VB.Label lblGeneral 
+            Caption         =   "Temperature :"
+            Height          =   480
+            Index           =   5
+            Left            =   810
+            TabIndex        =   155
+            Top             =   810
+            Width           =   1545
+         End
+         Begin VB.Label lblGeneral 
+            Caption         =   "Select Celsius / Fahrenheit / Kelvin"
+            Height          =   480
+            Index           =   10
+            Left            =   3855
+            TabIndex        =   154
+            Top             =   795
+            Width           =   2610
+         End
+         Begin VB.Label lblWindowLevel 
+            Caption         =   "Adjust to determine gauge sampling frequency.*"
+            Height          =   270
+            Index           =   14
+            Left            =   2100
+            TabIndex        =   152
+            Top             =   4020
+            Width           =   3810
+         End
+         Begin VB.Label lblWindowLevel 
+            Caption         =   "Sampling Interval :"
+            Height          =   315
+            Index           =   13
+            Left            =   495
+            TabIndex        =   151
+            Top             =   3315
+            Width           =   1410
+         End
+         Begin VB.Label lblWindowLevel 
+            Caption         =   "secs"
+            Height          =   315
+            Index           =   12
+            Left            =   3615
+            TabIndex        =   150
+            Top             =   3720
+            Width           =   840
+         End
+         Begin VB.Label lblWindowLevel 
+            Caption         =   "4800"
+            Height          =   315
+            Index           =   11
+            Left            =   5385
+            TabIndex        =   149
+            Top             =   3720
+            Width           =   405
+         End
+         Begin VB.Label lblWindowLevel 
+            Caption         =   "60"
+            Height          =   315
+            Index           =   10
+            Left            =   2070
+            TabIndex        =   148
+            Top             =   3720
+            Width           =   345
+         End
+      End
+   End
    Begin VB.Frame fraConfig 
       Caption         =   "Configuration"
       Height          =   8865
@@ -30,9 +700,9 @@ Begin VB.Form panzerPrefs
          Width           =   6450
          Begin VB.ComboBox cmbTickSwitchPref 
             Height          =   315
-            ItemData        =   "frmPrefs.frx":10CA
+            ItemData        =   "frmPrefs.frx":5BC6
             Left            =   2025
-            List            =   "frmPrefs.frx":10CC
+            List            =   "frmPrefs.frx":5BC8
             Style           =   2  'Dropdown List
             TabIndex        =   171
             Top             =   6435
@@ -174,7 +844,7 @@ Begin VB.Form panzerPrefs
             Width           =   1740
          End
          Begin VB.Label lblConfiguration 
-            Caption         =   $"frmPrefs.frx":10CE
+            Caption         =   $"frmPrefs.frx":5BCA
             Height          =   930
             Index           =   0
             Left            =   1980
@@ -370,7 +1040,7 @@ Begin VB.Form panzerPrefs
             Width           =   2400
          End
          Begin VB.Label lblFontsTab 
-            Caption         =   $"frmPrefs.frx":1182
+            Caption         =   $"frmPrefs.frx":5C7E
             Height          =   1710
             Index           =   0
             Left            =   1725
@@ -463,7 +1133,7 @@ Begin VB.Form panzerPrefs
                Width           =   3660
             End
             Begin VB.Label lblGitHub 
-               Caption         =   $"frmPrefs.frx":12C0
+               Caption         =   $"frmPrefs.frx":5DBC
                ForeColor       =   &H8000000D&
                Height          =   915
                Left            =   1560
@@ -473,7 +1143,7 @@ Begin VB.Form panzerPrefs
                Width           =   4935
             End
             Begin VB.Label lblDebug 
-               Caption         =   $"frmPrefs.frx":1359
+               Caption         =   $"frmPrefs.frx":5E55
                Height          =   930
                Index           =   9
                Left            =   1545
@@ -520,9 +1190,9 @@ Begin VB.Form panzerPrefs
          End
          Begin VB.ComboBox cmbDebug 
             Height          =   315
-            ItemData        =   "frmPrefs.frx":13FD
+            ItemData        =   "frmPrefs.frx":5EF9
             Left            =   1530
-            List            =   "frmPrefs.frx":13FF
+            List            =   "frmPrefs.frx":5EFB
             Style           =   2  'Dropdown List
             TabIndex        =   52
             ToolTipText     =   "Choose to set debug mode."
@@ -588,316 +1258,6 @@ Begin VB.Form panzerPrefs
             Top             =   45
             Width           =   1740
          End
-      End
-   End
-   Begin VB.Frame fraDevelopmentButton 
-      BorderStyle     =   0  'None
-      Height          =   1140
-      Left            =   5490
-      TabIndex        =   42
-      Top             =   0
-      Width           =   1065
-      Begin VB.Label lblDevelopment 
-         Caption         =   "Development"
-         Height          =   240
-         Left            =   45
-         TabIndex        =   43
-         Top             =   855
-         Width           =   960
-      End
-      Begin VB.Image imgDevelopment 
-         Height          =   600
-         Left            =   150
-         Picture         =   "frmPrefs.frx":1401
-         Stretch         =   -1  'True
-         Top             =   225
-         Width           =   600
-      End
-      Begin VB.Image imgDevelopmentClicked 
-         Height          =   600
-         Left            =   160
-         Picture         =   "frmPrefs.frx":19B9
-         Stretch         =   -1  'True
-         Top             =   225
-         Width           =   600
-      End
-   End
-   Begin VB.Timer positionTimer 
-      Enabled         =   0   'False
-      Interval        =   5000
-      Left            =   1170
-      Top             =   9690
-   End
-   Begin VB.CheckBox chkEnableResizing 
-      Caption         =   "Enable Corner Resize"
-      Height          =   210
-      Left            =   3240
-      TabIndex        =   127
-      Top             =   10125
-      Visible         =   0   'False
-      Width           =   2250
-   End
-   Begin VB.Frame fraAboutButton 
-      BorderStyle     =   0  'None
-      Height          =   1140
-      Left            =   7695
-      TabIndex        =   94
-      Top             =   0
-      Width           =   975
-      Begin VB.Label lblAbout 
-         Caption         =   "About"
-         Height          =   240
-         Index           =   0
-         Left            =   255
-         TabIndex        =   95
-         Top             =   855
-         Width           =   615
-      End
-      Begin VB.Image imgAbout 
-         Height          =   600
-         Left            =   160
-         Picture         =   "frmPrefs.frx":1D3F
-         Stretch         =   -1  'True
-         Top             =   225
-         Width           =   600
-      End
-      Begin VB.Image imgAboutClicked 
-         Height          =   600
-         Left            =   160
-         Picture         =   "frmPrefs.frx":22C7
-         Stretch         =   -1  'True
-         Top             =   225
-         Width           =   600
-      End
-   End
-   Begin VB.Frame fraConfigButton 
-      BorderStyle     =   0  'None
-      Height          =   1140
-      Left            =   1215
-      TabIndex        =   44
-      Top             =   -15
-      Width           =   930
-      Begin VB.Label lblConfig 
-         Caption         =   "Config."
-         Height          =   240
-         Index           =   0
-         Left            =   270
-         TabIndex        =   45
-         Top             =   855
-         Width           =   510
-      End
-      Begin VB.Image imgConfig 
-         Height          =   600
-         Left            =   165
-         Picture         =   "frmPrefs.frx":27B2
-         Stretch         =   -1  'True
-         Top             =   225
-         Width           =   600
-      End
-      Begin VB.Image imgConfigClicked 
-         Height          =   600
-         Left            =   165
-         Picture         =   "frmPrefs.frx":2D91
-         Stretch         =   -1  'True
-         Top             =   225
-         Width           =   600
-      End
-   End
-   Begin VB.Frame fraPositionButton 
-      BorderStyle     =   0  'None
-      Height          =   1140
-      Left            =   4410
-      TabIndex        =   40
-      Top             =   0
-      Width           =   930
-      Begin VB.Label lblPosition 
-         Caption         =   "Position"
-         Height          =   240
-         Index           =   0
-         Left            =   180
-         TabIndex        =   41
-         Top             =   855
-         Width           =   615
-      End
-      Begin VB.Image imgPosition 
-         Height          =   600
-         Left            =   160
-         Picture         =   "frmPrefs.frx":3296
-         Stretch         =   -1  'True
-         Top             =   225
-         Width           =   600
-      End
-      Begin VB.Image imgPositionClicked 
-         Height          =   600
-         Left            =   160
-         Picture         =   "frmPrefs.frx":3867
-         Stretch         =   -1  'True
-         Top             =   225
-         Width           =   600
-      End
-   End
-   Begin VB.CommandButton btnSave 
-      Caption         =   "&Save"
-      Enabled         =   0   'False
-      Height          =   360
-      Left            =   6075
-      Style           =   1  'Graphical
-      TabIndex        =   6
-      ToolTipText     =   "Save the changes you have made to the preferences"
-      Top             =   10020
-      Width           =   1320
-   End
-   Begin VB.CommandButton btnHelp 
-      Caption         =   "Help"
-      Height          =   360
-      Left            =   120
-      Style           =   1  'Graphical
-      TabIndex        =   38
-      ToolTipText     =   "Open the help utility"
-      Top             =   10035
-      Width           =   1320
-   End
-   Begin VB.Frame fraSoundsButton 
-      BorderStyle     =   0  'None
-      Height          =   1140
-      Left            =   3315
-      TabIndex        =   11
-      Top             =   -15
-      Width           =   930
-      Begin VB.Label lblSounds 
-         Caption         =   "Sounds"
-         Height          =   240
-         Left            =   210
-         TabIndex        =   12
-         Top             =   870
-         Width           =   615
-      End
-      Begin VB.Image imgSounds 
-         Height          =   600
-         Left            =   160
-         Picture         =   "frmPrefs.frx":3C05
-         Stretch         =   -1  'True
-         Top             =   225
-         Width           =   600
-      End
-      Begin VB.Image imgSoundsClicked 
-         Height          =   600
-         Left            =   160
-         Picture         =   "frmPrefs.frx":41C4
-         Stretch         =   -1  'True
-         Top             =   225
-         Width           =   600
-      End
-   End
-   Begin VB.Timer themeTimer 
-      Enabled         =   0   'False
-      Interval        =   10000
-      Left            =   660
-      Top             =   9705
-   End
-   Begin VB.CommandButton btnClose 
-      Caption         =   "&Close"
-      Height          =   360
-      Left            =   7440
-      Style           =   1  'Graphical
-      TabIndex        =   7
-      ToolTipText     =   "Close the utility"
-      Top             =   10020
-      Width           =   1320
-   End
-   Begin VB.Frame fraWindowButton 
-      BorderStyle     =   0  'None
-      Height          =   1140
-      Left            =   6615
-      TabIndex        =   4
-      Top             =   0
-      Width           =   975
-      Begin VB.Label lblWindow 
-         Caption         =   "Window"
-         Height          =   240
-         Left            =   180
-         TabIndex        =   5
-         Top             =   855
-         Width           =   615
-      End
-      Begin VB.Image imgWindow 
-         Height          =   600
-         Left            =   160
-         Picture         =   "frmPrefs.frx":4694
-         Stretch         =   -1  'True
-         Top             =   225
-         Width           =   600
-      End
-      Begin VB.Image imgWindowClicked 
-         Height          =   600
-         Left            =   160
-         Picture         =   "frmPrefs.frx":4B5E
-         Stretch         =   -1  'True
-         Top             =   225
-         Width           =   600
-      End
-   End
-   Begin VB.Frame fraFontsButton 
-      BorderStyle     =   0  'None
-      Height          =   1140
-      Left            =   2280
-      TabIndex        =   2
-      Top             =   0
-      Width           =   930
-      Begin VB.Label lblFonts 
-         Caption         =   "Fonts"
-         Height          =   240
-         Left            =   270
-         TabIndex        =   3
-         Top             =   855
-         Width           =   510
-      End
-      Begin VB.Image imgFonts 
-         Height          =   600
-         Left            =   180
-         Picture         =   "frmPrefs.frx":4F0A
-         Stretch         =   -1  'True
-         Top             =   195
-         Width           =   600
-      End
-      Begin VB.Image imgFontsClicked 
-         Height          =   600
-         Left            =   180
-         Picture         =   "frmPrefs.frx":5460
-         Stretch         =   -1  'True
-         Top             =   195
-         Width           =   600
-      End
-   End
-   Begin VB.Frame fraGeneralButton 
-      Height          =   1140
-      Left            =   240
-      TabIndex        =   0
-      Top             =   -15
-      Width           =   930
-      Begin VB.Image imgGeneral 
-         Height          =   600
-         Left            =   180
-         Picture         =   "frmPrefs.frx":58F9
-         Stretch         =   -1  'True
-         Top             =   225
-         Width           =   600
-      End
-      Begin VB.Label lblGeneral 
-         Caption         =   "General"
-         Height          =   240
-         Index           =   0
-         Left            =   195
-         TabIndex        =   1
-         Top             =   855
-         Width           =   705
-      End
-      Begin VB.Image imgGeneralClicked 
-         Height          =   600
-         Left            =   165
-         Stretch         =   -1  'True
-         Top             =   240
-         Width           =   600
       End
    End
    Begin VB.Frame fraSounds 
@@ -993,7 +1353,7 @@ Begin VB.Form panzerPrefs
                Width           =   720
             End
             Begin VB.Label lblWindowLevel 
-               Caption         =   $"frmPrefs.frx":5D63
+               Caption         =   $"frmPrefs.frx":5EFD
                Height          =   975
                Index           =   1
                Left            =   855
@@ -1132,7 +1492,7 @@ Begin VB.Form panzerPrefs
          MultiLine       =   -1  'True
          ScrollBars      =   2  'Vertical
          TabIndex        =   109
-         Text            =   "frmPrefs.frx":5E06
+         Text            =   "frmPrefs.frx":5FA0
          Top             =   2205
          Width           =   8010
       End
@@ -1621,7 +1981,7 @@ Begin VB.Form panzerPrefs
             Width           =   2115
          End
          Begin VB.Label lblPosition 
-            Caption         =   $"frmPrefs.frx":6DBD
+            Caption         =   $"frmPrefs.frx":6F57
             Height          =   3435
             Index           =   12
             Left            =   5145
@@ -1641,7 +2001,7 @@ Begin VB.Form panzerPrefs
             Width           =   2040
          End
          Begin VB.Label lblPosition 
-            Caption         =   $"frmPrefs.frx":6F8F
+            Caption         =   $"frmPrefs.frx":7129
             Height          =   705
             Index           =   10
             Left            =   2250
@@ -1661,7 +2021,7 @@ Begin VB.Form panzerPrefs
             Width           =   2355
          End
          Begin VB.Label lblPosition 
-            Caption         =   $"frmPrefs.frx":702E
+            Caption         =   $"frmPrefs.frx":71C8
             Height          =   3045
             Index           =   6
             Left            =   2265
@@ -1679,366 +2039,6 @@ Begin VB.Form panzerPrefs
             Tag             =   "lblAlarmSound"
             Top             =   45
             Width           =   2145
-         End
-      End
-   End
-   Begin VB.Frame fraGeneral 
-      Caption         =   "General"
-      ForeColor       =   &H80000008&
-      Height          =   8745
-      Left            =   75
-      TabIndex        =   50
-      Top             =   1200
-      Visible         =   0   'False
-      Width           =   7995
-      Begin VB.Frame fraGeneralInner 
-         BorderStyle     =   0  'None
-         Height          =   8040
-         Left            =   450
-         TabIndex        =   51
-         Top             =   315
-         Width           =   7215
-         Begin VB.TextBox txtAirportsURL 
-            Height          =   315
-            Left            =   2055
-            Locked          =   -1  'True
-            TabIndex        =   182
-            Text            =   "https://raw.githubusercontent.com/jpatokal/openflights/master/data/airports.dat"
-            Top             =   6675
-            Width           =   4755
-         End
-         Begin VB.CommandButton btnLocation 
-            Caption         =   "Select ICAO"
-            Height          =   315
-            Left            =   3840
-            Style           =   1  'Graphical
-            TabIndex        =   167
-            Top             =   195
-            Width           =   1215
-         End
-         Begin VB.ComboBox cmbMetricImperial 
-            Height          =   315
-            ItemData        =   "frmPrefs.frx":71D3
-            Left            =   2010
-            List            =   "frmPrefs.frx":71D5
-            Style           =   2  'Dropdown List
-            TabIndex        =   162
-            Top             =   2370
-            Width           =   1740
-         End
-         Begin VB.ComboBox cmbWindSpeedScale 
-            Height          =   315
-            ItemData        =   "frmPrefs.frx":71D7
-            Left            =   2010
-            List            =   "frmPrefs.frx":71D9
-            Style           =   2  'Dropdown List
-            TabIndex        =   160
-            Top             =   1860
-            Width           =   1740
-         End
-         Begin VB.ComboBox cmbPressureScale 
-            Height          =   315
-            ItemData        =   "frmPrefs.frx":71DB
-            Left            =   2010
-            List            =   "frmPrefs.frx":71DD
-            Style           =   2  'Dropdown List
-            TabIndex        =   158
-            Top             =   1320
-            Width           =   1740
-         End
-         Begin VB.TextBox txtIcao 
-            Height          =   315
-            Left            =   2010
-            Locked          =   -1  'True
-            TabIndex        =   156
-            Text            =   "EGSH"
-            Top             =   195
-            Width           =   1725
-         End
-         Begin VB.ComboBox cmbTemperatureScale 
-            Height          =   315
-            ItemData        =   "frmPrefs.frx":71DF
-            Left            =   2010
-            List            =   "frmPrefs.frx":71E1
-            Style           =   2  'Dropdown List
-            TabIndex        =   153
-            Top             =   750
-            Width           =   1740
-         End
-         Begin vb6projectCCRSlider.Slider sliSamplingInterval 
-            Height          =   390
-            Left            =   1890
-            TabIndex        =   147
-            ToolTipText     =   "Setting the sampling interval affects the frequency of the pointer updates."
-            Top             =   3255
-            Width           =   3870
-            _ExtentX        =   6826
-            _ExtentY        =   688
-            Min             =   60
-            Max             =   4800
-            Value           =   60
-            TickFrequency   =   100
-            SelStart        =   60
-         End
-         Begin vb6projectCCRSlider.Slider sliStormTestInterval 
-            Height          =   390
-            Left            =   1890
-            TabIndex        =   176
-            ToolTipText     =   "Setting the sampling interval affects the frequency of the pointer updates."
-            Top             =   4485
-            Width           =   3870
-            _ExtentX        =   6826
-            _ExtentY        =   688
-            Min             =   1800
-            Max             =   7200
-            Value           =   1800
-            TickFrequency   =   120
-            SmallChange     =   5
-            LargeChange     =   10
-            SelStart        =   1800
-         End
-         Begin vb6projectCCRSlider.Slider sliErrorInterval 
-            Height          =   390
-            Left            =   1890
-            TabIndex        =   185
-            ToolTipText     =   "Setting the sampling interval affects the frequency of the pointer updates."
-            Top             =   5730
-            Width           =   3870
-            _ExtentX        =   6826
-            _ExtentY        =   688
-            Max             =   8
-            Value           =   1
-            SmallChange     =   5
-            LargeChange     =   10
-            SelStart        =   8
-         End
-         Begin VB.Label lblWindowLevel 
-            Caption         =   "hours"
-            Height          =   315
-            Index           =   23
-            Left            =   3615
-            TabIndex        =   189
-            Top             =   6210
-            Width           =   840
-         End
-         Begin VB.Label lblWindowLevel 
-            Caption         =   $"frmPrefs.frx":71E3
-            Height          =   795
-            Index           =   20
-            Left            =   2070
-            TabIndex        =   184
-            Top             =   7140
-            Width           =   4635
-         End
-         Begin VB.Label lblWindowLevel 
-            Caption         =   "Error Message Interval :"
-            Height          =   360
-            Index           =   24
-            Left            =   180
-            TabIndex        =   188
-            Top             =   5790
-            Width           =   1770
-         End
-         Begin VB.Label lblWindowLevel 
-            Caption         =   "8hrs"
-            Height          =   300
-            Index           =   22
-            Left            =   5490
-            TabIndex        =   187
-            Top             =   6210
-            Width           =   465
-         End
-         Begin VB.Label lblWindowLevel 
-            Caption         =   "0 (disabled)"
-            Height          =   300
-            Index           =   21
-            Left            =   1995
-            TabIndex        =   186
-            Top             =   6210
-            Width           =   945
-         End
-         Begin VB.Label lblGeneral 
-            Caption         =   $"frmPrefs.frx":72CF
-            Height          =   1005
-            Index           =   12
-            Left            =   3900
-            TabIndex        =   164
-            Top             =   2340
-            Width           =   3270
-         End
-         Begin VB.Label lblGeneral 
-            Caption         =   "ICAO Airports URL :"
-            Height          =   255
-            Index           =   15
-            Left            =   255
-            TabIndex        =   183
-            Top             =   6720
-            Width           =   1545
-         End
-         Begin VB.Label lblWindowLevel 
-            Caption         =   "1800"
-            Height          =   315
-            Index           =   19
-            Left            =   2070
-            TabIndex        =   181
-            Top             =   4965
-            Width           =   540
-         End
-         Begin VB.Label lblWindowLevel 
-            Caption         =   "7200"
-            Height          =   315
-            Index           =   18
-            Left            =   5385
-            TabIndex        =   180
-            Top             =   4950
-            Width           =   405
-         End
-         Begin VB.Label lblWindowLevel 
-            Caption         =   "secs"
-            Height          =   315
-            Index           =   17
-            Left            =   3615
-            TabIndex        =   179
-            Top             =   4950
-            Width           =   840
-         End
-         Begin VB.Label lblWindowLevel 
-            Caption         =   "Storm Test Interval :"
-            Height          =   315
-            Index           =   16
-            Left            =   300
-            TabIndex        =   178
-            Top             =   4545
-            Width           =   1635
-         End
-         Begin VB.Label lblWindowLevel 
-            Caption         =   "Adjust to determine storm checking frequency."
-            Height          =   540
-            Index           =   15
-            Left            =   2100
-            TabIndex        =   177
-            Top             =   5250
-            Width           =   3810
-         End
-         Begin VB.Label lblGeneral 
-            Caption         =   "The Wind Speed Scale"
-            Height          =   480
-            Index           =   14
-            Left            =   3885
-            TabIndex        =   166
-            Top             =   1920
-            Width           =   2610
-         End
-         Begin VB.Label lblGeneral 
-            Caption         =   "The Air Pressure Scale"
-            Height          =   480
-            Index           =   13
-            Left            =   3885
-            TabIndex        =   165
-            Top             =   1365
-            Width           =   2610
-         End
-         Begin VB.Label lblGeneral 
-            Alignment       =   1  'Right Justify
-            Caption         =   "Metric or Imperial :"
-            Height          =   480
-            Index           =   8
-            Left            =   255
-            TabIndex        =   163
-            Top             =   2400
-            Width           =   1545
-         End
-         Begin VB.Label lblGeneral 
-            Alignment       =   1  'Right Justify
-            Caption         =   "Anemometer :"
-            Height          =   480
-            Index           =   7
-            Left            =   255
-            TabIndex        =   161
-            Top             =   1890
-            Width           =   1545
-         End
-         Begin VB.Label lblGeneral 
-            Alignment       =   1  'Right Justify
-            Caption         =   "Barometer :"
-            Height          =   345
-            Index           =   4
-            Left            =   255
-            TabIndex        =   159
-            Top             =   1350
-            Width           =   1545
-         End
-         Begin VB.Label lblGeneral 
-            Caption         =   "ICAO Station ID :"
-            Height          =   255
-            Index           =   1
-            Left            =   585
-            TabIndex        =   157
-            Top             =   255
-            Width           =   1545
-         End
-         Begin VB.Label lblGeneral 
-            Caption         =   "Temperature :"
-            Height          =   480
-            Index           =   5
-            Left            =   810
-            TabIndex        =   155
-            Top             =   810
-            Width           =   1545
-         End
-         Begin VB.Label lblGeneral 
-            Caption         =   "Select Celsius / Fahrenheit / Kelvin"
-            Height          =   480
-            Index           =   10
-            Left            =   3855
-            TabIndex        =   154
-            Top             =   795
-            Width           =   2610
-         End
-         Begin VB.Label lblWindowLevel 
-            Caption         =   "Adjust to determine gauge sampling frequency.*"
-            Height          =   270
-            Index           =   14
-            Left            =   2100
-            TabIndex        =   152
-            Top             =   4020
-            Width           =   3810
-         End
-         Begin VB.Label lblWindowLevel 
-            Caption         =   "Sampling Interval :"
-            Height          =   315
-            Index           =   13
-            Left            =   495
-            TabIndex        =   151
-            Top             =   3315
-            Width           =   1410
-         End
-         Begin VB.Label lblWindowLevel 
-            Caption         =   "secs"
-            Height          =   315
-            Index           =   12
-            Left            =   3615
-            TabIndex        =   150
-            Top             =   3720
-            Width           =   840
-         End
-         Begin VB.Label lblWindowLevel 
-            Caption         =   "4800"
-            Height          =   315
-            Index           =   11
-            Left            =   5385
-            TabIndex        =   149
-            Top             =   3720
-            Width           =   405
-         End
-         Begin VB.Label lblWindowLevel 
-            Caption         =   "60"
-            Height          =   315
-            Index           =   10
-            Left            =   2070
-            TabIndex        =   148
-            Top             =   3720
-            Width           =   345
          End
       End
    End
@@ -2326,9 +2326,9 @@ Private gblAllowSizeChangeFlg As Boolean
 
 
 
-'Private Sub btnLocation_Click()
-'    frmLocation.Show
-'End Sub
+Private Sub btnLocation_Click()
+    fSelector.SelectorForm.Show
+End Sub
 
 Private Sub btnLocation_MouseMove(Button As Integer, Shift As Integer, X As Single, Y As Single)
     If PzGEnableBalloonTooltips = "1" Then CreateToolTip btnLocation.hwnd, "Press to select the current ICAO code used to identify the weather feed source data.*", _

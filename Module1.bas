@@ -1913,6 +1913,8 @@ Public Sub makeVisibleFormElements()
     
     fTemperature.temperatureGaugeForm.Show
     
+    fClipB.clipBForm.Show
+    
     fSelector.SelectorForm.Width = 1000
     fSelector.SelectorForm.Height = 800
     fSelector.SelectorForm.Left = formLeftPixels + fTemperature.temperatureGaugeForm.Width + 300

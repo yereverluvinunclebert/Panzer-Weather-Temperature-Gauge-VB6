@@ -125,6 +125,9 @@ Begin VB.Form menuForm
       Begin VB.Menu mnuSelectorHelp 
          Caption         =   "Panzer Weather Gauge Help"
       End
+      Begin VB.Menu mnuClipboardCopyWeather 
+         Caption         =   "Copy current weather to clipboard"
+      End
       Begin VB.Menu mnuSelectorSupport 
          Caption         =   "Contact Support"
       End
@@ -133,6 +136,9 @@ Begin VB.Form menuForm
       End
       Begin VB.Menu mnuSelectorLicence 
          Caption         =   "Display Licence Agreement"
+      End
+      Begin VB.Menu mnuCloseWidget 
+         Caption         =   "Close Widget"
       End
       Begin VB.Menu mnuCloseSelector 
          Caption         =   "Close  ICAO Selector"
@@ -255,7 +261,7 @@ Private Sub mnuChangeLocation_Click()
     
     'frmLocation.Show ' show the temporary VB6 form
     fSelector.SelectorForm.Show
-    fClipB.clipBForm.Show
+    
     
     On Error GoTo 0
     Exit Sub
@@ -264,6 +270,11 @@ mnuChangeLocation_Click_Error:
 
     MsgBox "Error " & Err.Number & " (" & Err.Description & ") in procedure mnuChangeLocation_Click, line " & Erl & "."
 
+End Sub
+
+Private Sub mnuClipboardCopyWeather_Click()
+    Clipboard.Clear
+    Clipboard.SetText (overlayTemperatureWidget.TemperatureDetails)
 End Sub
 
 ' ----------------------------------------------------------------
@@ -286,6 +297,10 @@ mnuCloseSelector_Click_Error:
 
     MsgBox "Error " & Err.Number & " (" & Err.Description & ") in procedure mnuCloseSelector_Click, line " & Erl & "."
 
+End Sub
+
+Private Sub mnuCloseWidget_Click()
+    Call thisForm_Unload
 End Sub
 
 ' ----------------------------------------------------------------

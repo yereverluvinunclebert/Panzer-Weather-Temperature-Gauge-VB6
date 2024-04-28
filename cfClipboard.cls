@@ -245,7 +245,10 @@ Private Sub ClipBForm_MouseDown(ByRef Button As Integer, ByRef Shift As Integer,
 
     If Button = vbRightButton Then
         gblOriginatingForm = "ClipBForm"
-        'Call menuForm.PopupMenu(menuForm.mnuClipBMenu)
+        
+        menuForm.mnuCloseSelector.Visible = False
+        menuForm.mnuCloseWidget.Visible = True
+        Call menuForm.PopupMenu(menuForm.mnuSelectorMenu)
     Else
     
         ' ensure that the associated forms pop to the front when the main gauge receives focus

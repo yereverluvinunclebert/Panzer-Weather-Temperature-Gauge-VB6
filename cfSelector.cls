@@ -652,6 +652,8 @@ Private Sub SelectorForm_MouseDown(ByRef Button As Integer, ByRef Shift As Integ
 
     If Button = vbRightButton Then
         gblOriginatingForm = "selectorForm"
+        menuForm.mnuCloseSelector.Visible = True
+        menuForm.mnuCloseWidget.Visible = False
         Call menuForm.PopupMenu(menuForm.mnuSelectorMenu)
     Else
     
