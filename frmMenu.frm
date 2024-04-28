@@ -255,6 +255,7 @@ Private Sub mnuChangeLocation_Click()
     
     'frmLocation.Show ' show the temporary VB6 form
     fSelector.SelectorForm.Show
+    fClipB.clipBForm.Show
     
     On Error GoTo 0
     Exit Sub

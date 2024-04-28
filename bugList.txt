@@ -36,13 +36,13 @@ help - done
 help CHM - done
 tested without using overlaySelect - done
 order of pointer and lamps on the main gauge - done
+correct the temperature values and the pointer relationship - done
 
 TODO
 
 fix population of the RC6 combobox - wip
 
 move the weather code to a separate module.bas or a class
-check the temperature values and the pointer relationship - test all
 
 add the clipboard
 add the text

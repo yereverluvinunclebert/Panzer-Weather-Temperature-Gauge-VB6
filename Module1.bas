@@ -1917,7 +1917,8 @@ Public Sub makeVisibleFormElements()
     fSelector.SelectorForm.Height = 800
     fSelector.SelectorForm.Left = formLeftPixels + fTemperature.temperatureGaugeForm.Width + 300
     fSelector.SelectorForm.Top = formTopPixels + 200
-    'fSelector.SelectorForm.Show
+    
+    
 
 
     On Error GoTo 0
@@ -2215,6 +2216,7 @@ Public Sub unloadAllForms(ByVal endItAll As Boolean)
     helpWidget.Widgets.RemoveAll
     fTemperature.temperatureGaugeForm.Widgets.RemoveAll
     fSelector.SelectorForm.Widgets.RemoveAll
+    fClipB.clipBForm.Widgets.RemoveAll
     
     ' unload the native VB6 forms
     
@@ -2229,6 +2231,7 @@ Public Sub unloadAllForms(ByVal endItAll As Boolean)
     fMain.helpForm.Unload
     fTemperature.temperatureGaugeForm.Unload
     fSelector.SelectorForm.Unload
+    fClipB.clipBForm.Unload
     fMain.licenceForm.Unload
     
     ' remove all variable references to each RC6 form in turn

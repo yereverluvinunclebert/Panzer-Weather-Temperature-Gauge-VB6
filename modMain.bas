@@ -42,9 +42,14 @@ Public overlayTemperatureWidget As cwOverlayTemp
 Public fSelector As New cfSelector
 Public overlaySelectorWidget As cwOverlaySelect
 
+Public fClipB As New cfClipB
+Public overlayClipbWidget As cwOverlayClipb
+
 Public sunriseSunset As cwSunriseSunset
 Public widgetName1 As String
 Public widgetName2 As String
+Public widgetName3 As String
+
 'Public startupFlg As Boolean
 
 Public firstPoll As Boolean
@@ -88,6 +93,8 @@ Public Sub mainRoutine(ByVal restart As Boolean)
     Dim extractCommand As String: extractCommand = vbNullString
     Dim thisPSDFullPath As String: thisPSDFullPath = vbNullString
     Dim selectorPSDFullPath As String: selectorPSDFullPath = vbNullString
+    Dim ClipBPSDFullPath As String: ClipBPSDFullPath = vbNullString
+
     Dim licenceState As Integer: licenceState = 0
 
     On Error GoTo main_routine_Error
@@ -97,7 +104,9 @@ Public Sub mainRoutine(ByVal restart As Boolean)
     
     widgetName2 = "ICAO Selector"
     selectorPSDFullPath = App.path & "\Res\Panzer Weather Selector VB6.psd"
-    'fSelector.FZ = 0.4
+    
+    widgetName3 = "Clipboard"
+    ClipBPSDFullPath = App.path & "\Res\Panzer Weather Clipboard VB6.psd"
     
     prefsCurrentWidth = 9075
     prefsCurrentHeight = 16450
@@ -149,12 +158,18 @@ Public Sub mainRoutine(ByVal restart As Boolean)
 
     'load the collection for storing the overlay surfaces with its relevant keys direct from the PSD
     If restart = False Then Call loadSelectorExcludePathCollection ' no need to reload the collSelectorPSDNonUIElements layer name keys on a reload
+
+    'load the collection for storing the overlay surfaces with its relevant keys direct from the PSD
+    If restart = False Then Call loadClipBExcludePathCollection ' no need to reload the collClipBPSDNonUIElements layer name keys on a reload
     
     ' start the load of the PSD file using the RC6 PSD-Parser.instance
     Call fTemperature.InitTemperatureFromPSD(thisPSDFullPath)  ' no optional close layer as 3rd param
 
     ' start the load of the PSD file using the RC6 PSD-Parser.instance
     Call fSelector.InitSelectorFromPSD(selectorPSDFullPath) ' no optional close layer as 3rd param
+
+    ' start the load of the PSD file using the RC6 PSD-Parser.instance
+    Call fClipB.InitClipBFromPSD(ClipBPSDFullPath) ' no optional close layer as 3rd param
     
     ' resolve VB6 sizing width bug
     Call determineScreenDimensions
@@ -175,6 +190,9 @@ Public Sub mainRoutine(ByVal restart As Boolean)
     
     ' set characteristics of widgets on the selector form
     Call adjustSelectorMainControls
+    
+    ' set characteristics of widgets on the clipboard form
+    Call adjustClipBMainControls
 
     ' move/hide onto/from the main screen
     Call mainScreen
@@ -461,6 +479,9 @@ End Sub
 Private Sub adjustSelectorMainControls()
     
     On Error GoTo adjustSelectorMainControls_Error
+    
+    fSelector.SelectorAdjustZoom val(100) / 100
+    
     With fSelector.SelectorForm.Widgets("optlocationgreen").Widget
         .HoverColor = 0 ' set the hover colour to grey - this may change later with new RC6
         .MousePointer = IDC_HAND
@@ -543,6 +564,61 @@ adjustSelectorMainControls_Error:
     MsgBox "Error " & Err.Number & " (" & Err.Description & ") in procedure adjustSelectorMainControls, line " & Erl & ". " & "Most likely a badly-named layer in the PSD file."
 
 End Sub
+
+
+
+'---------------------------------------------------------------------------------------
+' Procedure : adjustClipBMainControlsadjustClipBMainControls
+' Author    : Dean Beedell (yereverluvinunclebert)
+' Date      : 27/04/2023
+' Purpose   : called at runtime and on restart, sets the characteristics of the Clipboard, individual controls
+'---------------------------------------------------------------------------------------
+'
+Private Sub adjustClipBMainControls()
+    
+    On Error GoTo adjustClipBMainControls_Error
+    
+    fClipB.ClipBAdjustZoom val(100) / 100
+
+'    With fClipB.ClipBForm.Widgets("hourhand").Widget
+'        .HoverColor = 0 ' set the hover colour to grey - this may change later with new RC6
+'        .MousePointer = IDC_HAND
+'        .Alpha = val(PzGOpacity) / 100
+'        .Tag = 0.25
+'    End With
+'
+'    With fClipB.ClipBForm.Widgets("minhand").Widget
+'        .HoverColor = 0 ' set the hover colour to grey - this may change later with new RC6
+'        .MousePointer = IDC_HAND
+'        .Alpha = val(PzGOpacity) / 100
+'        .Tag = 0.25
+'    End With
+'
+'    With fClipB.ClipBForm.Widgets("clock").Widget
+'        .HoverColor = 0 ' set the hover colour to grey - this may change later with new RC6
+'        .MousePointer = IDC_HAND
+'        .Alpha = val(PzGOpacity) / 100
+'        .Tag = 0.25
+'    End With
+'
+    With fClipB.clipBForm.Widgets("clipboard").Widget
+        .HoverColor = 0 ' set the hover colour to grey - this may change later with new RC6
+        .MousePointer = IDC_HAND
+        .Alpha = val(PzGOpacity) / 100
+        .Tag = 0.25
+    End With
+
+    overlayClipbWidget.thisOpacity = val(PzGOpacity)
+    
+    On Error GoTo 0
+    Exit Sub
+
+adjustClipBMainControls_Error:
+
+    MsgBox "Error " & Err.Number & " (" & Err.Description & ") in procedure adjustClipBMainControls, line " & Erl & ". " & "Most likely a badly-named layer in the PSD file."
+
+End Sub
+
 '---------------------------------------------------------------------------------------
 ' Procedure : adjustTempMainControls
 ' Author    : Dean Beedell (yereverluvinunclebert)
@@ -558,7 +634,7 @@ Public Sub adjustTempMainControls()
     Call validateInputs
     
     fTemperature.AdjustZoom val(PzGTemperatureGaugeSize) / 100
-    fSelector.SelectorAdjustZoom val(100) / 100
+
 
     If PzGGaugeFunctions = "1" Then
         overlayTemperatureWidget.Ticking = True
@@ -1194,6 +1270,41 @@ loadSelectorExcludePathCollection_Error:
     MsgBox "Error " & Err.Number & " (" & Err.Description & ") in procedure loadSelectorExcludePathCollection of Module modMain"
 
 End Sub
+
+
+
+
+
+'---------------------------------------------------------------------------------------
+' Procedure : loadClipBExcludePathCollection
+' Author    : Dean Beedell (yereverluvinunclebert)
+' Date      : 30/07/2023
+' Purpose   : Do not create Widgets for those in the exclude list.
+'             all non UI-interacting elements (no mouse events) must be inserted here
+'---------------------------------------------------------------------------------------
+'
+Private Sub loadClipBExcludePathCollection()
+
+    'all of these will be rendered in cwOverlay in the same order as below
+    On Error GoTo loadClipBExcludePathCollection_Error
+
+    With fClipB.collClipBPSDNonUIElements ' the exclude list
+        .Add Empty, "hourhand"
+        .Add Empty, "minhand"
+        .Add Empty, "clock"
+        '.Add Empty, "clipboard"
+    End With
+
+   On Error GoTo 0
+   Exit Sub
+
+loadClipBExcludePathCollection_Error:
+
+    MsgBox "Error " & Err.Number & " (" & Err.Description & ") in procedure loadClipBExcludePathCollection of Module modMain"
+
+End Sub
+
+
 ''---------------------------------------------------------------------------------------
 '' Procedure : ExportPngs
 '' Author    : Olaf

@@ -147,10 +147,7 @@ Public Sub InitSelectorFromPSD(ByRef PSD_FileNameOrByteArray As Variant)
     sCmbMatchingLocations.Widget.FontName = "times new roman"
     sCmbMatchingLocations.Widget.Alpha = 0.5
     sCmbMatchingLocations.DropDown.Caption = "ICAO"
-    
-    'SelectorForm.Widgets("sCmbMatchingLocations").Widget.vi = False
-    
-     sCmbMatchingLocations.Widget.Visible = False ' dropdown is not visible
+    sCmbMatchingLocations.Widget.Visible = False ' dropdown is not visible
 
 
    On Error GoTo 0
@@ -689,7 +686,7 @@ Private Sub SelectorForm_MouseMove(ByRef Button As Integer, ByRef Shift As Integ
   
    On Error GoTo SelectorForm_MouseMove_Error
     
-    If overlayTemperatureWidget.Locked = True Then Exit Sub
+    If overlaySelectorWidget.Locked = True Then Exit Sub
     If PzGIgnoreMouse = "1" Then Exit Sub
 
     If Button = vbLeftButton And Not SelectorForm.ActiveWidget Is Nothing Then 'Form-Dragging (under certain conditions)

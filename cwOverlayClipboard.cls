@@ -6,14 +6,14 @@ BEGIN
   DataSourceBehavior  = 0  'vbNone
   MTSTransactionMode  = 0  'NotAnMTSObject
 END
-Attribute VB_Name = "cwOverlaySelect"
+Attribute VB_Name = "cwOverlayClipb"
 Attribute VB_GlobalNameSpace = False
-Attribute VB_Creatable = True
+Attribute VB_Creatable = False
 Attribute VB_PredeclaredId = False
 Attribute VB_Exposed = False
 '@IgnoreModule AssignmentNotUsed, IntegerDataType, ModuleWithoutFolder
 '---------------------------------------------------------------------------------------
-' Module    : cwOverlaySelect
+' Module    : cwOverlayClipb
 ' Author    : Dean Beedell (yereverluvinunclebert)
 ' Date      : 31/07/2023
 ' Purpose   : create a fully click-through Widget, which allows for all kind of
@@ -26,7 +26,7 @@ Attribute VB_Exposed = False
 Option Explicit
 
 'these Public Properties are set in the Parent (here, cfTemperature)
-Public cCollOverlaySelectorImages As cCollection
+Public cCollOverlayClipBImages As cCollection
 
 Public cxPerc As Single
 Public cyPerc As Single
@@ -63,7 +63,7 @@ Private Sub Class_Initialize()
 
 Class_Initialize_Error:
 
-    MsgBox "Error " & Err.Number & " (" & Err.Description & ") in procedure Class_Initialize of Class Module cwOverlaySelect"
+    MsgBox "Error " & Err.Number & " (" & Err.Description & ") in procedure Class_Initialize of Class Module cwOverlayClipb"
 End Sub
 
 '---------------------------------------------------------------------------------------
@@ -83,7 +83,7 @@ Public Property Get Widget() As cWidgetBase
 
 Widget_Error:
 
-    MsgBox "Error " & Err.Number & " (" & Err.Description & ") in procedure Widget of Class Module cwOverlaySelect"
+    MsgBox "Error " & Err.Number & " (" & Err.Description & ") in procedure Widget of Class Module cwOverlayClipb"
 End Property
 '---------------------------------------------------------------------------------------
 ' Procedure : Widgets
@@ -102,7 +102,7 @@ Public Property Get Widgets() As cWidgets
 
 Widgets_Error:
 
-    MsgBox "Error " & Err.Number & " (" & Err.Description & ") in procedure Widgets of Class Module cwOverlaySelect"
+    MsgBox "Error " & Err.Number & " (" & Err.Description & ") in procedure Widgets of Class Module cwOverlayClipb"
 End Property
 
 
@@ -123,7 +123,7 @@ Public Property Get Locked() As Boolean
 
 LockedGet_Error:
 
-    MsgBox "Error " & Err.Number & " (" & Err.Description & ") in Property Locked of Class Module cwOverlaySelect"
+    MsgBox "Error " & Err.Number & " (" & Err.Description & ") in Property Locked of Class Module cwOverlayClipb"
 End Property
 '---------------------------------------------------------------------------------------
 ' Property  : Locked
@@ -142,7 +142,7 @@ Public Property Let Locked(ByVal newValue As Boolean)
 
 LockedLet_Error:
 
-    MsgBox "Error " & Err.Number & " (" & Err.Description & ") in Property Locked of Class Module cwOverlaySelect"
+    MsgBox "Error " & Err.Number & " (" & Err.Description & ") in Property Locked of Class Module cwOverlayClipb"
 End Property
 
 
@@ -165,7 +165,7 @@ Public Property Get Hidden() As Boolean
 
 HiddenGet_Error:
 
-    MsgBox "Error " & Err.Number & " (" & Err.Description & ") in Property Hidden of Class Module cwOverlaySelect"
+    MsgBox "Error " & Err.Number & " (" & Err.Description & ") in Property Hidden of Class Module cwOverlayClipb"
 End Property
 '---------------------------------------------------------------------------------------
 ' Property  : Hidden
@@ -193,9 +193,47 @@ Public Property Let Hidden(ByVal newValue As Boolean)
 
 HiddenLet_Error:
 
-    MsgBox "Error " & Err.Number & " (" & Err.Description & ") in Property Hidden of Class Module cwOverlaySelect"
+    MsgBox "Error " & Err.Number & " (" & Err.Description & ") in Property Hidden of Class Module cwOverlayClipb"
 End Property
 
+'---------------------------------------------------------------------------------------
+' Property : thisOpacity
+' Author    : Dean Beedell (yereverluvinunclebert)
+' Date      : 17/05/2023
+' Purpose   :
+'---------------------------------------------------------------------------------------
+'
+Public Property Get thisOpacity() As String
+   On Error GoTo thisOpacityGet_Error
+
+    thisOpacity = mThisOpacity
+
+   On Error GoTo 0
+   Exit Property
+
+thisOpacityGet_Error:
+
+    MsgBox "Error " & Err.Number & " (" & Err.Description & ") in Property thisOpacity of Class Module cwOverlayTempTemperature"
+End Property
+'---------------------------------------------------------------------------------------
+' Property  : thisOpacity
+' Author    :
+' Date      : 09/05/2023
+' Purpose   :
+'---------------------------------------------------------------------------------------
+'
+Public Property Let thisOpacity(ByVal newValue As String)
+    On Error GoTo thisOpacityLet_Error
+
+    If mThisOpacity <> newValue Then mThisOpacity = newValue Else Exit Property
+        
+    On Error GoTo 0
+    Exit Property
+
+thisOpacityLet_Error:
+
+    MsgBox "Error " & Err.Number & " (" & Err.Description & ") in Property thisOpacity of Class Module cwOverlayTempTemperature"
+End Property
 
 '
 '---------------------------------------------------------------------------------------------
@@ -216,7 +254,7 @@ Private Sub W_HitTest(ByVal X As Single, ByVal Y As Single, HitResultHit As Bool
 
 W_HitTest_Error:
 
-    MsgBox "Error " & Err.Number & " (" & Err.Description & ") in procedure W_HitTest of Class Module cwOverlaySelect"
+    MsgBox "Error " & Err.Number & " (" & Err.Description & ") in procedure W_HitTest of Class Module cwOverlayClipb"
 End Sub
 
 
@@ -233,6 +271,7 @@ Private Sub W_Paint(CC As RC6.cCairoContext, ByVal xAbs As Single, ByVal yAbs As
     Dim key As String: key = vbNullString
     Dim Pat As cCairoPattern
         
+    Dim someOpacity As Double: someOpacity = 0
     Dim boxLeft As Integer: boxLeft = 0
     
     Dim cream As String: cream = vbNullString
@@ -250,10 +289,12 @@ Private Sub W_Paint(CC As RC6.cCairoContext, ByVal xAbs As Single, ByVal yAbs As
     W.FontBold = True
     W.SelectFontSettingsInto CC
     W.Refresh
-
-    For i = 0 To cCollOverlaySelectorImages.Count - 1 ' this is the ExcludedPaths collection populated in cfTemperature by duplicating collTemperaturePSDNonUIElements.
-      arr = cCollOverlaySelectorImages.ItemByIndex(i)
-      key = cCollOverlaySelectorImages.KeyByIndex(i)
+    someOpacity = (val(mThisOpacity) / 100) * 0.75
+    someOpacity = 1
+    
+    For i = 0 To cCollOverlayClipBImages.Count - 1 ' this is the ExcludedPaths collection populated in cfTemperature by duplicating collTemperaturePSDNonUIElements.
+      arr = cCollOverlayClipBImages.ItemByIndex(i)
+      key = cCollOverlayClipBImages.KeyByIndex(i)
       
       If IsArray(arr) Then
              CC.Save
@@ -263,15 +304,25 @@ Private Sub W_Paint(CC As RC6.cCairoContext, ByVal xAbs As Single, ByVal yAbs As
             ' for specific keys perform rotation actions, clock hands &c
              Select Case key
                  
-'                 Case "radioknobtwo"
-'
-'                    Set Pat.Matrix = Pat.Matrix.TranslateCoords(-arr(0), -arr(1))
-'                    CC.Paint arr(2), Pat ' render the Pattern
-'
-'                 Case "radioknobone"
-'
-'                    Set Pat.Matrix = Pat.Matrix.TranslateCoords(-arr(0), -arr(1))
-'                    CC.Paint arr(2), Pat ' render the Pattern
+                 Case "minhand"
+
+                    Set Pat.Matrix = Pat.Matrix.TranslateCoords(-arr(0), -arr(1))
+                    CC.Paint arr(2), Pat ' render the Pattern
+
+                 Case "hourhand"
+
+                    Set Pat.Matrix = Pat.Matrix.TranslateCoords(-arr(0), -arr(1))
+                    CC.Paint arr(2), Pat ' render the Pattern
+
+                 Case "clock"
+
+                    Set Pat.Matrix = Pat.Matrix.TranslateCoords(-arr(0), -arr(1))
+                    CC.Paint arr(2), Pat ' render the Pattern
+
+                 Case "clipboard"
+
+                    Set Pat.Matrix = Pat.Matrix.TranslateCoords(-arr(0), -arr(1))
+                    CC.Paint arr(2), Pat ' render the Pattern
                  
                     
                  Case Else 'plain output for everything else ... this includes the reflection-layers,
@@ -290,8 +341,9 @@ Private Sub W_Paint(CC As RC6.cCairoContext, ByVal xAbs As Single, ByVal yAbs As
 
 W_Paint_Error:
 
-    MsgBox "Error " & Err.Number & " (" & Err.Description & ") in procedure W_Paint of Class Module cwOverlaySelect"
+    MsgBox "Error " & Err.Number & " (" & Err.Description & ") in procedure W_Paint of Class Module cwOverlayClipb"
 End Sub
+
 
 
 
