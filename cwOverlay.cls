@@ -1637,6 +1637,12 @@ Private Sub myStatusProc()
     
     ' for setting the balloon tooltip using the TemperatureDetails property
     mTemperatureDetails = thisTooltip
+    
+    fClipB.sLblMETARText.Caption = mTemperatureDetails
+    
+'        fclibForm.
+'    sLblMETARText
+    'overlayTemperatureWidget.TemperatureDetails
 
     thisTemperature = temp_c
     weHaveData = True
@@ -1938,9 +1944,17 @@ Private Function fAddBaseCloudToSkyClarity(ByVal baseCloud As Integer, ByVal sky
     End If
     
     If PzGMetricImperial = "1" Then ' "metric"
-        skyClarityString = thisSkyClarity & " at " & interimString & " metres."
+        If interimString = vbNullString Then
+            skyClarityString = thisSkyClarity
+        Else
+            skyClarityString = thisSkyClarity & " at " & interimString & " metres."
+        End If
     Else
-        skyClarityString = thisSkyClarity & " at " & interimString & " ft."
+        If interimString = vbNullString Then
+            skyClarityString = thisSkyClarity
+        Else
+            skyClarityString = thisSkyClarity & " at " & interimString & " ft."
+        End If
     End If
     
     If debugFlg = 1 Then Debug.Print ("fAddBaseCloudToSkyClarity - skyClarityString " + skyClarityString)

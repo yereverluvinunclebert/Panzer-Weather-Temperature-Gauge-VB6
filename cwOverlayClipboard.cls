@@ -319,11 +319,11 @@ Private Sub W_Paint(CC As RC6.cCairoContext, ByVal xAbs As Single, ByVal yAbs As
                     Set Pat.Matrix = Pat.Matrix.TranslateCoords(-arr(0), -arr(1))
                     CC.Paint arr(2), Pat ' render the Pattern
 
-                 Case "clipboard"
-
-                    Set Pat.Matrix = Pat.Matrix.TranslateCoords(-arr(0), -arr(1))
-                    CC.Paint arr(2), Pat ' render the Pattern
-                 
+'                 Case "clipboard"
+'
+'                    Set Pat.Matrix = Pat.Matrix.TranslateCoords(-arr(0), -arr(1))
+'                    CC.Paint arr(2), Pat ' render the Pattern
+'
                     
                  Case Else 'plain output for everything else ... this includes the reflection-layers,
                      

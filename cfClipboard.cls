@@ -23,6 +23,8 @@ Option Explicit 'simple Alpha-Form (...to be filled with (mostly Img-) Content v
 
 Public WithEvents clipBForm As cWidgetForm
 Attribute clipBForm.VB_VarHelpID = -1
+Public sLblMETARText As cwLabel
+Attribute sLblMETARText.VB_VarHelpID = -1
 
 Public collClipBPSDNonUIElements As cCollection, ClipBFX As Long, ClipBFY As Long, ClipBFZ As Single  'available on the outside, even after the Form was closed
 
@@ -105,7 +107,7 @@ Public Sub InitClipBFromPSD(ByRef PSD_FileNameOrByteArray As Variant)
                             W.Alpha = 1
                         End If
                         
-                        W.Tag = 0.05
+                        W.Tag = 0.01
                         
                         ' set the default characteristics of the non-interactive areas
                         ' note: the clickable layers characteristics are set in adjustSelectMainControls
@@ -124,21 +126,19 @@ Public Sub InitClipBFromPSD(ByRef PSD_FileNameOrByteArray As Variant)
     Set overlayClipbWidget = clipBForm.Widgets.Add(New cwOverlayClipb, "ClipB", 0, 0, PSDWidth, PSDHeight)
     Set overlayClipbWidget.cCollOverlayClipBImages = collClipBPSDNonUIElements 'make the excluded PSD-Surface-Paths known to the Overlay-Widget
 
-'    Set sTxtICAOInput = fClipB.ClipBForm.Widgets.Add(New_W("cwTextBox"), "sTxtICAOInput", 195, 20, 118, 30)
-'    sTxtICAOInput.MultiLine = False
-'    sTxtICAOInput.Widget.FontSize = 15
-'    sTxtICAOInput.Widget.FontName = "times new roman"
-'    sTxtICAOInput.Widget.Alpha = 0.5
+    Set sLblMETARText = fClipB.clipBForm.Widgets.Add(New_W("cwLabel"), "sLblMETARText", 200, 145, 280, 420)
+    sLblMETARText.Widget.FontSize = 14
+    sLblMETARText.Widget.FontName = "courier new"
+    sLblMETARText.Widget.FontBold = True
+    sLblMETARText.Widget.Alpha = 0.6
+    sLblMETARText.borderWidth = 0
+    sLblMETARText.WordWrap = True
+    sLblMETARText.VAlign = True
+    sLblMETARText.Alignment = vbCenter
+    sLblMETARText.TextShadowColor = &H80000010
 
-' Cairo.ImageList.AddIconFromResourceFile "btnIco", "shell32", 167 'load some resource-Icon
-
-'    Set sCmbMatchingLocations = fClipB.ClipBForm.Widgets.Add(New_W("cwDropDownList"), "sCmbMatchingLocations", 110, 58, 235, 28)
-'    sCmbMatchingLocations.Widget.FontSize = 15
-'    sCmbMatchingLocations.Widget.FontName = "times new roman"
-'    sCmbMatchingLocations.Widget.Alpha = 0.5
-'    sCmbMatchingLocations.DropDown.Caption = "ICAO"
-'    sCmbMatchingLocations.Widget.Visible = False ' dropdown is not visible
-
+    sLblMETARText.Caption = "Obtaining Weather data from " & vbCrLf & "http://aviationweather.gov"
+    
 
    On Error GoTo 0
    Exit Sub
@@ -164,63 +164,17 @@ Private Sub ClipBForm_BubblingEvent(ByRef sender As Object, ByRef EventName As S
     
     If EventName = "W_MouseMove" Then
         Select Case LCase$(sender.Widget.key)
-            Case "clock"
-                If PzGEnableBalloonTooltips = "1" Then CreateToolTip clipBForm.hwnd, "Click me to select the currently displayed ICAO location.", _
-                     TTIconInfo, widgetName3 & " Select Button Help", , , , True
             Case "clipboard"
                 If PzGEnableBalloonTooltips = "1" Then CreateToolTip clipBForm.hwnd, " " _
-                    & "This is the Weather ClipB utility.  " _
-                    & " " _
-                    & "" & vbCrLf & vbCrLf _
-                    & "" _
-                    & vbCrLf & "" _
+                    & "This is the Weather Clipboard. It displays the current weather in a text form " _
+                    & "interpreted from the feed's METAR data. " _
+                    & "Copy the contents using the right click menu option - Copy METAR data - " _
+                    & "you can then paste the weather wherever you wish." & vbCrLf _
                     & vbCrLf & "(Right Click to open the menu and the preferences. CTRL+ Mouse scrollwheel UP/DOWN to resize)" _
-                    , TTIconInfo, widgetName3 & " Airport Selection Information.", , , , True
+                    , TTIconInfo, widgetName3 & " Weather Clipboard.", , , , True
         End Select
     End If
-    
-    If EventName = "W_MouseDown" Then
-        Select Case LCase$(sender.Widget.key)
-'            Case "sbtnselect"
-'               Call sbtnselect_mouseDown(sender)
-'            Case "sbtnexit"
-'               Call sbtnexit_mouseDown(sender)
-'            Case "sbtnsearch"
-'               Call sbtnsearch_mouseDown(sender)
-'            Case "optlocationred"
-'               Call optlocationred_mouseDown(sender)
-'            Case "opticaored"
-'               Call opticaored_mouseDown(sender)
-            Case Else
-                Debug.Print sender.Widget.key
-        End Select
-    End If
-    
-'    If EventName = "W_MouseUp" Then
-'        Select Case LCase$(sender.Widget.key)
-'            Case "housing/prefsbutton"
-'                sender.Widget.Alpha = val(PzGOpacity) / 100
-'                sender.Widget.Refresh
-'            Case "housing/switchfacesbutton"
-'               '  Call switchfacesbutton_mouseUp(sender)
-'            Case "housing/stopbutton"
-'               '  Call stopbutton_mouseUp(sender)
-'            Case Else
-'                Debug.Print sender.Widget.key
-'        End Select
-'    End If
-    
-'    If EventName = "W_Click" Then
-'        Select Case LCase$(sender.Widget.key)
-'            Case "housing/helpbutton"
-'                '  Call helpbutton_click
-'            Case "housing/startbutton"
-'                '  Call startbutton_click
-'            Case Else
-'                Debug.Print sender.Widget.key
-'        End Select
-'    End If
-   
+       
    On Error GoTo 0
    Exit Sub
 

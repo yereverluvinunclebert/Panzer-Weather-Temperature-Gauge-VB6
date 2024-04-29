@@ -601,12 +601,12 @@ Private Sub adjustClipBMainControls()
 '        .Tag = 0.25
 '    End With
 '
-'    With fClipB.clipBForm.Widgets("clipboard").Widget
-'        .HoverColor = 0 ' set the hover colour to grey - this may change later with new RC6
-'        .MousePointer = IDC_HAND
-'        .Alpha = val(PzGOpacity) / 100
-'        .Tag = 0.25
-'    End With
+    With fClipB.clipBForm.Widgets("clipboard").Widget
+        .HoverColor = 0 ' set the hover colour to grey - this may change later with new RC6
+        .MousePointer = IDC_HAND
+        .Alpha = val(PzGOpacity) / 100
+        .Tag = 0.25
+    End With
 
     overlayClipbWidget.thisOpacity = val(PzGOpacity)
     
@@ -1289,10 +1289,12 @@ Private Sub loadClipBExcludePathCollection()
     On Error GoTo loadClipBExcludePathCollection_Error
 
     With fClipB.collClipBPSDNonUIElements ' the exclude list
+
+        '.Add Empty, "clipboard"
+        .Add Empty, "clock"
         .Add Empty, "hourhand"
         .Add Empty, "minhand"
-        .Add Empty, "clock"
-        '.Add Empty, "clipboard"
+        .Add Empty, "text"
     End With
 
    On Error GoTo 0
