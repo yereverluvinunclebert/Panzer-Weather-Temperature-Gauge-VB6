@@ -102,14 +102,12 @@ The following is a code snippet that parses the XML weather data.
                 Next
             End If
           Next node
+    End If
+    On Error GoTo myStatusProc_Error ' restart error trapping
 
-End If
-
-On Error GoTo myStatusProc_Error ' restart error trapping
-
-'Cleanup
-Set nodeList = Nothing
-Set SkyConditions = Nothing
+    'Cleanup
+    Set nodeList = Nothing
+    Set SkyConditions = Nothing
 
 Hope the code is useful to anyone else building system metric utilities using VB6/VBS/VBA.
 
