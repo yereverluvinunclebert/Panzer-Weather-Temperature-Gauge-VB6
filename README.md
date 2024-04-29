@@ -55,45 +55,20 @@ The Panzer Weather Temperature Gauge VB6 is a useful utility displaying the Weat
            ' get the values from the XML data and return strings - the easy stuff first
 
             observation_time = node.selectSingleNode("observation_time").Text
-            If debugFlg = 1 Then Debug.Print ("%myStatusProc - observation_time " + observation_time)
-
             raw_text = node.selectSingleNode("raw_text").Text
-            If debugFlg = 1 Then Debug.Print "%myStatusProc - raw_text " & raw_text
-
             station_id = node.selectSingleNode("station_id").Text
-            If debugFlg = 1 Then Debug.Print "%myStatusProc - station_id " & station_id
-
             temp_c = Int(node.selectSingleNode("temp_c").Text)
-            If debugFlg = 1 Then Debug.Print ("%myStatusProc - temp_c " + temp_c)
-
             altim_in_hg = node.selectSingleNode("altim_in_hg").Text
-            If debugFlg = 1 Then Debug.Print ("%myStatusProc - altim_in_hg " + altim_in_hg)
-
             dewpoint_c = Int(node.selectSingleNode("dewpoint_c").Text)
-            If debugFlg = 1 Then Debug.Print ("%myStatusProc - dewpoint_c " + dewpoint_c)
-
             wind_dir_degrees = node.selectSingleNode("wind_dir_degrees").Text
-            If debugFlg = 1 Then Debug.Print ("%myStatusProc - wind_dir_degrees " + wind_dir_degrees)
-
             wind_speed_kt = node.selectSingleNode("wind_speed_kt").Text
-            If debugFlg = 1 Then Debug.Print ("%myStatusProc - wind_speed_kt " + wind_speed_kt)
-
             Latitude = node.selectSingleNode("latitude").Text
-            If debugFlg = 1 Then Debug.Print ("%myStatusProc - latitude " + Latitude)
-
             Longitude = node.selectSingleNode("longitude").Text
-            If debugFlg = 1 Then Debug.Print ("%myStatusProc - longitude " + Longitude)
-
             visibility_statute_mi = node.selectSingleNode("visibility_statute_mi").Text
-            If debugFlg = 1 Then Debug.Print ("%myStatusProc - visibility_statute_mi " + visibility_statute_mi)
 
             ' the On Error Resume Next above is for the next two optional items that may/may not appear in the returned XML
-
             wx_string = node.selectSingleNode("wx_string").Text
-            If debugFlg = 1 Then Debug.Print ("%myStatusProc - wx_string " + wx_string)
-
             precip_in = node.selectSingleNode("precip_in").Text
-            If debugFlg = 1 Then Debug.Print ("%myStatusProc - precip_in " + precip_in)
 
             'the first and lowest height cloudbase is the one that really counts but there could be as many as three sky cover reading
             'the highest and lowest need to be reported.
@@ -110,21 +85,17 @@ The Panzer Weather Temperature Gauge VB6 is a useful utility displaying the Weat
                     sky_condition_attributes_length = SkyCondition.Attributes.length  ' no of Attributes
                     If Not sky_condition_attributes_length = 0 Then
                         attributeCounter = 0 ' sky_cover
-                        'skyNodeName = SkyCondition.Attributes(attributeCounter).nodeName
                         skyNodeValue = SkyCondition.Attributes(attributeCounter).nodeValue
 
                         sky_condition_items(SkyConditionCounter) = skyNodeValue
                         sky_cover(SkyConditionCounter) = skyNodeValue
 
                         attributeCounter = 1 ' cloud_base_ft_agl
-                        'cloudNodeName = SkyCondition.Attributes(attributeCounter).nodeName
                         cloudNodeValue = SkyCondition.Attributes(attributeCounter).nodeValue
 
                         cloud_base_ft_agl(SkyConditionCounter) = cloudNodeValue
 
                     End If
-                    If debugFlg = 1 Then Debug.Print ("%myStatusProc - sky_condition, sky_cover " + sky_condition_items(SkyConditionCounter))
-                    If debugFlg = 1 Then Debug.Print ("%myStatusProc - sky_condition, cloud_base_ft_agl " + cloud_base_ft_agl(SkyConditionCounter))
                     SkyConditionCounter = SkyConditionCounter + 1
                 Next
             End If
