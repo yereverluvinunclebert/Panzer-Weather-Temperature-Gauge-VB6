@@ -18,6 +18,8 @@ I created as a variation of the previous gauges I had previously created for the
 
 The Panzer Weather Temperature Gauge VB6 is a useful utility displaying the Weather in your chosen locality in a dieselpunk fashion on your desktop. This Widget is a moveable widget that you can move anywhere around the desktop as you require. The Weather data is extracted via an XML request to/from aviation.gov. The program extracts the temperature and barometric data from that XML and displays it via analogue pointers on several desktop gauges.
 
+The following is a code snippet that parses the XML weather data.
+
     objxmldoc.async = True
     objxmldoc.LoadXML (myMSXML.responseText)
 
