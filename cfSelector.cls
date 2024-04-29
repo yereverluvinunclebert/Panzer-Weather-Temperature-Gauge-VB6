@@ -137,8 +137,12 @@ Public Sub InitSelectorFromPSD(ByRef PSD_FileNameOrByteArray As Variant)
     Set sTxtICAOInput = fSelector.SelectorForm.Widgets.Add(New_W("cwTextBox"), "sTxtICAOInput", 195, 20, 118, 30)
     sTxtICAOInput.MultiLine = False
     sTxtICAOInput.Widget.FontSize = 15
-    sTxtICAOInput.Widget.FontName = "times new roman"
-    sTxtICAOInput.Widget.Alpha = 0.5
+    sTxtICAOInput.Widget.FontName = "courier new"
+    sTxtICAOInput.Widget.FontBold = True
+    sTxtICAOInput.Widget.Alpha = 0.6
+
+    sTxtICAOInput.TextShadowColor = &H80000010
+    sTxtICAOInput.Widget.BackColor = -1
 
 ' Cairo.ImageList.AddIconFromResourceFile "btnIco", "shell32", 167 'load some resource-Icon
 

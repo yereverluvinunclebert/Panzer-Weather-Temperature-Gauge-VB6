@@ -1618,6 +1618,9 @@ Private Sub myStatusProc()
     ' set the hover over tooltips on the gauges
     thisTooltip = setHoverTooltip(precipitationDepth, visibilityDistance, skyClarityString, humidityValue, temperatureValue, pressureValue, weekDayDate, wind_dir_degrees, wind_speed_kt, precip_in, wx_string)
     thisTooltip = thisTooltip & vbCrLf & raw_text
+    
+    fClipB.sLblMETARText.Caption = thisTooltip
+    
     thisTooltip = thisTooltip & vbCrLf & vbCrLf & difString
 
     ' save the tooltip value so it can be used during the regular timed 60 second tooltip updates.
@@ -1638,7 +1641,7 @@ Private Sub myStatusProc()
     ' for setting the balloon tooltip using the TemperatureDetails property
     mTemperatureDetails = thisTooltip
     
-    fClipB.sLblMETARText.Caption = mTemperatureDetails
+
     
 '        fclibForm.
 '    sLblMETARText

@@ -126,19 +126,19 @@ Public Sub InitClipBFromPSD(ByRef PSD_FileNameOrByteArray As Variant)
     Set overlayClipbWidget = clipBForm.Widgets.Add(New cwOverlayClipb, "ClipB", 0, 0, PSDWidth, PSDHeight)
     Set overlayClipbWidget.cCollOverlayClipBImages = collClipBPSDNonUIElements 'make the excluded PSD-Surface-Paths known to the Overlay-Widget
 
-    Set sLblMETARText = fClipB.clipBForm.Widgets.Add(New_W("cwLabel"), "sLblMETARText", 200, 145, 280, 420)
-    sLblMETARText.Widget.FontSize = 14
+    Set sLblMETARText = fClipB.clipBForm.Widgets.Add(New_W("cwLabel"), "sLblMETARText", 185, 145, 295, 450)
+    sLblMETARText.Widget.FontSize = 13
     sLblMETARText.Widget.FontName = "courier new"
     sLblMETARText.Widget.FontBold = True
     sLblMETARText.Widget.Alpha = 0.6
     sLblMETARText.borderWidth = 0
     sLblMETARText.WordWrap = True
-    sLblMETARText.VAlign = True
+    sLblMETARText.VAlign = 0
     sLblMETARText.Alignment = vbCenter
     sLblMETARText.TextShadowColor = &H80000010
+    sLblMETARText.Widget.BackColor = -1
 
-    sLblMETARText.Caption = "Obtaining Weather data from " & vbCrLf & "http://aviationweather.gov"
-    
+    sLblMETARText.Caption = "Obtaining Weather data from " & "http://aviationweather.gov"
 
    On Error GoTo 0
    Exit Sub
@@ -167,7 +167,7 @@ Private Sub ClipBForm_BubblingEvent(ByRef sender As Object, ByRef EventName As S
             Case "clipboard"
                 If PzGEnableBalloonTooltips = "1" Then CreateToolTip clipBForm.hwnd, " " _
                     & "This is the Weather Clipboard. It displays the current weather in a text form " _
-                    & "interpreted from the feed's METAR data. " _
+                    & "interpreted from the chosen METAR data feed. " & vbCrLf _
                     & "Copy the contents using the right click menu option - Copy METAR data - " _
                     & "you can then paste the weather wherever you wish." & vbCrLf _
                     & vbCrLf & "(Right Click to open the menu and the preferences. CTRL+ Mouse scrollwheel UP/DOWN to resize)" _
