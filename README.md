@@ -2,7 +2,7 @@
 
 A FOSS Weather Temperature Gauge VB6 WoW64 Widget for Reactos, XP, Win7, 8 and 10/11+.
 
-My current VB6/RC6 PSD program being finished now, 86% complete now but on a single temperature gauge only - but complete with a partially working source selector and fully functional preference form, XML parser generating correct sunrise/sunset times, a textual METAR information sub-form and with a completed CHM help file. Awaiting the clock hands to indicate the correct time on the METAR data clock, the addition of four other gauges and then testing on laptops, testing on Windows XP/ReactOS and Win7 32bit, some multi-monitor checking, and the creation of the setup.exe. Quite a bit to do but it works and is operating on my desktop now.
+My current VB6/RC6 PSD program being finished now, 86% complete now but on a single temperature gauge only - but complete with a partially working source selector and fully functional preference form, XML parser generating correct sunrise/sunset times, a textual METAR information sub-form and a completed CHM help file. Awaiting the clock hands to indicate the correct time on the METAR data clock, moving the weather code to its own module, the addition of four other gauges and then testing on laptops, testing on Windows XP/ReactOS and Win7 32bit, some multi-monitor checking, and the creation of the setup.exe. A bit to do but it work now and is operating on my desktop.
 
 ![metar-prefs-001](https://github.com/yereverluvinunclebert/Panzer-Weather-Temperature-Gauge-VB6/assets/2788342/5a096cad-b8d0-4f85-aa6b-7d564a4cb194)
 
