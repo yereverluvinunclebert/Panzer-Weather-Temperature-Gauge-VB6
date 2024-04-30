@@ -288,7 +288,31 @@ ClipBForm_MouseWheel_Error:
     MsgBox "Error " & Err.Number & " (" & Err.Description & ") in procedure ClipBForm_MouseWheel of Class Module cfTemperature"
 End Sub
 
+''
+'---------------------------------------------------------------------------------------
+' Procedure : ClipBForm_MouseUp
+' Author    : Dean Beedell (yereverluvinunclebert)
+' Date      : 05/05/2023
+' Purpose   : save the form x,y position when ever the gauge/form is dragged
+'---------------------------------------------------------------------------------------
+'
+Private Sub ClipBForm_MouseUp(ByRef Button As Integer, ByRef Shift As Integer, ByRef X As Single, ByRef Y As Single)
+    On Error GoTo ClipBForm_MouseUp_Error
+    
+    Call saveClipboardGaugePosition
 
+    On Error GoTo 0
+    Exit Sub
+
+ClipBForm_MouseUp_Error:
+
+    With Err
+         If .Number <> 0 Then
+            MsgBox "Error " & Err.Number & " (" & Err.Description & ") in procedure ClipBForm_MouseUp of Class Module cfMain"
+            Resume Next
+          End If
+    End With
+End Sub
 
 '---------------------------------------------------------------------------------------
 ' Procedure : ClipBAdjustZoom

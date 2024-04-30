@@ -366,6 +366,13 @@ Public PzGTempFormHighDpiXPos As String
 Public PzGTempFormHighDpiYPos As String
 Public PzGTempFormLowDpiXPos As String
 Public PzGTempFormLowDpiYPos As String
+
+Public PzGClipBFormHighDpiXPos As String
+Public PzGClipBFormHighDpiYPos As String
+Public PzGClipBFormLowDpiXPos As String
+Public PzGClipBFormLowDpiYPos As String
+
+
 Public PzGLastSelectedTab As String
 Public PzGSkinTheme As String
 Public PzGUnhide As String
@@ -1883,43 +1890,61 @@ End Sub
 '
 Public Sub makeVisibleFormElements()
 
-    Dim temperatureFormLeftPixels As Long: temperatureFormLeftPixels = 0
-    Dim temperatureFormTopPixels As Long: temperatureFormTopPixels = 0
-    
+'    Dim temperatureFormLeftPixels As Long: temperatureFormLeftPixels = 0
+'    Dim temperatureFormTopPixels As Long: temperatureFormTopPixels = 0
+'
     Dim monitorCount As Long: monitorCount = 0
     
     On Error GoTo makeVisibleFormElements_Error
 
     'NOTE that when you position a widget you are positioning the form it is drawn upon.
 
-    If PzGDpiAwareness = "1" Then
-        temperatureFormLeftPixels = val(PzGTempFormHighDpiXPos)
-        temperatureFormTopPixels = val(PzGTempFormHighDpiYPos)
-    Else
-        temperatureFormLeftPixels = val(PzGTempFormLowDpiXPos)
-        temperatureFormTopPixels = val(PzGTempFormLowDpiYPos)
-    End If
+'    If PzGDpiAwareness = "1" Then
+'        temperatureFormLeftPixels = val(PzGTempFormHighDpiXPos)
+'        temperatureFormTopPixels = val(PzGTempFormHighDpiYPos)
+'    Else
+'        temperatureFormLeftPixels = val(PzGTempFormLowDpiXPos)
+'        temperatureFormTopPixels = val(PzGTempFormLowDpiYPos)
+'    End If
     
     ' The RC forms are measured in pixels, whereas the native forms are in twips, do remember that...
 
     monitorCount = fGetMonitorCount
     If monitorCount > 1 Then
-        Call adjustFormPositionToCorrectMonitor(fTemperature.temperatureGaugeForm.hwnd, temperatureFormLeftPixels, temperatureFormTopPixels)
+        Call adjustFormPositionToCorrectMonitor(fTemperature.temperatureGaugeForm.hwnd, val(PzGTempFormHighDpiXPos), val(PzGTempFormHighDpiYPos))
     Else
-        fTemperature.temperatureGaugeForm.Left = temperatureFormLeftPixels
-        fTemperature.temperatureGaugeForm.Top = temperatureFormTopPixels
+'        fTemperature.temperatureGaugeForm.Left = val(PzGTempFormHighDpiXPos)
+'        fTemperature.temperatureGaugeForm.Top = val(PzGTempFormHighDpiYPos)
+        
+        If PzGDpiAwareness = "1" Then
+            fTemperature.temperatureGaugeForm.Left = val(PzGTempFormHighDpiXPos)
+            fTemperature.temperatureGaugeForm.Top = val(PzGTempFormHighDpiYPos)
+        Else
+            fTemperature.temperatureGaugeForm.Left = val(PzGTempFormLowDpiXPos)
+            fTemperature.temperatureGaugeForm.Top = val(PzGTempFormLowDpiYPos)
+        End If
     End If
     
     fTemperature.temperatureGaugeForm.Show
     
-    fClipB.clipBForm.Left = temperatureFormLeftPixels + fTemperature.temperatureGaugeForm.Width + 300
-    fClipB.clipBForm.Top = temperatureFormTopPixels + 200
+    'fClipB.clipBForm.Left = temperatureFormLeftPixels + fTemperature.temperatureGaugeForm.Width + 300
+    'fClipB.clipBForm.Top = temperatureFormTopPixels + 200
+    
+
+    If PzGDpiAwareness = "1" Then
+        fClipB.clipBForm.Left = val(PzGClipBFormHighDpiXPos)
+        fClipB.clipBForm.Top = val(PzGClipBFormHighDpiYPos)
+    Else
+        fClipB.clipBForm.Left = val(PzGClipBFormLowDpiXPos)
+        fClipB.clipBForm.Top = val(PzGClipBFormLowDpiYPos)
+    End If
+    
     fClipB.clipBForm.Show
     
     fSelector.SelectorForm.Width = 1000
     fSelector.SelectorForm.Height = 800
-    fSelector.SelectorForm.Left = temperatureFormLeftPixels + fTemperature.temperatureGaugeForm.Width + 300
-    fSelector.SelectorForm.Top = temperatureFormTopPixels + 200
+    fSelector.SelectorForm.Left = val(PzGTempFormHighDpiXPos) + fTemperature.temperatureGaugeForm.Width + 300
+    fSelector.SelectorForm.Top = val(PzGTempFormHighDpiYPos) + 200
     
     
 
@@ -2185,7 +2210,7 @@ End Sub
 Public Sub thisForm_Unload() ' name follows VB6 standard naming convention
     On Error GoTo Form_Unload_Error
     
-    Call savePosition
+    Call saveTemperatureGaugePosition
     
     Call unloadAllForms(True)
 
@@ -2274,7 +2299,7 @@ Public Sub reloadWidget()
     
     On Error GoTo reloadWidget_Error
     
-    Call savePosition
+    Call saveTemperatureGaugePosition
     
     Call unloadAllForms(False) ' unload forms but do not END
     
@@ -2296,15 +2321,15 @@ reloadWidget_Error:
 End Sub
 
 '---------------------------------------------------------------------------------------
-' Procedure : savePosition
+' Procedure : saveTemperatureGaugePosition
 ' Author    : Dean Beedell (yereverluvinunclebert)
 ' Date      : 04/08/2023
 ' Purpose   :
 '---------------------------------------------------------------------------------------
 '
-Public Sub savePosition()
+Public Sub saveTemperatureGaugePosition()
 
-   On Error GoTo savePosition_Error
+   On Error GoTo saveTemperatureGaugePosition_Error
 
     If PzGDpiAwareness = "1" Then
         PzGTempFormHighDpiXPos = Str$(fTemperature.temperatureGaugeForm.Left) ' saving in pixels
@@ -2324,13 +2349,46 @@ Public Sub savePosition()
    On Error GoTo 0
    Exit Sub
 
-savePosition_Error:
+saveTemperatureGaugePosition_Error:
 
-    MsgBox "Error " & Err.Number & " (" & Err.Description & ") in procedure savePosition of Module Module1"
+    MsgBox "Error " & Err.Number & " (" & Err.Description & ") in procedure saveTemperatureGaugePosition of Module Module1"
     
 End Sub
     
+ '---------------------------------------------------------------------------------------
+' Procedure : saveClipboardGaugePosition
+' Author    : Dean Beedell (yereverluvinunclebert)
+' Date      : 04/08/2023
+' Purpose   :
+'---------------------------------------------------------------------------------------
+'
+Public Sub saveClipboardGaugePosition()
+
+   On Error GoTo saveClipboardGaugePosition_Error
+
+    If PzGDpiAwareness = "1" Then
+        PzGClipBFormHighDpiXPos = Str$(fClipB.clipBForm.Left) ' saving in pixels
+        PzGClipBFormHighDpiYPos = Str$(fClipB.clipBForm.Top)
+        sPutINISetting "Software\PzClipboard", "clipBFormHighDpiXPos", PzGClipBFormHighDpiXPos, PzGSettingsFile
+        sPutINISetting "Software\PzClipboard", "clipBFormHighDpiYPos", PzGClipBFormHighDpiYPos, PzGSettingsFile
+    Else
+        PzGClipBFormLowDpiXPos = Str$(fClipB.clipBForm.Left) ' saving in pixels
+        PzGClipBFormLowDpiYPos = Str$(fClipB.clipBForm.Top)
+        sPutINISetting "Software\PzClipboard", "clipBFormLowDpiXPos", PzGClipBFormLowDpiXPos, PzGSettingsFile
+        sPutINISetting "Software\PzClipboard", "clipBFormLowDpiYPos", PzGClipBFormLowDpiYPos, PzGSettingsFile
+    End If
     
+'    PzGClipboardSize = Str$(fClipB.clipBForm.WidgetRoot.Zoom * 100)
+'    sPutINISetting "Software\PzClipboard", "clipboardSize", PzGClipboardSize, PzGSettingsFile
+
+   On Error GoTo 0
+   Exit Sub
+
+saveClipboardGaugePosition_Error:
+
+    MsgBox "Error " & Err.Number & " (" & Err.Description & ") in procedure saveClipboardGaugePosition of Module Module1"
+    
+End Sub
 
 '---------------------------------------------------------------------------------------
 ' Procedure : makeProgramPreferencesAvailable

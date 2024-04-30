@@ -569,7 +569,7 @@ End Sub
 Private Sub temperatureGaugeForm_MouseUp(ByRef Button As Integer, ByRef Shift As Integer, ByRef X As Single, ByRef Y As Single)
     On Error GoTo temperatureGaugeForm_MouseUp_Error
     
-    Call savePosition
+    Call saveTemperatureGaugePosition
 
     On Error GoTo 0
     Exit Sub

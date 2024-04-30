@@ -345,9 +345,13 @@ Private Sub initialiseGlobalVars()
     
     PzGTempFormHighDpiXPos = vbNullString
     PzGTempFormHighDpiYPos = vbNullString
-    
     PzGTempFormLowDpiXPos = vbNullString
     PzGTempFormLowDpiYPos = vbNullString
+    
+    PzGClipBFormHighDpiXPos = vbNullString
+    PzGClipBFormHighDpiYPos = vbNullString
+    PzGClipBFormLowDpiXPos = vbNullString
+    PzGClipBFormLowDpiYPos = vbNullString
     
     PzGLastSelectedTab = vbNullString
     PzGSkinTheme = vbNullString
@@ -848,9 +852,15 @@ Public Sub readSettingsFile(ByVal location As String, ByVal PzGSettingsFile As S
         ' other
         PzGTempFormHighDpiXPos = fGetINISetting("Software\PzTemperatureGauge", "tempFormHighDpiXPos", PzGSettingsFile)
         PzGTempFormHighDpiYPos = fGetINISetting("Software\PzTemperatureGauge", "tempFormHighDpiYPos", PzGSettingsFile)
-        
         PzGTempFormLowDpiXPos = fGetINISetting("Software\PzTemperatureGauge", "tempFormLowDpiXPos", PzGSettingsFile)
         PzGTempFormLowDpiYPos = fGetINISetting("Software\PzTemperatureGauge", "tempFormLowDpiYPos", PzGSettingsFile)
+        
+        ' other
+        PzGClipBFormHighDpiXPos = fGetINISetting("Software\PzClipboard", "clipBFormHighDpiXPos", PzGSettingsFile)
+        PzGClipBFormHighDpiYPos = fGetINISetting("Software\PzClipboard", "clipBFormHighDpiYPos", PzGSettingsFile)
+        PzGClipBFormLowDpiXPos = fGetINISetting("Software\PzClipboard", "clipBFormLowDpiXPos", PzGSettingsFile)
+        PzGClipBFormLowDpiYPos = fGetINISetting("Software\PzClipboard", "clipBFormLowDpiYPos", PzGSettingsFile)
+        
         
         PzGLastSelectedTab = fGetINISetting(location, "lastSelectedTab", PzGSettingsFile)
         PzGSkinTheme = fGetINISetting(location, "skinTheme", PzGSettingsFile)
