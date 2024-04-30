@@ -393,7 +393,11 @@ Private Sub lockbutton_mouseDown(ByRef sender As Object)
         sender.Widget.Alpha = val(PzGOpacity) / 100
     End If
     sender.Widget.Refresh ' this removes the delay in the lockButton depressing
-    Call lockWidget
+    If PzGPreventDragging = "1" Then
+        overlayAnemoWidget.Locked = False
+    Else
+        overlayAnemoWidget.Locked = True
+    End If
     
    On Error GoTo 0
    Exit Sub
@@ -562,7 +566,7 @@ End Sub
 Private Sub anemometerGaugeForm_MouseUp(ByRef Button As Integer, ByRef Shift As Integer, ByRef X As Single, ByRef Y As Single)
     On Error GoTo anemometerGaugeForm_MouseUp_Error
     
-    'Call saveAnemometerGaugePosition
+    Call saveAnemometerGaugePosition
 
     On Error GoTo 0
     Exit Sub
@@ -677,9 +681,10 @@ Public Sub AdjustZoom(ByVal NewZoom As Single)
       anemometerGaugeForm.Move anemometerGaugeForm.Left, anemometerGaugeForm.Top, PSDWidth * anemometerGaugeForm.WidgetRoot.Zoom, PSDHeight * anemometerGaugeForm.WidgetRoot.Zoom
     
       ' when resized from the gauge scroll up/down it needs to write it back so the size is correct when prefs opened.
-      'PzGAnemometerGaugeSize = LTrim$(Str$(NewZoom * 100))
+      PzGAnemometerGaugeSize = LTrim$(Str$(NewZoom * 100))
       'If panzerPrefs.IsVisible = True Then panzerPrefs.sliAnemometerGaugeSize.Value = val(PzGAnemometerGaugeSize)
-
+    
+      sPutINISetting "Software\PzAnemometerGauge", "anemometerGaugeSize", PzGAnemometerGaugeSize, PzGSettingsFile
     
    On Error GoTo 0
    Exit Sub

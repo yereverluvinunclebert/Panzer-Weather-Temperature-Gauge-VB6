@@ -400,7 +400,11 @@ Private Sub lockbutton_mouseDown(ByRef sender As Object)
         sender.Widget.Alpha = val(PzGOpacity) / 100
     End If
     sender.Widget.Refresh ' this removes the delay in the lockButton depressing
-    Call lockWidget
+    If PzGPreventDragging = "1" Then
+        overlayTemperatureWidget.Locked = False
+    Else
+        overlayTemperatureWidget.Locked = True
+    End If
     
    On Error GoTo 0
    Exit Sub
@@ -678,14 +682,16 @@ End Sub
 Public Sub AdjustZoom(ByVal NewZoom As Single)
    On Error GoTo AdjustZoom_Error
 
-      FZ = NewZoom
-      If FZ < 0.05 Then FZ = 0.05 Else If FZ > 3 Then FZ = 3 'keep FZ within a sane ZoomInterval
-      temperatureGaugeForm.WidgetRoot.Zoom = FZ '* temperatureGaugeForm.WidgetRoot.CurrentMonitor.Zoom '<-- if the multiplicator is activated, we'd have DPI-awareness on high-res monitors
-      temperatureGaugeForm.Move temperatureGaugeForm.Left, temperatureGaugeForm.Top, PSDWidth * temperatureGaugeForm.WidgetRoot.Zoom, PSDHeight * temperatureGaugeForm.WidgetRoot.Zoom
+    FZ = NewZoom
+    If FZ < 0.05 Then FZ = 0.05 Else If FZ > 3 Then FZ = 3 'keep FZ within a sane ZoomInterval
+    temperatureGaugeForm.WidgetRoot.Zoom = FZ '* temperatureGaugeForm.WidgetRoot.CurrentMonitor.Zoom '<-- if the multiplicator is activated, we'd have DPI-awareness on high-res monitors
+    temperatureGaugeForm.Move temperatureGaugeForm.Left, temperatureGaugeForm.Top, PSDWidth * temperatureGaugeForm.WidgetRoot.Zoom, PSDHeight * temperatureGaugeForm.WidgetRoot.Zoom
+  
+    ' when resized from the gauge scroll up/down it needs to write it back so the size is correct when prefs opened.
+    PzGTemperatureGaugeSize = LTrim$(Str$(NewZoom * 100))
+    If panzerPrefs.IsVisible = True Then panzerPrefs.sliTemperatureGaugeSize.Value = val(PzGTemperatureGaugeSize)
     
-      ' when resized from the gauge scroll up/down it needs to write it back so the size is correct when prefs opened.
-      PzGTemperatureGaugeSize = LTrim$(Str$(NewZoom * 100))
-      If panzerPrefs.IsVisible = True Then panzerPrefs.sliTemperatureGaugeSize.Value = val(PzGTemperatureGaugeSize)
+    sPutINISetting "Software\PzTemperatureGauge", "temperatureGaugeSize", PzGTemperatureGaugeSize, PzGSettingsFile
 
     
    On Error GoTo 0
@@ -726,4 +732,4 @@ W_MouseDown_Error:
     MsgBox "Error " & Err.Number & " (" & Err.Description & ") in procedure W_MouseDown of Class Module cwOverlayTemp"
 End Sub
 
-'Private Sub temperatureGaugeForm_
+

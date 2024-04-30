@@ -301,6 +301,7 @@ Private Sub initialiseGlobalVars()
     PzGDpiAwareness = vbNullString
     
     PzGTemperatureGaugeSize = vbNullString
+    PzGAnemometerGaugeSize = vbNullString
     PzGClipBSize = vbNullString
     PzGSelectorSize = vbNullString
     
@@ -353,10 +354,15 @@ Private Sub initialiseGlobalVars()
     PzGTrinketsDir = vbNullString
     PzGTrinketsFile = vbNullString
     
-    PzGTempFormHighDpiXPos = vbNullString
-    PzGTempFormHighDpiYPos = vbNullString
-    PzGTempFormLowDpiXPos = vbNullString
-    PzGTempFormLowDpiYPos = vbNullString
+    PzGTemperatureFormHighDpiXPos = vbNullString
+    PzGTemperatureFormHighDpiYPos = vbNullString
+    PzGTemperatureFormLowDpiXPos = vbNullString
+    PzGTemperatureFormLowDpiYPos = vbNullString
+    
+    PzGAnemometerFormHighDpiXPos = vbNullString
+    PzGAnemometerFormHighDpiYPos = vbNullString
+    PzGAnemometerFormLowDpiXPos = vbNullString
+    PzGAnemometerFormLowDpiYPos = vbNullString
     
     PzGClipBFormHighDpiXPos = vbNullString
     PzGClipBFormHighDpiYPos = vbNullString
@@ -786,7 +792,7 @@ Public Sub adjustAnemometerMainControls()
     ' validate the inputs of any data from the input settings file
     'Call validateInputs
     
-    fAnemometer.AdjustZoom val(PzGTemperatureGaugeSize) / 100
+    fAnemometer.AdjustZoom val(PzGAnemometerGaugeSize) / 100
 
     If PzGGaugeFunctions = "1" Then
         overlayAnemoWidget.Ticking = True
@@ -956,6 +962,8 @@ Public Sub readSettingsFile(ByVal location As String, ByVal PzGSettingsFile As S
         PzGDpiAwareness = fGetINISetting(location, "dpiAwareness", PzGSettingsFile)
         
         PzGTemperatureGaugeSize = fGetINISetting(location, "temperatureGaugeSize", PzGSettingsFile)
+        PzGAnemometerGaugeSize = fGetINISetting("Software\PzAnemometerGauge", "anemometerGaugeSize", PzGSettingsFile)
+        
         PzGClipBSize = fGetINISetting("Software\PzClipB", "clipBSize", PzGSettingsFile)
         PzGSelectorSize = fGetINISetting("Software\PzSelector", "selectorSize", PzGSettingsFile)
         
@@ -992,11 +1000,17 @@ Public Sub readSettingsFile(ByVal location As String, ByVal PzGSettingsFile As S
         PzGDefaultEditor = fGetINISetting(location, "defaultEditor", PzGSettingsFile)
         
         ' other
-        PzGTempFormHighDpiXPos = fGetINISetting("Software\PzTemperatureGauge", "tempFormHighDpiXPos", PzGSettingsFile)
-        PzGTempFormHighDpiYPos = fGetINISetting("Software\PzTemperatureGauge", "tempFormHighDpiYPos", PzGSettingsFile)
-        PzGTempFormLowDpiXPos = fGetINISetting("Software\PzTemperatureGauge", "tempFormLowDpiXPos", PzGSettingsFile)
-        PzGTempFormLowDpiYPos = fGetINISetting("Software\PzTemperatureGauge", "tempFormLowDpiYPos", PzGSettingsFile)
+        PzGTemperatureFormHighDpiXPos = fGetINISetting("Software\PzTemperatureGauge", "temperatureFormHighDpiXPos", PzGSettingsFile)
+        PzGTemperatureFormHighDpiYPos = fGetINISetting("Software\PzTemperatureGauge", "temperatureFormHighDpiYPos", PzGSettingsFile)
+        PzGTemperatureFormLowDpiXPos = fGetINISetting("Software\PzTemperatureGauge", "temperatureFormLowDpiXPos", PzGSettingsFile)
+        PzGTemperatureFormLowDpiYPos = fGetINISetting("Software\PzTemperatureGauge", "temperatureFormLowDpiYPos", PzGSettingsFile)
         
+        ' other
+        PzGAnemometerFormHighDpiXPos = fGetINISetting("Software\PzAnemometerGauge", "anemometerFormHighDpiXPos", PzGSettingsFile)
+        PzGAnemometerFormHighDpiYPos = fGetINISetting("Software\PzAnemometerGauge", "anemometerFormHighDpiYPos", PzGSettingsFile)
+        PzGAnemometerFormLowDpiXPos = fGetINISetting("Software\PzAnemometerGauge", "anemometerFormLowDpiXPos", PzGSettingsFile)
+        PzGAnemometerFormLowDpiYPos = fGetINISetting("Software\PzAnemometerGauge", "anemometerFormLowDpiYPos", PzGSettingsFile)
+                
         ' other
         PzGClipBFormHighDpiXPos = fGetINISetting("Software\PzClipB", "clipBFormHighDpiXPos", PzGSettingsFile)
         PzGClipBFormHighDpiYPos = fGetINISetting("Software\PzClipB", "clipBFormHighDpiYPos", PzGSettingsFile)
@@ -1082,7 +1096,9 @@ Public Sub validateInputs()
     If PzGEnableBalloonTooltips = vbNullString Then PzGEnableBalloonTooltips = "1"
     If PzGShowTaskbar = vbNullString Then PzGShowTaskbar = "0"
     If PzGDpiAwareness = vbNullString Then PzGDpiAwareness = "0"
-    If PzGTemperatureGaugeSize = vbNullString Then PzGTemperatureGaugeSize = "25"
+    If PzGTemperatureGaugeSize = vbNullString Then PzGTemperatureGaugeSize = "50"
+    If PzGAnemometerGaugeSize = vbNullString Then PzGAnemometerGaugeSize = "50"
+    
     If PzGClipBSize = vbNullString Then PzGClipBSize = "50"
     If PzGSelectorSize = vbNullString Then PzGSelectorSize = "100"
     

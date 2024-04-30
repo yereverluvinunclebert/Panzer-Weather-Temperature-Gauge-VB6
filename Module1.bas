@@ -313,6 +313,8 @@ Public PzGShowTaskbar As String
 Public PzGDpiAwareness As String
 
 Public PzGTemperatureGaugeSize As String
+Public PzGAnemometerGaugeSize As String
+
 Public PzGClipBSize As String
 Public PzGSelectorSize As String
 
@@ -365,10 +367,15 @@ Public PzGSettingsFile As String
 Public PzGTrinketsDir      As String
 Public PzGTrinketsFile      As String
 
-Public PzGTempFormHighDpiXPos As String
-Public PzGTempFormHighDpiYPos As String
-Public PzGTempFormLowDpiXPos As String
-Public PzGTempFormLowDpiYPos As String
+Public PzGTemperatureFormHighDpiXPos As String
+Public PzGTemperatureFormHighDpiYPos As String
+Public PzGTemperatureFormLowDpiXPos As String
+Public PzGTemperatureFormLowDpiYPos As String
+
+Public PzGAnemometerFormHighDpiXPos As String
+Public PzGAnemometerFormHighDpiYPos As String
+Public PzGAnemometerFormLowDpiXPos As String
+Public PzGAnemometerFormLowDpiYPos As String
 
 Public PzGClipBFormHighDpiXPos As String
 Public PzGClipBFormHighDpiYPos As String
@@ -1908,28 +1915,28 @@ Public Sub makeVisibleFormElements()
     'NOTE that when you position a widget you are positioning the form it is drawn upon.
 
 '    If PzGDpiAwareness = "1" Then
-'        temperatureFormLeftPixels = val(PzGTempFormHighDpiXPos)
-'        temperatureFormTopPixels = val(PzGTempFormHighDpiYPos)
+'        temperatureFormLeftPixels = val(PzGTemperatureFormHighDpiXPos)
+'        temperatureFormTopPixels = val(PzGTemperatureFormHighDpiYPos)
 '    Else
-'        temperatureFormLeftPixels = val(PzGTempFormLowDpiXPos)
-'        temperatureFormTopPixels = val(PzGTempFormLowDpiYPos)
+'        temperatureFormLeftPixels = val(PzGTemperatureFormLowDpiXPos)
+'        temperatureFormTopPixels = val(PzGTemperatureFormLowDpiYPos)
 '    End If
     
     ' The RC forms are measured in pixels, whereas the native forms are in twips, do remember that...
 
     monitorCount = fGetMonitorCount
     If monitorCount > 1 Then
-        Call adjustFormPositionToCorrectMonitor(fTemperature.temperatureGaugeForm.hwnd, val(PzGTempFormHighDpiXPos), val(PzGTempFormHighDpiYPos))
+        Call adjustFormPositionToCorrectMonitor(fTemperature.temperatureGaugeForm.hwnd, val(PzGTemperatureFormHighDpiXPos), val(PzGTemperatureFormHighDpiYPos))
     Else
-'        fTemperature.temperatureGaugeForm.Left = val(PzGTempFormHighDpiXPos)
-'        fTemperature.temperatureGaugeForm.Top = val(PzGTempFormHighDpiYPos)
+'        fTemperature.temperatureGaugeForm.Left = val(PzGTemperatureFormHighDpiXPos)
+'        fTemperature.temperatureGaugeForm.Top = val(PzGTemperatureFormHighDpiYPos)
         
         If PzGDpiAwareness = "1" Then
-            fTemperature.temperatureGaugeForm.Left = val(PzGTempFormHighDpiXPos)
-            fTemperature.temperatureGaugeForm.Top = val(PzGTempFormHighDpiYPos)
+            fTemperature.temperatureGaugeForm.Left = val(PzGTemperatureFormHighDpiXPos)
+            fTemperature.temperatureGaugeForm.Top = val(PzGTemperatureFormHighDpiYPos)
         Else
-            fTemperature.temperatureGaugeForm.Left = val(PzGTempFormLowDpiXPos)
-            fTemperature.temperatureGaugeForm.Top = val(PzGTempFormLowDpiYPos)
+            fTemperature.temperatureGaugeForm.Left = val(PzGTemperatureFormLowDpiXPos)
+            fTemperature.temperatureGaugeForm.Top = val(PzGTemperatureFormLowDpiYPos)
         End If
     End If
     
@@ -1950,9 +1957,8 @@ Public Sub makeVisibleFormElements()
     
     fSelector.SelectorForm.Width = 1000
     fSelector.SelectorForm.Height = 800
-'    fSelector.SelectorForm.Left = val(PzGTempFormHighDpiXPos) + fTemperature.temperatureGaugeForm.Width + 300
-'    fSelector.SelectorForm.Top = val(PzGTempFormHighDpiYPos) + 200
-    
+'    fSelector.SelectorForm.Left = val(PzGTemperatureFormHighDpiXPos) + fTemperature.temperatureGaugeForm.Width + 300
+'    fSelector.SelectorForm.Top = val(PzGTemperatureFormHighDpiYPos) + 200
     
     If PzGDpiAwareness = "1" Then
         fSelector.SelectorForm.Left = val(PzGSelectorFormHighDpiXPos)
@@ -1963,6 +1969,14 @@ Public Sub makeVisibleFormElements()
     End If
 
 
+    
+    If PzGDpiAwareness = "1" Then
+        fAnemometer.anemometerGaugeForm.Left = val(PzGAnemometerFormHighDpiXPos)
+        fAnemometer.anemometerGaugeForm.Top = val(PzGAnemometerFormHighDpiYPos)
+    Else
+        fAnemometer.anemometerGaugeForm.Left = val(PzGAnemometerFormLowDpiXPos)
+        fAnemometer.anemometerGaugeForm.Top = val(PzGAnemometerFormLowDpiYPos)
+    End If
     
     fAnemometer.anemometerGaugeForm.Show
 
@@ -2228,6 +2242,7 @@ Public Sub thisForm_Unload() ' name follows VB6 standard naming convention
     On Error GoTo Form_Unload_Error
     
     Call saveTemperatureGaugePosition
+    Call saveAnemometerGaugePosition
     
     Call unloadAllForms(True)
 
@@ -2260,6 +2275,7 @@ Public Sub unloadAllForms(ByVal endItAll As Boolean)
     aboutWidget.Widgets.RemoveAll
     helpWidget.Widgets.RemoveAll
     fTemperature.temperatureGaugeForm.Widgets.RemoveAll
+    fAnemometer.anemometerGaugeForm.Widgets.RemoveAll
     fSelector.SelectorForm.Widgets.RemoveAll
     fClipB.clipBForm.Widgets.RemoveAll
     
@@ -2275,6 +2291,7 @@ Public Sub unloadAllForms(ByVal endItAll As Boolean)
     fMain.aboutForm.Unload  ' RC6's own method for killing forms
     fMain.helpForm.Unload
     fTemperature.temperatureGaugeForm.Unload
+    fAnemometer.anemometerGaugeForm.Unload
     fSelector.SelectorForm.Unload
     fClipB.clipBForm.Unload
     fMain.licenceForm.Unload
@@ -2285,6 +2302,7 @@ Public Sub unloadAllForms(ByVal endItAll As Boolean)
     Set fMain.aboutForm = Nothing
     Set fMain.helpForm = Nothing
     Set fTemperature.temperatureGaugeForm = Nothing
+    Set fAnemometer.anemometerGaugeForm = Nothing
     Set fSelector.SelectorForm = Nothing
     Set fMain.licenceForm = Nothing
     
@@ -2317,6 +2335,7 @@ Public Sub reloadWidget()
     On Error GoTo reloadWidget_Error
     
     Call saveTemperatureGaugePosition
+    Call saveAnemometerGaugePosition
     
     Call unloadAllForms(False) ' unload forms but do not END
     
@@ -2349,15 +2368,15 @@ Public Sub saveTemperatureGaugePosition()
    On Error GoTo saveTemperatureGaugePosition_Error
 
     If PzGDpiAwareness = "1" Then
-        PzGTempFormHighDpiXPos = Str$(fTemperature.temperatureGaugeForm.Left) ' saving in pixels
-        PzGTempFormHighDpiYPos = Str$(fTemperature.temperatureGaugeForm.Top)
-        sPutINISetting "Software\PzTemperatureGauge", "tempFormHighDpiXPos", PzGTempFormHighDpiXPos, PzGSettingsFile
-        sPutINISetting "Software\PzTemperatureGauge", "tempFormHighDpiYPos", PzGTempFormHighDpiYPos, PzGSettingsFile
+        PzGTemperatureFormHighDpiXPos = Str$(fTemperature.temperatureGaugeForm.Left) ' saving in pixels
+        PzGTemperatureFormHighDpiYPos = Str$(fTemperature.temperatureGaugeForm.Top)
+        sPutINISetting "Software\PzTemperatureGauge", "temperatureFormHighDpiXPos", PzGTemperatureFormHighDpiXPos, PzGSettingsFile
+        sPutINISetting "Software\PzTemperatureGauge", "temperatureFormHighDpiYPos", PzGTemperatureFormHighDpiYPos, PzGSettingsFile
     Else
-        PzGTempFormLowDpiXPos = Str$(fTemperature.temperatureGaugeForm.Left) ' saving in pixels
-        PzGTempFormLowDpiYPos = Str$(fTemperature.temperatureGaugeForm.Top)
-        sPutINISetting "Software\PzTemperatureGauge", "tempFormLowDpiXPos", PzGTempFormLowDpiXPos, PzGSettingsFile
-        sPutINISetting "Software\PzTemperatureGauge", "tempFormLowDpiYPos", PzGTempFormLowDpiYPos, PzGSettingsFile
+        PzGTemperatureFormLowDpiXPos = Str$(fTemperature.temperatureGaugeForm.Left) ' saving in pixels
+        PzGTemperatureFormLowDpiYPos = Str$(fTemperature.temperatureGaugeForm.Top)
+        sPutINISetting "Software\PzTemperatureGauge", "temperatureFormLowDpiXPos", PzGTemperatureFormLowDpiXPos, PzGSettingsFile
+        sPutINISetting "Software\PzTemperatureGauge", "temperatureFormLowDpiYPos", PzGTemperatureFormLowDpiYPos, PzGSettingsFile
     End If
     
     PzGTemperatureGaugeSize = Str$(fTemperature.temperatureGaugeForm.WidgetRoot.Zoom * 100)
@@ -2369,6 +2388,41 @@ Public Sub saveTemperatureGaugePosition()
 saveTemperatureGaugePosition_Error:
 
     MsgBox "Error " & Err.Number & " (" & Err.Description & ") in procedure saveTemperatureGaugePosition of Module Module1"
+    
+End Sub
+
+'---------------------------------------------------------------------------------------
+' Procedure : saveAnemometerGaugePosition
+' Author    : Dean Beedell (yereverluvinunclebert)
+' Date      : 04/08/2023
+' Purpose   :
+'---------------------------------------------------------------------------------------
+'
+Public Sub saveAnemometerGaugePosition()
+
+   On Error GoTo saveAnemometerGaugePosition_Error
+
+    If PzGDpiAwareness = "1" Then
+        PzGAnemometerFormHighDpiXPos = Str$(fAnemometer.anemometerGaugeForm.Left) ' saving in pixels
+        PzGAnemometerFormHighDpiYPos = Str$(fAnemometer.anemometerGaugeForm.Top)
+        sPutINISetting "Software\PzAnemometerGauge", "anemometerFormHighDpiXPos", PzGAnemometerFormHighDpiXPos, PzGSettingsFile
+        sPutINISetting "Software\PzAnemometerGauge", "anemometerFormHighDpiYPos", PzGAnemometerFormHighDpiYPos, PzGSettingsFile
+    Else
+        PzGAnemometerFormLowDpiXPos = Str$(fAnemometer.anemometerGaugeForm.Left) ' saving in pixels
+        PzGAnemometerFormLowDpiYPos = Str$(fAnemometer.anemometerGaugeForm.Top)
+        sPutINISetting "Software\PzAnemometerGauge", "anemometerFormLowDpiXPos", PzGAnemometerFormLowDpiXPos, PzGSettingsFile
+        sPutINISetting "Software\PzAnemometerGauge", "anemometerFormLowDpiYPos", PzGAnemometerFormLowDpiYPos, PzGSettingsFile
+    End If
+    
+    PzGAnemometerGaugeSize = Str$(fAnemometer.anemometerGaugeForm.WidgetRoot.Zoom * 100)
+    sPutINISetting "Software\PzAnemometerGauge", "anemometerGaugeSize", PzGAnemometerGaugeSize, PzGSettingsFile
+
+   On Error GoTo 0
+   Exit Sub
+
+saveAnemometerGaugePosition_Error:
+
+    MsgBox "Error " & Err.Number & " (" & Err.Description & ") in procedure saveAnemometerGaugePosition of Module Module1"
     
 End Sub
     
@@ -2624,51 +2678,31 @@ End Sub
 
 
 
-'---------------------------------------------------------------------------------------
-' Procedure : lockWidget
-' Author    : Dean Beedell (yereverluvinunclebert)
-' Date      : 03/08/2023
-' Purpose   :
-'---------------------------------------------------------------------------------------
+''---------------------------------------------------------------------------------------
+'' Procedure : lockTemperatureWidget
+'' Author    : Dean Beedell (yereverluvinunclebert)
+'' Date      : 03/08/2023
+'' Purpose   :
+''---------------------------------------------------------------------------------------
+''
+'Public Sub lockTemperatureWidget()
 '
-Public Sub lockWidget()
-    
-    Dim fileToPlay As String: fileToPlay = vbNullString
-
-    On Error GoTo lockWidget_Error
-
-    fileToPlay = "lock.wav"
-    
-    If PzGPreventDragging = "1" Then
-        menuForm.mnuLockWidget.Checked = False
-        panzerPrefs.chkPreventDragging.Value = 0
-        PzGPreventDragging = "0"
-        overlayTemperatureWidget.Locked = False
-        fTemperature.temperatureGaugeForm.Widgets("housing/lockbutton").Widget.Alpha = val(PzGOpacity) / 100
-    Else
-        menuForm.mnuLockWidget.Checked = True
-        panzerPrefs.chkPreventDragging.Value = 1
-        overlayTemperatureWidget.Locked = True
-        PzGPreventDragging = "1"
-        fTemperature.temperatureGaugeForm.Widgets("housing/lockbutton").Widget.Alpha = 0
-    End If
-    
-    fTemperature.temperatureGaugeForm.Refresh
-    
-    sPutINISetting "Software\PzTemperatureGauge", "preventDragging", PzGPreventDragging, PzGSettingsFile
-   
-    If PzGEnableSounds = "1" And fFExists(App.path & "\resources\sounds\" & fileToPlay) Then
-        PlaySound App.path & "\resources\sounds\" & fileToPlay, ByVal 0&, SND_FILENAME Or SND_ASYNC
-    End If
-    
-    On Error GoTo 0
-   Exit Sub
-
-lockWidget_Error:
-
-    MsgBox "Error " & Err.Number & " (" & Err.Description & ") in procedure lockWidget of Module Module1"
-
-End Sub
+'    On Error GoTo lockTemperatureWidget_Error
+'
+'    If PzGPreventDragging = "1" Then
+'        overlayTemperatureWidget.Locked = False
+'    Else
+'        overlayTemperatureWidget.Locked = True
+'    End If
+'
+'    On Error GoTo 0
+'   Exit Sub
+'
+'lockTemperatureWidget_Error:
+'
+'    MsgBox "Error " & Err.Number & " (" & Err.Description & ") in procedure lockTemperatureWidget of Module Module1"
+'
+'End Sub
 
 
 

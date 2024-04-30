@@ -64,16 +64,9 @@ Public cyPerc As Single
 
 Private WithEvents W As cWidgetBase
 Attribute W.VB_VarHelpID = -1
-Private WithEvents tmrSampler As cTimer
-Attribute tmrSampler.VB_VarHelpID = -1
-Private WithEvents tmrAsyncResponse As cTimer
-Attribute tmrAsyncResponse.VB_VarHelpID = -1
+
 Private WithEvents tmrAnimator As cTimer
 Attribute tmrAnimator.VB_VarHelpID = -1
-Private WithEvents tmrPressureDrop As cTimer
-Attribute tmrPressureDrop.VB_VarHelpID = -1
-Private WithEvents tmrSleepTester As cTimer
-Attribute tmrSleepTester.VB_VarHelpID = -1
 
 Private SDeg As Double
 Private thisWindSpeed As Long
@@ -89,7 +82,6 @@ Private animateCCW As Boolean
 
 '------------------------------------------------------ ENDS
 
-Private mGetMetar As Boolean ' property GetMetar
 Private mTicking As Boolean ' property Ticking
 Private mPointerAnimate As Boolean ' property PointerAnimate
 Private mLocked As Boolean ' property Locked
@@ -98,19 +90,7 @@ Private mAnemometerDetails As String ' property
 Private mHidden As Boolean ' property Hidden
 Private mThisOpacity As String ' property ThisOpacity
 
-Private myMSXML As MSXML2.XMLHTTP
-Private weHaveData As Boolean
     
-Private icaoLocation1 As String
-Private icaoLocation2 As String
-Private icaoLocation3 As String
-Private icaoLocation4 As String
-Private icaoLocation5 As String
-
-Private strTimeThen As Date
-
-'Private pressureValue As Double
-
 
 '---------------------------------------------------------------------------------------
 ' Procedure : Class_Initialize
@@ -127,9 +107,6 @@ Private Sub Class_Initialize()
         W.BackColor = -1  'we don't use any BackColor here, transparent
         W.ImplementsHitTest = True 'when at False, no HitTest-Event would be triggered
                     
-    Set tmrSampler = Nothing
-    Set tmrSampler = New_c.Timer(100, mTicking) ' first interval is 1/10th of a second, don't change it, triggers an immediate run. Correct sampling interval read later
-    
     animationDivisions = 12
     animationInterval = 40
     
@@ -338,6 +315,31 @@ Public Property Let Locked(ByVal newValue As Boolean)
    On Error GoTo LockedLet_Error
 
    If mLocked <> newValue Then mLocked = newValue Else Exit Property
+
+    Dim fileToPlay As String: fileToPlay = vbNullString
+
+    fileToPlay = "lock.wav"
+
+    If mLocked = True Then
+        menuForm.mnuLockWidget.Checked = True
+        panzerPrefs.chkPreventDragging.Value = 1
+        PzGPreventDragging = "1"
+        fAnemometer.anemometerGaugeForm.Widgets("housing/lockbutton").Widget.Alpha = 0
+    Else
+        menuForm.mnuLockWidget.Checked = False
+        panzerPrefs.chkPreventDragging.Value = 0
+        PzGPreventDragging = "0"
+        fAnemometer.anemometerGaugeForm.Widgets("housing/lockbutton").Widget.Alpha = val(PzGOpacity) / 100
+    End If
+
+    fAnemometer.anemometerGaugeForm.Refresh
+
+    sPutINISetting "Software\PzTemperatureGauge", "preventDragging", PzGPreventDragging, PzGSettingsFile
+
+    If PzGEnableSounds = "1" And fFExists(App.path & "\resources\sounds\" & fileToPlay) Then
+        PlaySound App.path & "\resources\sounds\" & fileToPlay, ByVal 0&, SND_FILENAME Or SND_ASYNC
+    End If
+
 
    On Error GoTo 0
    Exit Property

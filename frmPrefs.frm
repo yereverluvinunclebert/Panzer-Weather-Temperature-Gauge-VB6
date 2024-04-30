@@ -3587,6 +3587,8 @@ Private Sub btnSave_Click()
     PzGShowTaskbar = LTrim$(Str$(chkShowTaskbar.Value))
     PzGDpiAwareness = LTrim$(Str$(chkDpiAwareness.Value))
     PzGTemperatureGaugeSize = LTrim$(Str$(sliTemperatureGaugeSize.Value))
+    'PzGAnemometerGaugeSize = LTrim$(Str$(sliAnemometerGaugeSize.Value))
+    
 '    PzGClipbBSize = LTrim$(Str$(sliTemperatureGaugeSize.Value))
 '    PzGSelectorSize = LTrim$(Str$(sliTemperatureGaugeSize.Value))
     
@@ -3681,6 +3683,8 @@ Private Sub btnSave_Click()
         
         
         sPutINISetting "Software\PzTemperatureGauge", "temperatureGaugeSize", PzGTemperatureGaugeSize, PzGSettingsFile
+        sPutINISetting "Software\PzAnemometerGauge", "anemometerGaugeSize", PzGAnemometerGaugeSize, PzGSettingsFile
+        
         sPutINISetting "Software\PzClipB", "clipBSize", PzGClipBSize, PzGSettingsFile
         sPutINISetting "Software\PzSelector", "selectorSize", PzGSelectorSize, PzGSettingsFile
         
@@ -3734,11 +3738,16 @@ Private Sub btnSave_Click()
         sPutINISetting "Software\PzTemperatureGauge", "openFile", PzGOpenFile, PzGSettingsFile
         sPutINISetting "Software\PzTemperatureGauge", "defaultEditor", PzGDefaultEditor, PzGSettingsFile
         
-        sPutINISetting "Software\PzTemperatureGauge", "tempFormHighDpiXPos", PzGTempFormHighDpiXPos, PzGSettingsFile
-        sPutINISetting "Software\PzTemperatureGauge", "tempFormHighDpiYPos", PzGTempFormHighDpiYPos, PzGSettingsFile
-        sPutINISetting "Software\PzTemperatureGauge", "tempFormLowDpiXPos", PzGTempFormLowDpiXPos, PzGSettingsFile
-        sPutINISetting "Software\PzTemperatureGauge", "tempFormLowDpiYPos", PzGTempFormLowDpiYPos, PzGSettingsFile
-        
+        sPutINISetting "Software\PzTemperatureGauge", "temperatureFormHighDpiXPos", PzGTemperatureFormHighDpiXPos, PzGSettingsFile
+        sPutINISetting "Software\PzTemperatureGauge", "temperatureFormHighDpiYPos", PzGTemperatureFormHighDpiYPos, PzGSettingsFile
+        sPutINISetting "Software\PzTemperatureGauge", "temperatureFormLowDpiXPos", PzGTemperatureFormLowDpiXPos, PzGSettingsFile
+        sPutINISetting "Software\PzTemperatureGauge", "temperatureFormLowDpiYPos", PzGTemperatureFormLowDpiYPos, PzGSettingsFile
+                 
+        sPutINISetting "Software\PzAnemometerGauge", "anemometerFormHighDpiXPos", PzGAnemometerFormHighDpiXPos, PzGSettingsFile
+        sPutINISetting "Software\PzAnemometerGauge", "anemometerFormHighDpiYPos", PzGAnemometerFormHighDpiYPos, PzGSettingsFile
+        sPutINISetting "Software\PzAnemometerGauge", "anemometerFormLowDpiXPos", PzGAnemometerFormLowDpiXPos, PzGSettingsFile
+        sPutINISetting "Software\PzAnemometerGauge", "anemometerFormLowDpiYPos", PzGAnemometerFormLowDpiYPos, PzGSettingsFile
+       
         sPutINISetting "Software\PzClipB", "clipBFormHighDpiXPos", PzGClipBFormHighDpiXPos, PzGSettingsFile
         sPutINISetting "Software\PzClipB", "clipBFormHighDpiYPos", PzGClipBFormHighDpiYPos, PzGSettingsFile
         sPutINISetting "Software\PzClipB", "clipBFormLowDpiXPos", PzGClipBFormLowDpiXPos, PzGSettingsFile
@@ -3980,6 +3989,8 @@ Private Sub adjustPrefsControls()
     ' check whether the size has been previously altered via ctrl+mousewheel on the widget
     sliTemperatureGaugeSizeOldValue = sliTemperatureGaugeSize.Value
     sliTemperatureGaugeSize.Value = val(PzGTemperatureGaugeSize)
+    'sliAnemometerGaugeSize.Value = val(PzGAnemometerGaugeSize)
+    
 '    sliClipBSize.Value = val(PzGClipBSize)
 '    sliSelectorSize.Value = val(PzGSelectorSize)
 
@@ -4026,21 +4037,21 @@ Private Sub adjustPrefsControls()
 '            txtLandscapeHoffset.Text = fTemperature.temperatureGaugeForm.Left
 '            txtLandscapeVoffset.Text = fTemperature.temperatureGaugeForm.Top
             If PzGDpiAwareness = "1" Then
-                txtLandscapeHoffset.ToolTipText = "Last Sampled Form X Horizontal Position : " & PzGTempFormHighDpiXPos & "px"
-                txtLandscapeVoffset.ToolTipText = "Last Sampled Form Y Vertical Position : " & PzGTempFormHighDpiYPos & "px"
+                txtLandscapeHoffset.ToolTipText = "Last Sampled Form X Horizontal Position : " & PzGTemperatureFormHighDpiXPos & "px"
+                txtLandscapeVoffset.ToolTipText = "Last Sampled Form Y Vertical Position : " & PzGTemperatureFormHighDpiYPos & "px"
             Else
-                txtLandscapeHoffset.ToolTipText = "Last Sampled Form X Horizontal Position : " & PzGTempFormLowDpiXPos & "px"
-                txtLandscapeVoffset.ToolTipText = "Last Sampled Form Y Vertical Position : " & PzGTempFormLowDpiYPos & "px"
+                txtLandscapeHoffset.ToolTipText = "Last Sampled Form X Horizontal Position : " & PzGTemperatureFormLowDpiXPos & "px"
+                txtLandscapeVoffset.ToolTipText = "Last Sampled Form Y Vertical Position : " & PzGTemperatureFormLowDpiYPos & "px"
             End If
         Else
 '            txtPortraitHoffset.Text = fTemperature.temperatureGaugeForm.Left
 '            txtPortraitYoffset.Text = fTemperature.temperatureGaugeForm.Top
             If PzGDpiAwareness = "1" Then
-                txtPortraitHoffset.ToolTipText = "Last Sampled Form X Horizontal Position : " & PzGTempFormHighDpiXPos & "px"
-                txtPortraitYoffset.ToolTipText = "Last Sampled Form Y Vertical Position : " & PzGTempFormHighDpiYPos & "px"
+                txtPortraitHoffset.ToolTipText = "Last Sampled Form X Horizontal Position : " & PzGTemperatureFormHighDpiXPos & "px"
+                txtPortraitYoffset.ToolTipText = "Last Sampled Form Y Vertical Position : " & PzGTemperatureFormHighDpiYPos & "px"
             Else
-                txtPortraitHoffset.ToolTipText = "Last Sampled Form X Horizontal Position : " & PzGTempFormLowDpiXPos & "px"
-                txtPortraitYoffset.ToolTipText = "Last Sampled Form Y Vertical Position : " & PzGTempFormLowDpiYPos & "px"
+                txtPortraitHoffset.ToolTipText = "Last Sampled Form X Horizontal Position : " & PzGTemperatureFormLowDpiXPos & "px"
+                txtPortraitYoffset.ToolTipText = "Last Sampled Form Y Vertical Position : " & PzGTemperatureFormLowDpiYPos & "px"
             End If
         End If
     End If

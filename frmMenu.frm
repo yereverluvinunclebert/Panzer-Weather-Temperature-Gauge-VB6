@@ -455,8 +455,12 @@ Private Sub mnuLockWidget_Click()
 
     On Error GoTo mnuLockWidget_Click_Error
     
-    Call lockWidget
-
+    If PzGPreventDragging = "1" Then
+        overlayTemperatureWidget.Locked = False
+    Else
+        overlayTemperatureWidget.Locked = True
+    End If
+    
    On Error GoTo 0
    Exit Sub
 

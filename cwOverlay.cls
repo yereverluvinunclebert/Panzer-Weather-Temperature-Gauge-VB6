@@ -504,6 +504,35 @@ Public Property Let Locked(ByVal newValue As Boolean)
    On Error GoTo LockedLet_Error
 
    If mLocked <> newValue Then mLocked = newValue Else Exit Property
+   
+    Dim fileToPlay As String: fileToPlay = vbNullString
+
+
+    fileToPlay = "lock.wav"
+
+    If mLocked = True Then
+        menuForm.mnuLockWidget.Checked = True
+        panzerPrefs.chkPreventDragging.Value = 1
+        'overlayTemperatureWidget.Locked = True
+        PzGPreventDragging = "1"
+        fTemperature.temperatureGaugeForm.Widgets("housing/lockbutton").Widget.Alpha = 0
+        
+    Else
+        menuForm.mnuLockWidget.Checked = False
+        panzerPrefs.chkPreventDragging.Value = 0
+        PzGPreventDragging = "0"
+        'overlayTemperatureWidget.Locked = False
+        fTemperature.temperatureGaugeForm.Widgets("housing/lockbutton").Widget.Alpha = val(PzGOpacity) / 100
+    End If
+
+    fTemperature.temperatureGaugeForm.Refresh
+
+    sPutINISetting "Software\PzTemperatureGauge", "preventDragging", PzGPreventDragging, PzGSettingsFile
+
+    If PzGEnableSounds = "1" And fFExists(App.path & "\resources\sounds\" & fileToPlay) Then
+        PlaySound App.path & "\resources\sounds\" & fileToPlay, ByVal 0&, SND_FILENAME Or SND_ASYNC
+    End If
+
 
    On Error GoTo 0
    Exit Property
