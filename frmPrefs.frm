@@ -3738,6 +3738,11 @@ Private Sub btnSave_Click()
         sPutINISetting "Software\PzTemperatureGauge", "clipBFormLowDpiXPos", PzGClipBFormLowDpiXPos, PzGSettingsFile
         sPutINISetting "Software\PzTemperatureGauge", "clipBFormLowDpiYPos", PzGClipBFormLowDpiYPos, PzGSettingsFile
         
+        sPutINISetting "Software\PzTemperatureGauge", "selectorFormHighDpiXPos", PzGSelectorFormHighDpiXPos, PzGSettingsFile
+        sPutINISetting "Software\PzTemperatureGauge", "selectorFormHighDpiYPos", PzGSelectorFormHighDpiYPos, PzGSettingsFile
+        sPutINISetting "Software\PzTemperatureGauge", "selectorFormLowDpiXPos", PzGSelectorFormLowDpiXPos, PzGSettingsFile
+        sPutINISetting "Software\PzTemperatureGauge", "selectorFormLowDpiYPos", PzGSelectorFormLowDpiYPos, PzGSettingsFile
+        
         sPutINISetting "Software\PzTemperatureGauge", "lastUpdated", PzGLastUpdated, PzGSettingsFile
         sPutINISetting "Software\PzTemperatureGauge", "metarPref", PzGMetarPref, PzGSettingsFile
         

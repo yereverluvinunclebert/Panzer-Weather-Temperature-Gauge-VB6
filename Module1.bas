@@ -372,6 +372,11 @@ Public PzGClipBFormHighDpiYPos As String
 Public PzGClipBFormLowDpiXPos As String
 Public PzGClipBFormLowDpiYPos As String
 
+Public PzGSelectorFormHighDpiXPos As String
+Public PzGSelectorFormHighDpiYPos As String
+Public PzGSelectorFormLowDpiXPos As String
+Public PzGSelectorFormLowDpiYPos As String
+
 
 Public PzGLastSelectedTab As String
 Public PzGSkinTheme As String
@@ -1929,7 +1934,6 @@ Public Sub makeVisibleFormElements()
     
     'fClipB.clipBForm.Left = temperatureFormLeftPixels + fTemperature.temperatureGaugeForm.Width + 300
     'fClipB.clipBForm.Top = temperatureFormTopPixels + 200
-    
 
     If PzGDpiAwareness = "1" Then
         fClipB.clipBForm.Left = val(PzGClipBFormHighDpiXPos)
@@ -1943,10 +1947,17 @@ Public Sub makeVisibleFormElements()
     
     fSelector.SelectorForm.Width = 1000
     fSelector.SelectorForm.Height = 800
-    fSelector.SelectorForm.Left = val(PzGTempFormHighDpiXPos) + fTemperature.temperatureGaugeForm.Width + 300
-    fSelector.SelectorForm.Top = val(PzGTempFormHighDpiYPos) + 200
+'    fSelector.SelectorForm.Left = val(PzGTempFormHighDpiXPos) + fTemperature.temperatureGaugeForm.Width + 300
+'    fSelector.SelectorForm.Top = val(PzGTempFormHighDpiYPos) + 200
     
     
+    If PzGDpiAwareness = "1" Then
+        fSelector.SelectorForm.Left = val(PzGSelectorFormHighDpiXPos)
+        fSelector.SelectorForm.Top = val(PzGSelectorFormHighDpiYPos)
+    Else
+        fSelector.SelectorForm.Left = val(PzGSelectorFormLowDpiXPos)
+        fSelector.SelectorForm.Top = val(PzGSelectorFormLowDpiYPos)
+    End If
 
 
     On Error GoTo 0
@@ -2390,6 +2401,41 @@ saveClipboardGaugePosition_Error:
     
 End Sub
 
+
+ '---------------------------------------------------------------------------------------
+' Procedure : saveSelectorGaugePosition
+' Author    : Dean Beedell (yereverluvinunclebert)
+' Date      : 04/08/2023
+' Purpose   :
+'---------------------------------------------------------------------------------------
+'
+Public Sub saveSelectorGaugePosition()
+
+   On Error GoTo saveSelectorGaugePosition_Error
+
+    If PzGDpiAwareness = "1" Then
+        PzGSelectorFormHighDpiXPos = Str$(fSelector.SelectorForm.Left) ' saving in pixels
+        PzGSelectorFormHighDpiYPos = Str$(fSelector.SelectorForm.Top)
+        sPutINISetting "Software\PzSelector", "selectorFormHighDpiXPos", PzGSelectorFormHighDpiXPos, PzGSettingsFile
+        sPutINISetting "Software\PzSelector", "selectorFormHighDpiYPos", PzGSelectorFormHighDpiYPos, PzGSettingsFile
+    Else
+        PzGSelectorFormLowDpiXPos = Str$(fSelector.SelectorForm.Left) ' saving in pixels
+        PzGSelectorFormLowDpiYPos = Str$(fSelector.SelectorForm.Top)
+        sPutINISetting "Software\PzSelector", "selectorFormLowDpiXPos", PzGSelectorFormLowDpiXPos, PzGSettingsFile
+        sPutINISetting "Software\PzSelector", "selectorFormLowDpiYPos", PzGSelectorFormLowDpiYPos, PzGSettingsFile
+    End If
+    
+'    PzGSelectorSize = Str$(fSelector.SelectorForm.WidgetRoot.Zoom * 100)
+'    sPutINISetting "Software\PzSelector", "SelectorSize", PzGSelectorSize, PzGSettingsFile
+
+   On Error GoTo 0
+   Exit Sub
+
+saveSelectorGaugePosition_Error:
+
+    MsgBox "Error " & Err.Number & " (" & Err.Description & ") in procedure saveSelectorGaugePosition of Module Module1"
+    
+End Sub
 '---------------------------------------------------------------------------------------
 ' Procedure : makeProgramPreferencesAvailable
 ' Author    : Dean Beedell (yereverluvinunclebert)
