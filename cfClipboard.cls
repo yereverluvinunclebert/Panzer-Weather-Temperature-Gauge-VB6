@@ -324,14 +324,16 @@ End Sub
 Public Sub ClipBAdjustZoom(ByVal NewZoom As Single)
    On Error GoTo ClipBAdjustZoom_Error
 
-      ClipBFZ = NewZoom
-      If ClipBFZ < 0.5 Then ClipBFZ = 0.5 Else If ClipBFZ > 3 Then ClipBFZ = 3 'keep ClipBFZ within a sane ZoomInterval
-      clipBForm.WidgetRoot.Zoom = ClipBFZ '* ClipBForm.WidgetRoot.CurrentMonitor.Zoom '<-- if the multiplicator is activated, we'd have DPI-awareness on high-res monitors
-      clipBForm.Move clipBForm.Left, clipBForm.Top, PSDWidth * clipBForm.WidgetRoot.Zoom, PSDHeight * clipBForm.WidgetRoot.Zoom
+    ClipBFZ = NewZoom
+    If ClipBFZ < 0.5 Then ClipBFZ = 0.5 Else If ClipBFZ > 3 Then ClipBFZ = 3 'keep ClipBFZ within a sane ZoomInterval
+    clipBForm.WidgetRoot.Zoom = ClipBFZ '* ClipBForm.WidgetRoot.CurrentMonitor.Zoom '<-- if the multiplicator is activated, we'd have DPI-awareness on high-res monitors
+    clipBForm.Move clipBForm.Left, clipBForm.Top, PSDWidth * clipBForm.WidgetRoot.Zoom, PSDHeight * clipBForm.WidgetRoot.Zoom
     
-      ' when resized from the gauge scroll up/down it needs to write it back so the size is correct when prefs opened.
-      'PzGTemperatureGaugeSize = LTrim$(Str$(NewZoom * 100))
-      'If panzerPrefs.IsVisible = True Then panzerPrefs.sliTemperatureGaugeSize.Value = val(PzGTemperatureGaugeSize)
+    ' when resized from the gauge scroll up/down it needs to write it back so the size is correct when prefs opened.
+    PzGClipBSize = LTrim$(Str$(NewZoom * 100))
+    'If panzerPrefs.IsVisible = True Then panzerPrefs.sliTemperatureGaugeSize.Value = val(PzGTemperatureGaugeSize)
+    
+    sPutINISetting "Software\PzClipB", "clipBSize", PzGClipBSize, PzGSettingsFile
     
    On Error GoTo 0
    Exit Sub

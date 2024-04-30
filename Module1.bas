@@ -313,6 +313,9 @@ Public PzGShowTaskbar As String
 Public PzGDpiAwareness As String
 
 Public PzGTemperatureGaugeSize As String
+Public PzGClipBSize As String
+Public PzGSelectorSize As String
+
 Public PzGScrollWheelDirection As String
 
 ' position
@@ -2380,17 +2383,17 @@ Public Sub saveClipboardGaugePosition()
     If PzGDpiAwareness = "1" Then
         PzGClipBFormHighDpiXPos = Str$(fClipB.clipBForm.Left) ' saving in pixels
         PzGClipBFormHighDpiYPos = Str$(fClipB.clipBForm.Top)
-        sPutINISetting "Software\PzClipboard", "clipBFormHighDpiXPos", PzGClipBFormHighDpiXPos, PzGSettingsFile
-        sPutINISetting "Software\PzClipboard", "clipBFormHighDpiYPos", PzGClipBFormHighDpiYPos, PzGSettingsFile
+        sPutINISetting "Software\PzClipB", "clipBFormHighDpiXPos", PzGClipBFormHighDpiXPos, PzGSettingsFile
+        sPutINISetting "Software\PzClipB", "clipBFormHighDpiYPos", PzGClipBFormHighDpiYPos, PzGSettingsFile
     Else
         PzGClipBFormLowDpiXPos = Str$(fClipB.clipBForm.Left) ' saving in pixels
         PzGClipBFormLowDpiYPos = Str$(fClipB.clipBForm.Top)
-        sPutINISetting "Software\PzClipboard", "clipBFormLowDpiXPos", PzGClipBFormLowDpiXPos, PzGSettingsFile
-        sPutINISetting "Software\PzClipboard", "clipBFormLowDpiYPos", PzGClipBFormLowDpiYPos, PzGSettingsFile
+        sPutINISetting "Software\PzClipB", "clipBFormLowDpiXPos", PzGClipBFormLowDpiXPos, PzGSettingsFile
+        sPutINISetting "Software\PzClipB", "clipBFormLowDpiYPos", PzGClipBFormLowDpiYPos, PzGSettingsFile
     End If
     
-'    PzGClipboardSize = Str$(fClipB.clipBForm.WidgetRoot.Zoom * 100)
-'    sPutINISetting "Software\PzClipboard", "clipboardSize", PzGClipboardSize, PzGSettingsFile
+    PzGClipBSize = Str$(fClipB.clipBForm.WidgetRoot.Zoom * 100)
+    sPutINISetting "Software\PzClipB", "clipBSize", PzGClipBSize, PzGSettingsFile
 
    On Error GoTo 0
    Exit Sub
@@ -2425,8 +2428,8 @@ Public Sub saveSelectorGaugePosition()
         sPutINISetting "Software\PzSelector", "selectorFormLowDpiYPos", PzGSelectorFormLowDpiYPos, PzGSettingsFile
     End If
     
-'    PzGSelectorSize = Str$(fSelector.SelectorForm.WidgetRoot.Zoom * 100)
-'    sPutINISetting "Software\PzSelector", "SelectorSize", PzGSelectorSize, PzGSettingsFile
+    PzGSelectorSize = Str$(fSelector.SelectorForm.WidgetRoot.Zoom * 100)
+    sPutINISetting "Software\PzSelector", "SelectorSize", PzGSelectorSize, PzGSettingsFile
 
    On Error GoTo 0
    Exit Sub

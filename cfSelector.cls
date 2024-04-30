@@ -779,15 +779,17 @@ End Sub
 Public Sub SelectorAdjustZoom(ByVal NewZoom As Single)
    On Error GoTo SelectorAdjustZoom_Error
 
-      SelectorFZ = NewZoom
-      If SelectorFZ < 0.5 Then SelectorFZ = 0.5 Else If SelectorFZ > 3 Then SelectorFZ = 3 'keep SelectorFZ within a sane ZoomInterval
-      SelectorForm.WidgetRoot.Zoom = SelectorFZ '* SelectorForm.WidgetRoot.CurrentMonitor.Zoom '<-- if the multiplicator is activated, we'd have DPI-awareness on high-res monitors
-      SelectorForm.Move SelectorForm.Left, SelectorForm.Top, PSDWidth * SelectorForm.WidgetRoot.Zoom, PSDHeight * SelectorForm.WidgetRoot.Zoom
+    SelectorFZ = NewZoom
+    If SelectorFZ < 0.5 Then SelectorFZ = 0.5 Else If SelectorFZ > 3 Then SelectorFZ = 3 'keep SelectorFZ within a sane ZoomInterval
+    SelectorForm.WidgetRoot.Zoom = SelectorFZ '* SelectorForm.WidgetRoot.CurrentMonitor.Zoom '<-- if the multiplicator is activated, we'd have DPI-awareness on high-res monitors
+    SelectorForm.Move SelectorForm.Left, SelectorForm.Top, PSDWidth * SelectorForm.WidgetRoot.Zoom, PSDHeight * SelectorForm.WidgetRoot.Zoom
     
-      ' when resized from the gauge scroll up/down it needs to write it back so the size is correct when prefs opened.
-      'PzGTemperatureGaugeSize = LTrim$(Str$(NewZoom * 100))
-      'If panzerPrefs.IsVisible = True Then panzerPrefs.sliTemperatureGaugeSize.Value = val(PzGTemperatureGaugeSize)
+    ' when resized from the gauge scroll up/down it needs to write it back so the size is correct when prefs opened.
+    PzGSelectorSize = LTrim$(Str$(NewZoom * 100))
+    'If panzerPrefs.IsVisible = True Then panzerPrefs.sliSelectorSize.Value = val(PzGSelectorSize)
     
+    sPutINISetting "Software\PzSelector", "SelectorSize", PzGSelectorSize, PzGSettingsFile
+   
    On Error GoTo 0
    Exit Sub
 

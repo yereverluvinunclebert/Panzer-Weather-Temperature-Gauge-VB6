@@ -294,6 +294,9 @@ Private Sub initialiseGlobalVars()
     PzGDpiAwareness = vbNullString
     
     PzGTemperatureGaugeSize = vbNullString
+    PzGClipBSize = vbNullString
+    PzGSelectorSize = vbNullString
+    
     PzGScrollWheelDirection = vbNullString
     
     ' position
@@ -489,7 +492,7 @@ Private Sub adjustSelectorMainControls()
     
     On Error GoTo adjustSelectorMainControls_Error
     
-    fSelector.SelectorAdjustZoom val(100) / 100
+    fSelector.SelectorAdjustZoom val(PzGSelectorSize) / 100
     
     With fSelector.SelectorForm.Widgets("optlocationgreen").Widget
         .HoverColor = 0 ' set the hover colour to grey - this may change later with new RC6
@@ -587,7 +590,8 @@ Private Sub adjustClipBMainControls()
     
     On Error GoTo adjustClipBMainControls_Error
     
-    fClipB.ClipBAdjustZoom 0.75
+    fClipB.ClipBAdjustZoom val(PzGClipBSize) / 100
+
 
 '    With fClipB.ClipBForm.Widgets("hourhand").Widget
 '        .HoverColor = 0 ' set the hover colour to grey - this may change later with new RC6
@@ -643,7 +647,6 @@ Public Sub adjustTempMainControls()
     Call validateInputs
     
     fTemperature.AdjustZoom val(PzGTemperatureGaugeSize) / 100
-
 
     If PzGGaugeFunctions = "1" Then
         overlayTemperatureWidget.Ticking = True
@@ -823,6 +826,9 @@ Public Sub readSettingsFile(ByVal location As String, ByVal PzGSettingsFile As S
         PzGDpiAwareness = fGetINISetting(location, "dpiAwareness", PzGSettingsFile)
         
         PzGTemperatureGaugeSize = fGetINISetting(location, "temperatureGaugeSize", PzGSettingsFile)
+        PzGClipBSize = fGetINISetting("Software\PzClipB", "clipBSize", PzGSettingsFile)
+        PzGSelectorSize = fGetINISetting("Software\PzSelector", "selectorSize", PzGSettingsFile)
+        
         PzGScrollWheelDirection = fGetINISetting(location, "scrollWheelDirection", PzGSettingsFile)
         
         ' position
@@ -840,6 +846,7 @@ Public Sub readSettingsFile(ByVal location As String, ByVal PzGSettingsFile As S
         ' font
         PzGTempFormFont = fGetINISetting(location, "tempFormFont", PzGSettingsFile)
         PzGPrefsFont = fGetINISetting(location, "prefsFont", PzGSettingsFile)
+        
         PzGPrefsFontSizeHighDPI = fGetINISetting(location, "prefsFontSizeHighDPI", PzGSettingsFile)
         PzGPrefsFontSizeLowDPI = fGetINISetting(location, "prefsFontSizeLowDPI", PzGSettingsFile)
         PzGPrefsFontItalics = fGetINISetting(location, "prefsFontItalics", PzGSettingsFile)
@@ -861,10 +868,10 @@ Public Sub readSettingsFile(ByVal location As String, ByVal PzGSettingsFile As S
         PzGTempFormLowDpiYPos = fGetINISetting("Software\PzTemperatureGauge", "tempFormLowDpiYPos", PzGSettingsFile)
         
         ' other
-        PzGClipBFormHighDpiXPos = fGetINISetting("Software\PzClipboard", "clipBFormHighDpiXPos", PzGSettingsFile)
-        PzGClipBFormHighDpiYPos = fGetINISetting("Software\PzClipboard", "clipBFormHighDpiYPos", PzGSettingsFile)
-        PzGClipBFormLowDpiXPos = fGetINISetting("Software\PzClipboard", "clipBFormLowDpiXPos", PzGSettingsFile)
-        PzGClipBFormLowDpiYPos = fGetINISetting("Software\PzClipboard", "clipBFormLowDpiYPos", PzGSettingsFile)
+        PzGClipBFormHighDpiXPos = fGetINISetting("Software\PzClipB", "clipBFormHighDpiXPos", PzGSettingsFile)
+        PzGClipBFormHighDpiYPos = fGetINISetting("Software\PzClipB", "clipBFormHighDpiYPos", PzGSettingsFile)
+        PzGClipBFormLowDpiXPos = fGetINISetting("Software\PzClipB", "clipBFormLowDpiXPos", PzGSettingsFile)
+        PzGClipBFormLowDpiYPos = fGetINISetting("Software\PzClipB", "clipBFormLowDpiYPos", PzGSettingsFile)
          
         ' other
         PzGSelectorFormHighDpiXPos = fGetINISetting("Software\PzSelector", "selectorFormHighDpiXPos", PzGSettingsFile)
@@ -946,11 +953,15 @@ Public Sub validateInputs()
     If PzGShowTaskbar = vbNullString Then PzGShowTaskbar = "0"
     If PzGDpiAwareness = vbNullString Then PzGDpiAwareness = "0"
     If PzGTemperatureGaugeSize = vbNullString Then PzGTemperatureGaugeSize = "25"
+    If PzGClipBSize = vbNullString Then PzGClipBSize = "50"
+    If PzGSelectorSize = vbNullString Then PzGSelectorSize = "100"
+    
     If PzGScrollWheelDirection = vbNullString Then PzGScrollWheelDirection = "1"
            
     ' fonts
     If PzGPrefsFont = vbNullString Then PzGPrefsFont = "times new roman"
     If PzGTempFormFont = vbNullString Then PzGTempFormFont = PzGPrefsFont
+    
     If PzGPrefsFontSizeHighDPI = vbNullString Then PzGPrefsFontSizeHighDPI = "8"
     If PzGPrefsFontSizeLowDPI = vbNullString Then PzGPrefsFontSizeLowDPI = "8"
     If PzGPrefsFontItalics = vbNullString Then PzGPrefsFontItalics = "false"

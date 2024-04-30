@@ -3587,6 +3587,9 @@ Private Sub btnSave_Click()
     PzGShowTaskbar = LTrim$(Str$(chkShowTaskbar.Value))
     PzGDpiAwareness = LTrim$(Str$(chkDpiAwareness.Value))
     PzGTemperatureGaugeSize = LTrim$(Str$(sliTemperatureGaugeSize.Value))
+'    PzGClipbBSize = LTrim$(Str$(sliTemperatureGaugeSize.Value))
+'    PzGSelectorSize = LTrim$(Str$(sliTemperatureGaugeSize.Value))
+    
     PzGScrollWheelDirection = LTrim$(Str$(cmbScrollWheelDirection.ListIndex))
     
     ' general
@@ -3678,6 +3681,9 @@ Private Sub btnSave_Click()
         
         
         sPutINISetting "Software\PzTemperatureGauge", "temperatureGaugeSize", PzGTemperatureGaugeSize, PzGSettingsFile
+        sPutINISetting "Software\PzClipB", "clipBSize", PzGClipBSize, PzGSettingsFile
+        sPutINISetting "Software\PzSelector", "selectorSize", PzGSelectorSize, PzGSettingsFile
+        
         sPutINISetting "Software\PzTemperatureGauge", "scrollWheelDirection", PzGScrollWheelDirection, PzGSettingsFile
                 
         sPutINISetting "Software\PzTemperatureGauge", "gaugeFunctions", PzGGaugeFunctions, PzGSettingsFile
@@ -3733,10 +3739,10 @@ Private Sub btnSave_Click()
         sPutINISetting "Software\PzTemperatureGauge", "tempFormLowDpiXPos", PzGTempFormLowDpiXPos, PzGSettingsFile
         sPutINISetting "Software\PzTemperatureGauge", "tempFormLowDpiYPos", PzGTempFormLowDpiYPos, PzGSettingsFile
         
-        sPutINISetting "Software\PzTemperatureGauge", "clipBFormHighDpiXPos", PzGClipBFormHighDpiXPos, PzGSettingsFile
-        sPutINISetting "Software\PzTemperatureGauge", "clipBFormHighDpiYPos", PzGClipBFormHighDpiYPos, PzGSettingsFile
-        sPutINISetting "Software\PzTemperatureGauge", "clipBFormLowDpiXPos", PzGClipBFormLowDpiXPos, PzGSettingsFile
-        sPutINISetting "Software\PzTemperatureGauge", "clipBFormLowDpiYPos", PzGClipBFormLowDpiYPos, PzGSettingsFile
+        sPutINISetting "Software\PzClipB", "clipBFormHighDpiXPos", PzGClipBFormHighDpiXPos, PzGSettingsFile
+        sPutINISetting "Software\PzClipB", "clipBFormHighDpiYPos", PzGClipBFormHighDpiYPos, PzGSettingsFile
+        sPutINISetting "Software\PzClipB", "clipBFormLowDpiXPos", PzGClipBFormLowDpiXPos, PzGSettingsFile
+        sPutINISetting "Software\PzClipB", "clipBFormLowDpiYPos", PzGClipBFormLowDpiYPos, PzGSettingsFile
         
         sPutINISetting "Software\PzTemperatureGauge", "selectorFormHighDpiXPos", PzGSelectorFormHighDpiXPos, PzGSettingsFile
         sPutINISetting "Software\PzTemperatureGauge", "selectorFormHighDpiYPos", PzGSelectorFormHighDpiYPos, PzGSettingsFile
@@ -3974,6 +3980,9 @@ Private Sub adjustPrefsControls()
     ' check whether the size has been previously altered via ctrl+mousewheel on the widget
     sliTemperatureGaugeSizeOldValue = sliTemperatureGaugeSize.Value
     sliTemperatureGaugeSize.Value = val(PzGTemperatureGaugeSize)
+'    sliClipBSize.Value = val(PzGClipBSize)
+'    sliSelectorSize.Value = val(PzGSelectorSize)
+
     If sliTemperatureGaugeSize.Value <> sliTemperatureGaugeSizeOldValue Then
         btnSave.Visible = True
     End If
