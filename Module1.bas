@@ -1963,6 +1963,9 @@ Public Sub makeVisibleFormElements()
     End If
 
 
+    
+    fAnemometer.anemometerGaugeForm.Show
+
     On Error GoTo 0
     Exit Sub
 

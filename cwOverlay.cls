@@ -2038,25 +2038,25 @@ End Function
 ' Purpose:
 ' Procedure Kind: Function
 ' Procedure Access: Public
-' Parameter num (Integer):
+' Parameter windDirection (Integer):
 ' Return Type: String
 ' Author: Dean Beedell (yereverluvinunclebert)
 ' Date: 15/03/2024
 ' ----------------------------------------------------------------
-Private Function degToCompass(ByVal num As String) As String
+Private Function degToCompass(ByVal windDirection As String) As String
     On Error GoTo degToCompass_Error
     
-    Dim val As Integer: val = 0
+    Dim thisVal As Integer: thisVal = 0
     Dim thisArray As Variant ' using variant to populate the array all in one go as per .js and TwinBasic, will allow easy conversion later
     
     Dim compassDirection As String: compassDirection = vbNullString
     
     thisArray = Array("N", "NNE", "NE", "ENE", "E", "ESE", "SE", "SSE", "S", "SSW", "SW", "WSW", "W", "WNW", "NW", "NNW")
     
-    val = CInt((num / 22.5) + 0.5)
-    compassDirection = thisArray(val Mod 16)
+    thisVal = CInt((val(windDirection) / 22.5) + 0.5)
+    compassDirection = thisArray(thisVal Mod 16)
     
-    degToCompass = compassDirection ' return
+    degToCompass = compassDirection ' return compassDirection
     
     On Error GoTo 0
     Exit Function
@@ -2213,7 +2213,7 @@ Private Function setHoverTooltip(ByVal precipitationDepth As String, ByVal visib
             
     On Error GoTo setHoverTooltip_Error
     
-    compassDirection = degToCompass(val(wind_dir_degrees))
+    compassDirection = degToCompass(wind_dir_degrees)
 
     force = Str$(beaufortConversion(wind_speed_kt))
 
@@ -2250,7 +2250,7 @@ Private Function setHoverTooltip(ByVal precipitationDepth As String, ByVal visib
     Else
         tooltipString = tooltipString & "Wind speed is" & " " & Int(wind_speed_kt * 0.51444) & " m/sec, "
     End If
-    tooltipString = tooltipString & "strength force " & force & ", " & "Direction" & " " & compassDirection & vbCrLf
+    tooltipString = tooltipString & "strength force" & force & ", " & "direction" & " " & compassDirection & vbCrLf
 
     If (wx_string <> "") Then
       wx_str = getMetarDescription(wx_string)    ' get the interpreted wx string data

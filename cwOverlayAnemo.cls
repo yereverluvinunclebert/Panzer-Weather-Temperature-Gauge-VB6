@@ -97,13 +97,6 @@ Private mAnemometerDetails As String ' property
 
 Private mHidden As Boolean ' property Hidden
 Private mThisOpacity As String ' property ThisOpacity
-Private mSamplingInterval As String ' property SamplingInterval
-Private mThisFace As Integer             ' property mThisFace
-Private mValidICAO As Boolean             ' property
-Private mIcaoToTest As String             ' property
-Private mStringToTest As String
-Private mIcaoLocation As String             ' property
-Private mValidLocationCount As Long
 
 Private myMSXML As MSXML2.XMLHTTP
 Private weHaveData As Boolean
@@ -130,17 +123,6 @@ Private Sub Class_Initialize()
     
     On Error GoTo Class_Initialize_Error
     
-    Dim icaoToFind As String: icaoToFind = vbNullString
-    Dim fullIcaoLocation As String: fullIcaoLocation = vbNullString
-    Dim searchArray() As String
-    Dim searchCount As Long: searchCount = 0
-
-    strTimeThen = Now()
-    
-    'Dim sunriseSunset As cwSunriseSunset 'unitialised declaration
-    
-    Set sunriseSunset = New cwSunriseSunset
-
     Set W = Cairo.WidgetBase
         W.BackColor = -1  'we don't use any BackColor here, transparent
         W.ImplementsHitTest = True 'when at False, no HitTest-Event would be triggered
@@ -214,8 +196,6 @@ Public Property Let Ticking(ByVal newValue As Boolean)
 
     If mTicking <> newValue Then mTicking = newValue Else Exit Property
     
-    tmrSampler.Enabled = mTicking
-    tmrPressureDrop.Enabled = mTicking
 
    On Error GoTo 0
    Exit Property
@@ -494,10 +474,8 @@ Private Sub W_Paint(CC As RC6.cCairoContext, ByVal xAbs As Single, ByVal yAbs As
                  
                  Case "anemometerface"
                     
-                    If mThisFace = 2 Then
                         Set Pat.Matrix = Pat.Matrix.TranslateCoords(-arr(0), -arr(1)) 'shift the Pattern via the original X,Y PSD-Offsets (stored in Arr(0) and Arr(1))
                         CC.Paint arr(2), Pat 'render the Pattern
-                    End If
         
                 Case "redlamptrue"
                     

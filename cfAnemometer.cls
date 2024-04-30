@@ -72,7 +72,7 @@ Public Sub InitAnemometerFromPSD(ByRef PSD_FileNameOrByteArray As Variant)
     On Error GoTo InitAnemometerFromPSD_Error
 
     'create the Alpha-capable Top-Level-Form
-    Set anemometerGaugeForm = Cairo.WidgetForms.Create(IIf(App.LogMode, AlphaNoTaskbarEntry, AlphaWithTaskbarEntry), widgetName1, True, 1, 1)
+    Set anemometerGaugeForm = Cairo.WidgetForms.Create(IIf(App.LogMode, AlphaNoTaskbarEntry, AlphaWithTaskbarEntry), widgetName4, True, 1, 1)
         anemometerGaugeForm.WidgetRoot.BackColor = -1
  
     With New_c.SimplePSD(PSD_FileNameOrByteArray)  'create a new PSD-Parser.instance (and load the passed content)
@@ -145,30 +145,30 @@ Private Sub anemometerGaugeForm_BubblingEvent(ByRef sender As Object, ByRef Even
         Select Case LCase$(sender.Widget.key)
             Case "housing/lockbutton"
                 If PzGEnableBalloonTooltips = "1" Then CreateToolTip anemometerGaugeForm.hwnd, "Click me to lock the widget in place. This lock can be released by clicking again on the lock button, or in the preferences. A locking sound will denote the button's operation.", _
-                     TTIconInfo, widgetName1 & " Lock Button Help", , , , True
+                     TTIconInfo, widgetName4 & " Lock Button Help", , , , True
             Case "housing/prefsbutton"
                 If PzGEnableBalloonTooltips = "1" Then CreateToolTip anemometerGaugeForm.hwnd, "Click me to open the preferences utility. All advanced configuration of the widget is performed using the preference utility.", _
-                     TTIconInfo, widgetName1 & " Prefs Button Help", , , , True
+                     TTIconInfo, widgetName4 & " Prefs Button Help", , , , True
             Case "housing/tickbutton"
                 If PzGEnableBalloonTooltips = "1" Then CreateToolTip anemometerGaugeForm.hwnd, "Click here to toggle the pointer movement from a jerky pointer to a more fluid, continuous movement.", _
-                     TTIconInfo, widgetName1 & " Tick Button Help", , , , True
+                     TTIconInfo, widgetName4 & " Tick Button Help", , , , True
             Case "housing/switchfacesbutton"
                 If PzGEnableBalloonTooltips = "1" Then CreateToolTip anemometerGaugeForm.hwnd, "Click here to select between different faces showing alternative anemometer scales, celsius/fahrenheit or kelvin.", _
-                     TTIconInfo, widgetName1 & " Switch Faces Button Help", , , , True
+                     TTIconInfo, widgetName4 & " Switch Faces Button Help", , , , True
             Case "housing/stopbutton"
                 If PzGEnableBalloonTooltips = "1" Then CreateToolTip anemometerGaugeForm.hwnd, "This button stops all animated gauge functions for this widget, pointer movement, digital displays &c .", _
-                     TTIconInfo, widgetName1 & " Stop Button Help", , , , True
+                     TTIconInfo, widgetName4 & " Stop Button Help", , , , True
             Case "housing/startbutton"
                 If PzGEnableBalloonTooltips = "1" Then CreateToolTip anemometerGaugeForm.hwnd, "This button restarts all stopped animated gauge functions for this widget, pointer movement &c .", _
-                     TTIconInfo, widgetName1 & " Start Button Help", , , , True
+                     TTIconInfo, widgetName4 & " Start Button Help", , , , True
             Case "housing/helpbutton"
                 If PzGEnableBalloonTooltips = "1" Then CreateToolTip anemometerGaugeForm.hwnd, "This button opens the one-page help file for this widget. There is a further detailed CHM help file available from the right-click menu that contains all the information that you need to run this widget.", _
-                     TTIconInfo, widgetName1 & " Help Button Help", , , , True
+                     TTIconInfo, widgetName4 & " Help Button Help", , , , True
             Case Else
-                If PzGEnableBalloonTooltips = "1" Then CreateToolTip anemometerGaugeForm.hwnd, " " _
+                If PzGEnableBalloonTooltips = "1" Then CreateToolTip anemometerGaugeForm.hwnd, " " & overlayTemperatureWidget.TemperatureDetails _
                     & vbCrLf & "" _
                     & vbCrLf & "Right Click to open the menu and the preferences. CTRL+ Mouse scrollwheel UP/DOWN to resize." _
-                    , TTIconInfo, widgetName1 & " METAR summary Information.", , , , True
+                    , TTIconInfo, widgetName4 & " METAR summary Information.", , , , True
         End Select
     End If
     

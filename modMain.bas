@@ -166,6 +166,7 @@ Public Sub mainRoutine(ByVal restart As Boolean)
         Call loadTemperatureExcludePathCollection ' no need to reload the collTemperaturePSDNonUIElements layer name keys on a reload
         Call loadSelectorExcludePathCollection ' no need to reload the collSelectorPSDNonUIElements layer name keys on a reload
         Call loadClipBExcludePathCollection ' no need to reload the collClipBPSDNonUIElements layer name keys on a reload
+        Call loadAnemometerExcludePathCollection ' no need to reload the collClipBPSDNonUIElements layer name keys on a reload
     End If
     
     ' start the load of the PSD file using the RC6 PSD-Parser.instance
@@ -196,6 +197,9 @@ Public Sub mainRoutine(ByVal restart As Boolean)
     
     ' set characteristics of widgets on the clipboard form
     Call adjustClipBMainControls
+
+    ' set characteristics of widgets on the main gauge form
+    Call adjustAnemometerMainControls ' this needs to be here after the initialisation of the Cairo forms and widgets
 
     ' move/hide onto/from the main screen
     Call mainScreen
@@ -763,6 +767,129 @@ Public Sub adjustTempMainControls()
 adjustTempMainControls_Error:
 
     MsgBox "Error " & Err.Number & " (" & Err.Description & ") in procedure adjustTempMainControls of Module modMain"
+
+End Sub
+
+
+
+'---------------------------------------------------------------------------------------
+' Procedure : adjustAnemometerMainControls
+' Author    : Dean Beedell (yereverluvinunclebert)
+' Date      : 27/04/2023
+' Purpose   : called at runtime and on restart, sets the characteristics of the gauge, individual controls and menus
+'---------------------------------------------------------------------------------------
+'
+Public Sub adjustAnemometerMainControls()
+   
+   On Error GoTo adjustAnemometerMainControls_Error
+
+    ' validate the inputs of any data from the input settings file
+    'Call validateInputs
+    
+    fAnemometer.AdjustZoom val(PzGTemperatureGaugeSize) / 100
+
+    If PzGGaugeFunctions = "1" Then
+        overlayAnemoWidget.Ticking = True
+        menuForm.mnuSwitchOff.Checked = False
+        menuForm.mnuTurnFunctionsOn.Checked = True
+    Else
+        overlayAnemoWidget.Ticking = False
+        menuForm.mnuSwitchOff.Checked = True
+        menuForm.mnuTurnFunctionsOn.Checked = False
+    End If
+    
+    If PzGDefaultEditor <> vbNullString And PzGDebug = "1" Then
+        menuForm.mnuEditWidget.Caption = "Edit Widget using " & PzGDefaultEditor
+        menuForm.mnuEditWidget.Visible = True
+    Else
+        menuForm.mnuEditWidget.Visible = False
+    End If
+    
+    If PzGShowTaskbar = "0" Then
+        fAnemometer.anemometerGaugeForm.ShowInTaskbar = False
+    Else
+        fAnemometer.anemometerGaugeForm.ShowInTaskbar = True
+    End If
+    
+    ' set the characteristics of the interactive areas
+    ' Note: set the Hover colour close to the original layer to avoid too much intrusion, 0 being grey
+    With fAnemometer.anemometerGaugeForm.Widgets("housing/helpbutton").Widget
+        .HoverColor = 0 ' set the hover colour to grey - this may change later with new RC6
+        .MousePointer = IDC_HAND
+        .Alpha = val(PzGOpacity) / 100
+    End With
+     
+    With fAnemometer.anemometerGaugeForm.Widgets("housing/startbutton").Widget
+        .HoverColor = 0 ' set the hover colour to grey - this may change later with new RC6
+        .MousePointer = IDC_HAND
+        .Alpha = val(PzGOpacity) / 100
+        .Tag = 0.25
+    End With
+      
+    With fAnemometer.anemometerGaugeForm.Widgets("housing/stopbutton").Widget
+        .HoverColor = 0 ' set the hover colour to grey - this may change later with new RC6
+        .MousePointer = IDC_HAND
+        .Alpha = val(PzGOpacity) / 100
+        .Tag = 0.25
+    End With
+      
+    With fAnemometer.anemometerGaugeForm.Widgets("housing/switchfacesbutton").Widget
+        .HoverColor = 0 ' set the hover colour to grey - this may change later with new RC6
+        .MousePointer = IDC_HAND
+        .Alpha = val(PzGOpacity) / 100
+    End With
+          
+    With fAnemometer.anemometerGaugeForm.Widgets("housing/lockbutton").Widget
+        .HoverColor = 0 ' set the hover colour to grey - this may change later with new RC6
+        .MousePointer = IDC_HAND
+    End With
+          
+    With fAnemometer.anemometerGaugeForm.Widgets("housing/prefsbutton").Widget
+        .HoverColor = 0 ' set the hover colour to grey - this may change later with new RC6
+        .MousePointer = IDC_HAND
+        .Alpha = val(PzGOpacity) / 100
+    End With
+          
+    With fAnemometer.anemometerGaugeForm.Widgets("housing/tickbutton").Widget
+        .HoverColor = 0 ' set the hover colour to grey - this may change later with new RC6
+        .MousePointer = IDC_HAND
+    End With
+    
+    With fAnemometer.anemometerGaugeForm.Widgets("housing/surround").Widget
+        .HoverColor = 0 ' set the hover colour to grey - this may change later with new RC6
+        .MousePointer = IDC_SIZEALL
+        .Alpha = val(PzGOpacity) / 100
+    End With
+    
+    If PzGPointerAnimate = "0" Then
+        overlayAnemoWidget.pointerAnimate = False
+        fAnemometer.anemometerGaugeForm.Widgets("housing/tickbutton").Widget.Alpha = val(PzGOpacity) / 100
+    Else
+        overlayAnemoWidget.pointerAnimate = True
+        fAnemometer.anemometerGaugeForm.Widgets("housing/tickbutton").Widget.Alpha = 0
+    End If
+        
+    If PzGPreventDragging = "0" Then
+        menuForm.mnuLockWidget.Checked = False
+        overlayAnemoWidget.Locked = False
+        fAnemometer.anemometerGaugeForm.Widgets("housing/lockbutton").Widget.Alpha = val(PzGOpacity) / 100
+    Else
+        menuForm.mnuLockWidget.Checked = True
+        overlayAnemoWidget.Locked = True ' this is just here for continuity's sake, it is also set at the time the control is selected
+        fAnemometer.anemometerGaugeForm.Widgets("housing/lockbutton").Widget.Alpha = 0
+    End If
+
+    overlayAnemoWidget.thisOpacity = val(PzGOpacity)
+    'overlayAnemoWidget.samplingInterval = val(PzGSamplingInterval)
+    'overlayAnemoWidget.thisFace = val(PzGTemperatureScale)
+               
+    
+   On Error GoTo 0
+   Exit Sub
+
+adjustAnemometerMainControls_Error:
+
+    MsgBox "Error " & Err.Number & " (" & Err.Description & ") in procedure adjustAnemometerMainControls of Module modMain"
 
 End Sub
 
@@ -1340,6 +1467,45 @@ loadClipBExcludePathCollection_Error:
 
 End Sub
 
+
+
+
+
+'---------------------------------------------------------------------------------------
+' Procedure : loadAnemometerExcludePathCollection
+' Author    : Dean Beedell (yereverluvinunclebert)
+' Date      : 30/07/2023
+' Purpose   : Do not create Widgets for those in the exclude list.
+'             all non UI-interacting elements (no mouse events) must be inserted here
+'---------------------------------------------------------------------------------------
+'
+Private Sub loadAnemometerExcludePathCollection()
+
+    'all of these will be rendered in cwOverlay in the same order as below
+    On Error GoTo loadAnemometerExcludePathCollection_Error
+
+    With fAnemometer.collAnemometerPSDNonUIElements ' the exclude list
+
+        .Add Empty, "anemometerface"
+        
+        .Add Empty, "bigreflection"     'all reflections
+        .Add Empty, "windowreflection"
+
+        .Add Empty, "redlamptrue"
+        .Add Empty, "redlampfalse"
+        
+        .Add Empty, "pointer"
+        .Add Empty, "pointerShadow"
+    End With
+
+   On Error GoTo 0
+   Exit Sub
+
+loadAnemometerExcludePathCollection_Error:
+
+    MsgBox "Error " & Err.Number & " (" & Err.Description & ") in procedure loadAnemometerExcludePathCollection of Module modMain"
+
+End Sub
 
 ''---------------------------------------------------------------------------------------
 '' Procedure : ExportPngs
