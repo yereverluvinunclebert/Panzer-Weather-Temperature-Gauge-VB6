@@ -337,7 +337,7 @@ Public PzGOpenFile As String
 Public PzGDefaultEditor As String
        
 ' font
-Public PzGClockFont As String
+Public PzGTempFormFont As String
 Public PzGPrefsFont As String
 Public PzGPrefsFontSizeHighDPI As String
 Public PzGPrefsFontSizeLowDPI As String
@@ -362,20 +362,20 @@ Public PzGSettingsFile As String
 Public PzGTrinketsDir      As String
 Public PzGTrinketsFile      As String
 
-Public PzGClockHighDpiXPos As String
-Public PzGClockHighDpiYPos As String
-Public PzGClockLowDpiXPos As String
-Public PzGClockLowDpiYPos As String
+Public PzGTempFormHighDpiXPos As String
+Public PzGTempFormHighDpiYPos As String
+Public PzGTempFormLowDpiXPos As String
+Public PzGTempFormLowDpiYPos As String
 Public PzGLastSelectedTab As String
 Public PzGSkinTheme As String
 Public PzGUnhide As String
 
 ' vars stored for positioning the prefs form
-Public PzGFormHighDpiXPosTwips As String
-Public PzGFormHighDpiYPosTwips As String
+Public PzGPrefsFormHighDpiXPosTwips As String
+Public PzGPrefsFormHighDpiYPosTwips As String
 
-Public PzGFormLowDpiXPosTwips As String
-Public PzGFormLowDpiYPosTwips As String
+Public PzGPrefsFormLowDpiXPosTwips As String
+Public PzGPrefsFormLowDpiYPosTwips As String
 
 Public PzGLastUpdated As String
 Public PzGMetarPref As String
@@ -1860,7 +1860,7 @@ Public Sub ChangeToolTipWidgetDefaultSettings(ByRef My_Widget As cWidgetBase)
 
     With My_Widget
     
-        .FontName = PzGClockFont
+        .FontName = PzGTempFormFont
         .FontSize = val(PzGPrefsFontSizeLowDPI)
     
     End With
@@ -1883,8 +1883,8 @@ End Sub
 '
 Public Sub makeVisibleFormElements()
 
-    Dim formLeftPixels As Long: formLeftPixels = 0
-    Dim formTopPixels As Long: formTopPixels = 0
+    Dim temperatureFormLeftPixels As Long: temperatureFormLeftPixels = 0
+    Dim temperatureFormTopPixels As Long: temperatureFormTopPixels = 0
     
     Dim monitorCount As Long: monitorCount = 0
     
@@ -1893,33 +1893,33 @@ Public Sub makeVisibleFormElements()
     'NOTE that when you position a widget you are positioning the form it is drawn upon.
 
     If PzGDpiAwareness = "1" Then
-        formLeftPixels = val(PzGClockHighDpiXPos)
-        formTopPixels = val(PzGClockHighDpiYPos)
+        temperatureFormLeftPixels = val(PzGTempFormHighDpiXPos)
+        temperatureFormTopPixels = val(PzGTempFormHighDpiYPos)
     Else
-        formLeftPixels = val(PzGClockLowDpiXPos)
-        formTopPixels = val(PzGClockLowDpiYPos)
+        temperatureFormLeftPixels = val(PzGTempFormLowDpiXPos)
+        temperatureFormTopPixels = val(PzGTempFormLowDpiYPos)
     End If
     
     ' The RC forms are measured in pixels, whereas the native forms are in twips, do remember that...
 
     monitorCount = fGetMonitorCount
     If monitorCount > 1 Then
-        Call adjustFormPositionToCorrectMonitor(fTemperature.temperatureGaugeForm.hwnd, formLeftPixels, formTopPixels)
+        Call adjustFormPositionToCorrectMonitor(fTemperature.temperatureGaugeForm.hwnd, temperatureFormLeftPixels, temperatureFormTopPixels)
     Else
-        fTemperature.temperatureGaugeForm.Left = formLeftPixels
-        fTemperature.temperatureGaugeForm.Top = formTopPixels
+        fTemperature.temperatureGaugeForm.Left = temperatureFormLeftPixels
+        fTemperature.temperatureGaugeForm.Top = temperatureFormTopPixels
     End If
     
     fTemperature.temperatureGaugeForm.Show
     
-    fClipB.clipBForm.Left = formLeftPixels + fTemperature.temperatureGaugeForm.Width + 300
-    fClipB.clipBForm.Top = formTopPixels + 200
+    fClipB.clipBForm.Left = temperatureFormLeftPixels + fTemperature.temperatureGaugeForm.Width + 300
+    fClipB.clipBForm.Top = temperatureFormTopPixels + 200
     fClipB.clipBForm.Show
     
     fSelector.SelectorForm.Width = 1000
     fSelector.SelectorForm.Height = 800
-    fSelector.SelectorForm.Left = formLeftPixels + fTemperature.temperatureGaugeForm.Width + 300
-    fSelector.SelectorForm.Top = formTopPixels + 200
+    fSelector.SelectorForm.Left = temperatureFormLeftPixels + fTemperature.temperatureGaugeForm.Width + 300
+    fSelector.SelectorForm.Top = temperatureFormTopPixels + 200
     
     
 
@@ -2307,15 +2307,15 @@ Public Sub savePosition()
    On Error GoTo savePosition_Error
 
     If PzGDpiAwareness = "1" Then
-        PzGClockHighDpiXPos = Str$(fTemperature.temperatureGaugeForm.Left) ' saving in pixels
-        PzGClockHighDpiYPos = Str$(fTemperature.temperatureGaugeForm.Top)
-        sPutINISetting "Software\PzTemperatureGauge", "clockHighDpiXPos", PzGClockHighDpiXPos, PzGSettingsFile
-        sPutINISetting "Software\PzTemperatureGauge", "clockHighDpiYPos", PzGClockHighDpiYPos, PzGSettingsFile
+        PzGTempFormHighDpiXPos = Str$(fTemperature.temperatureGaugeForm.Left) ' saving in pixels
+        PzGTempFormHighDpiYPos = Str$(fTemperature.temperatureGaugeForm.Top)
+        sPutINISetting "Software\PzTemperatureGauge", "tempFormHighDpiXPos", PzGTempFormHighDpiXPos, PzGSettingsFile
+        sPutINISetting "Software\PzTemperatureGauge", "tempFormHighDpiYPos", PzGTempFormHighDpiYPos, PzGSettingsFile
     Else
-        PzGClockLowDpiXPos = Str$(fTemperature.temperatureGaugeForm.Left) ' saving in pixels
-        PzGClockLowDpiYPos = Str$(fTemperature.temperatureGaugeForm.Top)
-        sPutINISetting "Software\PzTemperatureGauge", "clockLowDpiXPos", PzGClockLowDpiXPos, PzGSettingsFile
-        sPutINISetting "Software\PzTemperatureGauge", "clockLowDpiYPos", PzGClockLowDpiYPos, PzGSettingsFile
+        PzGTempFormLowDpiXPos = Str$(fTemperature.temperatureGaugeForm.Left) ' saving in pixels
+        PzGTempFormLowDpiYPos = Str$(fTemperature.temperatureGaugeForm.Top)
+        sPutINISetting "Software\PzTemperatureGauge", "tempFormLowDpiXPos", PzGTempFormLowDpiXPos, PzGSettingsFile
+        sPutINISetting "Software\PzTemperatureGauge", "tempFormLowDpiYPos", PzGTempFormLowDpiYPos, PzGSettingsFile
     End If
     
     PzGTemperatureGaugeSize = Str$(fTemperature.temperatureGaugeForm.WidgetRoot.Zoom * 100)
@@ -2381,34 +2381,34 @@ Public Sub readPrefsPosition()
    On Error GoTo readPrefsPosition_Error
 
     If PzGDpiAwareness = "1" Then
-        PzGFormHighDpiXPosTwips = fGetINISetting("Software\PzTemperatureGauge", "formHighDpiXPosTwips", PzGSettingsFile)
-        PzGFormHighDpiYPosTwips = fGetINISetting("Software\PzTemperatureGauge", "formHighDpiYPosTwips", PzGSettingsFile)
+        PzGPrefsFormHighDpiXPosTwips = fGetINISetting("Software\PzTemperatureGauge", "prefsFormHighDpiXPosTwips", PzGSettingsFile)
+        PzGPrefsFormHighDpiYPosTwips = fGetINISetting("Software\PzTemperatureGauge", "prefsFormHighDpiYPosTwips", PzGSettingsFile)
         
 '        ' if a current location not stored then position to the middle of the screen
-'        If PzGFormHighDpiXPosTwips <> "" Then
-'            panzerPrefs.Left = Val(PzGFormHighDpiXPosTwips)
+'        If PzGPrefsFormHighDpiXPosTwips <> "" Then
+'            panzerPrefs.Left = Val(PzGPrefsFormHighDpiXPosTwips)
 '        Else
 '            panzerPrefs.Left = screenWidthTwips / 2 - panzerPrefs.Width / 2
 '        End If
 '
-'        If PzGFormHighDpiYPosTwips <> "" Then
-'            panzerPrefs.Top = Val(PzGFormHighDpiYPosTwips)
+'        If PzGPrefsFormHighDpiYPosTwips <> "" Then
+'            panzerPrefs.Top = Val(PzGPrefsFormHighDpiYPosTwips)
 '        Else
 '            panzerPrefs.Top = Screen.Height / 2 - panzerPrefs.Height / 2
 '        End If
     Else
-        PzGFormLowDpiXPosTwips = fGetINISetting("Software\PzTemperatureGauge", "formLowDpiXPosTwips", PzGSettingsFile)
-        PzGFormLowDpiYPosTwips = fGetINISetting("Software\PzTemperatureGauge", "formLowDpiYPosTwips", PzGSettingsFile)
+        PzGPrefsFormLowDpiXPosTwips = fGetINISetting("Software\PzTemperatureGauge", "prefsFormLowDpiXPosTwips", PzGSettingsFile)
+        PzGPrefsFormLowDpiYPosTwips = fGetINISetting("Software\PzTemperatureGauge", "prefsFormLowDpiYPosTwips", PzGSettingsFile)
         
 '        ' if a current location not stored then position to the middle of the screen
-'        If PzGFormLowDpiXPosTwips <> "" Then
-'            panzerPrefs.Left = Val(PzGFormLowDpiXPosTwips)
+'        If PzGPrefsFormLowDpiXPosTwips <> "" Then
+'            panzerPrefs.Left = Val(PzGPrefsFormLowDpiXPosTwips)
 '        Else
 '            panzerPrefs.Left = screenWidthTwips / 2 - panzerPrefs.Width / 2
 '        End If
 '
-'        If PzGFormLowDpiYPosTwips <> "" Then
-'            panzerPrefs.Top = Val(PzGFormLowDpiYPosTwips)
+'        If PzGPrefsFormLowDpiYPosTwips <> "" Then
+'            panzerPrefs.Top = Val(PzGPrefsFormLowDpiYPosTwips)
 '        Else
 '            panzerPrefs.Top = Screen.Height / 2 - panzerPrefs.Height / 2
 '        End If
@@ -2434,19 +2434,19 @@ Public Sub writePrefsPosition()
 
     If panzerPrefs.WindowState = vbNormal Then ' when vbMinimised the value = -48000  !
         If PzGDpiAwareness = "1" Then
-            PzGFormHighDpiXPosTwips = Str$(panzerPrefs.Left)
-            PzGFormHighDpiYPosTwips = Str$(panzerPrefs.Top)
+            PzGPrefsFormHighDpiXPosTwips = Str$(panzerPrefs.Left)
+            PzGPrefsFormHighDpiYPosTwips = Str$(panzerPrefs.Top)
             
             ' now write those params to the toolSettings.ini
-            sPutINISetting "Software\PzTemperatureGauge", "formHighDpiXPosTwips", PzGFormHighDpiXPosTwips, PzGSettingsFile
-            sPutINISetting "Software\PzTemperatureGauge", "formHighDpiYPosTwips", PzGFormHighDpiYPosTwips, PzGSettingsFile
+            sPutINISetting "Software\PzTemperatureGauge", "prefsFormHighDpiXPosTwips", PzGPrefsFormHighDpiXPosTwips, PzGSettingsFile
+            sPutINISetting "Software\PzTemperatureGauge", "prefsFormHighDpiYPosTwips", PzGPrefsFormHighDpiYPosTwips, PzGSettingsFile
         Else
-            PzGFormLowDpiXPosTwips = Str$(panzerPrefs.Left)
-            PzGFormLowDpiYPosTwips = Str$(panzerPrefs.Top)
+            PzGPrefsFormLowDpiXPosTwips = Str$(panzerPrefs.Left)
+            PzGPrefsFormLowDpiYPosTwips = Str$(panzerPrefs.Top)
             
             ' now write those params to the toolSettings.ini
-            sPutINISetting "Software\PzTemperatureGauge", "formLowDpiXPosTwips", PzGFormLowDpiXPosTwips, PzGSettingsFile
-            sPutINISetting "Software\PzTemperatureGauge", "formLowDpiYPosTwips", PzGFormLowDpiYPosTwips, PzGSettingsFile
+            sPutINISetting "Software\PzTemperatureGauge", "prefsFormLowDpiXPosTwips", PzGPrefsFormLowDpiXPosTwips, PzGSettingsFile
+            sPutINISetting "Software\PzTemperatureGauge", "prefsFormLowDpiYPosTwips", PzGPrefsFormLowDpiYPosTwips, PzGSettingsFile
             
         End If
         

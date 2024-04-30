@@ -318,7 +318,7 @@ Private Sub initialiseGlobalVars()
     PzGDefaultEditor = vbNullString
          
     ' font
-    PzGClockFont = vbNullString
+    PzGTempFormFont = vbNullString
     PzGPrefsFont = vbNullString
     PzGPrefsFontSizeHighDPI = vbNullString
     PzGPrefsFontSizeLowDPI = vbNullString
@@ -343,11 +343,11 @@ Private Sub initialiseGlobalVars()
     PzGTrinketsDir = vbNullString
     PzGTrinketsFile = vbNullString
     
-    PzGClockHighDpiXPos = vbNullString
-    PzGClockHighDpiYPos = vbNullString
+    PzGTempFormHighDpiXPos = vbNullString
+    PzGTempFormHighDpiYPos = vbNullString
     
-    PzGClockLowDpiXPos = vbNullString
-    PzGClockLowDpiYPos = vbNullString
+    PzGTempFormLowDpiXPos = vbNullString
+    PzGTempFormLowDpiYPos = vbNullString
     
     PzGLastSelectedTab = vbNullString
     PzGSkinTheme = vbNullString
@@ -829,7 +829,7 @@ Public Sub readSettingsFile(ByVal location As String, ByVal PzGSettingsFile As S
         PzGhLocationPercPrefValue = fGetINISetting(location, "hLocationPercPrefValue", PzGSettingsFile)
 
         ' font
-        PzGClockFont = fGetINISetting(location, "clockFont", PzGSettingsFile)
+        PzGTempFormFont = fGetINISetting(location, "tempFormFont", PzGSettingsFile)
         PzGPrefsFont = fGetINISetting(location, "prefsFont", PzGSettingsFile)
         PzGPrefsFontSizeHighDPI = fGetINISetting(location, "prefsFontSizeHighDPI", PzGSettingsFile)
         PzGPrefsFontSizeLowDPI = fGetINISetting(location, "prefsFontSizeLowDPI", PzGSettingsFile)
@@ -846,11 +846,11 @@ Public Sub readSettingsFile(ByVal location As String, ByVal PzGSettingsFile As S
         PzGDefaultEditor = fGetINISetting(location, "defaultEditor", PzGSettingsFile)
         
         ' other
-        PzGClockHighDpiXPos = fGetINISetting("Software\PzTemperatureGauge", "clockHighDpiXPos", PzGSettingsFile)
-        PzGClockHighDpiYPos = fGetINISetting("Software\PzTemperatureGauge", "clockHighDpiYPos", PzGSettingsFile)
+        PzGTempFormHighDpiXPos = fGetINISetting("Software\PzTemperatureGauge", "tempFormHighDpiXPos", PzGSettingsFile)
+        PzGTempFormHighDpiYPos = fGetINISetting("Software\PzTemperatureGauge", "tempFormHighDpiYPos", PzGSettingsFile)
         
-        PzGClockLowDpiXPos = fGetINISetting("Software\PzTemperatureGauge", "clockLowDpiXPos", PzGSettingsFile)
-        PzGClockLowDpiYPos = fGetINISetting("Software\PzTemperatureGauge", "clockLowDpiYPos", PzGSettingsFile)
+        PzGTempFormLowDpiXPos = fGetINISetting("Software\PzTemperatureGauge", "tempFormLowDpiXPos", PzGSettingsFile)
+        PzGTempFormLowDpiYPos = fGetINISetting("Software\PzTemperatureGauge", "tempFormLowDpiYPos", PzGSettingsFile)
         
         PzGLastSelectedTab = fGetINISetting(location, "lastSelectedTab", PzGSettingsFile)
         PzGSkinTheme = fGetINISetting(location, "skinTheme", PzGSettingsFile)
@@ -930,7 +930,7 @@ Public Sub validateInputs()
            
     ' fonts
     If PzGPrefsFont = vbNullString Then PzGPrefsFont = "times new roman"
-    If PzGClockFont = vbNullString Then PzGClockFont = PzGPrefsFont
+    If PzGTempFormFont = vbNullString Then PzGTempFormFont = PzGPrefsFont
     If PzGPrefsFontSizeHighDPI = vbNullString Then PzGPrefsFontSizeHighDPI = "8"
     If PzGPrefsFontSizeLowDPI = vbNullString Then PzGPrefsFontSizeLowDPI = "8"
     If PzGPrefsFontItalics = vbNullString Then PzGPrefsFontItalics = "false"

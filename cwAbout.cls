@@ -154,7 +154,7 @@ End Property
 ' Purpose   :
 '---------------------------------------------------------------------------------------
 '
-Private Sub W_MouseDown(Button As Integer, Shift As Integer, ByVal x As Single, ByVal y As Single)
+Private Sub W_MouseDown(Button As Integer, Shift As Integer, ByVal X As Single, ByVal Y As Single)
    
    Dim fileToPlay As String: fileToPlay = vbNullString
    On Error GoTo W_MouseDown_Error
@@ -356,7 +356,7 @@ Private Sub Draw(ByRef CC As cCairoContext, ByVal dx As Single, ByVal dy As Sing
         
     'set some Font- and ForeColor-Properties and draw some Text on the Widget
     W.FontItalic = True
-    W.FontName = PzGClockFont
+    W.FontName = PzGTempFormFont
     W.ForeColor = vbBlack
     W.SelectFontSettingsInto CC
    

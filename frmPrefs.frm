@@ -2577,11 +2577,11 @@ Public Sub positionPrefsMonitor()
     On Error GoTo positionPrefsMonitor_Error
     
     If PzGDpiAwareness = "1" Then
-        formLeftTwips = val(PzGFormHighDpiXPosTwips)
-        formTopTwips = val(PzGFormHighDpiYPosTwips)
+        formLeftTwips = val(PzGPrefsFormHighDpiXPosTwips)
+        formTopTwips = val(PzGPrefsFormHighDpiYPosTwips)
     Else
-        formLeftTwips = val(PzGFormLowDpiXPosTwips)
-        formTopTwips = val(PzGFormLowDpiYPosTwips)
+        formLeftTwips = val(PzGPrefsFormLowDpiXPosTwips)
+        formTopTwips = val(PzGPrefsFormLowDpiYPosTwips)
     End If
     
     If formLeftTwips = 0 Then
@@ -3635,7 +3635,7 @@ Private Sub btnSave_Click()
 
     ' fonts
     PzGPrefsFont = txtPrefsFont.Text
-    PzGClockFont = PzGPrefsFont
+    PzGTempFormFont = PzGPrefsFont
     
     ' the sizing is not saved here again as it saved during the setting phase.
     
@@ -3702,7 +3702,7 @@ Private Sub btnSave_Click()
         sPutINISetting "Software\PzTemperatureGauge", "widgetPortrait", PzGWidgetPortrait, PzGSettingsFile
 
         sPutINISetting "Software\PzTemperatureGauge", "prefsFont", PzGPrefsFont, PzGSettingsFile
-        sPutINISetting "Software\PzTemperatureGauge", "clockFont", PzGClockFont, PzGSettingsFile
+        sPutINISetting "Software\PzTemperatureGauge", "tempFormFont", PzGTempFormFont, PzGSettingsFile
         
         sPutINISetting "Software\PzTemperatureGauge", "prefsFontSizeHighDPI", PzGPrefsFontSizeHighDPI, PzGSettingsFile
         sPutINISetting "Software\PzTemperatureGauge", "prefsFontSizeLowDPI", PzGPrefsFontSizeLowDPI, PzGSettingsFile
@@ -3718,7 +3718,6 @@ Private Sub btnSave_Click()
         sPutINISetting "Software\PzTemperatureGauge", "hidingTime", PzGHidingTime, PzGSettingsFile
         sPutINISetting "Software\PzTemperatureGauge", "ignoreMouse", PzGIgnoreMouse, PzGSettingsFile
         
-        
         sPutINISetting "Software\PzTemperatureGauge", "startup", PzGStartup, PzGSettingsFile
 
         sPutINISetting "Software\PzTemperatureGauge", "enableSounds", PzGEnableSounds, PzGSettingsFile
@@ -3729,11 +3728,12 @@ Private Sub btnSave_Click()
         sPutINISetting "Software\PzTemperatureGauge", "openFile", PzGOpenFile, PzGSettingsFile
         sPutINISetting "Software\PzTemperatureGauge", "defaultEditor", PzGDefaultEditor, PzGSettingsFile
         
-        sPutINISetting "Software\PzTemperatureGauge", "clockHighDpiXPos", PzGClockHighDpiXPos, PzGSettingsFile
-        sPutINISetting "Software\PzTemperatureGauge", "clockHighDpiYPos", PzGClockHighDpiYPos, PzGSettingsFile
+        sPutINISetting "Software\PzTemperatureGauge", "tempFormHighDpiXPos", PzGTempFormHighDpiXPos, PzGSettingsFile
+        sPutINISetting "Software\PzTemperatureGauge", "tempFormHighDpiYPos", PzGTempFormHighDpiYPos, PzGSettingsFile
         
-        sPutINISetting "Software\PzTemperatureGauge", "clockLowDpiXPos", PzGClockLowDpiXPos, PzGSettingsFile
-        sPutINISetting "Software\PzTemperatureGauge", "clockLowDpiYPos", PzGClockLowDpiYPos, PzGSettingsFile
+        sPutINISetting "Software\PzTemperatureGauge", "tempFormLowDpiXPos", PzGTempFormLowDpiXPos, PzGSettingsFile
+        sPutINISetting "Software\PzTemperatureGauge", "tempFormLowDpiYPos", PzGTempFormLowDpiYPos, PzGSettingsFile
+        
         sPutINISetting "Software\PzTemperatureGauge", "lastUpdated", PzGLastUpdated, PzGSettingsFile
         sPutINISetting "Software\PzTemperatureGauge", "metarPref", PzGMetarPref, PzGSettingsFile
         
@@ -3741,8 +3741,6 @@ Private Sub btnSave_Click()
         sPutINISetting "Software\PzTemperatureGauge", "pressureStorageDate", PzGPressureStorageDate, PzGSettingsFile
         sPutINISetting "Software\PzTemperatureGauge", "currentPressureValue", PzGCurrentPressureValue, PzGSettingsFile
         
-        
-
         'save the values from the Text Items
 
 '        btnCnt = 0
@@ -3856,7 +3854,7 @@ Private Sub btnPrefsFont_Click()
     
     ' set the preliminary vars to feed and populate the changefont routine
     fntFont = PzGPrefsFont
-    ' PzGClockFont
+    ' PzGTempFormFont
     
     If PzGDpiAwareness = "1" Then
         fntSize = val(PzGPrefsFontSizeHighDPI)
@@ -3872,7 +3870,7 @@ Private Sub btnPrefsFont_Click()
     Call changeFont(panzerPrefs, True, fntFont, fntSize, fntWeight, fntStyle, fntColour, fntItalics, fntUnderline, fntFontResult)
     
     PzGPrefsFont = CStr(fntFont)
-    PzGClockFont = PzGPrefsFont
+    PzGTempFormFont = PzGPrefsFont
     
     If PzGDpiAwareness = "1" Then
         PzGPrefsFontSizeHighDPI = CStr(fntSize)
@@ -3886,7 +3884,7 @@ Private Sub btnPrefsFont_Click()
 
     If fFExists(PzGSettingsFile) Then ' does the tool's own settings.ini exist?
         sPutINISetting "Software\PzTemperatureGauge", "prefsFont", PzGPrefsFont, PzGSettingsFile
-        sPutINISetting "Software\PzTemperatureGauge", "clockFont", PzGClockFont, PzGSettingsFile
+        sPutINISetting "Software\PzTemperatureGauge", "tempFormFont", PzGTempFormFont, PzGSettingsFile
         sPutINISetting "Software\PzTemperatureGauge", "prefsFontSizeHighDPI", PzGPrefsFontSizeHighDPI, PzGSettingsFile
         sPutINISetting "Software\PzTemperatureGauge", "prefsFontSizeLowDPI", PzGPrefsFontSizeLowDPI, PzGSettingsFile
         sPutINISetting "Software\PzTemperatureGauge", "prefsFontItalics", PzGPrefsFontItalics, PzGSettingsFile
@@ -4010,21 +4008,21 @@ Private Sub adjustPrefsControls()
 '            txtLandscapeHoffset.Text = fTemperature.temperatureGaugeForm.Left
 '            txtLandscapeVoffset.Text = fTemperature.temperatureGaugeForm.Top
             If PzGDpiAwareness = "1" Then
-                txtLandscapeHoffset.ToolTipText = "Last Sampled Form X Horizontal Position : " & PzGClockHighDpiXPos & "px"
-                txtLandscapeVoffset.ToolTipText = "Last Sampled Form Y Vertical Position : " & PzGClockHighDpiYPos & "px"
+                txtLandscapeHoffset.ToolTipText = "Last Sampled Form X Horizontal Position : " & PzGTempFormHighDpiXPos & "px"
+                txtLandscapeVoffset.ToolTipText = "Last Sampled Form Y Vertical Position : " & PzGTempFormHighDpiYPos & "px"
             Else
-                txtLandscapeHoffset.ToolTipText = "Last Sampled Form X Horizontal Position : " & PzGClockLowDpiXPos & "px"
-                txtLandscapeVoffset.ToolTipText = "Last Sampled Form Y Vertical Position : " & PzGClockLowDpiYPos & "px"
+                txtLandscapeHoffset.ToolTipText = "Last Sampled Form X Horizontal Position : " & PzGTempFormLowDpiXPos & "px"
+                txtLandscapeVoffset.ToolTipText = "Last Sampled Form Y Vertical Position : " & PzGTempFormLowDpiYPos & "px"
             End If
         Else
 '            txtPortraitHoffset.Text = fTemperature.temperatureGaugeForm.Left
 '            txtPortraitYoffset.Text = fTemperature.temperatureGaugeForm.Top
             If PzGDpiAwareness = "1" Then
-                txtPortraitHoffset.ToolTipText = "Last Sampled Form X Horizontal Position : " & PzGClockHighDpiXPos & "px"
-                txtPortraitYoffset.ToolTipText = "Last Sampled Form Y Vertical Position : " & PzGClockHighDpiYPos & "px"
+                txtPortraitHoffset.ToolTipText = "Last Sampled Form X Horizontal Position : " & PzGTempFormHighDpiXPos & "px"
+                txtPortraitYoffset.ToolTipText = "Last Sampled Form Y Vertical Position : " & PzGTempFormHighDpiYPos & "px"
             Else
-                txtPortraitHoffset.ToolTipText = "Last Sampled Form X Horizontal Position : " & PzGClockLowDpiXPos & "px"
-                txtPortraitYoffset.ToolTipText = "Last Sampled Form Y Vertical Position : " & PzGClockLowDpiYPos & "px"
+                txtPortraitHoffset.ToolTipText = "Last Sampled Form X Horizontal Position : " & PzGTempFormLowDpiXPos & "px"
+                txtPortraitYoffset.ToolTipText = "Last Sampled Form Y Vertical Position : " & PzGTempFormLowDpiYPos & "px"
             End If
         End If
     End If
