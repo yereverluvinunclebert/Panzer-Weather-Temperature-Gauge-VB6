@@ -45,10 +45,14 @@ Public overlaySelectorWidget As cwOverlaySelect
 Public fClipB As New cfClipB
 Public overlayClipbWidget As cwOverlayClipb
 
+Public fAnemometer As New cfAnemometer
+Public overlayAnemoWidget As cwOverlayAnemo
+
 Public sunriseSunset As cwSunriseSunset
 Public widgetName1 As String
 Public widgetName2 As String
 Public widgetName3 As String
+Public widgetName4 As String
 
 'Public startupFlg As Boolean
 
@@ -91,22 +95,26 @@ End Sub
 Public Sub mainRoutine(ByVal restart As Boolean)
     
     Dim extractCommand As String: extractCommand = vbNullString
-    Dim thisPSDFullPath As String: thisPSDFullPath = vbNullString
+    Dim temperaturePSDFullPath As String: temperaturePSDFullPath = vbNullString
     Dim selectorPSDFullPath As String: selectorPSDFullPath = vbNullString
-    Dim ClipBPSDFullPath As String: ClipBPSDFullPath = vbNullString
+    Dim clipBPSDFullPath As String: clipBPSDFullPath = vbNullString
+    Dim anemometerPSDFullPath As String: anemometerPSDFullPath = vbNullString
 
     Dim licenceState As Integer: licenceState = 0
 
     On Error GoTo main_routine_Error
     
     widgetName1 = "Panzer Temperature Gauge"
-    thisPSDFullPath = App.path & "\Res\Panzer Weather Gauges VB6.psd"
+    temperaturePSDFullPath = App.path & "\Res\Panzer Weather Gauges VB6.psd"
     
     widgetName2 = "ICAO Selector"
     selectorPSDFullPath = App.path & "\Res\Panzer Weather Selector VB6.psd"
     
     widgetName3 = "Clipboard"
-    ClipBPSDFullPath = App.path & "\Res\Panzer Weather Clipboard VB6.psd"
+    clipBPSDFullPath = App.path & "\Res\Panzer Weather Clipboard VB6.psd"
+    
+    widgetName4 = "Anemometer"
+    anemometerPSDFullPath = App.path & "\Res\Panzer Weather Anemometer Gauge VB6.psd"
     
     prefsCurrentWidth = 9075
     prefsCurrentHeight = 16450
@@ -154,22 +162,17 @@ Public Sub mainRoutine(ByVal restart As Boolean)
     End If
 
     'load the collection for storing the overlay surfaces with its relevant keys direct from the PSD
-    If restart = False Then Call loadTemperatureExcludePathCollection ' no need to reload the collTemperaturePSDNonUIElements layer name keys on a reload
-
-    'load the collection for storing the overlay surfaces with its relevant keys direct from the PSD
-    If restart = False Then Call loadSelectorExcludePathCollection ' no need to reload the collSelectorPSDNonUIElements layer name keys on a reload
-
-    'load the collection for storing the overlay surfaces with its relevant keys direct from the PSD
-    If restart = False Then Call loadClipBExcludePathCollection ' no need to reload the collClipBPSDNonUIElements layer name keys on a reload
+    If restart = False Then
+        Call loadTemperatureExcludePathCollection ' no need to reload the collTemperaturePSDNonUIElements layer name keys on a reload
+        Call loadSelectorExcludePathCollection ' no need to reload the collSelectorPSDNonUIElements layer name keys on a reload
+        Call loadClipBExcludePathCollection ' no need to reload the collClipBPSDNonUIElements layer name keys on a reload
+    End If
     
     ' start the load of the PSD file using the RC6 PSD-Parser.instance
-    Call fTemperature.InitTemperatureFromPSD(thisPSDFullPath)  ' no optional close layer as 3rd param
-
-    ' start the load of the PSD file using the RC6 PSD-Parser.instance
+    Call fTemperature.InitTemperatureFromPSD(temperaturePSDFullPath)  ' no optional close layer as 3rd param
     Call fSelector.InitSelectorFromPSD(selectorPSDFullPath) ' no optional close layer as 3rd param
-
-    ' start the load of the PSD file using the RC6 PSD-Parser.instance
-    Call fClipB.InitClipBFromPSD(ClipBPSDFullPath) ' no optional close layer as 3rd param
+    Call fClipB.InitClipBFromPSD(clipBPSDFullPath) ' no optional close layer as 3rd param
+    Call fAnemometer.InitAnemometerFromPSD(anemometerPSDFullPath) ' no optional close layer as 3rd param
     
     ' resolve VB6 sizing width bug
     Call determineScreenDimensions
