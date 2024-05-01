@@ -351,7 +351,9 @@ Public PzGPrefsFontColour  As String
 
 ' window
 Public PzGWindowLevel As String
-Public PzGPreventDragging As String
+Public PzGPreventDraggingTemperature As String
+Public PzGPreventDraggingAnemometer As String
+
 Public PzGOpacity  As String
 Public PzGWidgetHidden  As String
 Public PzGHidingTime  As String
@@ -2689,7 +2691,7 @@ End Sub
 '
 '    On Error GoTo lockTemperatureWidget_Error
 '
-'    If PzGPreventDragging = "1" Then
+'    If PzGPreventDraggingTemperature = "1" Then
 '        overlayTemperatureWidget.Locked = False
 '    Else
 '        overlayTemperatureWidget.Locked = True

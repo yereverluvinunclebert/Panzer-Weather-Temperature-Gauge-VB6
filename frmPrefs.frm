@@ -3101,8 +3101,8 @@ Private Sub chkPreventDragging_Click()
     ' immediately make the widget locked in place
     If chkPreventDragging.Value = 0 Then
         overlayTemperatureWidget.Locked = False
-        PzGPreventDragging = "0"
-        menuForm.mnuLockWidget.Checked = False
+        PzGPreventDraggingTemperature = "0"
+        menuForm.mnuLockTemperatureGauge.Checked = False
         If aspectRatio = "landscape" Then
             txtLandscapeHoffset.Text = vbNullString
             txtLandscapeVoffset.Text = vbNullString
@@ -3112,8 +3112,8 @@ Private Sub chkPreventDragging_Click()
         End If
     Else
         overlayTemperatureWidget.Locked = True
-        PzGPreventDragging = "1"
-        menuForm.mnuLockWidget.Checked = True
+        PzGPreventDraggingTemperature = "1"
+        menuForm.mnuLockTemperatureGauge.Checked = True
         If aspectRatio = "landscape" Then
             txtLandscapeHoffset.Text = fTemperature.temperatureGaugeForm.Left
             txtLandscapeVoffset.Text = fTemperature.temperatureGaugeForm.Top
@@ -3653,7 +3653,9 @@ Private Sub btnSave_Click()
 
     ' Windows
     PzGWindowLevel = LTrim$(Str$(cmbWindowLevel.ListIndex))
-    PzGPreventDragging = LTrim$(Str$(chkPreventDragging.Value))
+    PzGPreventDraggingTemperature = LTrim$(Str$(chkPreventDragging.Value))
+    'PzGPreventDraggingAnemometer = LTrim$(Str$(chkPreventDraggingAnemometer.Value))
+    
     PzGOpacity = LTrim$(Str$(sliOpacity.Value))
     PzGWidgetHidden = LTrim$(Str$(chkWidgetHidden.Value))
     PzGHidingTime = LTrim$(Str$(cmbHidingTime.ListIndex))
@@ -3721,7 +3723,9 @@ Private Sub btnSave_Click()
 
         'save the values from the Windows Config Items
         sPutINISetting "Software\PzTemperatureGauge", "windowLevel", PzGWindowLevel, PzGSettingsFile
-        sPutINISetting "Software\PzTemperatureGauge", "preventDragging", PzGPreventDragging, PzGSettingsFile
+        sPutINISetting "Software\PzTemperatureGauge", "preventDraggingTemperature", PzGPreventDraggingTemperature, PzGSettingsFile
+        sPutINISetting "Software\PzAnemometerGauge", "preventDraggingAnemometer", PzGPreventDraggingAnemometer, PzGSettingsFile
+        
         
         sPutINISetting "Software\PzTemperatureGauge", "opacity", PzGOpacity, PzGSettingsFile
         sPutINISetting "Software\PzTemperatureGauge", "widgetHidden", PzGWidgetHidden, PzGSettingsFile
@@ -4032,7 +4036,7 @@ Private Sub adjustPrefsControls()
     cmbAspectHidden.ListIndex = val(PzGAspectHidden)
     cmbWidgetPosition.ListIndex = val(PzGWidgetPosition)
         
-    If PzGPreventDragging = "1" Then
+    If PzGPreventDraggingTemperature = "1" Then
         If aspectRatio = "landscape" Then
 '            txtLandscapeHoffset.Text = fTemperature.temperatureGaugeForm.Left
 '            txtLandscapeVoffset.Text = fTemperature.temperatureGaugeForm.Top
@@ -4067,7 +4071,9 @@ Private Sub adjustPrefsControls()
     ' Windows tab
     cmbWindowLevel.ListIndex = val(PzGWindowLevel)
     chkIgnoreMouse.Value = val(PzGIgnoreMouse)
-    chkPreventDragging.Value = val(PzGPreventDragging)
+    chkPreventDragging.Value = val(PzGPreventDraggingTemperature)
+    'chkPreventDragging.Value = val(PzGPreventDraggingAnemometer)
+    
     sliOpacity.Value = val(PzGOpacity)
     chkWidgetHidden.Value = val(PzGWidgetHidden)
     cmbHidingTime.ListIndex = val(PzGHidingTime)

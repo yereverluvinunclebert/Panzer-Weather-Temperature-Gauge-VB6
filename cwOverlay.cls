@@ -511,23 +511,23 @@ Public Property Let Locked(ByVal newValue As Boolean)
     fileToPlay = "lock.wav"
 
     If mLocked = True Then
-        menuForm.mnuLockWidget.Checked = True
+        menuForm.mnuLockTemperatureGauge.Checked = True
         panzerPrefs.chkPreventDragging.Value = 1
         'overlayTemperatureWidget.Locked = True
-        PzGPreventDragging = "1"
+        PzGPreventDraggingTemperature = "1"
         fTemperature.temperatureGaugeForm.Widgets("housing/lockbutton").Widget.Alpha = 0
         
     Else
-        menuForm.mnuLockWidget.Checked = False
+        menuForm.mnuLockTemperatureGauge.Checked = False
         panzerPrefs.chkPreventDragging.Value = 0
-        PzGPreventDragging = "0"
+        PzGPreventDraggingTemperature = "0"
         'overlayTemperatureWidget.Locked = False
         fTemperature.temperatureGaugeForm.Widgets("housing/lockbutton").Widget.Alpha = val(PzGOpacity) / 100
     End If
 
     fTemperature.temperatureGaugeForm.Refresh
 
-    sPutINISetting "Software\PzTemperatureGauge", "preventDragging", PzGPreventDragging, PzGSettingsFile
+    sPutINISetting "Software\PzTemperatureGauge", "preventDraggingTemperature", PzGPreventDraggingTemperature, PzGSettingsFile
 
     If PzGEnableSounds = "1" And fFExists(App.path & "\resources\sounds\" & fileToPlay) Then
         PlaySound App.path & "\resources\sounds\" & fileToPlay, ByVal 0&, SND_FILENAME Or SND_ASYNC

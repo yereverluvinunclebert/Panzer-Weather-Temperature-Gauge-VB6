@@ -400,7 +400,7 @@ Private Sub lockbutton_mouseDown(ByRef sender As Object)
         sender.Widget.Alpha = val(PzGOpacity) / 100
     End If
     sender.Widget.Refresh ' this removes the delay in the lockButton depressing
-    If PzGPreventDragging = "1" Then
+    If PzGPreventDraggingTemperature = "1" Then
         overlayTemperatureWidget.Locked = False
     Else
         overlayTemperatureWidget.Locked = True
@@ -713,6 +713,8 @@ Private Sub temperatureGaugeForm_MouseDown(ByRef Button As Integer, ByRef Shift 
 
     If Button = vbRightButton Then
         gblOriginatingForm = "temperatureForm"
+        menuForm.mnuLockTemperatureGauge.Visible = True
+        menuForm.mnuLockAnemometerGauge.Visible = False
         Call menuForm.PopupMenu(menuForm.mnuMainMenu)
     Else
         ' ensure that the associated forms pop to the front when the main gauge receives focus

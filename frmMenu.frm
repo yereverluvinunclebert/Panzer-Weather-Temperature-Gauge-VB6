@@ -98,8 +98,11 @@ Begin VB.Form menuForm
       Begin VB.Menu mnuseparator1 
          Caption         =   "-"
       End
-      Begin VB.Menu mnuLockWidget 
-         Caption         =   "Lock Widget"
+      Begin VB.Menu mnuLockTemperatureGauge 
+         Caption         =   "Lock Temperature Gauge"
+      End
+      Begin VB.Menu mnuLockAnemometerGauge 
+         Caption         =   "Lock Anemometer Gauge"
       End
       Begin VB.Menu mnuHideWidget 
          Caption         =   "Hide Widget"
@@ -444,29 +447,63 @@ mnuHideWidget_Click_Error:
     MsgBox "Error " & Err.Number & " (" & Err.Description & ") in procedure mnuHideWidget_Click of Form menuForm"
 End Sub
 
+
+
 '---------------------------------------------------------------------------------------
-' Procedure : mnuLockWidget_Click
+' Procedure : mnuLockAnemometerGauge_Click
 ' Author    : Dean Beedell (yereverluvinunclebert)
 ' Date      : 05/05/2023
 ' Purpose   :
 '---------------------------------------------------------------------------------------
 '
-Private Sub mnuLockWidget_Click()
+Private Sub mnuLockAnemometerGauge_Click()
 
-    On Error GoTo mnuLockWidget_Click_Error
+    On Error GoTo mnuLockAnemometerGauge_Click_Error
     
-    If PzGPreventDragging = "1" Then
-        overlayTemperatureWidget.Locked = False
-    Else
-        overlayTemperatureWidget.Locked = True
+    If gblOriginatingForm = "anemometerForm" Then
+        If PzGPreventDraggingAnemometer = "1" Then
+            overlayAnemoWidget.Locked = False
+        Else
+            overlayAnemoWidget.Locked = True
+        End If
     End If
+
+   On Error GoTo 0
+   Exit Sub
+
+mnuLockAnemometerGauge_Click_Error:
+
+    MsgBox "Error " & Err.Number & " (" & Err.Description & ") in procedure mnuLockAnemometerGauge_Click_Error of Form menuForm"
+
+End Sub
+
+'---------------------------------------------------------------------------------------
+' Procedure : mnuLockTemperatureGauge_Click
+' Author    : Dean Beedell (yereverluvinunclebert)
+' Date      : 05/05/2023
+' Purpose   :
+'---------------------------------------------------------------------------------------
+'
+Private Sub mnuLockTemperatureGauge_Click()
+
+    On Error GoTo mnuLockTemperatureGauge_Click_Error
+    
+    If gblOriginatingForm = "temperatureForm" Then
+        If PzGPreventDraggingTemperature = "1" Then
+            overlayTemperatureWidget.Locked = False
+        Else
+            overlayTemperatureWidget.Locked = True
+        End If
+    End If
+   
+
     
    On Error GoTo 0
    Exit Sub
 
-mnuLockWidget_Click_Error:
+mnuLockTemperatureGauge_Click_Error:
 
-    MsgBox "Error " & Err.Number & " (" & Err.Description & ") in procedure mnuLockWidget_Click_Error of Form menuForm"
+    MsgBox "Error " & Err.Number & " (" & Err.Description & ") in procedure mnuLockTemperatureGauge_Click_Error of Form menuForm"
 
 End Sub
 

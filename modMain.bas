@@ -338,7 +338,8 @@ Private Sub initialiseGlobalVars()
     
     ' window
     PzGWindowLevel = vbNullString
-    PzGPreventDragging = vbNullString
+    PzGPreventDraggingTemperature = vbNullString
+    PzGPreventDraggingAnemometer = vbNullString
     PzGOpacity = vbNullString
 
     
@@ -742,12 +743,12 @@ Public Sub adjustTempMainControls()
         fTemperature.temperatureGaugeForm.Widgets("housing/tickbutton").Widget.Alpha = 0
     End If
         
-    If PzGPreventDragging = "0" Then
-        menuForm.mnuLockWidget.Checked = False
+    If PzGPreventDraggingTemperature = "0" Then
+        menuForm.mnuLockTemperatureGauge.Checked = False
         overlayTemperatureWidget.Locked = False
         fTemperature.temperatureGaugeForm.Widgets("housing/lockbutton").Widget.Alpha = val(PzGOpacity) / 100
     Else
-        menuForm.mnuLockWidget.Checked = True
+        menuForm.mnuLockTemperatureGauge.Checked = True
         overlayTemperatureWidget.Locked = True ' this is just here for continuity's sake, it is also set at the time the control is selected
         fTemperature.temperatureGaugeForm.Widgets("housing/lockbutton").Widget.Alpha = 0
     End If
@@ -875,12 +876,12 @@ Public Sub adjustAnemometerMainControls()
         fAnemometer.anemometerGaugeForm.Widgets("housing/tickbutton").Widget.Alpha = 0
     End If
         
-    If PzGPreventDragging = "0" Then
-        menuForm.mnuLockWidget.Checked = False
+    If PzGPreventDraggingAnemometer = "0" Then
+        menuForm.mnuLockTemperatureGauge.Checked = False
         overlayAnemoWidget.Locked = False
         fAnemometer.anemometerGaugeForm.Widgets("housing/lockbutton").Widget.Alpha = val(PzGOpacity) / 100
     Else
-        menuForm.mnuLockWidget.Checked = True
+        menuForm.mnuLockTemperatureGauge.Checked = True
         overlayAnemoWidget.Locked = True ' this is just here for continuity's sake, it is also set at the time the control is selected
         fAnemometer.anemometerGaugeForm.Widgets("housing/lockbutton").Widget.Alpha = 0
     End If
@@ -1028,7 +1029,9 @@ Public Sub readSettingsFile(ByVal location As String, ByVal PzGSettingsFile As S
         
         ' window
         PzGWindowLevel = fGetINISetting(location, "windowLevel", PzGSettingsFile)
-        PzGPreventDragging = fGetINISetting(location, "preventDragging", PzGSettingsFile)
+        PzGPreventDraggingTemperature = fGetINISetting(location, "preventDraggingTemperature", PzGSettingsFile)
+        PzGPreventDraggingAnemometer = fGetINISetting("Software\PzAnemometerGauge", "preventDraggingAnemometer", PzGSettingsFile)
+        
         PzGOpacity = fGetINISetting(location, "opacity", PzGSettingsFile)
         
         PzGLastUpdated = fGetINISetting(location, "lastUpdated", PzGSettingsFile)
@@ -1140,8 +1143,8 @@ Public Sub validateInputs()
     If PzGWidgetHidden = vbNullString Then PzGWidgetHidden = "0"
     If PzGHidingTime = vbNullString Then PzGHidingTime = "0"
     If PzGIgnoreMouse = vbNullString Then PzGIgnoreMouse = "0"
-    If PzGPreventDragging = vbNullString Then PzGPreventDragging = "0"
-    
+    If PzGPreventDraggingTemperature = vbNullString Then PzGPreventDraggingTemperature = "0"
+    If PzGPreventDraggingAnemometer = vbNullString Then PzGPreventDraggingAnemometer = "0"
     
     
     ' other
