@@ -1655,7 +1655,6 @@ End Sub
 '
 Public Sub helpSplash()
 
-    
     Dim fileToPlay As String: fileToPlay = vbNullString
 
     On Error GoTo helpSplash_Error
@@ -1668,7 +1667,6 @@ Public Sub helpSplash()
     fMain.helpForm.Top = (screenHeightPixels / 2) - (fMain.helpForm.Height / 2)
     fMain.helpForm.Left = (screenWidthPixels / 2) - (fMain.helpForm.Width / 2)
      
-    'helpWidget.MyOpacity = 0
     helpWidget.ShowMe = True
     helpWidget.Widget.Refresh
     

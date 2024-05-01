@@ -184,6 +184,8 @@ Private Sub anemometerGaugeForm_BubblingEvent(ByRef sender As Object, ByRef Even
                  Call switchfacesbutton_mouseDown(sender)
             Case "housing/stopbutton"
                 Call stopbutton_mouseDown(sender)
+            Case "housing/helpbutton"
+                 Call helpbutton_mouseDown(sender)
             Case Else
                 Debug.Print sender.Widget.key
         End Select
@@ -205,8 +207,8 @@ Private Sub anemometerGaugeForm_BubblingEvent(ByRef sender As Object, ByRef Even
     
     If EventName = "W_Click" Then
         Select Case LCase$(sender.Widget.key)
-            Case "housing/helpbutton"
-                 Call helpbutton_click
+'            Case "housing/helpbutton"
+'                 Call helpbutton_click
             Case "housing/startbutton"
                  Call startbutton_click
             Case Else
@@ -228,7 +230,7 @@ End Sub
 ' Purpose   :
 '---------------------------------------------------------------------------------------
 '
-Private Sub helpbutton_click()
+Private Sub helpbutton_mouseDown(ByRef sender As Object)
    On Error GoTo helpbutton_click_Error
 
    Call helpSplash
@@ -703,8 +705,9 @@ End Sub
 Private Sub anemometerGaugeForm_MouseDown(ByRef Button As Integer, ByRef Shift As Integer, ByRef X As Single, ByRef Y As Single)
    On Error GoTo W_MouseDown_Error
 
+    gblOriginatingForm = "anemometerForm"
     If Button = vbRightButton Then
-        gblOriginatingForm = "anemometerForm"
+
         
         menuForm.mnuLockTemperatureGauge.Visible = False
         menuForm.mnuLockAnemometerGauge.Visible = True

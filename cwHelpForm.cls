@@ -316,6 +316,7 @@ Private Sub Draw(ByRef CC As cCairoContext, ByVal mMyOpacity As Double)
     ' extra code not needed when using RC5 but now required in RC6 - ends
     
     If gblOriginatingForm = "temperatureForm" Then helpFileToShow = "helpTemperature"
+    If gblOriginatingForm = "anemometerForm" Then helpFileToShow = "helpAnemometer"
     If gblOriginatingForm = "selectorForm" Then helpFileToShow = "helpClipboard"
     CC.RenderSurfaceContent helpFileToShow, helpxo, helpyo, , , , mMyOpacity
         

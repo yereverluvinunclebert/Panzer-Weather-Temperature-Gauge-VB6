@@ -711,8 +711,8 @@ End Sub
 Private Sub temperatureGaugeForm_MouseDown(ByRef Button As Integer, ByRef Shift As Integer, ByRef X As Single, ByRef Y As Single)
    On Error GoTo W_MouseDown_Error
 
+    gblOriginatingForm = "temperatureForm"
     If Button = vbRightButton Then
-        gblOriginatingForm = "temperatureForm"
         menuForm.mnuLockTemperatureGauge.Visible = True
         menuForm.mnuLockAnemometerGauge.Visible = False
         Call menuForm.PopupMenu(menuForm.mnuMainMenu)
