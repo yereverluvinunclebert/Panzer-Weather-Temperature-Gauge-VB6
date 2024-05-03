@@ -277,7 +277,7 @@ End Sub
 
 Private Sub mnuClipboardCopyWeather_Click()
     Clipboard.Clear
-    Clipboard.SetText (overlayTemperatureWidget.TemperatureDetails)
+    Clipboard.SetText (overlayTemperatureWidget.WeatherDetails)
 End Sub
 
 ' ----------------------------------------------------------------
@@ -318,7 +318,7 @@ Private Sub mnuCopyWeather_Click()
     On Error GoTo mnuCopyWeather_Click_Error
     
     Clipboard.Clear
-    Clipboard.SetText (overlayTemperatureWidget.TemperatureDetails)
+    Clipboard.SetText (overlayTemperatureWidget.WeatherDetails)
 
     On Error GoTo 0
     Exit Sub

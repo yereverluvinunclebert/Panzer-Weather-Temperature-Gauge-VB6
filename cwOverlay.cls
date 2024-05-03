@@ -77,7 +77,7 @@ Attribute tmrSleepTester.VB_VarHelpID = -1
 Private SDeg As Double
 Private thisTemperature As Long
 'Private temperatureTotalTimeLeft As Single
-'Private TemperatureDetails As String
+'Private WeatherDetails As String
 Private temperatureValue  As Long
 
 Private oldSDeg As Double
@@ -94,7 +94,7 @@ Private mGetMetar As Boolean ' property GetMetar
 Private mTicking As Boolean ' property Ticking
 Private mPointerAnimate As Boolean ' property PointerAnimate
 Private mLocked As Boolean ' property Locked
-Private mTemperatureDetails As String ' property
+Private mWeatherDetails As String ' property
 
 Private mHidden As Boolean ' property Hidden
 Private mThisOpacity As String ' property ThisOpacity
@@ -104,7 +104,9 @@ Private mValidICAO As Boolean             ' property
 Private mIcaoToTest As String             ' property
 Private mStringToTest As String
 Private mIcaoLocation As String             ' property
-Private mValidLocationCount As Long
+Private mValidLocationCount As Long             ' property
+Private mWindSpeed As Long             ' property
+
 
 Private myMSXML As MSXML2.XMLHTTP
 Private weHaveData As Boolean
@@ -159,7 +161,7 @@ Private Sub Class_Initialize()
     Set tmrAsyncResponse = New_c.Timer(100, False)
     
     Set tmrPressureDrop = Nothing
-    Set tmrPressureDrop = New_c.Timer(val(PzGStormTestInterval) * 1000, False) ' one hour
+    Set tmrPressureDrop = New_c.Timer(Val(PzGStormTestInterval) * 1000, False) ' one hour
     
     Set tmrSleepTester = Nothing
     Set tmrSleepTester = New_c.Timer(2000, True)  ' two seconds
@@ -426,7 +428,7 @@ Public Property Let samplingInterval(ByVal newValue As String)
     
     If tmrSampler.Interval = 100 Then Call getData ' allows first early run
     
-    tmrSampler.Interval = val(mSamplingInterval) * 1000
+    tmrSampler.Interval = Val(mSamplingInterval) * 1000
     
     On Error GoTo 0
     Exit Property
@@ -522,7 +524,7 @@ Public Property Let Locked(ByVal newValue As Boolean)
         panzerPrefs.chkPreventDragging.Value = 0
         PzGPreventDraggingTemperature = "0"
         'overlayTemperatureWidget.Locked = False
-        fTemperature.temperatureGaugeForm.Widgets("housing/lockbutton").Widget.Alpha = val(PzGOpacity) / 100
+        fTemperature.temperatureGaugeForm.Widgets("housing/lockbutton").Widget.Alpha = Val(PzGOpacity) / 100
     End If
 
     fTemperature.temperatureGaugeForm.Refresh
@@ -544,43 +546,83 @@ End Property
 
 
 '---------------------------------------------------------------------------------------
-' Property : TemperatureDetails
+' Property : WeatherDetails
 ' Author    : Dean Beedell (yereverluvinunclebert)
 ' Date      : 17/05/2023
 ' Purpose   :
 '---------------------------------------------------------------------------------------
 '
-Public Property Get TemperatureDetails() As String
-   On Error GoTo TemperatureDetailsGet_Error
+Public Property Get WeatherDetails() As String
+   On Error GoTo WeatherDetailsGet_Error
 
-   TemperatureDetails = mTemperatureDetails
+   WeatherDetails = mWeatherDetails
 
    On Error GoTo 0
    Exit Property
 
-TemperatureDetailsGet_Error:
+WeatherDetailsGet_Error:
 
-    MsgBox "Error " & Err.Number & " (" & Err.Description & ") in Property TemperatureDetails of Class Module cwOverlayTemp"
+    MsgBox "Error " & Err.Number & " (" & Err.Description & ") in Property WeatherDetails of Class Module cwOverlayTemp"
 End Property
 '---------------------------------------------------------------------------------------
-' Property  : TemperatureDetails
+' Property  : WeatherDetails
 ' Author    : Dean Beedell (yereverluvinunclebert)
 ' Date      : 17/05/2023
 ' Purpose   :
 '---------------------------------------------------------------------------------------
 '
-Public Property Let TemperatureDetails(ByVal newValue As String)
-   On Error GoTo TemperatureDetailsLet_Error
+Public Property Let WeatherDetails(ByVal newValue As String)
+   On Error GoTo WeatherDetailsLet_Error
 
-   If mTemperatureDetails <> newValue Then mTemperatureDetails = newValue Else Exit Property
+   If mWeatherDetails <> newValue Then mWeatherDetails = newValue Else Exit Property
 
    On Error GoTo 0
    Exit Property
 
-TemperatureDetailsLet_Error:
+WeatherDetailsLet_Error:
 
-    MsgBox "Error " & Err.Number & " (" & Err.Description & ") in Property TemperatureDetails of Class Module cwOverlayTemp"
+    MsgBox "Error " & Err.Number & " (" & Err.Description & ") in Property WeatherDetails of Class Module cwOverlayTemp"
 End Property
+
+'---------------------------------------------------------------------------------------
+' Property : WindSpeed
+' Author    : Dean Beedell (yereverluvinunclebert)
+' Date      : 17/05/2023
+' Purpose   :
+'---------------------------------------------------------------------------------------
+'
+Public Property Get windSpeed() As String
+   On Error GoTo WindSpeedGet_Error
+
+   windSpeed = mWindSpeed
+
+   On Error GoTo 0
+   Exit Property
+
+WindSpeedGet_Error:
+
+    MsgBox "Error " & Err.Number & " (" & Err.Description & ") in Property WindSpeed of Class Module cwOverlayTemp"
+End Property
+'---------------------------------------------------------------------------------------
+' Property  : WindSpeed
+' Author    : Dean Beedell (yereverluvinunclebert)
+' Date      : 17/05/2023
+' Purpose   :
+'---------------------------------------------------------------------------------------
+'
+Public Property Let windSpeed(ByVal newValue As String)
+   On Error GoTo WindSpeedLet_Error
+
+   If mWindSpeed <> newValue Then mWindSpeed = newValue Else Exit Property
+
+   On Error GoTo 0
+   Exit Property
+
+WindSpeedLet_Error:
+
+    MsgBox "Error " & Err.Number & " (" & Err.Description & ") in Property WindSpeed of Class Module cwOverlayTemp"
+End Property
+
 
 
 
@@ -910,7 +952,7 @@ Private Sub W_Paint(CC As RC6.cCairoContext, ByVal xAbs As Single, ByVal yAbs As
     W.FontBold = True
     W.SelectFontSettingsInto CC
     W.Refresh
-    someOpacity = (val(mThisOpacity) / 100) * 0.75
+    someOpacity = (Val(mThisOpacity) / 100) * 0.75
     
     txtThisTemperature = CStr(Int(thisTemperature))
 
@@ -993,7 +1035,7 @@ Private Sub W_Paint(CC As RC6.cCairoContext, ByVal xAbs As Single, ByVal yAbs As
                          txtThisTemperature = CStr(convertToKelvin(thisTemperature))
                      End If
                      
-                    If val(txtThisTemperature) >= 100 Then
+                    If Val(txtThisTemperature) >= 100 Then
                         boxLeft = 260
                     Else
                         boxLeft = 265
@@ -1339,7 +1381,7 @@ End Sub
 
     
 '---------------------------------------------------------------------------------------
-' Procedure : tmrSampler_Timer
+' Procedure : tmrAsyncResponse_Timer
 ' Author    :
 ' Date      : 30/07/2023
 ' Purpose   : to replicate VB6's missing asynch/wait functionality
@@ -1347,7 +1389,7 @@ End Sub
 '
 Private Sub tmrAsyncResponse_Timer()
     
-    On Error GoTo tmrSampler_Timer_Error
+    On Error GoTo tmrAsyncResponse_Timer_Error
     
     debugFlg = 0
     
@@ -1363,9 +1405,9 @@ Private Sub tmrAsyncResponse_Timer()
    On Error GoTo 0
    Exit Sub
 
-tmrSampler_Timer_Error:
+tmrAsyncResponse_Timer_Error:
 
-    MsgBox "Error " & Err.Number & " (" & Err.Description & ") in procedure tmrSampler_Timer of Class Module cwOverlayTemp"
+    MsgBox "Error " & Err.Number & " (" & Err.Description & ") in procedure tmrAsyncResponse_Timer of Class Module cwOverlayTemp"
 End Sub
 
 
@@ -1460,12 +1502,12 @@ Private Sub myStatusProc()
     
     Set MetarNode = objxmldoc.selectSingleNode("response/data/METAR") ' There's only the one METAR node
     
-    If num_results = 0 And val(PzGErrorInterval) <> 0 Then
+    If num_results = 0 And Val(PzGErrorInterval) <> 0 Then
        
         ' compare last PzGLastUpdated to current date time and if that exceeds the error interval then raise an error.
         TheDate = Now
         secsDif = Int(DateDiff("s", CDate(PzGLastUpdated), TheDate))
-        If secsDif >= (val(PzGErrorInterval) * 3600) And firstPoll = False Then
+        If secsDif >= (Val(PzGErrorInterval) * 3600) And firstPoll = False Then
             'if has just awoken from sleep then suppress the no data error message
             If gblJustAwoken = True Then
                 gblJustAwoken = False
@@ -1506,9 +1548,11 @@ Private Sub myStatusProc()
             If debugFlg = 1 Then Debug.Print ("%myStatusProc - dewpoint_c " + dewpoint_c)
         
             wind_dir_degrees = node.selectSingleNode("wind_dir_degrees").Text
+            overlayAnemoWidget.windDirection = wind_dir_degrees
             If debugFlg = 1 Then Debug.Print ("%myStatusProc - wind_dir_degrees " + wind_dir_degrees)
         
             wind_speed_kt = node.selectSingleNode("wind_speed_kt").Text
+            overlayAnemoWidget.windSpeed = wind_speed_kt
             If debugFlg = 1 Then Debug.Print ("%myStatusProc - wind_speed_kt " + wind_speed_kt)
         
             Latitude = node.selectSingleNode("latitude").Text
@@ -1591,7 +1635,7 @@ Private Sub myStatusProc()
     sPutINISetting "Software\PzTemperatureGauge", "currentPressureValue", PzGCurrentPressureValue, PzGSettingsFile
 
     ' set temperature
-    temperatureValue = val(temp_c)
+    temperatureValue = Val(temp_c)
     
     'temperatureValue = 40
 
@@ -1667,14 +1711,14 @@ Private Sub myStatusProc()
         weatherIconToolTip = thisTooltip
     End If
     
-    ' for setting the balloon tooltip using the TemperatureDetails property
-    mTemperatureDetails = thisTooltip
+    ' for setting the balloon tooltip using the WeatherDetails property
+    mWeatherDetails = thisTooltip
     
 
     
 '        fclibForm.
 '    sLblMETARText
-    'overlayTemperatureWidget.TemperatureDetails
+    'overlayTemperatureWidget.WeatherDetails
 
     thisTemperature = temp_c
     weHaveData = True
@@ -1954,7 +1998,7 @@ Private Function fAddBaseCloudToSkyClarity(ByVal baseCloud As Integer, ByVal sky
     If thisSkyClarity = vbNullString Then Exit Function
     
     If UBound(cloud_base_ft_agl()) >= 0 Then
-        If (cloud_base_ft_agl(0) <> vbNullString) Then thisBaseCloud = val(cloud_base_ft_agl(0))
+        If (cloud_base_ft_agl(0) <> vbNullString) Then thisBaseCloud = Val(cloud_base_ft_agl(0))
         If (thisBaseCloud <> 0) Then
             If PzGMetricImperial = "1" Then ' "metric"
                 ' change the value to metric measurements
@@ -1965,7 +2009,7 @@ Private Function fAddBaseCloudToSkyClarity(ByVal baseCloud As Integer, ByVal sky
     End If
     
    If UBound(cloud_base_ft_agl()) >= 1 Then
-        If (cloud_base_ft_agl(1) <> vbNullString) Then thisBaseCloud = val(cloud_base_ft_agl(UBound(cloud_base_ft_agl())))
+        If (cloud_base_ft_agl(1) <> vbNullString) Then thisBaseCloud = Val(cloud_base_ft_agl(UBound(cloud_base_ft_agl())))
         If (thisBaseCloud <> 0) Then
             If PzGMetricImperial = "1" Then ' "metric"
                 ' change the value to metric measurements
@@ -2082,7 +2126,7 @@ Private Function degToCompass(ByVal windDirection As String) As String
     
     thisArray = Array("N", "NNE", "NE", "ENE", "E", "ESE", "SE", "SSE", "S", "SSW", "SW", "WSW", "W", "WNW", "NW", "NNW")
     
-    thisVal = CInt((val(windDirection) / 22.5) + 0.5)
+    thisVal = CInt((Val(windDirection) / 22.5) + 0.5)
     compassDirection = thisArray(thisVal Mod 16)
     
     degToCompass = compassDirection ' return compassDirection
@@ -3239,7 +3283,7 @@ Private Function fGetDistance(ByVal visibility_statute_mi As String, ByVal isday
     
     If PzGMetricImperial = "1" Then ' "metric"
         ' change the value to metric measurements
-        metricEquivalent = CStr(Int(val(visibility_statute_mi) * 1.609))
+        metricEquivalent = CStr(Int(Val(visibility_statute_mi) * 1.609))
         resultingString = startText & metricEquivalent & " km" & additionalText
     Else
         resultingString = startText & visibility_statute_mi & " miles" & additionalText
@@ -3274,7 +3318,7 @@ Private Function fGetPrecipitation(ByVal precip_in As String) As String
     
     If PzGMetricImperial = "1" Then ' "metric"
         ' change the value to metric measurements
-        metricEquivalent = CStr(Int(val(precip_in) * 2.54))
+        metricEquivalent = CStr(Int(Val(precip_in) * 2.54))
         resultingString = metricEquivalent & "cm"
     Else
         resultingString = precip_in & "inches"

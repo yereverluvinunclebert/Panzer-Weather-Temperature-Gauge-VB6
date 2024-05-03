@@ -89,13 +89,13 @@ Public Sub InitAnemometerFromPSD(ByRef PSD_FileNameOrByteArray As Variant)
                         
                         'we add layer info. (used in cwOverlayTemp) to the "excluded paths" previously defined in Sub Main,
                         
-                        collAnemometerPSDNonUIElements(.LayerPath(i)) = Array(.LayerX(i), .LayerY(i), val(PzGOpacity) / 100)  'here we update the so far empty slots with the PSD-offsets
+                        collAnemometerPSDNonUIElements(.LayerPath(i)) = Array(.LayerX(i), .LayerY(i), Val(PzGOpacity) / 100)  'here we update the so far empty slots with the PSD-offsets
                 
                     Else 'everything not in the exclude-list will get its own Widget-instance
                         Set W = anemometerGaugeForm.Widgets.Add(New cwAlphaImg, LCase$(.LayerPath(i)), .LayerX(i), .LayerY(i), .LayerWidth(i), .LayerHeight(i)).Widget
                             W.ImageKey = W.key 'W.Key equals ImageList-Key, set above - and LayerPath(i) at this point ... set it also as the ImageKey of our new created Widget
                         If PzGOpacity < 1 Then
-                            W.Alpha = val(PzGOpacity) / 100
+                            W.Alpha = Val(PzGOpacity) / 100
                         Else
                             W.Alpha = 1
                         End If
@@ -153,7 +153,7 @@ Private Sub anemometerGaugeForm_BubblingEvent(ByRef sender As Object, ByRef Even
                 If PzGEnableBalloonTooltips = "1" Then CreateToolTip anemometerGaugeForm.hwnd, "Click here to toggle the pointer movement from a jerky pointer to a more fluid, continuous movement.", _
                      TTIconInfo, widgetName4 & " Tick Button Help", , , , True
             Case "housing/switchfacesbutton"
-                If PzGEnableBalloonTooltips = "1" Then CreateToolTip anemometerGaugeForm.hwnd, "Click here to select between different faces showing alternative anemometer scales, celsius/fahrenheit or kelvin.", _
+                If PzGEnableBalloonTooltips = "1" Then CreateToolTip anemometerGaugeForm.hwnd, "This button is non-functional in this gauge.", _
                      TTIconInfo, widgetName4 & " Switch Faces Button Help", , , , True
             Case "housing/stopbutton"
                 If PzGEnableBalloonTooltips = "1" Then CreateToolTip anemometerGaugeForm.hwnd, "This button stops all animated gauge functions for this widget, pointer movement, digital displays &c .", _
@@ -165,7 +165,7 @@ Private Sub anemometerGaugeForm_BubblingEvent(ByRef sender As Object, ByRef Even
                 If PzGEnableBalloonTooltips = "1" Then CreateToolTip anemometerGaugeForm.hwnd, "This button opens the one-page help file for this widget. There is a further detailed CHM help file available from the right-click menu that contains all the information that you need to run this widget.", _
                      TTIconInfo, widgetName4 & " Help Button Help", , , , True
             Case Else
-                If PzGEnableBalloonTooltips = "1" Then CreateToolTip anemometerGaugeForm.hwnd, " " & overlayTemperatureWidget.TemperatureDetails _
+                If PzGEnableBalloonTooltips = "1" Then CreateToolTip anemometerGaugeForm.hwnd, " " & overlayTemperatureWidget.WeatherDetails _
                     & vbCrLf & "" _
                     & vbCrLf & "Right Click to open the menu and the preferences. CTRL+ Mouse scrollwheel UP/DOWN to resize." _
                     , TTIconInfo, widgetName4 & " METAR summary Information.", , , , True
@@ -194,7 +194,7 @@ Private Sub anemometerGaugeForm_BubblingEvent(ByRef sender As Object, ByRef Even
     If EventName = "W_MouseUp" Then
         Select Case LCase$(sender.Widget.key)
             Case "housing/prefsbutton"
-                sender.Widget.Alpha = val(PzGOpacity) / 100
+                sender.Widget.Alpha = Val(PzGOpacity) / 100
                 sender.Widget.Refresh
             Case "housing/switchfacesbutton"
                 Call switchfacesbutton_mouseUp(sender)
@@ -287,7 +287,7 @@ Private Sub stopbutton_mouseUp(ByRef sender As Object)
    
     On Error GoTo stopbutton_mouseUp_Error
 
-    sender.Widget.Alpha = val(PzGOpacity) / 100
+    sender.Widget.Alpha = Val(PzGOpacity) / 100
     sender.Widget.Refresh
            
     Call SwitchOff
@@ -363,7 +363,7 @@ Private Sub switchfacesbutton_mouseUp(ByRef sender As Object)
     
     On Error GoTo switchfacesbutton_mouseUp_Error
 
-    sender.Widget.Alpha = val(PzGOpacity) / 100
+    sender.Widget.Alpha = Val(PzGOpacity) / 100
     sender.Widget.Refresh
         
     fileToPlay = "till.wav"
@@ -392,7 +392,7 @@ Private Sub lockbutton_mouseDown(ByRef sender As Object)
     If overlayAnemoWidget.Locked = False Then
         sender.Widget.Alpha = 0
     Else
-        sender.Widget.Alpha = val(PzGOpacity) / 100
+        sender.Widget.Alpha = Val(PzGOpacity) / 100
     End If
     sender.Widget.Refresh ' this removes the delay in the lockButton depressing
     If PzGPreventDraggingAnemometer = "1" Then
@@ -455,7 +455,7 @@ Private Sub tickbutton_mouseDown(ByRef sender As Object)
         
     If overlayAnemoWidget.pointerAnimate = True Then
         overlayAnemoWidget.pointerAnimate = False
-        sender.Widget.Alpha = val(PzGOpacity) / 100
+        sender.Widget.Alpha = Val(PzGOpacity) / 100
         PzGPointerAnimate = "0"
     Else
         overlayAnemoWidget.pointerAnimate = True
@@ -471,7 +471,7 @@ Private Sub tickbutton_mouseDown(ByRef sender As Object)
     End If
     
     sPutINISetting "Software\PzAnemometerGauge", "pointerAnimate", PzGPointerAnimate, PzGSettingsFile
-    panzerPrefs.cmbTickSwitchPref.ListIndex = val(PzGPointerAnimate)
+    panzerPrefs.cmbTickSwitchPref.ListIndex = Val(PzGPointerAnimate)
         
    On Error GoTo 0
    Exit Sub

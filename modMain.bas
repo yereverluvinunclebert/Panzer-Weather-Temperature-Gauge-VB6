@@ -506,79 +506,79 @@ Private Sub adjustSelectorMainControls()
     
     On Error GoTo adjustSelectorMainControls_Error
     
-    fSelector.SelectorAdjustZoom val(PzGSelectorSize) / 100
+    fSelector.SelectorAdjustZoom Val(PzGSelectorSize) / 100
     
     With fSelector.SelectorForm.Widgets("optlocationgreen").Widget
         .HoverColor = 0 ' set the hover colour to grey - this may change later with new RC6
         .MousePointer = IDC_HAND
-        .Alpha = val(PzGOpacity) / 100
+        .Alpha = Val(PzGOpacity) / 100
         .Tag = 0.25
     End With
     
     With fSelector.SelectorForm.Widgets("optlocationred").Widget
         .HoverColor = 0 ' set the hover colour to grey - this may change later with new RC6
         .MousePointer = IDC_HAND
-        .Alpha = val(PzGOpacity) / 100
+        .Alpha = Val(PzGOpacity) / 100
         .Tag = 0.25
     End With
     
     With fSelector.SelectorForm.Widgets("opticaogreen").Widget
         .HoverColor = 0 ' set the hover colour to grey - this may change later with new RC6
         .MousePointer = IDC_HAND
-        .Alpha = val(PzGOpacity) / 100
+        .Alpha = Val(PzGOpacity) / 100
         .Tag = 0.25
     End With
     
     With fSelector.SelectorForm.Widgets("opticaored").Widget
         .HoverColor = 0 ' set the hover colour to grey - this may change later with new RC6
         .MousePointer = IDC_HAND
-        .Alpha = val(PzGOpacity) / 100
+        .Alpha = Val(PzGOpacity) / 100
         .Tag = 0.25
     End With
     
     With fSelector.SelectorForm.Widgets("sbtnexit").Widget
         .HoverColor = 0 ' set the hover colour to grey - this may change later with new RC6
         .MousePointer = IDC_HAND
-        .Alpha = val(PzGOpacity) / 100
+        .Alpha = Val(PzGOpacity) / 100
     End With
     
     With fSelector.SelectorForm.Widgets("sbtnselect").Widget
         .HoverColor = 0 ' set the hover colour to grey - this may change later with new RC6
         .MousePointer = IDC_HAND
-        .Alpha = val(PzGOpacity) / 100
+        .Alpha = Val(PzGOpacity) / 100
         .Enabled = False
     End With
         
     With fSelector.SelectorForm.Widgets("entericao").Widget
         .HoverColor = 0 ' set the hover colour to grey - this may change later with new RC6
         .MousePointer = IDC_HAND
-        .Alpha = val(PzGOpacity) / 100
+        .Alpha = Val(PzGOpacity) / 100
     End With
     
     With fSelector.SelectorForm.Widgets("enterlocation").Widget
         .HoverColor = 0 ' set the hover colour to grey - this may change later with new RC6
         .MousePointer = IDC_HAND
-        .Alpha = val(PzGOpacity) / 100
+        .Alpha = Val(PzGOpacity) / 100
     End With
 
     With fSelector.SelectorForm.Widgets("sbtnsearch").Widget
         .HoverColor = 0 ' set the hover colour to grey - this may change later with new RC6
         .MousePointer = IDC_HAND
-        .Alpha = val(PzGOpacity) / 100
+        .Alpha = Val(PzGOpacity) / 100
     End With
 
     
     With fSelector.SelectorForm.Widgets("radiobody").Widget
         .HoverColor = 0 ' set the hover colour to grey - this may change later with new RC6
         .MousePointer = IDC_SIZEALL
-        .Alpha = val(PzGOpacity) / 100
+        .Alpha = Val(PzGOpacity) / 100
     End With
     
             
     With fSelector.SelectorForm.Widgets("glassblock").Widget
         .HoverColor = 0 ' set the hover colour to grey - this may change later with new RC6
         .MousePointer = IDC_HAND
-        .Alpha = val(PzGOpacity) / 100
+        .Alpha = Val(PzGOpacity) / 100
     End With
     
     
@@ -604,7 +604,7 @@ Private Sub adjustClipBMainControls()
     
     On Error GoTo adjustClipBMainControls_Error
     
-    fClipB.ClipBAdjustZoom val(PzGClipBSize) / 100
+    fClipB.ClipBAdjustZoom Val(PzGClipBSize) / 100
 
 
 '    With fClipB.ClipBForm.Widgets("hourhand").Widget
@@ -631,11 +631,11 @@ Private Sub adjustClipBMainControls()
     With fClipB.clipBForm.Widgets("clipboard").Widget
         .HoverColor = 0 ' set the hover colour to grey - this may change later with new RC6
         .MousePointer = IDC_HAND
-        .Alpha = val(PzGOpacity) / 100
+        .Alpha = Val(PzGOpacity) / 100
         .Tag = 0.25
     End With
 
-    overlayClipbWidget.thisOpacity = val(PzGOpacity)
+    overlayClipbWidget.thisOpacity = Val(PzGOpacity)
     
     On Error GoTo 0
     Exit Sub
@@ -660,7 +660,7 @@ Public Sub adjustTempMainControls()
     ' validate the inputs of any data from the input settings file
     Call validateInputs
     
-    fTemperature.AdjustZoom val(PzGTemperatureGaugeSize) / 100
+    fTemperature.AdjustZoom Val(PzGTemperatureGaugeSize) / 100
 
     If PzGGaugeFunctions = "1" Then
         overlayTemperatureWidget.Ticking = True
@@ -690,27 +690,27 @@ Public Sub adjustTempMainControls()
     With fTemperature.temperatureGaugeForm.Widgets("housing/helpbutton").Widget
         .HoverColor = 0 ' set the hover colour to grey - this may change later with new RC6
         .MousePointer = IDC_HAND
-        .Alpha = val(PzGOpacity) / 100
+        .Alpha = Val(PzGOpacity) / 100
     End With
      
     With fTemperature.temperatureGaugeForm.Widgets("housing/startbutton").Widget
         .HoverColor = 0 ' set the hover colour to grey - this may change later with new RC6
         .MousePointer = IDC_HAND
-        .Alpha = val(PzGOpacity) / 100
+        .Alpha = Val(PzGOpacity) / 100
         .Tag = 0.25
     End With
       
     With fTemperature.temperatureGaugeForm.Widgets("housing/stopbutton").Widget
         .HoverColor = 0 ' set the hover colour to grey - this may change later with new RC6
         .MousePointer = IDC_HAND
-        .Alpha = val(PzGOpacity) / 100
+        .Alpha = Val(PzGOpacity) / 100
         .Tag = 0.25
     End With
       
     With fTemperature.temperatureGaugeForm.Widgets("housing/switchfacesbutton").Widget
         .HoverColor = 0 ' set the hover colour to grey - this may change later with new RC6
         .MousePointer = IDC_HAND
-        .Alpha = val(PzGOpacity) / 100
+        .Alpha = Val(PzGOpacity) / 100
     End With
           
     With fTemperature.temperatureGaugeForm.Widgets("housing/lockbutton").Widget
@@ -721,7 +721,7 @@ Public Sub adjustTempMainControls()
     With fTemperature.temperatureGaugeForm.Widgets("housing/prefsbutton").Widget
         .HoverColor = 0 ' set the hover colour to grey - this may change later with new RC6
         .MousePointer = IDC_HAND
-        .Alpha = val(PzGOpacity) / 100
+        .Alpha = Val(PzGOpacity) / 100
     End With
           
     With fTemperature.temperatureGaugeForm.Widgets("housing/tickbutton").Widget
@@ -732,12 +732,12 @@ Public Sub adjustTempMainControls()
     With fTemperature.temperatureGaugeForm.Widgets("housing/surround").Widget
         .HoverColor = 0 ' set the hover colour to grey - this may change later with new RC6
         .MousePointer = IDC_SIZEALL
-        .Alpha = val(PzGOpacity) / 100
+        .Alpha = Val(PzGOpacity) / 100
     End With
     
     If PzGPointerAnimate = "0" Then
         overlayTemperatureWidget.pointerAnimate = False
-        fTemperature.temperatureGaugeForm.Widgets("housing/tickbutton").Widget.Alpha = val(PzGOpacity) / 100
+        fTemperature.temperatureGaugeForm.Widgets("housing/tickbutton").Widget.Alpha = Val(PzGOpacity) / 100
     Else
         overlayTemperatureWidget.pointerAnimate = True
         fTemperature.temperatureGaugeForm.Widgets("housing/tickbutton").Widget.Alpha = 0
@@ -746,16 +746,16 @@ Public Sub adjustTempMainControls()
     If PzGPreventDraggingTemperature = "0" Then
         menuForm.mnuLockTemperatureGauge.Checked = False
         overlayTemperatureWidget.Locked = False
-        fTemperature.temperatureGaugeForm.Widgets("housing/lockbutton").Widget.Alpha = val(PzGOpacity) / 100
+        fTemperature.temperatureGaugeForm.Widgets("housing/lockbutton").Widget.Alpha = Val(PzGOpacity) / 100
     Else
         menuForm.mnuLockTemperatureGauge.Checked = True
         overlayTemperatureWidget.Locked = True ' this is just here for continuity's sake, it is also set at the time the control is selected
         fTemperature.temperatureGaugeForm.Widgets("housing/lockbutton").Widget.Alpha = 0
     End If
 
-    overlayTemperatureWidget.thisOpacity = val(PzGOpacity)
-    overlayTemperatureWidget.samplingInterval = val(PzGSamplingInterval)
-    overlayTemperatureWidget.thisFace = val(PzGTemperatureScale)
+    overlayTemperatureWidget.thisOpacity = Val(PzGOpacity)
+    overlayTemperatureWidget.samplingInterval = Val(PzGSamplingInterval)
+    overlayTemperatureWidget.thisFace = Val(PzGTemperatureScale)
                
     ' set the z-ordering of the window
     Call setAlphaFormZordering
@@ -793,14 +793,12 @@ Public Sub adjustAnemometerMainControls()
     ' validate the inputs of any data from the input settings file
     'Call validateInputs
     
-    fAnemometer.AdjustZoom val(PzGAnemometerGaugeSize) / 100
+    fAnemometer.AdjustZoom Val(PzGAnemometerGaugeSize) / 100
 
     If PzGGaugeFunctions = "1" Then
-        overlayAnemoWidget.Ticking = True
         menuForm.mnuSwitchOff.Checked = False
         menuForm.mnuTurnFunctionsOn.Checked = True
     Else
-        overlayAnemoWidget.Ticking = False
         menuForm.mnuSwitchOff.Checked = True
         menuForm.mnuTurnFunctionsOn.Checked = False
     End If
@@ -823,27 +821,27 @@ Public Sub adjustAnemometerMainControls()
     With fAnemometer.anemometerGaugeForm.Widgets("housing/helpbutton").Widget
         .HoverColor = 0 ' set the hover colour to grey - this may change later with new RC6
         .MousePointer = IDC_HAND
-        .Alpha = val(PzGOpacity) / 100
+        .Alpha = Val(PzGOpacity) / 100
     End With
      
     With fAnemometer.anemometerGaugeForm.Widgets("housing/startbutton").Widget
         .HoverColor = 0 ' set the hover colour to grey - this may change later with new RC6
         .MousePointer = IDC_HAND
-        .Alpha = val(PzGOpacity) / 100
+        .Alpha = Val(PzGOpacity) / 100
         .Tag = 0.25
     End With
       
     With fAnemometer.anemometerGaugeForm.Widgets("housing/stopbutton").Widget
         .HoverColor = 0 ' set the hover colour to grey - this may change later with new RC6
         .MousePointer = IDC_HAND
-        .Alpha = val(PzGOpacity) / 100
+        .Alpha = Val(PzGOpacity) / 100
         .Tag = 0.25
     End With
       
     With fAnemometer.anemometerGaugeForm.Widgets("housing/switchfacesbutton").Widget
         .HoverColor = 0 ' set the hover colour to grey - this may change later with new RC6
         .MousePointer = IDC_HAND
-        .Alpha = val(PzGOpacity) / 100
+        .Alpha = Val(PzGOpacity) / 100
     End With
           
     With fAnemometer.anemometerGaugeForm.Widgets("housing/lockbutton").Widget
@@ -854,7 +852,7 @@ Public Sub adjustAnemometerMainControls()
     With fAnemometer.anemometerGaugeForm.Widgets("housing/prefsbutton").Widget
         .HoverColor = 0 ' set the hover colour to grey - this may change later with new RC6
         .MousePointer = IDC_HAND
-        .Alpha = val(PzGOpacity) / 100
+        .Alpha = Val(PzGOpacity) / 100
     End With
           
     With fAnemometer.anemometerGaugeForm.Widgets("housing/tickbutton").Widget
@@ -865,12 +863,12 @@ Public Sub adjustAnemometerMainControls()
     With fAnemometer.anemometerGaugeForm.Widgets("housing/surround").Widget
         .HoverColor = 0 ' set the hover colour to grey - this may change later with new RC6
         .MousePointer = IDC_SIZEALL
-        .Alpha = val(PzGOpacity) / 100
+        .Alpha = Val(PzGOpacity) / 100
     End With
     
     If PzGPointerAnimate = "0" Then
         overlayAnemoWidget.pointerAnimate = False
-        fAnemometer.anemometerGaugeForm.Widgets("housing/tickbutton").Widget.Alpha = val(PzGOpacity) / 100
+        fAnemometer.anemometerGaugeForm.Widgets("housing/tickbutton").Widget.Alpha = Val(PzGOpacity) / 100
     Else
         overlayAnemoWidget.pointerAnimate = True
         fAnemometer.anemometerGaugeForm.Widgets("housing/tickbutton").Widget.Alpha = 0
@@ -879,16 +877,14 @@ Public Sub adjustAnemometerMainControls()
     If PzGPreventDraggingAnemometer = "0" Then
         menuForm.mnuLockTemperatureGauge.Checked = False
         overlayAnemoWidget.Locked = False
-        fAnemometer.anemometerGaugeForm.Widgets("housing/lockbutton").Widget.Alpha = val(PzGOpacity) / 100
+        fAnemometer.anemometerGaugeForm.Widgets("housing/lockbutton").Widget.Alpha = Val(PzGOpacity) / 100
     Else
         menuForm.mnuLockTemperatureGauge.Checked = True
         overlayAnemoWidget.Locked = True ' this is just here for continuity's sake, it is also set at the time the control is selected
         fAnemometer.anemometerGaugeForm.Widgets("housing/lockbutton").Widget.Alpha = 0
     End If
 
-    overlayAnemoWidget.thisOpacity = val(PzGOpacity)
-    'overlayAnemoWidget.samplingInterval = val(PzGSamplingInterval)
-    'overlayAnemoWidget.thisFace = val(PzGTemperatureScale)
+    overlayAnemoWidget.thisOpacity = Val(PzGOpacity)
                
     
    On Error GoTo 0
@@ -911,11 +907,11 @@ Public Sub setAlphaFormZordering()
 
    On Error GoTo setAlphaFormZordering_Error
 
-    If val(PzGWindowLevel) = 0 Then
+    If Val(PzGWindowLevel) = 0 Then
         Call SetWindowPos(fTemperature.temperatureGaugeForm.hwnd, HWND_BOTTOM, 0&, 0&, 0&, 0&, OnTopFlags)
-    ElseIf val(PzGWindowLevel) = 1 Then
+    ElseIf Val(PzGWindowLevel) = 1 Then
         Call SetWindowPos(fTemperature.temperatureGaugeForm.hwnd, HWND_TOP, 0&, 0&, 0&, 0&, OnTopFlags)
-    ElseIf val(PzGWindowLevel) = 2 Then
+    ElseIf Val(PzGWindowLevel) = 2 Then
         Call SetWindowPos(fTemperature.temperatureGaugeForm.hwnd, HWND_TOPMOST, 0&, 0&, 0&, 0&, OnTopFlags)
     End If
 
@@ -1513,8 +1509,12 @@ Private Sub loadAnemometerExcludePathCollection()
         .Add Empty, "redlamptrue"
         .Add Empty, "redlampfalse"
         
-        .Add Empty, "pointer"
+        .Add Empty, "directionpointer"
+        
         .Add Empty, "pointerShadow"
+        .Add Empty, "pointer"
+       
+        
     End With
 
    On Error GoTo 0

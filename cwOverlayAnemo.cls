@@ -13,47 +13,14 @@ Attribute VB_PredeclaredId = False
 Attribute VB_Exposed = False
 '@IgnoreModule AssignmentNotUsed, IntegerDataType, ModuleWithoutFolder
 '---------------------------------------------------------------------------------------
-' Module    : cwOverlayTemp
+' Module    : cwOverlayAnemo
 ' Author    : Dean Beedell (yereverluvinunclebert)
 ' Date      : 31/07/2023
 ' Purpose   : create a fully click-through Widget, which allows for all kind of
 '             things to render on top of the PSD-generated Widgets created in cfAnemometer
 '---------------------------------------------------------------------------------------
 
-' Microsoft XML, v3.0
-' c:/windows/SysWow64/msxml3.dll
-
 Option Explicit
-
-'Private Type SYSTEMTIME
-'   wYear As Integer
-'   wMonth As Integer
-'   wDayOfWeek As Integer
-'   wDay As Integer
-'   wHour As Integer
-'   wMinute As Integer
-'   wSecond As Integer
-'   wMilliseconds As Integer
-'End Type
-'
-'Private Type TIME_ZONE_INFORMATION
-'    bias                    As Long
-'    StandardName(0 To 63)   As Byte
-'    StandardDate            As SYSTEMTIME
-'    StandardBias            As Long
-'    DaylightName(0 To 63)   As Byte
-'    DaylightDate            As SYSTEMTIME
-'    DaylightBias            As Long
-'End Type
-'
-'Private Const TIME_ZONE_ID_DAYLIGHT As Long = 2
-'
-'Private Declare Function GetTimeZoneInformation Lib "kernel32" (lpTimeZoneInformation As TIME_ZONE_INFORMATION) As Long
-
-Private Declare Function URLDownloadToFile Lib "urlmon" _
-    Alias "URLDownloadToFileA" (ByVal pCaller As Long, _
-    ByVal szURL As String, ByVal szFileName As String, _
-    ByVal dwReserved As Long, ByVal lpfnCB As Long) As Long
 
 'these Public Properties are set in the Parent (here, cfAnemometer)
 Public cCollOverlayAnemoImages As cCollection
@@ -68,11 +35,15 @@ Attribute W.VB_VarHelpID = -1
 Private WithEvents tmrAnimator As cTimer
 Attribute tmrAnimator.VB_VarHelpID = -1
 
-Private SDeg As Double
-Private thisWindSpeed As Long
-Private windSpeedValue  As Long
+Private windSpeedSDeg As Single
+Private windDirectionSDeg As Single
 
-Private oldSDeg As Double
+Private thisWindSpeed As Long
+Private mWindSpeed  As Integer
+Private mWindDirection  As Integer
+
+
+Private oldWindSpeedSDeg As Double
 Private newSDeg As Double
 Private animationQuanta As Double
 Private animationAmount As Double
@@ -80,15 +51,12 @@ Private animationDivisions As Integer
 Private animationInterval As Integer
 Private animateCCW As Boolean
 
-'------------------------------------------------------ ENDS
-
-Private mTicking As Boolean ' property Ticking
 Private mPointerAnimate As Boolean ' property PointerAnimate
 Private mLocked As Boolean ' property Locked
 Private mAnemometerDetails As String ' property
-
 Private mHidden As Boolean ' property Hidden
 Private mThisOpacity As String ' property ThisOpacity
+
 
     
 
@@ -109,7 +77,7 @@ Private Sub Class_Initialize()
                     
     animationDivisions = 12
     animationInterval = 40
-    
+        
     Set tmrAnimator = Nothing
     Set tmrAnimator = New_c.Timer(animationInterval, False)
      
@@ -159,48 +127,86 @@ Widgets_Error:
 
     MsgBox "Error " & Err.Number & " (" & Err.Description & ") in procedure Widgets of Class Module cwOverlayAnemo"
 End Property
-
-
 '---------------------------------------------------------------------------------------
-' Property  : Ticking
-' Author    :
-' Date      : 09/05/2023
-' Purpose   :
-'---------------------------------------------------------------------------------------
-'
-Public Property Let Ticking(ByVal newValue As Boolean)
-    On Error GoTo TickingLet_Error
-
-    If mTicking <> newValue Then mTicking = newValue Else Exit Property
-    
-
-   On Error GoTo 0
-   Exit Property
-
-TickingLet_Error:
-
-    MsgBox "Error " & Err.Number & " (" & Err.Description & ") in Property Ticking of Class Module cwOverlayAnemo"
-End Property ' the Ticking flag
-
-
-'---------------------------------------------------------------------------------------
-' Property : Ticking
+' Property : WindSpeed
 ' Author    : Dean Beedell (yereverluvinunclebert)
 ' Date      : 17/05/2023
 ' Purpose   :
 '---------------------------------------------------------------------------------------
 '
-Public Property Get Ticking() As Boolean
-   On Error GoTo TickingGet_Error
+Public Property Get windSpeed() As Integer
+   On Error GoTo WindSpeedGet_Error
 
-  Ticking = mTicking
+   windSpeed = mWindSpeed
 
    On Error GoTo 0
    Exit Property
 
-TickingGet_Error:
+WindSpeedGet_Error:
 
-    MsgBox "Error " & Err.Number & " (" & Err.Description & ") in Property Ticking of Class Module cwOverlayAnemo"
+    MsgBox "Error " & Err.Number & " (" & Err.Description & ") in Property WindSpeed of Class Module cwOverlayTemp"
+End Property
+'---------------------------------------------------------------------------------------
+' Property  : WindSpeed
+' Author    : Dean Beedell (yereverluvinunclebert)
+' Date      : 17/05/2023
+' Purpose   :
+'---------------------------------------------------------------------------------------
+'
+Public Property Let windSpeed(ByVal newValue As Integer)
+   On Error GoTo WindSpeedLet_Error
+
+   If mWindSpeed <> newValue Then mWindSpeed = newValue Else Exit Property
+   
+   Call calcAnimationData
+
+   On Error GoTo 0
+   Exit Property
+
+WindSpeedLet_Error:
+
+    MsgBox "Error " & Err.Number & " (" & Err.Description & ") in Property WindSpeed of Class Module cwOverlayTemp"
+End Property
+
+'---------------------------------------------------------------------------------------
+' Property : windDirection
+' Author    : Dean Beedell (yereverluvinunclebert)
+' Date      : 17/05/2023
+' Purpose   :
+'---------------------------------------------------------------------------------------
+'
+Public Property Get windDirection() As Integer
+   On Error GoTo windDirectionGet_Error
+
+   windDirection = mWindDirection
+
+   On Error GoTo 0
+   Exit Property
+
+windDirectionGet_Error:
+
+    MsgBox "Error " & Err.Number & " (" & Err.Description & ") in Property windDirection of Class Module cwOverlayTemp"
+End Property
+'---------------------------------------------------------------------------------------
+' Property  : windDirection
+' Author    : Dean Beedell (yereverluvinunclebert)
+' Date      : 17/05/2023
+' Purpose   :
+'---------------------------------------------------------------------------------------
+'
+Public Property Let windDirection(ByVal newValue As Integer)
+   On Error GoTo windDirectionLet_Error
+
+   If mWindDirection <> newValue Then mWindDirection = newValue Else Exit Property
+   
+    Call obtainWindDirection
+
+   On Error GoTo 0
+   Exit Property
+
+windDirectionLet_Error:
+
+    MsgBox "Error " & Err.Number & " (" & Err.Description & ") in Property windDirection of Class Module cwOverlayTemp"
 End Property
 
 '---------------------------------------------------------------------------------------
@@ -242,9 +248,6 @@ thisOpacityLet_Error:
     MsgBox "Error " & Err.Number & " (" & Err.Description & ") in Property thisOpacity of Class Module cwOverlayAnemo"
 End Property
 
-
-
-'---------------------------------------------------------------------------------------
 
 '---------------------------------------------------------------------------------------
 ' Property : pointerAnimate
@@ -329,7 +332,7 @@ Public Property Let Locked(ByVal newValue As Boolean)
         menuForm.mnuLockAnemometerGauge.Checked = False
         'panzerPrefs.chkPreventDragging.Value = 0
         PzGPreventDraggingAnemometer = "0"
-        fAnemometer.anemometerGaugeForm.Widgets("housing/lockbutton").Widget.Alpha = val(PzGOpacity) / 100
+        fAnemometer.anemometerGaugeForm.Widgets("housing/lockbutton").Widget.Alpha = Val(PzGOpacity) / 100
     End If
 
     fAnemometer.anemometerGaugeForm.Refresh
@@ -339,7 +342,6 @@ Public Property Let Locked(ByVal newValue As Boolean)
     If PzGEnableSounds = "1" And fFExists(App.path & "\resources\sounds\" & fileToPlay) Then
         PlaySound App.path & "\resources\sounds\" & fileToPlay, ByVal 0&, SND_FILENAME Or SND_ASYNC
     End If
-
 
    On Error GoTo 0
    Exit Property
@@ -400,12 +402,7 @@ HiddenLet_Error:
     MsgBox "Error " & Err.Number & " (" & Err.Description & ") in Property Hidden of Class Module cwOverlayTemp"
 End Property
 
-'---------------------------------------------------------------------------------------
-
-
-
-
-
+    
 '
 '---------------------------------------------------------------------------------------------
 ' Procedure : W_HitTest
@@ -441,11 +438,9 @@ Private Sub W_Paint(CC As RC6.cCairoContext, ByVal xAbs As Single, ByVal yAbs As
     Dim arr As Variant
     Dim key As String: key = vbNullString
     Dim Pat As cCairoPattern
-    Dim txtThisWindSpeed As String: txtThisWindSpeed = vbNullString
     Dim someOpacity As Double: someOpacity = 0
     Dim boxLeft As Integer: boxLeft = 0
     Dim cream As String: cream = vbNullString
-    Dim scaleString As String: scaleString = vbNullString
        
     On Error GoTo W_Paint_Error
     
@@ -458,10 +453,8 @@ Private Sub W_Paint(CC As RC6.cCairoContext, ByVal xAbs As Single, ByVal yAbs As
     W.FontBold = True
     W.SelectFontSettingsInto CC
     W.Refresh
-    someOpacity = (val(mThisOpacity) / 100) * 0.75
+    someOpacity = (Val(mThisOpacity) / 100) * 0.75
     
-    txtThisWindSpeed = CStr(Int(thisWindSpeed))
-
     For i = 0 To cCollOverlayAnemoImages.Count - 1 ' this is the ExcludedPaths collection populated in cfTemperature by duplicating collTemperaturePSDNonUIElements.
       arr = cCollOverlayAnemoImages.ItemByIndex(i)
       key = cCollOverlayAnemoImages.KeyByIndex(i)
@@ -481,43 +474,46 @@ Private Sub W_Paint(CC As RC6.cCairoContext, ByVal xAbs As Single, ByVal yAbs As
         
                 Case "redlamptrue"
                     
-                    If thisWindSpeed >= 34 Then
+                    If mWindSpeed >= 34 Then
                         Set Pat.Matrix = Pat.Matrix.TranslateCoords(-arr(0), -arr(1)) 'shift the Pattern via the original X,Y PSD-Offsets (stored in Arr(0) and Arr(1))
                         CC.Paint arr(2), Pat 'render the Pattern
                     End If
                     
                  Case "redlampfalse"
                     
-                    If thisWindSpeed < 34 Then
+                    If mWindSpeed < 34 Then
                         Set Pat.Matrix = Pat.Matrix.TranslateCoords(-arr(0), -arr(1))
                         CC.Paint arr(2), Pat ' render the Pattern
                     End If
                                     
-
-                 Case "pointerShadow", "pointer"
                     
-                    scaleString = "C"
-                    txtThisWindSpeed = CStr(thisWindSpeed)
-                                              
-                    If val(txtThisWindSpeed) >= 100 Then
-                        boxLeft = 260
-                    Else
-                        boxLeft = 265
-                    End If
-                    
-                     
-                     ' draw the date and day in the windows just once to retain opacity
-                    CC.DrawText boxLeft, 103, 200, 200, txtThisWindSpeed, , , 2, True, , someOpacity
-                    CC.DrawText 459, 297, 200, 200, scaleString, , , 2, True, , someOpacity
-                    'textDrawn = True
-                    
-                    Set Pat.Matrix = Pat.Matrix.TranslateCoords(11, 246) 'shift to the "rotation-point" within the Pattern
+                 Case "directionpointer"
+                                         
+                    Set Pat.Matrix = Pat.Matrix.TranslateCoords(4, 180) 'shift to the "rotation-point" within the Pattern
                     CC.TranslateDrawings W.Width * cxPerc, W.Height * cyPerc 'shift to the center-point of the Overlay-Widget-area
                     
-                    CC.RotateDrawingsDeg SDeg
+                    ' windDirectionSDeg = 180 ' debug
+                    
+                    CC.RotateDrawingsDeg windDirectionSDeg
                     CC.Paint arr(2), Pat 'render the Pattern with the current PSD-LayerAlpha, present in Arr(2)
-                    
-                    
+                  
+                 Case "pointerShadow", "pointer"
+
+                    If Val(mWindSpeed) >= 100 Then
+                        boxLeft = 415
+                    Else
+                        boxLeft = 420
+                    End If
+
+                     ' draw the date and day in the windows just once to retain opacity
+                    CC.DrawText boxLeft, 185, 180, 200, CStr(mWindSpeed), , , 2, True, , someOpacity
+
+                    Set Pat.Matrix = Pat.Matrix.TranslateCoords(11, 246) 'shift to the "rotation-point" within the Pattern
+                    CC.TranslateDrawings W.Width * cxPerc, W.Height * cyPerc 'shift to the center-point of the Overlay-Widget-area
+
+                    CC.RotateDrawingsDeg windSpeedSDeg
+                    CC.Paint arr(2), Pat 'render the Pattern with the current PSD-LayerAlpha, present in Arr(2)
+
                  Case Else 'plain output for everything else ... this includes the reflection-layers,
                      
                     Set Pat.Matrix = Pat.Matrix.TranslateCoords(-arr(0), -arr(1))
@@ -537,160 +533,184 @@ W_Paint_Error:
     MsgBox "Error " & Err.Number & " (" & Err.Description & ") in procedure W_Paint of Class Module cwOverlayTemp"
 End Sub
 
+
+'---------------------------------------------------------------------------------------
+' Procedure : tmrAnimator_Timer
+' Author    :
+' Date      : 30/07/2023
+' Purpose   : animate timer, once every few (40) milliseconds
+'---------------------------------------------------------------------------------------
 '
-''---------------------------------------------------------------------------------------
-'' Procedure : tmrAnimator_Timer
-'' Author    :
-'' Date      : 30/07/2023
-'' Purpose   : animate timer, once every few (40) milliseconds
-''---------------------------------------------------------------------------------------
-''
-'Private Sub tmrAnimator_Timer()
-'
-'    On Error GoTo tmrAnimator_Timer_Error
-'    '
-'    ' move the pointer using SDeg
-'    '
-'    animationAmount = animationAmount + animationQuanta
-'
-'    If animateCCW = True Then
-'        If SDeg > newSDeg Then
-'            SDeg = oldSDeg - animationAmount
-'        Else
-'            tmrAnimator.Enabled = False ' when the animation is complete then stop the animator
-'            animationAmount = 0
-'            Exit Sub
-'        End If
-'    Else
-'        If SDeg < newSDeg Then
-'            SDeg = oldSDeg + animationAmount
-'        Else
-'            tmrAnimator.Enabled = False
-'            animationAmount = 0
-'            Exit Sub
-'        End If
-'    End If
-'
-'    W.Parent.Refresh
-'
-'   On Error GoTo 0
-'   Exit Sub
-'
-'tmrAnimator_Timer_Error:
-'
-'    MsgBox "Error " & Err.Number & " (" & Err.Description & ") in procedure tmrAnimator_Timer of Class Module cwOverlayTemp"
-'End Sub
-'
-'
+Private Sub tmrAnimator_Timer()
+
+    On Error GoTo tmrAnimator_Timer_Error
+    '
+    ' move the pointer using windSpeedSDeg
+    '
+    animationAmount = animationAmount + animationQuanta
+
+    If animateCCW = True Then
+        If windSpeedSDeg > newSDeg Then
+            windSpeedSDeg = oldWindSpeedSDeg - animationAmount
+        Else
+            tmrAnimator.Enabled = False ' when the animation is complete then stop the animator
+            animationAmount = 0
+            Exit Sub
+        End If
+    Else
+        If windSpeedSDeg < newSDeg Then
+            windSpeedSDeg = oldWindSpeedSDeg + animationAmount
+        Else
+            tmrAnimator.Enabled = False
+            animationAmount = 0
+            Exit Sub
+        End If
+    End If
+
+    W.Parent.Refresh
+
+   On Error GoTo 0
+   Exit Sub
+
+tmrAnimator_Timer_Error:
+
+    MsgBox "Error " & Err.Number & " (" & Err.Description & ") in procedure tmrAnimator_Timer of Class Module cwOverlayTemp"
+End Sub
 '
 '
 '
-''---------------------------------------------------------------------------------------
-'' Procedure : calcAnimationData
-'' Author    : set the animation variables and call the routine to move the gauge pointer
-'' Date      : 30/07/2023
-'' Purpose   :
-''---------------------------------------------------------------------------------------
-''
-'Private Sub calcAnimationData()
-'    Dim degDiff As Double: degDiff = 0
-''    Dim min  As Integer: min = 0
-''    Dim max  As Integer: max = 0
-'    Dim tempPercent As Double: tempPercent = 0
 '
-'    On Error GoTo calcAnimationData_Error
-'    ' windSpeedValue = -14 ' debug
 '
-'    If mPointerAnimate = True Then
-'        If tmrAnimator.Enabled = False Then
+'---------------------------------------------------------------------------------------
+' Procedure : calcAnimationData
+' Author    : set the animation variables and call the routine to move the gauge pointer
+' Date      : 30/07/2023
+' Purpose   :
+'---------------------------------------------------------------------------------------
 '
-'            ' oldSDeg stored
-'            oldSDeg = SDeg
+Private Sub calcAnimationData()
+    Dim degDiff As Double: degDiff = 0
+    Dim windSpeed As Double: windSpeed = 0
+
+    On Error GoTo calcAnimationData_Error
+    ' windSpeed = -14 ' debug
+
+    If mPointerAnimate = True Then
+        If tmrAnimator.Enabled = False Then
+
+            ' oldWindSpeedSDeg stored
+            oldWindSpeedSDeg = windSpeedSDeg
+
+            ' obtain the new windSpeed in percentage
+            windSpeed = ((mWindSpeed) / 80) * 100
+
+            ' calculate the new cpu amount in degrees
+            If mWindSpeed = 0 Then
+                windSpeedSDeg = 30
+            Else
+                windSpeedSDeg = (windSpeed * 3) + 30
+            End If
+
+            If oldWindSpeedSDeg = newSDeg Then Exit Sub
+
+            ' calculate the difference
+            degDiff = newSDeg - oldWindSpeedSDeg
+
+            ' if the result is negative animate CCW
+
+            animateCCW = degDiff < 0 ' true/false
+
+            Select Case degDiff
+                Case Is <= 5
+                    animationDivisions = 4
+                Case Is <= 10
+                    animationDivisions = 8
+                Case Is > 10
+                    animationDivisions = 16
+                Case Is > 20
+                    animationDivisions = 24
+            End Select
+
+            ' divide that by 24 (one second duration)
+            animationQuanta = Abs(degDiff / animationDivisions)
+
+            tmrAnimator.Enabled = True
+
+        End If
+    Else
+        Call obtainWindSpeed
+    End If
+
+    W.Parent.Refresh
+
+   On Error GoTo 0
+   Exit Sub
+
+calcAnimationData_Error:
+
+    MsgBox "Error " & Err.Number & " (" & Err.Description & ") in procedure calcAnimationData of Class Module cwOverlayTemp"
+End Sub
 '
-'            ' obtain the new windSpeed in percentage
-'            tempPercent = ((windSpeedValue + 30) / 80) * 100
+' ----------------------------------------------------------------
+' Procedure Name: obtainWindSpeed
+' Purpose:
+' Procedure Kind: Sub
+' Procedure Access: Private
+' Author: Dean Beedell (yereverluvinunclebert)
+' Date: 13/01/2024
+' ----------------------------------------------------------------
+Private Sub obtainWindSpeed()
+
+    Dim windSpeed As Double: windSpeed = 0
+
+    On Error GoTo obtainWindSpeed_Error
+    
+    ' obtain the new windSpeed in percentage
+    windSpeed = ((mWindSpeed) / 80) * 100
+
+    ' calculate the new cpu amount in degrees
+    If windSpeed = 0 Then
+        windSpeedSDeg = 30
+    Else
+        windSpeedSDeg = (windSpeed * 3) + 30
+    End If
+
+    W.Parent.Refresh
+
+    On Error GoTo 0
+    Exit Sub
+
+obtainWindSpeed_Error:
+
+    MsgBox "Error " & Err.Number & " (" & Err.Description & ") in procedure obtainWindSpeed, line " & Erl & "."
+
+End Sub
+
 '
-'            ' calculate the new cpu amount in degrees
-'            If weHaveData = True Then
-'                newSDeg = (tempPercent * 3) + 30
-'            Else
-'                newSDeg = 30
-'            End If
-'
-'            If oldSDeg = newSDeg Then Exit Sub
-'
-'            ' calculate the difference
-'            degDiff = newSDeg - oldSDeg
-'
-'            ' if the result is negative animate CCW
-'
-'            animateCCW = degDiff < 0 ' true/false
-'
-'            Select Case degDiff
-'                Case Is <= 5
-'                    animationDivisions = 4
-'                Case Is <= 10
-'                    animationDivisions = 8
-'                Case Is > 10
-'                    animationDivisions = 16
-'                Case Is > 20
-'                    animationDivisions = 24
-'            End Select
-'
-'            ' divide that by 24 (one second duration)
-'            animationQuanta = Abs(degDiff / animationDivisions)
-'
-'            tmrAnimator.Enabled = True
-'
-'        End If
-'    Else
-'        Call obtainWindSpeed
-'    End If
-'
-'    W.Parent.Refresh
-'
-'   On Error GoTo 0
-'   Exit Sub
-'
-'calcAnimationData_Error:
-'
-'    MsgBox "Error " & Err.Number & " (" & Err.Description & ") in procedure calcAnimationData of Class Module cwOverlayTemp"
-'End Sub
-'
-'' ----------------------------------------------------------------
-'' Procedure Name: obtainWindCharacteristics
-'' Purpose:
-'' Procedure Kind: Sub
-'' Procedure Access: Private
-'' Author: Dean Beedell (yereverluvinunclebert)
-'' Date: 13/01/2024
-'' ----------------------------------------------------------------
-'Private Sub obtainWindCharacteristics()
-'
-'    Dim tempPercent As Double: tempPercent = 0
-'
-'    On Error GoTo obtainWindCharacteristics_Error
-'
-'    ' obtain the new windSpeed in percentage
-'    tempPercent = ((windSpeedValue + 30) / 80) * 100
-'
-'    ' calculate the new cpu amount in degrees
-'    If weHaveData = True Then
-'        SDeg = (tempPercent * 3) + 30
-'    Else
-'        SDeg = 30
-'    End If
-'
-'    W.Parent.Refresh
-'
-'    On Error GoTo 0
-'    Exit Sub
-'
-'obtainWindCharacteristics_Error:
-'
-'    MsgBox "Error " & Err.Number & " (" & Err.Description & ") in procedure obtainWindCharacteristics, line " & Erl & "."
-'
-'End Sub
+' ----------------------------------------------------------------
+' Procedure Name: obtainWindDirection
+' Purpose:
+' Procedure Kind: Sub
+' Procedure Access: Private
+' Author: Dean Beedell (yereverluvinunclebert)
+' Date: 13/01/2024
+' ----------------------------------------------------------------
+Private Sub obtainWindDirection()
+
+    On Error GoTo obtainWindDirection_Error
+    
+    windDirectionSDeg = mWindDirection
+
+    W.Parent.Refresh
+
+    On Error GoTo 0
+    Exit Sub
+
+obtainWindDirection_Error:
+
+    MsgBox "Error " & Err.Number & " (" & Err.Description & ") in procedure obtainWindDirection, line " & Erl & "."
+
+End Sub
 
 
 
