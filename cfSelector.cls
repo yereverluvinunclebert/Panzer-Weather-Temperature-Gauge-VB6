@@ -103,14 +103,14 @@ Public Sub InitSelectorFromPSD(ByRef PSD_FileNameOrByteArray As Variant)
                         
                         'we add layer info. (used in cwOverlay) to the "excluded paths" previously defined in Sub Main,
                         
-                        collSelectorPSDNonUIElements(.LayerPath(i)) = Array(.LayerX(i), .LayerY(i), val(PzGOpacity) / 100)  'here we update the so far empty slots with the PSD-offsets
+                        collSelectorPSDNonUIElements(.LayerPath(i)) = Array(.LayerX(i), .LayerY(i), Val(PzGOpacity) / 100)  'here we update the so far empty slots with the PSD-offsets
                 
                     Else 'everything not in the exclude-list will get its own Widget-instance
                     
                         Set W = SelectorForm.Widgets.Add(New cwAlphaImg, LCase$(.LayerPath(i)), .LayerX(i), .LayerY(i), .LayerWidth(i), .LayerHeight(i)).Widget
                             W.ImageKey = W.key 'W.Key equals ImageList-Key, set above - and LayerPath(i) at this point ... set it also as the ImageKey of our new created Widget
                         If PzGOpacity < 1 Then
-                            W.Alpha = val(PzGOpacity) / 100
+                            W.Alpha = Val(PzGOpacity) / 100
                         Else
                             W.Alpha = 1
                         End If
@@ -901,7 +901,7 @@ Private Function testLocation(ByVal location As String) As String
 
     location = Replace(location, " ", "")
 
-    If location <> "" Then
+    If location <> vbNullString Then
         If debugFlg = 1 Then
             Debug.Print ("%txtICAOInput - calling searchIcaoFile")
         End If

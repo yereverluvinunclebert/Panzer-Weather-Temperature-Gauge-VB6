@@ -325,13 +325,29 @@ Public Property Let Locked(ByVal newValue As Boolean)
 
     If mLocked = True Then
         menuForm.mnuLockAnemometerGauge.Checked = True
-        'panzerPrefs.chkPreventDragging.Value = 1
+        panzerPrefs.chkPreventDragging.Value = 1
+        panzerPrefs.cmbLandscape.ListIndex = 1
+
         PzGPreventDraggingAnemometer = "1"
+        If aspectRatio = "landscape" Then
+            PzGAnemometerLandscape = "1"
+        Else
+            PzGAnemometerPortrait = "1"
+        End If
+            
         fAnemometer.anemometerGaugeForm.Widgets("housing/lockbutton").Widget.Alpha = 0
     Else
         menuForm.mnuLockAnemometerGauge.Checked = False
-        'panzerPrefs.chkPreventDragging.Value = 0
+        panzerPrefs.chkPreventDragging.Value = 0
+        panzerPrefs.cmbLandscape.ListIndex = 0
+
         PzGPreventDraggingAnemometer = "0"
+        If aspectRatio = "landscape" Then
+            PzGAnemometerLandscape = "0"
+        Else
+            PzGAnemometerPortrait = "0"
+        End If
+            
         fAnemometer.anemometerGaugeForm.Widgets("housing/lockbutton").Widget.Alpha = Val(PzGOpacity) / 100
     End If
 

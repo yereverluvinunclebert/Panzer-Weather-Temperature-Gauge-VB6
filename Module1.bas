@@ -322,13 +322,25 @@ Public PzGScrollWheelDirection As String
 
 ' position
 Public PzGAspectHidden As String
+Public PzGGaugeType As String
+
 Public PzGWidgetPosition As String
-Public PzGWidgetLandscape As String
-Public PzGWidgetPortrait As String
-Public PzGLandscapeFormHoffset As String
-Public PzGLandscapeFormVoffset As String
-Public PzGPortraitHoffset As String
-Public PzGPortraitYoffset As String
+Public PzGTemperatureLandscape As String
+Public PzGTemperaturePortrait As String
+
+Public PzGTemperatureLandscapeHoffset As String
+Public PzGTemperatureLandscapeVoffset As String
+Public PzGTemperaturePortraitHoffset As String
+Public PzGTemperaturePortraitVoffset As String
+
+Public PzGAnemometerLandscape As String
+Public PzGAnemometerPortrait As String
+
+Public PzGAnemometerLandscapeHoffset As String
+Public PzGAnemometerLandscapeVoffset As String
+Public PzGAnemometerPortraitHoffset As String
+Public PzGAnemometerPortraitVoffset As String
+
 Public PzGvLocationPercPrefValue As String
 Public PzGhLocationPercPrefValue As String
 
@@ -1315,7 +1327,7 @@ Public Sub changeFont(ByVal frm As Form, ByVal fntNow As Boolean, ByRef fntFont 
 '    End If
     
     If fntFont <> vbNullString And fntNow = True Then
-        Call changeFormFont(frm, fntFont, val(fntSize), fntWeight, fntStyle, fntItalics, fntColour)
+        Call changeFormFont(frm, fntFont, Val(fntSize), fntWeight, fntStyle, fntItalics, fntColour)
     End If
     
    On Error GoTo 0
@@ -1831,7 +1843,7 @@ Public Sub setMainTooltips()
 
     If PzGEnableTooltips = "1" Then
 
-        overlayTemperatureWidget.Widget.ToolTip = "" & vbCrLf & "Use CTRL+mouse scrollwheel up/down to resize."
+        overlayTemperatureWidget.Widget.ToolTip = vbNullString & vbCrLf & "Use CTRL+mouse scrollwheel up/down to resize."
         helpWidget.Widget.ToolTip = "Click on me to make me go away."
         aboutWidget.Widget.ToolTip = "Click on me to make me go away."
         
@@ -1883,7 +1895,7 @@ Public Sub ChangeToolTipWidgetDefaultSettings(ByRef My_Widget As cWidgetBase)
     With My_Widget
     
         .FontName = PzGTempFormFont
-        .FontSize = val(PzGPrefsFontSizeLowDPI)
+        .FontSize = Val(PzGPrefsFontSizeLowDPI)
     
     End With
 
@@ -1926,17 +1938,17 @@ Public Sub makeVisibleFormElements()
 
     monitorCount = fGetMonitorCount
     If monitorCount > 1 Then
-        Call adjustFormPositionToCorrectMonitor(fTemperature.temperatureGaugeForm.hwnd, val(PzGTemperatureFormHighDpiXPos), val(PzGTemperatureFormHighDpiYPos))
+        Call adjustFormPositionToCorrectMonitor(fTemperature.temperatureGaugeForm.hwnd, Val(PzGTemperatureFormHighDpiXPos), Val(PzGTemperatureFormHighDpiYPos))
     Else
 '        fTemperature.temperatureGaugeForm.Left = val(PzGTemperatureFormHighDpiXPos)
 '        fTemperature.temperatureGaugeForm.Top = val(PzGTemperatureFormHighDpiYPos)
         
         If PzGDpiAwareness = "1" Then
-            fTemperature.temperatureGaugeForm.Left = val(PzGTemperatureFormHighDpiXPos)
-            fTemperature.temperatureGaugeForm.Top = val(PzGTemperatureFormHighDpiYPos)
+            fTemperature.temperatureGaugeForm.Left = Val(PzGTemperatureFormHighDpiXPos)
+            fTemperature.temperatureGaugeForm.Top = Val(PzGTemperatureFormHighDpiYPos)
         Else
-            fTemperature.temperatureGaugeForm.Left = val(PzGTemperatureFormLowDpiXPos)
-            fTemperature.temperatureGaugeForm.Top = val(PzGTemperatureFormLowDpiYPos)
+            fTemperature.temperatureGaugeForm.Left = Val(PzGTemperatureFormLowDpiXPos)
+            fTemperature.temperatureGaugeForm.Top = Val(PzGTemperatureFormLowDpiYPos)
         End If
     End If
     
@@ -1946,11 +1958,11 @@ Public Sub makeVisibleFormElements()
     'fClipB.clipBForm.Top = temperatureFormTopPixels + 200
 
     If PzGDpiAwareness = "1" Then
-        fClipB.clipBForm.Left = val(PzGClipBFormHighDpiXPos)
-        fClipB.clipBForm.Top = val(PzGClipBFormHighDpiYPos)
+        fClipB.clipBForm.Left = Val(PzGClipBFormHighDpiXPos)
+        fClipB.clipBForm.Top = Val(PzGClipBFormHighDpiYPos)
     Else
-        fClipB.clipBForm.Left = val(PzGClipBFormLowDpiXPos)
-        fClipB.clipBForm.Top = val(PzGClipBFormLowDpiYPos)
+        fClipB.clipBForm.Left = Val(PzGClipBFormLowDpiXPos)
+        fClipB.clipBForm.Top = Val(PzGClipBFormLowDpiYPos)
     End If
     
     fClipB.clipBForm.Show
@@ -1961,21 +1973,21 @@ Public Sub makeVisibleFormElements()
 '    fSelector.SelectorForm.Top = val(PzGTemperatureFormHighDpiYPos) + 200
     
     If PzGDpiAwareness = "1" Then
-        fSelector.SelectorForm.Left = val(PzGSelectorFormHighDpiXPos)
-        fSelector.SelectorForm.Top = val(PzGSelectorFormHighDpiYPos)
+        fSelector.SelectorForm.Left = Val(PzGSelectorFormHighDpiXPos)
+        fSelector.SelectorForm.Top = Val(PzGSelectorFormHighDpiYPos)
     Else
-        fSelector.SelectorForm.Left = val(PzGSelectorFormLowDpiXPos)
-        fSelector.SelectorForm.Top = val(PzGSelectorFormLowDpiYPos)
+        fSelector.SelectorForm.Left = Val(PzGSelectorFormLowDpiXPos)
+        fSelector.SelectorForm.Top = Val(PzGSelectorFormLowDpiYPos)
     End If
 
 
     
     If PzGDpiAwareness = "1" Then
-        fAnemometer.anemometerGaugeForm.Left = val(PzGAnemometerFormHighDpiXPos)
-        fAnemometer.anemometerGaugeForm.Top = val(PzGAnemometerFormHighDpiYPos)
+        fAnemometer.anemometerGaugeForm.Left = Val(PzGAnemometerFormHighDpiXPos)
+        fAnemometer.anemometerGaugeForm.Top = Val(PzGAnemometerFormHighDpiYPos)
     Else
-        fAnemometer.anemometerGaugeForm.Left = val(PzGAnemometerFormLowDpiXPos)
-        fAnemometer.anemometerGaugeForm.Top = val(PzGAnemometerFormLowDpiYPos)
+        fAnemometer.anemometerGaugeForm.Left = Val(PzGAnemometerFormLowDpiXPos)
+        fAnemometer.anemometerGaugeForm.Top = Val(PzGAnemometerFormLowDpiYPos)
     End If
     
     fAnemometer.anemometerGaugeForm.Show
@@ -2176,12 +2188,16 @@ Public Sub mainScreen()
     
     ' check if the widget has a lock for the screen type.
     If aspectRatio = "landscape" Then
-        If PzGWidgetLandscape = "1" Then
-            If PzGLandscapeFormHoffset <> vbNullString Then
-                fTemperature.temperatureGaugeForm.Left = val(PzGLandscapeFormHoffset)
-                fTemperature.temperatureGaugeForm.Top = val(PzGLandscapeFormVoffset)
-            End If
-        End If
+'        If PzGTemperatureLandscape = "1" Then
+'            If PzGTemperatureLandscapeHoffset <> vbNullString Then
+'                fTemperature.temperatureGaugeForm.Left = Val(PzGTemperatureLandscapeHoffset)
+'                fTemperature.temperatureGaugeForm.Top = Val(PzGTemperatureLandscapeVoffset)
+'            End If
+'            If PzGAnemometerLandscape <> vbNullString Then
+'                fAnemometer.anemometerGaugeForm.Left = Val(PzGAnemometerLandscapeHoffset)
+'                fAnemometer.anemometerGaugeForm.Top = Val(PzGAnemometerLandscapeVoffset)
+'            End If
+'        End If
         If PzGAspectHidden = "2" Then
             Debug.Print "Hiding the widget for landscape mode"
             fTemperature.temperatureGaugeForm.Visible = False
@@ -2190,16 +2206,22 @@ Public Sub mainScreen()
     
     ' check if the widget has a lock for the screen type.
     If aspectRatio = "portrait" Then
-        If PzGWidgetPortrait = "1" Then
-            fTemperature.temperatureGaugeForm.Left = val(PzGPortraitHoffset)
-            fTemperature.temperatureGaugeForm.Top = val(PzGPortraitYoffset)
-        End If
+'        If PzGTemperaturePortrait = "1" Then
+'            fTemperature.temperatureGaugeForm.Left = Val(PzGTemperaturePortraitHoffset)
+'            fTemperature.temperatureGaugeForm.Top = Val(PzGTemperaturePortraitVoffset)
+'        End If
+'        If PzGAnemometerPortrait <> vbNullString Then
+'            fAnemometer.anemometerGaugeForm.Left = Val(PzGAnemometerPortraitHoffset)
+'            fAnemometer.anemometerGaugeForm.Top = Val(PzGAnemometerPortraitVoffset)
+'        End If
         If PzGAspectHidden = "1" Then
             Debug.Print "Hiding the widget for portrait mode"
             fTemperature.temperatureGaugeForm.Visible = False
         End If
     End If
 
+
+' deaniebabe
     ' calculate the on screen widget position
     If fTemperature.temperatureGaugeForm.Left < 0 Then
         fTemperature.temperatureGaugeForm.Left = 10
@@ -2549,13 +2571,13 @@ Public Sub readPrefsPosition()
         PzGPrefsFormHighDpiYPosTwips = fGetINISetting("Software\PzTemperatureGauge", "prefsFormHighDpiYPosTwips", PzGSettingsFile)
         
 '        ' if a current location not stored then position to the middle of the screen
-'        If PzGPrefsFormHighDpiXPosTwips <> "" Then
+'        If PzGPrefsFormHighDpiXPosTwips <> vbNullString Then
 '            panzerPrefs.Left = Val(PzGPrefsFormHighDpiXPosTwips)
 '        Else
 '            panzerPrefs.Left = screenWidthTwips / 2 - panzerPrefs.Width / 2
 '        End If
 '
-'        If PzGPrefsFormHighDpiYPosTwips <> "" Then
+'        If PzGPrefsFormHighDpiYPosTwips <> vbNullString Then
 '            panzerPrefs.Top = Val(PzGPrefsFormHighDpiYPosTwips)
 '        Else
 '            panzerPrefs.Top = Screen.Height / 2 - panzerPrefs.Height / 2
@@ -2565,13 +2587,13 @@ Public Sub readPrefsPosition()
         PzGPrefsFormLowDpiYPosTwips = fGetINISetting("Software\PzTemperatureGauge", "prefsFormLowDpiYPosTwips", PzGSettingsFile)
         
 '        ' if a current location not stored then position to the middle of the screen
-'        If PzGPrefsFormLowDpiXPosTwips <> "" Then
+'        If PzGPrefsFormLowDpiXPosTwips <> vbNullString Then
 '            panzerPrefs.Left = Val(PzGPrefsFormLowDpiXPosTwips)
 '        Else
 '            panzerPrefs.Left = screenWidthTwips / 2 - panzerPrefs.Width / 2
 '        End If
 '
-'        If PzGPrefsFormLowDpiYPosTwips <> "" Then
+'        If PzGPrefsFormLowDpiYPosTwips <> vbNullString Then
 '            panzerPrefs.Top = Val(PzGPrefsFormLowDpiYPosTwips)
 '        Else
 '            panzerPrefs.Top = Screen.Height / 2 - panzerPrefs.Height / 2

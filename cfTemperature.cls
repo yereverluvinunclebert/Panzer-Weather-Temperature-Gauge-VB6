@@ -641,7 +641,7 @@ Private Sub temperatureGaugeForm_MouseWheel(ByVal MouseKeys As Long, ByVal Rotat
         RotationDirection = Rotation
     End If
     
-   If MouseKeys = 8 Then Call AdjustZoom(FZ + RotationDirection / 2400)   'change the Zoom only, when the Ctrl-Key is down
+   If MouseKeys = 8 Then Call tempAdjustZoom(FZ + RotationDirection / 2400)   'change the Zoom only, when the Ctrl-Key is down
 
    On Error GoTo 0
    Exit Sub
@@ -673,14 +673,14 @@ End Sub
 'End Sub
 
 '---------------------------------------------------------------------------------------
-' Procedure : AdjustZoom
+' Procedure : tempAdjustZoom
 ' Author    : olaf schmidt
 ' Date      : 31/07/2023
 ' Purpose   :
 '---------------------------------------------------------------------------------------
 '
-Public Sub AdjustZoom(ByVal NewZoom As Single)
-   On Error GoTo AdjustZoom_Error
+Public Sub tempAdjustZoom(ByVal NewZoom As Single)
+   On Error GoTo tempAdjustZoom_Error
 
     FZ = NewZoom
     If FZ < 0.05 Then FZ = 0.05 Else If FZ > 3 Then FZ = 3 'keep FZ within a sane ZoomInterval
@@ -689,17 +689,24 @@ Public Sub AdjustZoom(ByVal NewZoom As Single)
   
     ' when resized from the gauge scroll up/down it needs to write it back so the size is correct when prefs opened.
     PzGTemperatureGaugeSize = LTrim$(Str$(NewZoom * 100))
-    If panzerPrefs.IsVisible = True Then panzerPrefs.sliTemperatureGaugeSize.Value = Val(PzGTemperatureGaugeSize)
-    
-    sPutINISetting "Software\PzTemperatureGauge", "temperatureGaugeSize", PzGTemperatureGaugeSize, PzGSettingsFile
+    If panzerPrefs.IsVisible = True Then
+        If panzerPrefs.cmbGaugeType.ListIndex = 0 Then
+            panzerPrefs.sliGaugeSize.Value = Val(PzGTemperatureGaugeSize)
+            sPutINISetting "Software\PzTemperatureGauge", "temperatureGaugeSize", PzGTemperatureGaugeSize, PzGSettingsFile
+        End If
+        If panzerPrefs.cmbGaugeType.ListIndex = 1 Then
+            panzerPrefs.sliGaugeSize.Value = Val(PzGAnemometerGaugeSize)
+            sPutINISetting "Software\PzAnemometerGauge", "anemometerGaugeSize", PzGAnemometerGaugeSize, PzGSettingsFile
+        End If
+    End If
 
     
    On Error GoTo 0
    Exit Sub
 
-AdjustZoom_Error:
+tempAdjustZoom_Error:
 
-    MsgBox "Error " & Err.Number & " (" & Err.Description & ") in procedure AdjustZoom of Class Module cfTemperature"
+    MsgBox "Error " & Err.Number & " (" & Err.Description & ") in procedure tempAdjustZoom of Class Module cfTemperature"
 End Sub
 '---------------------------------------------------------------------------------------
 ' Procedure : W_MouseDown

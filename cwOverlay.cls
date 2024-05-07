@@ -515,15 +515,28 @@ Public Property Let Locked(ByVal newValue As Boolean)
     If mLocked = True Then
         menuForm.mnuLockTemperatureGauge.Checked = True
         panzerPrefs.chkPreventDragging.Value = 1
-        'overlayTemperatureWidget.Locked = True
-        PzGPreventDraggingTemperature = "1"
-        fTemperature.temperatureGaugeForm.Widgets("housing/lockbutton").Widget.Alpha = 0
+        panzerPrefs.cmbLandscape.ListIndex = 1
         
+        PzGPreventDraggingTemperature = "1"
+        If aspectRatio = "landscape" Then
+            PzGTemperatureLandscape = "1"
+        Else
+            PzGTemperaturePortrait = "1"
+        End If
+        
+        fTemperature.temperatureGaugeForm.Widgets("housing/lockbutton").Widget.Alpha = 0
     Else
         menuForm.mnuLockTemperatureGauge.Checked = False
         panzerPrefs.chkPreventDragging.Value = 0
+        panzerPrefs.cmbLandscape.ListIndex = 0
+        
         PzGPreventDraggingTemperature = "0"
-        'overlayTemperatureWidget.Locked = False
+        If aspectRatio = "landscape" Then
+            PzGTemperatureLandscape = "0"
+        Else
+            PzGTemperaturePortrait = "0"
+        End If
+        
         fTemperature.temperatureGaugeForm.Widgets("housing/lockbutton").Widget.Alpha = Val(PzGOpacity) / 100
     End If
 
@@ -1353,17 +1366,18 @@ Private Sub getData()
 
     Dim icaoToFind As String: icaoToFind = vbNullString
     Dim thisURL As String: thisURL = vbNullString
+    Dim thisFile As String: thisFile = vbNullString
     
     On Error GoTo getData_Error
     
     icaoToFind = PzGIcao ' eg. "EGSH"
     thisURL = "https://aviationweather.gov/api/data/dataserver?requestType=retrieve&dataSource=metars&stationString=" & icaoToFind & "&hoursBeforeNow=6&format=xml&mostRecent=true"
     
-    'thisFile = "E:\vb6\Panzer-Weather-Gauges-VB6\test.xml"
+    thisFile = "E:\vb6\Panzer-Weather-Gauges-VB6\test.xml"
     
     Set myMSXML = CreateObject("Microsoft.XmlHttp")
-    myMSXML.open "POST", thisURL, True
-    'myMSXML.open "POST", thisFile, True
+    'myMSXML.open "POST", thisURL, True
+    myMSXML.open "POST", thisFile, True
     myMSXML.setRequestHeader "Content-Type", "application/x-www-form-urlencoded"
     myMSXML.setRequestHeader "User-Agent", "Firefox 3.6.4"
     myMSXML.send "param1=value2&param2=value2"
@@ -1502,22 +1516,21 @@ Private Sub myStatusProc()
     
     Set MetarNode = objxmldoc.selectSingleNode("response/data/METAR") ' There's only the one METAR node
     
-    If num_results = 0 And Val(PzGErrorInterval) <> 0 Then
-       
-        ' compare last PzGLastUpdated to current date time and if that exceeds the error interval then raise an error.
-        TheDate = Now
-        secsDif = Int(DateDiff("s", CDate(PzGLastUpdated), TheDate))
-        If secsDif >= (Val(PzGErrorInterval) * 3600) And firstPoll = False Then
-            'if has just awoken from sleep then suppress the no data error message
-            If gblJustAwoken = True Then
-                gblJustAwoken = False
-            Else
-                answerMsg = "The source weather feed has been producing no valid data for " & secsDif & " secs."
-                answer = msgBoxA(answerMsg, vbOKOnly + vbExclamation, "Poll Warning", True, "myStatusProcPollingWarning")
+    If num_results = 0 Then
+        If Val(PzGErrorInterval) <> 0 Then
+            ' compare last PzGLastUpdated to current date time and if that exceeds the error interval then raise an error.
+            TheDate = Now
+            secsDif = Int(DateDiff("s", CDate(PzGLastUpdated), TheDate))
+            If secsDif >= (Val(PzGErrorInterval) * 3600) And firstPoll = False Then
+                'if has just awoken from sleep then suppress the no data error message
+                If gblJustAwoken = True Then
+                    gblJustAwoken = False
+                Else
+                    answerMsg = "The source weather feed has been producing no valid data for " & secsDif & " secs."
+                    answer = msgBoxA(answerMsg, vbOKOnly + vbExclamation, "Poll Warning", True, "myStatusProcPollingWarning")
+                End If
             End If
-            
         End If
-        
         weHaveData = False
         Exit Sub ' Return
     End If
@@ -1615,7 +1628,7 @@ Private Sub myStatusProc()
    Set SkyConditions = Nothing
        
     'if the station id returned is null then assume the weather information is missing for an unknown reason.
-    If (station_id = "") Then
+    If (station_id = vbNullString) Then
         If debugFlg = 1 Then Debug.Print ("%myStatusProc - station_id does not seem to providing any valid data, please select another.")
         
         If answer = vbNo Then
@@ -1677,7 +1690,7 @@ Private Sub myStatusProc()
 
     ' get the current time string and compare
     TheDate = Now
-    secsDif = Int(DateDiff("s", TheDate, usableObsTime))
+    secsDif = CDbl(DateDiff("s", TheDate, usableObsTime))
 
     ' format the interval for display in the tooltip
     difString = niceFormatInterval(secsDif, TheDate)
@@ -1707,7 +1720,7 @@ Private Sub myStatusProc()
 '    barometerBackgroundToolTip = humidityBackgroundToolTip
 
     weatherIconToolTip = setIconTooltip(wx_string, sky_condition_items(), uboundSkyConditions)
-    If (weatherIconToolTip = "") Then
+    If (weatherIconToolTip = vbNullString) Then
         weatherIconToolTip = thisTooltip
     End If
     
@@ -1754,9 +1767,9 @@ Private Function setIconTooltip(ByVal wx_string As String, ByRef sky_condition_i
     On Error GoTo setIconTooltip_Error
     
     'firstly, try the wx_string
-    If wx_string <> "" Then thisTooltip = getMetarDescription(wx_string)
+    If wx_string <> vbNullString Then thisTooltip = getMetarDescription(wx_string)
     
-    If (thisTooltip = "") Then
+    If (thisTooltip = vbNullString) Then
       ' if no wx_string use the cloud cover or lack of it
       thisTooltip = getCloudCover(sky_condition_items(), uboundSkyConditions)
     End If
@@ -1786,24 +1799,24 @@ End Function
 ' Author: Dean Beedell (yereverluvinunclebert)
 ' Date: 15/03/2024
 ' ----------------------------------------------------------------
-Private Function niceFormatInterval(ByVal duration As Integer, ByVal dateTimeNow As Date) As String
+Private Function niceFormatInterval(ByVal duration As Double, ByVal dateTimeNow As Date) As String
     On Error GoTo niceFormatInterval_Error
     
-    Dim hours As Integer: hours = 0
+    Dim hours As Long: hours = 0
     Dim addString As String: addString = vbNullString
-    Dim minutes As Integer: minutes = 0
+    Dim minutes As Long: minutes = 0
     Dim res As String: res = vbNullString
     
     duration = Abs(duration)
     hours = Int(duration / 3600)
-    minutes = Int((duration - hours * 3600) / 60)
+    minutes = CLng((duration - hours * 3600) / 60)
     
     addString = "prior to last poll at " & dateTimeNow
     
     If hours > 72 Then
         'print("%Update " & String(hours) & " hours and " & String(minutes) & " minutes ago")
-        niceFormatInterval = "No recent data available" & "!"
-        Exit Function ' return
+        niceFormatInterval = "No recent data available!" & vbCrLf
+        'Exit Function ' return
     End If
     If hours > 0 Then
         res = "Updated"
@@ -1817,19 +1830,19 @@ Private Function niceFormatInterval(ByVal duration As Integer, ByVal dateTimeNow
         ElseIf minutes > 1 Then
             res = res & " " & "and" & " " & CStr(minutes) & " " & "minutes"
         End If
-        niceFormatInterval = res & " " & addString
+        niceFormatInterval = niceFormatInterval + res & " " & addString
         Exit Function ' return
     End If
     If minutes > 0 Then
         If minutes = 1 Then
-            niceFormatInterval = "Updated one minute " & addString
+            niceFormatInterval = niceFormatInterval + "Updated one minute " & addString
             Exit Function ' return
         End If
-        niceFormatInterval = "Updated" & " " & CStr(minutes) & " " & "minutes " & addString
+        niceFormatInterval = niceFormatInterval + "Updated" & " " & CStr(minutes) & " " & "minutes " & addString
         Exit Function ' return
     End If
     If duration = 1 Then
-        niceFormatInterval = "Updated one second " & addString
+        niceFormatInterval = niceFormatInterval + "Updated one second " & addString
         Exit Function ' return
     End If
     
@@ -1863,7 +1876,7 @@ End Function
 ' FEW = 1 or 2 eighths cover SCT = 3 or 4 eighths cover BKN = 5, 6 or 7 eighths cover & OVC = 8/8 cover
 ' ----------------------------------------------------------------
 Private Function getCloudCover(ByRef sky_condition_items() As String, ByVal uboundSkyConditions As Integer) As String
-    Dim thisSkyClarity As String: thisSkyClarity = ""
+    Dim thisSkyClarity As String: thisSkyClarity = vbNullString
    
     On Error GoTo getCloudCover_Error
 
@@ -1879,7 +1892,7 @@ Private Function getCloudCover(ByRef sky_condition_items() As String, ByVal ubou
     End If
     
     If uboundSkyConditions >= 1 Then
-        If sky_condition_items(1) <> "" Then
+        If sky_condition_items(1) <> vbNullString Then
             If (sky_condition_items(uboundSkyConditions) = "FEW" And Not sky_condition_items(0) = sky_condition_items(uboundSkyConditions)) Then thisSkyClarity = thisSkyClarity & " + " & "Partly cloudy"
             If (sky_condition_items(uboundSkyConditions) = "SCT" And Not sky_condition_items(0) = sky_condition_items(uboundSkyConditions)) Then thisSkyClarity = thisSkyClarity & " + " & "Scattered clouds"
             If (sky_condition_items(uboundSkyConditions) = "BKN" And Not sky_condition_items(0) = sky_condition_items(uboundSkyConditions)) Then thisSkyClarity = thisSkyClarity & " + " & "Mostly cloudy"
@@ -2159,14 +2172,14 @@ Private Function beaufortConversion(ByVal wind_speed_kt As Integer) As Integer
 
     On Error GoTo beaufortConversion_Error
     
-    windIconSrc = ""
+    windIconSrc = vbNullString
     
-    windIconToolTip = ""
+    windIconToolTip = vbNullString
     
     ' Beaufort Scales (Wind Speed)
     If wind_speed_kt < 1 Then
         force = 0 ' Calm    Sea like a mirror.
-        windIconSrc = ""
+        windIconSrc = vbNullString
     End If
     If wind_speed_kt >= 1 And wind_speed_kt <= 3 Then
         force = 1 ' 1 1-3   Light air   Ripples only.
@@ -2325,7 +2338,7 @@ Private Function setHoverTooltip(ByVal precipitationDepth As String, ByVal visib
     End If
     tooltipString = tooltipString & "strength force" & force & ", " & "direction" & " " & compassDirection & vbCrLf
 
-    If (wx_string <> "") Then
+    If (wx_string <> vbNullString) Then
       wx_str = getMetarDescription(wx_string)    ' get the interpreted wx string data
       wx_str = UCase$(Left$(wx_str, 1)) & Mid$(wx_str, 2, Len(wx_str))
       tooltipString = tooltipString & "Rainfall: " & wx_str & "  "
@@ -2333,7 +2346,7 @@ Private Function setHoverTooltip(ByVal precipitationDepth As String, ByVal visib
     If (precip_in <> vbNullString) Then
        tooltipString = tooltipString & " measured in " & precipitationDepth & vbCrLf
     Else
-        If (wx_string <> "") Then tooltipString = tooltipString & vbCrLf
+        If (wx_string <> vbNullString) Then tooltipString = tooltipString & vbCrLf
     End If
      
     setHoverTooltip = tooltipString ' return
@@ -2439,7 +2452,7 @@ Private Sub determineWeatherConditionIcon(ByRef skyClarity As String, ByVal this
    weatherIconSrc = "0cloud.png"
 
    'determine the weather type,
-   If thisWxString <> "" Then
+   If thisWxString <> vbNullString Then
         If (InStr(thisWxString, "MI") <> 0) Then
           wModifier = wModifier & "shallow "
         End If
@@ -2749,9 +2762,9 @@ End Sub
 ' Date: 15/03/2024
 ' ----------------------------------------------------------------
 Private Function getMetarDescription(ByVal wx_string As String) As String
-    Dim presentConditions As String: presentConditions = ""
-    Dim wSeverity As String: wSeverity = ""
-    Dim wModifier As String: wModifier = ""
+    Dim presentConditions As String: presentConditions = vbNullString
+    Dim wSeverity As String: wSeverity = vbNullString
+    Dim wModifier As String: wModifier = vbNullString
 
     On Error GoTo getMetarDescription_Error
     
@@ -2795,7 +2808,7 @@ Private Function getMetarDescription(ByVal wx_string As String) As String
     If InStr(wx_string, "TS") <> 0 Then
         wModifier = wModifier & "thunderstorm"
     End If
-    If wModifier <> "" Then
+    If wModifier <> vbNullString Then
         presentConditions = wModifier
     End If
     
@@ -2804,7 +2817,7 @@ Private Function getMetarDescription(ByVal wx_string As String) As String
     ElseIf InStr(wx_string, "+") <> 0 Then
         wSeverity = " heavy" & " "
     Else
-        wSeverity = "" ' moderate conditions have no descriptor
+        wSeverity = vbNullString ' moderate conditions have no descriptor
     End If
     
     If InStr(wx_string, "-") = 0 Or InStr(wx_string, "+") = 0 Then
@@ -2894,7 +2907,7 @@ Private Function getMetarDescription(ByVal wx_string As String) As String
         presentConditions = presentConditions & "sandstorm/duststorm" & " "
     End If
     
-    If debugFlg = 1 And presentConditions <> "" Then
+    If debugFlg = 1 And presentConditions <> vbNullString Then
         Debug.Print ("%getMetarDescription - presentConditions " & presentConditions)
     End If
     
@@ -2944,7 +2957,7 @@ Private Function humanFriendlyDate(ByVal usableObsTime As Date) As String
 '        'Debug.Print thisString
 '    Next C
 '
-'    strData = Replace(thisString, Chr(0), "")
+'    strData = Replace(thisString, Chr(0), vbNullString)
     
     formattedString = Format$(usableObsTime, "dd mmm yyyy hh:nn:ss")
            
@@ -3160,7 +3173,7 @@ Private Function searchIcaoFile(ByVal loc As String, ByVal metarPref As String, 
         
     End If
 
-    If icaoLocation5 = "" Then
+    If icaoLocation5 = vbNullString Then
         answerMsg = "That city does not have a valid ICAO code assigned. " & vbCrLf & vbCrLf & " Please select another location."
         answer = msgBoxA(answerMsg, vbOKOnly + vbExclamation, "No valid ICAO code", False)
     End If
@@ -3169,10 +3182,10 @@ Private Function searchIcaoFile(ByVal loc As String, ByVal metarPref As String, 
            Debug.Print ("searchIcaoFile - lookFor not found " & lookFor)
         End If
         'txtSearching.Data = "Failed to find ICAO code " & lookFor
-        'Preferences.icao.Value = ""
-        loc = ""
-        searchIcaoFile = ""
-        icaoLocation5 = ""
+        'Preferences.icao.Value = vbNullString
+        loc = vbNullString
+        searchIcaoFile = vbNullString
+        icaoLocation5 = vbNullString
     End If
     
 
@@ -3275,7 +3288,7 @@ Private Function fGetDistance(ByVal visibility_statute_mi As String, ByVal isday
         
     If isday = True Then
         startText = "Daylight, "
-        additionalText = ""
+        additionalText = vbNullString
     Else
         startText = "Night time, "
         additionalText = ", visibility reduced"

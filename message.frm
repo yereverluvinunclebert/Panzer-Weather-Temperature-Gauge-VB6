@@ -154,19 +154,19 @@ Private Sub Form_Load()
     ' .TBD DAEB 05/05/2021 frmMessage.frm Added the font mod. here instead of within the changeFont tool
     '                       as each instance of the form is new, the font modification must be here.
     For Each Ctrl In Me.Controls
-         If (TypeOf Ctrl Is CommandButton) Or (TypeOf Ctrl Is textBox) Or (TypeOf Ctrl Is FileListBox) Or (TypeOf Ctrl Is Label) Or (TypeOf Ctrl Is ComboBox) Or (TypeOf Ctrl Is CheckBox) Or (TypeOf Ctrl Is OptionButton) Or (TypeOf Ctrl Is Frame) Or (TypeOf Ctrl Is ListBox) Then
+         If (TypeOf Ctrl Is CommandButton) Or (TypeOf Ctrl Is TextBox) Or (TypeOf Ctrl Is FileListBox) Or (TypeOf Ctrl Is Label) Or (TypeOf Ctrl Is ComboBox) Or (TypeOf Ctrl Is CheckBox) Or (TypeOf Ctrl Is OptionButton) Or (TypeOf Ctrl Is Frame) Or (TypeOf Ctrl Is ListBox) Then
             '@Ignore MemberNotOnInterface
-            If PzGPrefsFont <> "" Then Ctrl.Font.Name = PzGPrefsFont
+            If PzGPrefsFont <> vbNullString Then Ctrl.Font.Name = PzGPrefsFont
            
             If PzGDpiAwareness = "1" Then
                 '@Ignore MemberNotOnInterface
-                If val(Abs(PzGPrefsFontSizeHighDPI)) > 0 Then Ctrl.Font.Size = val(Abs(PzGPrefsFontSizeHighDPI))
+                If Val(Abs(PzGPrefsFontSizeHighDPI)) > 0 Then Ctrl.Font.Size = Val(Abs(PzGPrefsFontSizeHighDPI))
             Else
                 '@Ignore MemberNotOnInterface
-                If val(Abs(PzGPrefsFontSizeLowDPI)) > 0 Then Ctrl.Font.Size = val(Abs(PzGPrefsFontSizeLowDPI))
+                If Val(Abs(PzGPrefsFontSizeLowDPI)) > 0 Then Ctrl.Font.Size = Val(Abs(PzGPrefsFontSizeLowDPI))
             End If
             'Ctrl.Font.Italic = CBool(SDSuppliedFontItalics) TBD
-           'If suppliedStyle <> "" Then Ctrl.Font.Style = suppliedStyle
+           'If suppliedStyle <> vbNullString Then Ctrl.Font.Style = suppliedStyle
         End If
     Next
 
@@ -199,9 +199,9 @@ Private Sub Form_Resize()
 
     ratio = cMsgBoxAFormHeight / cMsgBoxAFormWidth
     If PzGDpiAwareness = "1" Then
-        currentFont = val(PzGPrefsFontSizeHighDPI)
+        currentFont = Val(PzGPrefsFontSizeHighDPI)
     Else
-        currentFont = val(PzGPrefsFontSizeLowDPI)
+        currentFont = Val(PzGPrefsFontSizeLowDPI)
     End If
     
     If msgBoxADynamicSizingFlg = True Then
@@ -376,7 +376,7 @@ Public Property Let propTitle(ByVal newValue As String)
    
     If mPropTitle <> newValue Then mPropTitle = newValue Else Exit Property
 
-    If mPropTitle = "" Then
+    If mPropTitle = vbNullString Then
         Me.Caption = "Panzer Clock Message."
     Else
         Me.Caption = mPropTitle

@@ -636,7 +636,7 @@ Private Sub anemometerGaugeForm_MouseWheel(ByVal MouseKeys As Long, ByVal Rotati
         RotationDirection = Rotation
     End If
     
-   If MouseKeys = 8 Then Call AdjustZoom(FZ + RotationDirection / 2400)   'change the Zoom only, when the Ctrl-Key is down
+   If MouseKeys = 8 Then Call anemoAdjustZoom(FZ + RotationDirection / 2400)   'change the Zoom only, when the Ctrl-Key is down
 
    On Error GoTo 0
    Exit Sub
@@ -668,32 +668,39 @@ End Sub
 'End Sub
 
 '---------------------------------------------------------------------------------------
-' Procedure : AdjustZoom
+' Procedure : anemoAdjustZoom
 ' Author    : olaf schmidt
 ' Date      : 31/07/2023
 ' Purpose   :
 '---------------------------------------------------------------------------------------
 '
-Public Sub AdjustZoom(ByVal NewZoom As Single)
-   On Error GoTo AdjustZoom_Error
+Public Sub anemoAdjustZoom(ByVal NewZoom As Single)
+   On Error GoTo anemoAdjustZoom_Error
 
       FZ = NewZoom
       If FZ < 0.05 Then FZ = 0.05 Else If FZ > 3 Then FZ = 3 'keep FZ within a sane ZoomInterval
       anemometerGaugeForm.WidgetRoot.Zoom = FZ '* anemometerGaugeForm.WidgetRoot.CurrentMonitor.Zoom '<-- if the multiplicator is activated, we'd have DPI-awareness on high-res monitors
       anemometerGaugeForm.Move anemometerGaugeForm.Left, anemometerGaugeForm.Top, PSDWidth * anemometerGaugeForm.WidgetRoot.Zoom, PSDHeight * anemometerGaugeForm.WidgetRoot.Zoom
-    
-      ' when resized from the gauge scroll up/down it needs to write it back so the size is correct when prefs opened.
-      PzGAnemometerGaugeSize = LTrim$(Str$(NewZoom * 100))
-      'If panzerPrefs.IsVisible = True Then panzerPrefs.sliAnemometerGaugeSize.Value = val(PzGAnemometerGaugeSize)
-    
-      sPutINISetting "Software\PzAnemometerGauge", "anemometerGaugeSize", PzGAnemometerGaugeSize, PzGSettingsFile
+      
+    ' when resized from the gauge scroll up/down it needs to write it back so the size is correct when prefs opened.
+    PzGAnemometerGaugeSize = LTrim$(Str$(NewZoom * 100))
+    If panzerPrefs.IsVisible = True Then
+        If panzerPrefs.cmbGaugeType.ListIndex = 0 Then
+            panzerPrefs.sliGaugeSize.Value = Val(PzGAnemometerGaugeSize)
+            sPutINISetting "Software\PzAnemometerGauge", "anemometerGaugeSize", PzGAnemometerGaugeSize, PzGSettingsFile
+        End If
+        If panzerPrefs.cmbGaugeType.ListIndex = 1 Then
+            panzerPrefs.sliGaugeSize.Value = Val(PzGAnemometerGaugeSize)
+            sPutINISetting "Software\PzAnemometerGauge", "anemometerGaugeSize", PzGAnemometerGaugeSize, PzGSettingsFile
+        End If
+    End If
     
    On Error GoTo 0
    Exit Sub
 
-AdjustZoom_Error:
+anemoAdjustZoom_Error:
 
-    MsgBox "Error " & Err.Number & " (" & Err.Description & ") in procedure AdjustZoom of Class Module cfAnemometer"
+    MsgBox "Error " & Err.Number & " (" & Err.Description & ") in procedure anemoAdjustZoom of Class Module cfAnemometer"
 End Sub
 '---------------------------------------------------------------------------------------
 ' Procedure : W_MouseDown

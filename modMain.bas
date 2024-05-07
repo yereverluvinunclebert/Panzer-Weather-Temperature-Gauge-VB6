@@ -309,13 +309,25 @@ Private Sub initialiseGlobalVars()
     
     ' position
     PzGAspectHidden = vbNullString
+    PzGGaugeType = vbNullString
     PzGWidgetPosition = vbNullString
-    PzGWidgetLandscape = vbNullString
-    PzGWidgetPortrait = vbNullString
-    PzGLandscapeFormHoffset = vbNullString
-    PzGLandscapeFormVoffset = vbNullString
-    PzGPortraitHoffset = vbNullString
-    PzGPortraitYoffset = vbNullString
+    
+    PzGTemperatureLandscape = vbNullString
+    PzGTemperaturePortrait = vbNullString
+    
+    PzGAnemometerLandscape = vbNullString
+    PzGAnemometerPortrait = vbNullString
+    
+    PzGTemperatureLandscapeHoffset = vbNullString
+    PzGTemperatureLandscapeVoffset = vbNullString
+    PzGTemperaturePortraitHoffset = vbNullString
+    PzGTemperaturePortraitVoffset = vbNullString
+    
+    PzGAnemometerLandscapeHoffset = vbNullString
+    PzGAnemometerLandscapeVoffset = vbNullString
+    PzGAnemometerPortraitHoffset = vbNullString
+    PzGAnemometerPortraitVoffset = vbNullString
+    
     PzGvLocationPercPrefValue = vbNullString
     PzGhLocationPercPrefValue = vbNullString
     
@@ -660,7 +672,7 @@ Public Sub adjustTempMainControls()
     ' validate the inputs of any data from the input settings file
     Call validateInputs
     
-    fTemperature.AdjustZoom Val(PzGTemperatureGaugeSize) / 100
+    fTemperature.tempAdjustZoom Val(PzGTemperatureGaugeSize) / 100
 
     If PzGGaugeFunctions = "1" Then
         overlayTemperatureWidget.Ticking = True
@@ -681,8 +693,12 @@ Public Sub adjustTempMainControls()
     
     If PzGShowTaskbar = "0" Then
         fTemperature.temperatureGaugeForm.ShowInTaskbar = False
+        fAnemometer.anemometerGaugeForm.ShowInTaskbar = False
+        fClipB.clipBForm.ShowInTaskbar = False
     Else
         fTemperature.temperatureGaugeForm.ShowInTaskbar = True
+        fAnemometer.anemometerGaugeForm.ShowInTaskbar = True
+        fClipB.clipBForm.ShowInTaskbar = True
     End If
     
     ' set the characteristics of the interactive areas
@@ -793,7 +809,7 @@ Public Sub adjustAnemometerMainControls()
     ' validate the inputs of any data from the input settings file
     'Call validateInputs
     
-    fAnemometer.AdjustZoom Val(PzGAnemometerGaugeSize) / 100
+    fAnemometer.anemoAdjustZoom Val(PzGAnemometerGaugeSize) / 100
 
     If PzGGaugeFunctions = "1" Then
         menuForm.mnuSwitchOff.Checked = False
@@ -909,10 +925,16 @@ Public Sub setAlphaFormZordering()
 
     If Val(PzGWindowLevel) = 0 Then
         Call SetWindowPos(fTemperature.temperatureGaugeForm.hwnd, HWND_BOTTOM, 0&, 0&, 0&, 0&, OnTopFlags)
+        Call SetWindowPos(fAnemometer.anemometerGaugeForm.hwnd, HWND_BOTTOM, 0&, 0&, 0&, 0&, OnTopFlags)
+        Call SetWindowPos(fClipB.clipBForm.hwnd, HWND_BOTTOM, 0&, 0&, 0&, 0&, OnTopFlags)
     ElseIf Val(PzGWindowLevel) = 1 Then
         Call SetWindowPos(fTemperature.temperatureGaugeForm.hwnd, HWND_TOP, 0&, 0&, 0&, 0&, OnTopFlags)
+        Call SetWindowPos(fAnemometer.anemometerGaugeForm.hwnd, HWND_TOP, 0&, 0&, 0&, 0&, OnTopFlags)
+        Call SetWindowPos(fClipB.clipBForm.hwnd, HWND_TOP, 0&, 0&, 0&, 0&, OnTopFlags)
     ElseIf Val(PzGWindowLevel) = 2 Then
         Call SetWindowPos(fTemperature.temperatureGaugeForm.hwnd, HWND_TOPMOST, 0&, 0&, 0&, 0&, OnTopFlags)
+        Call SetWindowPos(fAnemometer.anemometerGaugeForm.hwnd, HWND_TOPMOST, 0&, 0&, 0&, 0&, OnTopFlags)
+        Call SetWindowPos(fClipB.clipBForm.hwnd, HWND_TOPMOST, 0&, 0&, 0&, 0&, OnTopFlags)
     End If
 
    On Error GoTo 0
@@ -968,13 +990,26 @@ Public Sub readSettingsFile(ByVal location As String, ByVal PzGSettingsFile As S
         
         ' position
         PzGAspectHidden = fGetINISetting(location, "aspectHidden", PzGSettingsFile)
+        PzGGaugeType = fGetINISetting(location, "gaugeType", PzGSettingsFile)
+        
         PzGWidgetPosition = fGetINISetting(location, "widgetPosition", PzGSettingsFile)
-        PzGWidgetLandscape = fGetINISetting(location, "widgetLandscape", PzGSettingsFile)
-        PzGWidgetPortrait = fGetINISetting(location, "widgetPortrait", PzGSettingsFile)
-        PzGLandscapeFormHoffset = fGetINISetting(location, "landscapeHoffset", PzGSettingsFile)
-        PzGLandscapeFormVoffset = fGetINISetting(location, "landscapeYoffset", PzGSettingsFile)
-        PzGPortraitHoffset = fGetINISetting(location, "portraitHoffset", PzGSettingsFile)
-        PzGPortraitYoffset = fGetINISetting(location, "portraitYoffset", PzGSettingsFile)
+        
+        PzGTemperatureLandscape = fGetINISetting(location, "temperatureLandscape", PzGSettingsFile)
+        PzGTemperaturePortrait = fGetINISetting(location, "temperaturePortrait", PzGSettingsFile)
+        
+        PzGTemperatureLandscapeHoffset = fGetINISetting(location, "temperatureLandscapeHoffset", PzGSettingsFile)
+        PzGTemperatureLandscapeVoffset = fGetINISetting(location, "temperatureLandscapeYoffset", PzGSettingsFile)
+        PzGTemperaturePortraitHoffset = fGetINISetting(location, "temperaturePortraitHoffset", PzGSettingsFile)
+        PzGTemperaturePortraitVoffset = fGetINISetting(location, "temperaturePortraitVoffset", PzGSettingsFile)
+          
+        PzGAnemometerLandscape = fGetINISetting("Software\PzAnemometerGauge", "anemometerLandscape", PzGSettingsFile)
+        PzGAnemometerPortrait = fGetINISetting("Software\PzAnemometerGauge", "anemometerPortrait", PzGSettingsFile)
+              
+        PzGAnemometerLandscapeHoffset = fGetINISetting("Software\PzAnemometerGauge", "anemometerLandscapeHoffset", PzGSettingsFile)
+        PzGAnemometerLandscapeVoffset = fGetINISetting("Software\PzAnemometerGauge", "anemometerLandscapeVoffset", PzGSettingsFile)
+        PzGAnemometerPortraitHoffset = fGetINISetting("Software\PzAnemometerGauge", "anemometerPortraitHoffset", PzGSettingsFile)
+        PzGAnemometerPortraitVoffset = fGetINISetting("Software\PzAnemometerGauge", "anemometerPortraitVoffset", PzGSettingsFile)
+        
         PzGvLocationPercPrefValue = fGetINISetting(location, "vLocationPercPrefValue", PzGSettingsFile)
         PzGhLocationPercPrefValue = fGetINISetting(location, "hLocationPercPrefValue", PzGSettingsFile)
 
@@ -1117,13 +1152,23 @@ Public Sub validateInputs()
 
     ' position
     If PzGAspectHidden = vbNullString Then PzGAspectHidden = "0"
+    If PzGGaugeType = vbNullString Then PzGGaugeType = "0"
+    
     If PzGWidgetPosition = vbNullString Then PzGWidgetPosition = "0"
-    If PzGWidgetLandscape = vbNullString Then PzGWidgetLandscape = "0"
-    If PzGWidgetPortrait = vbNullString Then PzGWidgetPortrait = "0"
-    If PzGLandscapeFormHoffset = vbNullString Then PzGLandscapeFormHoffset = vbNullString
-    If PzGLandscapeFormVoffset = vbNullString Then PzGLandscapeFormVoffset = vbNullString
-    If PzGPortraitHoffset = vbNullString Then PzGPortraitHoffset = vbNullString
-    If PzGPortraitYoffset = vbNullString Then PzGPortraitYoffset = vbNullString
+    If PzGTemperatureLandscape = vbNullString Then PzGTemperatureLandscape = "0"
+    If PzGTemperaturePortrait = vbNullString Then PzGTemperaturePortrait = "0"
+    If PzGTemperatureLandscapeHoffset = vbNullString Then PzGTemperatureLandscapeHoffset = vbNullString
+    If PzGTemperatureLandscapeVoffset = vbNullString Then PzGTemperatureLandscapeVoffset = vbNullString
+    If PzGTemperaturePortraitHoffset = vbNullString Then PzGTemperaturePortraitHoffset = vbNullString
+    If PzGTemperaturePortraitVoffset = vbNullString Then PzGTemperaturePortraitVoffset = vbNullString
+    
+    If PzGAnemometerLandscape = vbNullString Then PzGAnemometerLandscape = "0"
+    If PzGAnemometerPortrait = vbNullString Then PzGAnemometerPortrait = "0"
+    If PzGAnemometerLandscapeHoffset = vbNullString Then PzGAnemometerLandscapeHoffset = vbNullString
+    If PzGAnemometerLandscapeVoffset = vbNullString Then PzGAnemometerLandscapeVoffset = vbNullString
+    If PzGAnemometerPortraitHoffset = vbNullString Then PzGAnemometerPortraitHoffset = vbNullString
+    If PzGAnemometerPortraitVoffset = vbNullString Then PzGAnemometerPortraitVoffset = vbNullString
+    
     If PzGvLocationPercPrefValue = vbNullString Then PzGvLocationPercPrefValue = vbNullString
     If PzGhLocationPercPrefValue = vbNullString Then PzGhLocationPercPrefValue = vbNullString
             
