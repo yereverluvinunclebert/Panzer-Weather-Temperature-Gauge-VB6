@@ -427,7 +427,7 @@ Begin VB.Form panzerPrefs
             Left            =   2265
             Style           =   2  'Dropdown List
             TabIndex        =   165
-            Top             =   2340
+            Top             =   2415
             Width           =   2430
          End
          Begin VB.ComboBox cmbWidgetPosition 
@@ -478,7 +478,7 @@ Begin VB.Form panzerPrefs
          End
          Begin vb6projectCCRSlider.Slider sliGaugeSize 
             Height          =   390
-            Left            =   2025
+            Left            =   2085
             TabIndex        =   176
             ToolTipText     =   "Adjust to a percentage of the original size. You can also use Ctrl+Mousewheel."
             Top             =   2910
@@ -493,20 +493,20 @@ Begin VB.Form panzerPrefs
             SelStart        =   5
          End
          Begin VB.Label lblPosition 
-            Caption         =   "Select the Gauge :"
+            Caption         =   "Select the Gauge first :"
             Height          =   375
             Index           =   2
-            Left            =   585
+            Left            =   525
             TabIndex        =   185
             Tag             =   "lblAlarmSound"
-            Top             =   2385
+            Top             =   2460
             Width           =   1935
          End
          Begin VB.Label lblGaugeSize 
             Caption         =   "5"
             Height          =   315
             Index           =   0
-            Left            =   2175
+            Left            =   2235
             TabIndex        =   184
             Top             =   3390
             Width           =   345
@@ -515,7 +515,7 @@ Begin VB.Form panzerPrefs
             Caption         =   "220 (%)"
             Height          =   315
             Index           =   5
-            Left            =   5490
+            Left            =   5550
             TabIndex        =   183
             Top             =   3405
             Width           =   735
@@ -524,7 +524,7 @@ Begin VB.Form panzerPrefs
             Caption         =   "90"
             Height          =   315
             Index           =   2
-            Left            =   3405
+            Left            =   3465
             TabIndex        =   182
             Top             =   3405
             Width           =   420
@@ -533,7 +533,7 @@ Begin VB.Form panzerPrefs
             Caption         =   "Gauge Size :"
             Height          =   315
             Index           =   1
-            Left            =   1020
+            Left            =   1125
             TabIndex        =   181
             Top             =   2955
             Width           =   975
@@ -542,7 +542,7 @@ Begin VB.Form panzerPrefs
             Caption         =   "Adjust to a percentage of the original size. You can also use Ctrl+Mousewheel. Immediate. *"
             Height          =   555
             Index           =   2
-            Left            =   2175
+            Left            =   2235
             TabIndex        =   180
             ToolTipText     =   "Adjust to a percentage of the original size. You can also use Ctrl+Mousewheel."
             Top             =   3720
@@ -552,7 +552,7 @@ Begin VB.Form panzerPrefs
             Caption         =   "50"
             Height          =   315
             Index           =   1
-            Left            =   2835
+            Left            =   2895
             TabIndex        =   179
             Top             =   3405
             Width           =   345
@@ -561,7 +561,7 @@ Begin VB.Form panzerPrefs
             Caption         =   "130"
             Height          =   315
             Index           =   3
-            Left            =   4095
+            Left            =   4155
             TabIndex        =   178
             Top             =   3405
             Width           =   345
@@ -570,13 +570,13 @@ Begin VB.Form panzerPrefs
             Caption         =   "180"
             Height          =   315
             Index           =   4
-            Left            =   4875
+            Left            =   4935
             TabIndex        =   177
             Top             =   3405
             Width           =   345
          End
          Begin VB.Label lblPosition 
-            Caption         =   "Widget Position by Percent:"
+            Caption         =   "Widget Position by Percent :"
             Height          =   375
             Index           =   8
             Left            =   195
@@ -2293,10 +2293,9 @@ Private Sub chkEnableBalloonTooltips_MouseMove(Button As Integer, Shift As Integ
 End Sub
 
 Private Sub chkPreventDragging_MouseMove(Button As Integer, Shift As Integer, X As Single, Y As Single)
-    If PzGEnableBalloonTooltips = "1" Then CreateToolTip chkPreventDragging.hwnd, ". " _
-    & "" _
-    & "a certain position in either landscape/portrait mode, it ensures that the widget always appears exactly where you want it to. Drag" _
-    & "the gauge into position using the mouse and when the widget is locked in place (using the Widge), this value is set automatically.", _
+    If PzGEnableBalloonTooltips = "1" Then CreateToolTip chkPreventDragging.hwnd, "" _
+    & "Lock the gauges in a certain position in either landscape/portrait mode. This ensures that the widget always appears exactly where you want it to. Drag" _
+    & "the gauge into position using the mouse and when the widget is locked in place (using the Widget lock button), this value is set automatically.", _
                   TTIconInfo, "Lock the gauges in position.", , , , True
 End Sub
 
@@ -2304,7 +2303,7 @@ Private Sub chkShowTaskbar_MouseMove(Button As Integer, Shift As Integer, X As S
     If PzGEnableBalloonTooltips = "1" Then CreateToolTip chkShowTaskbar.hwnd, "Checking this box causes" _
         & " each gauge and form within the weather widget to appear in the taskbar. " _
         & " Disabling it allows for a much cleaner taskbar (recommended).", _
-        TTIconInfo, "Lock the gauges in position.", , , , True
+        TTIconInfo, "Help on taskbar visibility.", , , , True
 End Sub
 
 '---------------------------------------------------------------------------------------
@@ -2350,8 +2349,7 @@ Private Sub cmbGaugeType_Click()
         Else
             chkPreventDragging.Value = 0
         End If
-        
-        'fTemperature.tempAdjustZoom(sliGaugeSize.Value / 100)
+        panzerPrefs.sliGaugeSize.Value = Val(PzGTemperatureGaugeSize)
     End If
 
     If cmbGaugeType.ListIndex = 1 Then
@@ -2384,7 +2382,9 @@ Private Sub cmbGaugeType_Click()
         Else
             chkPreventDragging.Value = 0
         End If
-   
+        
+        panzerPrefs.sliGaugeSize.Value = Val(PzGAnemometerGaugeSize)
+
     End If
     
    On Error GoTo 0
@@ -4134,7 +4134,7 @@ Private Sub adjustPrefsControls()
    
     ' check whether the size has been previously altered via ctrl+mousewheel on the widget
     sliTemperatureGaugeSizeOldValue = sliGaugeSize.Value
-    sliGaugeSize.Value = Val(PzGTemperatureGaugeSize)
+    sliGaugeSize.Value = Val(PzGTemperatureGaugeSize) 'deaniebabe
     'sliAnemometerGaugeSize.Value = val(PzGAnemometerGaugeSize)
     
 '    sliClipBSize.Value = val(PzGClipBSize)
@@ -4670,6 +4670,15 @@ Private Sub fraFontsInner_MouseMove(Button As Integer, Shift As Integer, X As Si
     If PzGEnableBalloonTooltips = "1" Then CreateToolTip fraFontsInner.hwnd, "This tab allows you to set a specific font for the preferences only as there are no textual elements in the main program. We suggest Centurion Light SF at 8pt, which you will find bundled in the PzG program folder. Choose a small 8pt font for each.", _
                   TTIconInfo, "Help on Setting the Fonts", , , , True
 End Sub
+
+
+
+Private Sub fraGaugePosition_MouseMove(Button As Integer, Shift As Integer, X As Single, Y As Single)
+    If PzGEnableBalloonTooltips = "1" Then CreateToolTip fraGaugePosition.hwnd, "Select the gauge type first - then this section allows you to determine the X and Y positioning of your widget in landscape and portrait screen modes. Best left well alone unless you use Windows on a tablet. Who uses Windows Tablets anyway?", _
+                  TTIconInfo, "Help on Tablet Positioning", , , , True
+
+End Sub
+
 'Private Sub fraConfigurationButtonInner_MouseDown(Button As Integer, Shift As Integer, x As Single, y As Single)
 '    If Button = 2 Then
 '        Me.PopupMenu prefsMnuPopmenu, vbPopupMenuRightButton
@@ -4704,7 +4713,7 @@ End Sub
 
 
 Private Sub fraPositionBalloonBox_MouseMove(Button As Integer, Shift As Integer, X As Single, Y As Single)
-    If PzGEnableBalloonTooltips = "1" Then CreateToolTip fraPositionBalloonBox.hwnd, "Tablets only. Don't fiddle with this unless you really know what you are doing. Here you can choose whether this widget is hidden by default in either landscape or portrait mode or not at all. This option allows you to have certain widgets that do not obscure the screen in either landscape or portrait. If you accidentally set it so you can't find your widget on screen then change the setting here to NONE.", _
+    If PzGEnableBalloonTooltips = "1" Then CreateToolTip fraPositionBalloonBox.hwnd, "Aspect ratio is for tablets only. Don't fiddle with this unless you really know what you are doing. Here you can choose whether this widget is hidden by default in either landscape or portrait mode or not at all. This option allows you to have certain widgets that do not obscure the screen in either landscape or portrait. If you accidentally set it so you can't find your widget on screen then change the setting here to NONE.", _
                   TTIconInfo, "Help on Tablet Positioning", , , , True
 End Sub
 
@@ -4713,11 +4722,6 @@ Private Sub fraPositionInner_MouseDown(Button As Integer, Shift As Integer, X As
         Me.PopupMenu prefsMnuPopmenu, vbPopupMenuRightButton
     End If
 End Sub
-Private Sub fraPositionInner_MouseMove(Button As Integer, Shift As Integer, X As Single, Y As Single)
-    If PzGEnableBalloonTooltips = "1" Then CreateToolTip fraPositionInner.hwnd, "This tab allows you to determine the X and Y positioning of your widget in landscape and portrait screen modes. Best left well alone unless you use Windows on a tablet. Who uses Windows Tablets anyway?", _
-                  TTIconInfo, "Help on Tablet Positioning", , , , True
-End Sub
-
 Private Sub fraScrollbarCover_MouseMove(Button As Integer, Shift As Integer, X As Single, Y As Single)
     fraScrollbarCover.Visible = False
 

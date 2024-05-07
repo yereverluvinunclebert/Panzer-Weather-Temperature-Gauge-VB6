@@ -1366,18 +1366,18 @@ Private Sub getData()
 
     Dim icaoToFind As String: icaoToFind = vbNullString
     Dim thisURL As String: thisURL = vbNullString
-    Dim thisFile As String: thisFile = vbNullString
+    'Dim thisFile As String: thisFile = vbNullString
     
     On Error GoTo getData_Error
     
     icaoToFind = PzGIcao ' eg. "EGSH"
     thisURL = "https://aviationweather.gov/api/data/dataserver?requestType=retrieve&dataSource=metars&stationString=" & icaoToFind & "&hoursBeforeNow=6&format=xml&mostRecent=true"
     
-    thisFile = "E:\vb6\Panzer-Weather-Gauges-VB6\test.xml"
+    'thisFile = "E:\vb6\Panzer-Weather-Gauges-VB6\test.xml"
     
     Set myMSXML = CreateObject("Microsoft.XmlHttp")
-    'myMSXML.open "POST", thisURL, True
-    myMSXML.open "POST", thisFile, True
+    myMSXML.open "POST", thisURL, True
+   ' myMSXML.open "POST", thisFile, True
     myMSXML.setRequestHeader "Content-Type", "application/x-www-form-urlencoded"
     myMSXML.setRequestHeader "User-Agent", "Firefox 3.6.4"
     myMSXML.send "param1=value2&param2=value2"
