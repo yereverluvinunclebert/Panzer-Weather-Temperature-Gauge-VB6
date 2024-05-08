@@ -633,9 +633,9 @@ Begin VB.Form panzerPrefs
          Width           =   6450
          Begin VB.ComboBox cmbTickSwitchPref 
             Height          =   315
-            ItemData        =   "frmPrefs.frx":5ACB
+            ItemData        =   "frmPrefs.frx":5AD2
             Left            =   2025
-            List            =   "frmPrefs.frx":5ACD
+            List            =   "frmPrefs.frx":5AD4
             Style           =   2  'Dropdown List
             TabIndex        =   139
             Top             =   4860
@@ -761,7 +761,7 @@ Begin VB.Form panzerPrefs
             Width           =   1740
          End
          Begin VB.Label lblConfiguration 
-            Caption         =   $"frmPrefs.frx":5ACF
+            Caption         =   $"frmPrefs.frx":5AD6
             Height          =   930
             Index           =   0
             Left            =   1980
@@ -831,7 +831,7 @@ Begin VB.Form panzerPrefs
                Width           =   3660
             End
             Begin VB.Label lblGitHub 
-               Caption         =   $"frmPrefs.frx":5B83
+               Caption         =   $"frmPrefs.frx":5B8A
                ForeColor       =   &H8000000D&
                Height          =   915
                Left            =   1560
@@ -841,7 +841,7 @@ Begin VB.Form panzerPrefs
                Width           =   4935
             End
             Begin VB.Label lblDebug 
-               Caption         =   $"frmPrefs.frx":5C1C
+               Caption         =   $"frmPrefs.frx":5C23
                Height          =   930
                Index           =   9
                Left            =   1545
@@ -888,9 +888,9 @@ Begin VB.Form panzerPrefs
          End
          Begin VB.ComboBox cmbDebug 
             Height          =   315
-            ItemData        =   "frmPrefs.frx":5CC0
+            ItemData        =   "frmPrefs.frx":5CC7
             Left            =   1530
-            List            =   "frmPrefs.frx":5CC2
+            List            =   "frmPrefs.frx":5CC9
             Style           =   2  'Dropdown List
             TabIndex        =   52
             ToolTipText     =   "Choose to set debug mode."
@@ -1052,7 +1052,7 @@ Begin VB.Form panzerPrefs
             Width           =   2400
          End
          Begin VB.Label lblFontsTab 
-            Caption         =   $"frmPrefs.frx":5CC4
+            Caption         =   $"frmPrefs.frx":5CCB
             Height          =   1710
             Index           =   0
             Left            =   1725
@@ -1197,7 +1197,7 @@ Begin VB.Form panzerPrefs
                Width           =   720
             End
             Begin VB.Label lblWindowLevel 
-               Caption         =   $"frmPrefs.frx":5E02
+               Caption         =   $"frmPrefs.frx":5E09
                Height          =   975
                Index           =   1
                Left            =   855
@@ -1336,7 +1336,7 @@ Begin VB.Form panzerPrefs
          MultiLine       =   -1  'True
          ScrollBars      =   2  'Vertical
          TabIndex        =   82
-         Text            =   "frmPrefs.frx":5EA5
+         Text            =   "frmPrefs.frx":5EAC
          Top             =   2205
          Width           =   8010
       End
@@ -1669,9 +1669,9 @@ Begin VB.Form panzerPrefs
          End
          Begin VB.ComboBox cmbMetricImperial 
             Height          =   315
-            ItemData        =   "frmPrefs.frx":6E5C
+            ItemData        =   "frmPrefs.frx":6E63
             Left            =   2010
-            List            =   "frmPrefs.frx":6E5E
+            List            =   "frmPrefs.frx":6E65
             Style           =   2  'Dropdown List
             TabIndex        =   130
             Top             =   2370
@@ -1679,9 +1679,9 @@ Begin VB.Form panzerPrefs
          End
          Begin VB.ComboBox cmbWindSpeedScale 
             Height          =   315
-            ItemData        =   "frmPrefs.frx":6E60
+            ItemData        =   "frmPrefs.frx":6E67
             Left            =   2010
-            List            =   "frmPrefs.frx":6E62
+            List            =   "frmPrefs.frx":6E69
             Style           =   2  'Dropdown List
             TabIndex        =   128
             Top             =   1860
@@ -1689,9 +1689,9 @@ Begin VB.Form panzerPrefs
          End
          Begin VB.ComboBox cmbPressureScale 
             Height          =   315
-            ItemData        =   "frmPrefs.frx":6E64
+            ItemData        =   "frmPrefs.frx":6E6B
             Left            =   2010
-            List            =   "frmPrefs.frx":6E66
+            List            =   "frmPrefs.frx":6E6D
             Style           =   2  'Dropdown List
             TabIndex        =   126
             Top             =   1320
@@ -1708,9 +1708,9 @@ Begin VB.Form panzerPrefs
          End
          Begin VB.ComboBox cmbTemperatureScale 
             Height          =   315
-            ItemData        =   "frmPrefs.frx":6E68
+            ItemData        =   "frmPrefs.frx":6E6F
             Left            =   2010
-            List            =   "frmPrefs.frx":6E6A
+            List            =   "frmPrefs.frx":6E71
             Style           =   2  'Dropdown List
             TabIndex        =   121
             Top             =   750
@@ -1773,7 +1773,7 @@ Begin VB.Form panzerPrefs
             Width           =   840
          End
          Begin VB.Label lblWindowLevel 
-            Caption         =   $"frmPrefs.frx":6E6C
+            Caption         =   $"frmPrefs.frx":6E73
             Height          =   795
             Index           =   20
             Left            =   2070
@@ -1809,7 +1809,7 @@ Begin VB.Form panzerPrefs
             Width           =   945
          End
          Begin VB.Label lblGeneral 
-            Caption         =   $"frmPrefs.frx":6F58
+            Caption         =   $"frmPrefs.frx":6F5F
             Height          =   1005
             Index           =   12
             Left            =   3900
@@ -3771,8 +3771,8 @@ Private Sub btnSave_Click()
     
     
     
-'    PzGvLocationPercPrefValue
-'    PzGhLocationPercPrefValue
+'    PzGTemperatureVLocationPerc
+'    PzGTemperatureHLocationPerc
 
     ' fonts
     PzGPrefsFont = txtPrefsFont.Text
@@ -3883,6 +3883,12 @@ Private Sub btnSave_Click()
         sPutINISetting "Software\PzTemperatureGauge", "dblClickCommand", PzGDblClickCommand, PzGSettingsFile
         sPutINISetting "Software\PzTemperatureGauge", "openFile", PzGOpenFile, PzGSettingsFile
         sPutINISetting "Software\PzTemperatureGauge", "defaultEditor", PzGDefaultEditor, PzGSettingsFile
+        
+        sPutINISetting "Software\PzTemperatureGauge", "temperatureVLocationPerc", PzGTemperatureVLocationPerc, PzGSettingsFile
+        sPutINISetting "Software\PzTemperatureGauge", "temperatureHLocationPerc", PzGTemperatureHLocationPerc, PzGSettingsFile
+        
+        sPutINISetting "Software\PzAnemometerGauge", "anemometerVLocationPerc", PzGAnemometerVLocationPerc, PzGSettingsFile
+        sPutINISetting "Software\PzAnemometerGauge", "anemometerHLocationPerc", PzGAnemometerHLocationPerc, PzGSettingsFile
         
         sPutINISetting "Software\PzTemperatureGauge", "temperatureFormHighDpiXPos", PzGTemperatureFormHighDpiXPos, PzGSettingsFile
         sPutINISetting "Software\PzTemperatureGauge", "temperatureFormHighDpiYPos", PzGTemperatureFormHighDpiYPos, PzGSettingsFile
@@ -4673,9 +4679,35 @@ End Sub
 
 
 
+' ----------------------------------------------------------------
+' Procedure Name: fraGaugePosition_MouseMove
+' Purpose:
+' Procedure Kind: Sub
+' Procedure Access: Private
+' Parameter Button (Integer):
+' Parameter Shift (Integer):
+' Parameter X (Single):
+' Parameter Y (Single):
+' Author: beededea
+' Date: 08/05/2024
+' ----------------------------------------------------------------
 Private Sub fraGaugePosition_MouseMove(Button As Integer, Shift As Integer, X As Single, Y As Single)
-    If PzGEnableBalloonTooltips = "1" Then CreateToolTip fraGaugePosition.hwnd, "Select the gauge type first - then this section allows you to determine the X and Y positioning of your widget in landscape and portrait screen modes. Best left well alone unless you use Windows on a tablet. Who uses Windows Tablets anyway?", _
-                  TTIconInfo, "Help on Tablet Positioning", , , , True
+    On Error GoTo fraGaugePosition_MouseMove_Error
+    
+    If PzGEnableBalloonTooltips = "1" Then CreateToolTip fraGaugePosition.hwnd, "Select the gauge type first - then this section allows you to determine " _
+        & "the X and Y positioning of your widget in landscape and portrait screen modes. Best left well alone unless you use Windows on a tablet. " _
+        & "This functionality is a hangover from the Yahoo/Konfabulator widget of the same name that was created when Windows tablets were briefly " _
+        & "a 'thing'. Who uses Windows Tablets nowadays anyway?" & vbCrLf _
+        & "Note: Each gauge can be locked in place using the gauge's locked button (top left), in this case the X and Y " _
+        & "values are populated automatically.", _
+                  TTIconInfo, "Help on Gauge Positioning", , , , True
+
+    On Error GoTo 0
+    Exit Sub
+
+fraGaugePosition_MouseMove_Error:
+
+    MsgBox "Error " & Err.Number & " (" & Err.Description & ") in procedure fraGaugePosition_MouseMove, line " & Erl & "."
 
 End Sub
 
@@ -4706,7 +4738,7 @@ Private Sub fraGeneralInner_MouseMove(Button As Integer, Shift As Integer, X As 
 End Sub
 
 Private Sub fraPosition_MouseMove(Button As Integer, Shift As Integer, X As Single, Y As Single)
-     If PzGEnableBalloonTooltips = "1" Then CreateToolTip fraPosition.hwnd, "This tab allows you to determine the X and Y positioning of your widget in landscape and portrait screen modes. Best left well alone unless you use Windows on a tablet. Who uses Windows Tablets anyway?", _
+     If PzGEnableBalloonTooltips = "1" Then CreateToolTip fraPosition.hwnd, "This section allows you to determine size, lockability and positioning of your widget in various ways on different screen aspect ratios. ", _
                   TTIconInfo, "Help on Tablet Positioning", , , , True
 End Sub
 
@@ -5432,7 +5464,7 @@ Private Sub setPrefsLabels()
     lblPosition(12).Caption = "Selecting a particular gauge and checking the 'This Gauge Locked' box, turns " & _
         "off the ability to drag the program with the mouse. The gauge can be locked into a certain position in either landscape/portrait mode, " & _
         "it ensures that the gauge always appears exactly where you want it to. Using the fields adjacent, you can assign a default x/y position " & _
-        "for both Landscape or Portrait mode. When each gauge is locked in place using the gauge's locked button (top left) - this " & _
+        "for both Landscape or Portrait mode. Each gauge is locked in place using the gauge's locked button (top left) - this " & _
         "value is set automatically."
 
     On Error GoTo 0

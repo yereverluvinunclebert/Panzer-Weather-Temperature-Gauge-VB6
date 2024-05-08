@@ -341,8 +341,11 @@ Public PzGAnemometerLandscapeVoffset As String
 Public PzGAnemometerPortraitHoffset As String
 Public PzGAnemometerPortraitVoffset As String
 
-Public PzGvLocationPercPrefValue As String
-Public PzGhLocationPercPrefValue As String
+Public PzGTemperatureVLocationPerc As String
+Public PzGTemperatureHLocationPerc As String
+
+Public PzGAnemometerVLocationPerc As String
+Public PzGAnemometerHLocationPerc As String
 
 ' sounds
 Public PzGEnableSounds  As String
@@ -1917,32 +1920,22 @@ End Sub
 '
 Public Sub makeVisibleFormElements()
 
-'    Dim temperatureFormLeftPixels As Long: temperatureFormLeftPixels = 0
-'    Dim temperatureFormTopPixels As Long: temperatureFormTopPixels = 0
-'
     Dim monitorCount As Long: monitorCount = 0
     
     On Error GoTo makeVisibleFormElements_Error
 
     'NOTE that when you position a widget you are positioning the form it is drawn upon.
-
-'    If PzGDpiAwareness = "1" Then
-'        temperatureFormLeftPixels = val(PzGTemperatureFormHighDpiXPos)
-'        temperatureFormTopPixels = val(PzGTemperatureFormHighDpiYPos)
-'    Else
-'        temperatureFormLeftPixels = val(PzGTemperatureFormLowDpiXPos)
-'        temperatureFormTopPixels = val(PzGTemperatureFormLowDpiYPos)
-'    End If
-    
     ' The RC forms are measured in pixels, whereas the native forms are in twips, do remember that...
 
     monitorCount = fGetMonitorCount
-    If monitorCount > 1 Then
-        Call adjustFormPositionToCorrectMonitor(fTemperature.temperatureGaugeForm.hwnd, Val(PzGTemperatureFormHighDpiXPos), Val(PzGTemperatureFormHighDpiYPos))
-    Else
-'        fTemperature.temperatureGaugeForm.Left = val(PzGTemperatureFormHighDpiXPos)
-'        fTemperature.temperatureGaugeForm.Top = val(PzGTemperatureFormHighDpiYPos)
-        
+'    If monitorCount > 1 Then
+'        Call adjustFormPositionToCorrectMonitor(fTemperature.temperatureGaugeForm.hwnd, Val(PzGTemperatureFormHighDpiXPos), Val(PzGTemperatureFormHighDpiYPos))
+'    Else
+
+    'End If
+
+    ' position the temp gauge explicitly using a pixel position or by percentage, we store high and low DPI positions for the explicit positioning.
+    If PzGWidgetPosition = "0" Then
         If PzGDpiAwareness = "1" Then
             fTemperature.temperatureGaugeForm.Left = Val(PzGTemperatureFormHighDpiXPos)
             fTemperature.temperatureGaugeForm.Top = Val(PzGTemperatureFormHighDpiYPos)
@@ -1950,13 +1943,14 @@ Public Sub makeVisibleFormElements()
             fTemperature.temperatureGaugeForm.Left = Val(PzGTemperatureFormLowDpiXPos)
             fTemperature.temperatureGaugeForm.Top = Val(PzGTemperatureFormLowDpiYPos)
         End If
+    Else ' by percentage (tablet)
+        fTemperature.temperatureGaugeForm.Left = screenWidthPixels * (PzGTemperatureHLocationPerc / 100)
+        fTemperature.temperatureGaugeForm.Top = screenHeightPixels * (PzGTemperatureVLocationPerc / 100)
     End If
-    
     fTemperature.temperatureGaugeForm.Show
     
-    'fClipB.clipBForm.Left = temperatureFormLeftPixels + fTemperature.temperatureGaugeForm.Width + 300
-    'fClipB.clipBForm.Top = temperatureFormTopPixels + 200
 
+    ' position the clipboard
     If PzGDpiAwareness = "1" Then
         fClipB.clipBForm.Left = Val(PzGClipBFormHighDpiXPos)
         fClipB.clipBForm.Top = Val(PzGClipBFormHighDpiYPos)
@@ -1964,13 +1958,11 @@ Public Sub makeVisibleFormElements()
         fClipB.clipBForm.Left = Val(PzGClipBFormLowDpiXPos)
         fClipB.clipBForm.Top = Val(PzGClipBFormLowDpiYPos)
     End If
-    
     fClipB.clipBForm.Show
     
+    ' position the selector
     fSelector.SelectorForm.Width = 1000
     fSelector.SelectorForm.Height = 800
-'    fSelector.SelectorForm.Left = val(PzGTemperatureFormHighDpiXPos) + fTemperature.temperatureGaugeForm.Width + 300
-'    fSelector.SelectorForm.Top = val(PzGTemperatureFormHighDpiYPos) + 200
     
     If PzGDpiAwareness = "1" Then
         fSelector.SelectorForm.Left = Val(PzGSelectorFormHighDpiXPos)
@@ -1980,16 +1972,19 @@ Public Sub makeVisibleFormElements()
         fSelector.SelectorForm.Top = Val(PzGSelectorFormLowDpiYPos)
     End If
 
-
-    
-    If PzGDpiAwareness = "1" Then
-        fAnemometer.anemometerGaugeForm.Left = Val(PzGAnemometerFormHighDpiXPos)
-        fAnemometer.anemometerGaugeForm.Top = Val(PzGAnemometerFormHighDpiYPos)
-    Else
-        fAnemometer.anemometerGaugeForm.Left = Val(PzGAnemometerFormLowDpiXPos)
-        fAnemometer.anemometerGaugeForm.Top = Val(PzGAnemometerFormLowDpiYPos)
+    ' position the anemometer gauge explicitly by px position
+    If PzGWidgetPosition = "0" Then
+        If PzGDpiAwareness = "1" Then
+            fAnemometer.anemometerGaugeForm.Left = Val(PzGAnemometerFormHighDpiXPos)
+            fAnemometer.anemometerGaugeForm.Top = Val(PzGAnemometerFormHighDpiYPos)
+        Else
+            fAnemometer.anemometerGaugeForm.Left = Val(PzGAnemometerFormLowDpiXPos)
+            fAnemometer.anemometerGaugeForm.Top = Val(PzGAnemometerFormLowDpiYPos)
+        End If
+    Else ' by percentage (tablet)
+        fAnemometer.anemometerGaugeForm.Left = screenWidthPixels * (PzGAnemometerHLocationPerc / 100)
+        fAnemometer.anemometerGaugeForm.Top = screenHeightPixels * (PzGAnemometerVLocationPerc / 100)
     End If
-    
     fAnemometer.anemometerGaugeForm.Show
 
     On Error GoTo 0
@@ -2188,16 +2183,6 @@ Public Sub mainScreen()
     
     ' check if the widget has a lock for the screen type.
     If aspectRatio = "landscape" Then
-'        If PzGTemperatureLandscape = "1" Then
-'            If PzGTemperatureLandscapeHoffset <> vbNullString Then
-'                fTemperature.temperatureGaugeForm.Left = Val(PzGTemperatureLandscapeHoffset)
-'                fTemperature.temperatureGaugeForm.Top = Val(PzGTemperatureLandscapeVoffset)
-'            End If
-'            If PzGAnemometerLandscape <> vbNullString Then
-'                fAnemometer.anemometerGaugeForm.Left = Val(PzGAnemometerLandscapeHoffset)
-'                fAnemometer.anemometerGaugeForm.Top = Val(PzGAnemometerLandscapeVoffset)
-'            End If
-'        End If
         If PzGAspectHidden = "2" Then
             Debug.Print "Hiding the widget for landscape mode"
             fTemperature.temperatureGaugeForm.Visible = False
@@ -2206,23 +2191,13 @@ Public Sub mainScreen()
     
     ' check if the widget has a lock for the screen type.
     If aspectRatio = "portrait" Then
-'        If PzGTemperaturePortrait = "1" Then
-'            fTemperature.temperatureGaugeForm.Left = Val(PzGTemperaturePortraitHoffset)
-'            fTemperature.temperatureGaugeForm.Top = Val(PzGTemperaturePortraitVoffset)
-'        End If
-'        If PzGAnemometerPortrait <> vbNullString Then
-'            fAnemometer.anemometerGaugeForm.Left = Val(PzGAnemometerPortraitHoffset)
-'            fAnemometer.anemometerGaugeForm.Top = Val(PzGAnemometerPortraitVoffset)
-'        End If
         If PzGAspectHidden = "1" Then
             Debug.Print "Hiding the widget for portrait mode"
             fTemperature.temperatureGaugeForm.Visible = False
         End If
     End If
 
-
-' deaniebabe
-    ' calculate the on screen widget position
+    ' prevent the gauge moving off screen
     If fTemperature.temperatureGaugeForm.Left < 0 Then
         fTemperature.temperatureGaugeForm.Left = 10
     End If
@@ -2235,14 +2210,37 @@ Public Sub mainScreen()
     If fTemperature.temperatureGaugeForm.Top > screenHeightPixels - 50 Then
         fTemperature.temperatureGaugeForm.Top = screenHeightPixels - 150
     End If
+    
+
+    ' prevent the gauge moving off screen
+    If fAnemometer.anemometerGaugeForm.Left < 0 Then
+        fAnemometer.anemometerGaugeForm.Left = 10
+    End If
+    If fAnemometer.anemometerGaugeForm.Top < 0 Then
+        fAnemometer.anemometerGaugeForm.Top = 0
+    End If
+    If fAnemometer.anemometerGaugeForm.Left > screenWidthPixels - 50 Then
+        fAnemometer.anemometerGaugeForm.Left = screenWidthPixels - 150
+    End If
+    If fAnemometer.anemometerGaugeForm.Top > screenHeightPixels - 50 Then
+        fAnemometer.anemometerGaugeForm.Top = screenHeightPixels - 150
+    End If
+    
 
     ' calculate the current hlocation in % of the screen
     ' store the current hlocation in % of the screen
     If PzGWidgetPosition = "1" Then
-        PzGhLocationPercPrefValue = Str$(fTemperature.temperatureGaugeForm.Left / screenWidthPixels * 100)
-        PzGvLocationPercPrefValue = Str$(fTemperature.temperatureGaugeForm.Top / screenHeightPixels * 100)
+        PzGTemperatureHLocationPerc = Str$(fTemperature.temperatureGaugeForm.Left / screenWidthPixels * 100)
+        PzGTemperatureVLocationPerc = Str$(fTemperature.temperatureGaugeForm.Top / screenHeightPixels * 100)
     End If
-
+    
+     ' calculate the current hlocation in % of the screen
+    ' store the current hlocation in % of the screen
+    If PzGWidgetPosition = "1" Then
+        PzGAnemometerHLocationPerc = Str$(fAnemometer.anemometerGaugeForm.Left / screenWidthPixels * 100)
+        PzGAnemometerVLocationPerc = Str$(fAnemometer.anemometerGaugeForm.Top / screenHeightPixels * 100)
+    End If
+   
    On Error GoTo 0
    Exit Sub
 
@@ -2401,6 +2399,15 @@ Public Sub saveTemperatureGaugePosition()
         sPutINISetting "Software\PzTemperatureGauge", "temperatureFormLowDpiYPos", PzGTemperatureFormLowDpiYPos, PzGSettingsFile
     End If
     
+    ' calculate the current hlocation in % of the screen
+    ' store the current hlocation in % of the screen
+    If PzGWidgetPosition = "1" Then
+        PzGTemperatureHLocationPerc = Str$(fTemperature.temperatureGaugeForm.Left / screenWidthPixels * 100)
+        PzGTemperatureVLocationPerc = Str$(fTemperature.temperatureGaugeForm.Top / screenHeightPixels * 100)
+    End If
+
+    Debug.Print "saveTemperatureGaugePosition"
+    ' now save the size
     PzGTemperatureGaugeSize = Str$(fTemperature.temperatureGaugeForm.WidgetRoot.Zoom * 100)
     sPutINISetting "Software\PzTemperatureGauge", "temperatureGaugeSize", PzGTemperatureGaugeSize, PzGSettingsFile
 
@@ -2435,6 +2442,14 @@ Public Sub saveAnemometerGaugePosition()
         sPutINISetting "Software\PzAnemometerGauge", "anemometerFormLowDpiXPos", PzGAnemometerFormLowDpiXPos, PzGSettingsFile
         sPutINISetting "Software\PzAnemometerGauge", "anemometerFormLowDpiYPos", PzGAnemometerFormLowDpiYPos, PzGSettingsFile
     End If
+    
+    ' calculate the current hlocation in % of the screen
+    ' store the current hlocation in % of the screen
+    If PzGWidgetPosition = "1" Then
+        PzGAnemometerHLocationPerc = Str$(fAnemometer.anemometerGaugeForm.Left / screenWidthPixels * 100)
+        PzGAnemometerVLocationPerc = Str$(fAnemometer.anemometerGaugeForm.Top / screenHeightPixels * 100)
+    End If
+
     
     PzGAnemometerGaugeSize = Str$(fAnemometer.anemometerGaugeForm.WidgetRoot.Zoom * 100)
     sPutINISetting "Software\PzAnemometerGauge", "anemometerGaugeSize", PzGAnemometerGaugeSize, PzGSettingsFile

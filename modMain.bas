@@ -161,19 +161,19 @@ Public Sub mainRoutine(ByVal restart As Boolean)
         Call setDPIaware ' determine the user settings for DPI awareness, for this program and all its forms.
     End If
 
-    'load the collection for storing the overlay surfaces with its relevant keys direct from the PSD
+    'load the collection for storing the overlay surfaces with its relevant keys direct from each PSD
     If restart = False Then
         Call loadTemperatureExcludePathCollection ' no need to reload the collTemperaturePSDNonUIElements layer name keys on a reload
-        Call loadSelectorExcludePathCollection ' no need to reload the collSelectorPSDNonUIElements layer name keys on a reload
-        Call loadClipBExcludePathCollection ' no need to reload the collClipBPSDNonUIElements layer name keys on a reload
-        Call loadAnemometerExcludePathCollection ' no need to reload the collClipBPSDNonUIElements layer name keys on a reload
+        Call loadSelectorExcludePathCollection
+        Call loadClipBExcludePathCollection
+        Call loadAnemometerExcludePathCollection
     End If
     
-    ' start the load of the PSD file using the RC6 PSD-Parser.instance
-    Call fTemperature.InitTemperatureFromPSD(temperaturePSDFullPath)  ' no optional close layer as 3rd param
-    Call fSelector.InitSelectorFromPSD(selectorPSDFullPath) ' no optional close layer as 3rd param
-    Call fClipB.InitClipBFromPSD(clipBPSDFullPath) ' no optional close layer as 3rd param
-    Call fAnemometer.InitAnemometerFromPSD(anemometerPSDFullPath) ' no optional close layer as 3rd param
+    ' start the load of the PSD files using the RC6 PSD-Parser.instance
+    Call fTemperature.InitTemperatureFromPSD(temperaturePSDFullPath)
+    Call fSelector.InitSelectorFromPSD(selectorPSDFullPath)
+    Call fClipB.InitClipBFromPSD(clipBPSDFullPath)
+    Call fAnemometer.InitAnemometerFromPSD(anemometerPSDFullPath)
     
     ' resolve VB6 sizing width bug
     Call determineScreenDimensions
@@ -327,9 +327,9 @@ Private Sub initialiseGlobalVars()
     PzGAnemometerLandscapeVoffset = vbNullString
     PzGAnemometerPortraitHoffset = vbNullString
     PzGAnemometerPortraitVoffset = vbNullString
-    
-    PzGvLocationPercPrefValue = vbNullString
-    PzGhLocationPercPrefValue = vbNullString
+       
+    PzGTemperatureVLocationPerc = vbNullString
+    PzGTemperatureHLocationPerc = vbNullString
     
     ' sounds
     PzGEnableSounds = vbNullString
@@ -1010,8 +1010,8 @@ Public Sub readSettingsFile(ByVal location As String, ByVal PzGSettingsFile As S
         PzGAnemometerPortraitHoffset = fGetINISetting("Software\PzAnemometerGauge", "anemometerPortraitHoffset", PzGSettingsFile)
         PzGAnemometerPortraitVoffset = fGetINISetting("Software\PzAnemometerGauge", "anemometerPortraitVoffset", PzGSettingsFile)
         
-        PzGvLocationPercPrefValue = fGetINISetting(location, "vLocationPercPrefValue", PzGSettingsFile)
-        PzGhLocationPercPrefValue = fGetINISetting(location, "hLocationPercPrefValue", PzGSettingsFile)
+        PzGTemperatureVLocationPerc = fGetINISetting(location, "temperatureVLocationPerc", PzGSettingsFile)
+        PzGTemperatureHLocationPerc = fGetINISetting(location, "temperatureHLocationPerc", PzGSettingsFile)
 
         ' font
         PzGTempFormFont = fGetINISetting(location, "tempFormFont", PzGSettingsFile)
@@ -1169,8 +1169,8 @@ Public Sub validateInputs()
     If PzGAnemometerPortraitHoffset = vbNullString Then PzGAnemometerPortraitHoffset = vbNullString
     If PzGAnemometerPortraitVoffset = vbNullString Then PzGAnemometerPortraitVoffset = vbNullString
     
-    If PzGvLocationPercPrefValue = vbNullString Then PzGvLocationPercPrefValue = vbNullString
-    If PzGhLocationPercPrefValue = vbNullString Then PzGhLocationPercPrefValue = vbNullString
+    If PzGTemperatureVLocationPerc = vbNullString Then PzGTemperatureVLocationPerc = vbNullString
+    If PzGTemperatureHLocationPerc = vbNullString Then PzGTemperatureHLocationPerc = vbNullString
             
     ' development
     If PzGDebug = vbNullString Then PzGDebug = "0"
