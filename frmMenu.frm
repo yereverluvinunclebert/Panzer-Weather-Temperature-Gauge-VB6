@@ -90,7 +90,7 @@ Begin VB.Form menuForm
          Caption         =   "Edit Widget using..."
       End
       Begin VB.Menu mnuSwitchOff 
-         Caption         =   "Switch off my functions (Pointer && Digital Display)"
+         Caption         =   "Switch off all gauge functions"
       End
       Begin VB.Menu mnuTurnFunctionsOn 
          Caption         =   "Turn all functions ON"
@@ -689,10 +689,15 @@ Private Sub mnuRefreshMetar_Click()
     Dim answer As VbMsgBoxResult
     Dim answerMsg  As String: answerMsg = vbNullString
     
-    overlayTemperatureWidget.GetMetar = True ' trigger METAR get with new ICAO code
-    answerMsg = "Done. METAR request issued."
-    answer = msgBoxA(answerMsg, vbOKOnly + vbExclamation, "Refresh METAR Information", True, "mnuRefreshMetarClick")
-    
+    If overlayTemperatureWidget.Ticking = True Then
+        overlayTemperatureWidget.GetMetar = True ' trigger METAR get with new ICAO code
+        answerMsg = "Done. METAR request issued."
+        answer = msgBoxA(answerMsg, vbOKOnly + vbExclamation, "Refresh METAR Information", True, "mnuRefreshMetarClick")
+    Else
+        answerMsg = "Polling and gauges are disabled."
+        answer = msgBoxA(answerMsg, vbOKOnly + vbExclamation, "Refresh METAR Failure", True, "mnuRefreshMetarClick")
+    End If
+        
     On Error GoTo 0
     Exit Sub
 

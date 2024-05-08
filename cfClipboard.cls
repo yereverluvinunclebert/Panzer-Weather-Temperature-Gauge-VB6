@@ -95,14 +95,14 @@ Public Sub InitClipBFromPSD(ByRef PSD_FileNameOrByteArray As Variant)
                         
                         'we add layer info. (used in cwOverlay) to the "excluded paths" previously defined in Sub Main,
                         
-                        collClipBPSDNonUIElements(.LayerPath(i)) = Array(.LayerX(i), .LayerY(i), val(PzGOpacity) / 100)  'here we update the so far empty slots with the PSD-offsets
+                        collClipBPSDNonUIElements(.LayerPath(i)) = Array(.LayerX(i), .LayerY(i), Val(PzGOpacity) / 100)  'here we update the so far empty slots with the PSD-offsets
                 
                     Else 'everything not in the exclude-list will get its own Widget-instance
                     
                         Set W = clipBForm.Widgets.Add(New cwAlphaImg, LCase$(.LayerPath(i)), .LayerX(i), .LayerY(i), .LayerWidth(i), .LayerHeight(i)).Widget
                             W.ImageKey = W.key 'W.Key equals ImageList-Key, set above - and LayerPath(i) at this point ... set it also as the ImageKey of our new created Widget
                         If PzGOpacity < 1 Then
-                            W.Alpha = val(PzGOpacity) / 100
+                            W.Alpha = Val(PzGOpacity) / 100
                         Else
                             W.Alpha = 1
                         End If
@@ -207,7 +207,7 @@ Private Sub ClipBForm_MouseDown(ByRef Button As Integer, ByRef Shift As Integer,
     
         ' ensure that the associated forms pop to the front when the main gauge receives focus
         If fTemperature.temperatureGaugeForm.Visible = True Then fTemperature.temperatureGaugeForm.SetFocus
-        If panzerPrefs.Visible = True Then panzerPrefs.SetFocus
+        If panzerPrefs.IsVisible = True Then panzerPrefs.SetFocus
         If fClipB.clipBForm.Visible = True Then fClipB.clipBForm.SetFocus
         
         If PzGIgnoreMouse = "1" Then Exit Sub

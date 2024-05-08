@@ -285,6 +285,13 @@ Public Property Let Ticking(ByVal newValue As Boolean)
     
     tmrSampler.Enabled = mTicking
     tmrPressureDrop.Enabled = mTicking
+    
+    menuForm.mnuSwitchOff.Checked = mTicking
+    menuForm.mnuTurnFunctionsOn.Checked = Not mTicking
+    
+    PzGGaugeFunctions = Val(mTicking)
+    sPutINISetting "Software\PzTemperatureGauge", "gaugeFunctions", PzGGaugeFunctions, PzGSettingsFile
+
 
    On Error GoTo 0
    Exit Property
@@ -438,43 +445,43 @@ samplingIntervalLet_Error:
     MsgBox "Error " & Err.Number & " (" & Err.Description & ") in Property samplingInterval of Class Module cwOverlayTempTemperature"
 End Property
 '---------------------------------------------------------------------------------------
-' Property : pointerAnimate
-' Author    : Dean Beedell (yereverluvinunclebert)
-' Date      : 17/05/2023
-' Purpose   :
-'---------------------------------------------------------------------------------------
+'' Property : pointerAnimate
+'' Author    : Dean Beedell (yereverluvinunclebert)
+'' Date      : 17/05/2023
+'' Purpose   :
+''---------------------------------------------------------------------------------------
+''
+'Public Property Get pointerAnimate() As Boolean
+'   On Error GoTo pointerAnimateGet_Error
 '
-Public Property Get pointerAnimate() As Boolean
-   On Error GoTo pointerAnimateGet_Error
-
-    pointerAnimate = mPointerAnimate
-
-   On Error GoTo 0
-   Exit Property
-
-pointerAnimateGet_Error:
-
-    MsgBox "Error " & Err.Number & " (" & Err.Description & ") in Property pointerAnimate of Class Module cwOverlayTempTemperature"
-End Property
-'---------------------------------------------------------------------------------------
-' Property  : pointerAnimate
-' Author    :
-' Date      : 09/05/2023
-' Purpose   :
-'---------------------------------------------------------------------------------------
+'    pointerAnimate = mPointerAnimate
 '
-Public Property Let pointerAnimate(ByVal newValue As Boolean)
-    On Error GoTo pointerAnimateLet_Error
-
-    If mPointerAnimate <> newValue Then mPointerAnimate = newValue Else Exit Property
-    
-   On Error GoTo 0
-   Exit Property
-
-pointerAnimateLet_Error:
-
-    MsgBox "Error " & Err.Number & " (" & Err.Description & ") in Property pointerAnimate of Class Module cwOverlayTemp"
-End Property
+'   On Error GoTo 0
+'   Exit Property
+'
+'pointerAnimateGet_Error:
+'
+'    MsgBox "Error " & Err.Number & " (" & Err.Description & ") in Property pointerAnimate of Class Module cwOverlayTempTemperature"
+'End Property
+''---------------------------------------------------------------------------------------
+'' Property  : pointerAnimate
+'' Author    :
+'' Date      : 09/05/2023
+'' Purpose   :
+''---------------------------------------------------------------------------------------
+''
+'Public Property Let pointerAnimate(ByVal newValue As Boolean)
+'    On Error GoTo pointerAnimateLet_Error
+'
+'    If mPointerAnimate <> newValue Then mPointerAnimate = newValue Else Exit Property
+'
+'   On Error GoTo 0
+'   Exit Property
+'
+'pointerAnimateLet_Error:
+'
+'    MsgBox "Error " & Err.Number & " (" & Err.Description & ") in Property pointerAnimate of Class Module cwOverlayTemp"
+'End Property
 
 '---------------------------------------------------------------------------------------
 ' Property : Locked
@@ -514,8 +521,10 @@ Public Property Let Locked(ByVal newValue As Boolean)
 
     If mLocked = True Then
         menuForm.mnuLockTemperatureGauge.Checked = True
-        panzerPrefs.chkPreventDragging.Value = 1
-        panzerPrefs.cmbLandscape.ListIndex = 1
+        If panzerPrefs.IsVisible = True Then
+            panzerPrefs.chkPreventDragging.Value = 1
+            panzerPrefs.cmbLandscape.ListIndex = 1
+        End If
         
         PzGPreventDraggingTemperature = "1"
         If aspectRatio = "landscape" Then
@@ -527,8 +536,10 @@ Public Property Let Locked(ByVal newValue As Boolean)
         fTemperature.temperatureGaugeForm.Widgets("housing/lockbutton").Widget.Alpha = 0
     Else
         menuForm.mnuLockTemperatureGauge.Checked = False
-        panzerPrefs.chkPreventDragging.Value = 0
-        panzerPrefs.cmbLandscape.ListIndex = 0
+        If panzerPrefs.IsVisible = True Then
+            panzerPrefs.chkPreventDragging.Value = 0
+            panzerPrefs.cmbLandscape.ListIndex = 0
+        End If
         
         PzGPreventDraggingTemperature = "0"
         If aspectRatio = "landscape" Then
@@ -1632,7 +1643,7 @@ Private Sub myStatusProc()
         If debugFlg = 1 Then Debug.Print ("%myStatusProc - station_id does not seem to providing any valid data, please select another.")
         
         If answer = vbNo Then
-            answer = vbYes
+            answer = vbYes ' deanieboy prefs
             answerMsg = "Rather weird - The supplied ICAO code " & panzerPrefs.txtIcao.Text & " does not seem to providing any valid data, please select another."""
             answer = msgBoxA(answerMsg, vbOKOnly, "Polling Warning", True, "myStatusProcStation_id")
             weHaveData = False

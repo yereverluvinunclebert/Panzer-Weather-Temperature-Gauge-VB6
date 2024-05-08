@@ -285,7 +285,7 @@ Private Sub initialiseGlobalVars()
     ' general
     PzGStartup = vbNullString
     PzGGaugeFunctions = vbNullString
-    PzGPointerAnimate = vbNullString
+'    PzGPointerAnimate = vbNullString
     PzGSamplingInterval = vbNullString
     PzGStormTestInterval = vbNullString
     PzGErrorInterval = vbNullString
@@ -751,13 +751,13 @@ Public Sub adjustTempMainControls()
         .Alpha = Val(PzGOpacity) / 100
     End With
     
-    If PzGPointerAnimate = "0" Then
-        overlayTemperatureWidget.pointerAnimate = False
-        fTemperature.temperatureGaugeForm.Widgets("housing/tickbutton").Widget.Alpha = Val(PzGOpacity) / 100
-    Else
-        overlayTemperatureWidget.pointerAnimate = True
-        fTemperature.temperatureGaugeForm.Widgets("housing/tickbutton").Widget.Alpha = 0
-    End If
+'    If PzGPointerAnimate = "0" Then
+'        overlayTemperatureWidget.pointerAnimate = False
+'        fTemperature.temperatureGaugeForm.Widgets("housing/tickbutton").Widget.Alpha = Val(PzGOpacity) / 100
+'    Else
+'        overlayTemperatureWidget.pointerAnimate = True
+'        fTemperature.temperatureGaugeForm.Widgets("housing/tickbutton").Widget.Alpha = 0
+'    End If
         
     If PzGPreventDraggingTemperature = "0" Then
         menuForm.mnuLockTemperatureGauge.Checked = False
@@ -882,13 +882,13 @@ Public Sub adjustAnemometerMainControls()
         .Alpha = Val(PzGOpacity) / 100
     End With
     
-    If PzGPointerAnimate = "0" Then
-        overlayAnemoWidget.pointerAnimate = False
-        fAnemometer.anemometerGaugeForm.Widgets("housing/tickbutton").Widget.Alpha = Val(PzGOpacity) / 100
-    Else
-        overlayAnemoWidget.pointerAnimate = True
-        fAnemometer.anemometerGaugeForm.Widgets("housing/tickbutton").Widget.Alpha = 0
-    End If
+'    If PzGPointerAnimate = "0" Then
+'        overlayAnemoWidget.pointerAnimate = False
+'        fAnemometer.anemometerGaugeForm.Widgets("housing/tickbutton").Widget.Alpha = Val(PzGOpacity) / 100
+'    Else
+'        overlayAnemoWidget.pointerAnimate = True
+'        fAnemometer.anemometerGaugeForm.Widgets("housing/tickbutton").Widget.Alpha = 0
+'    End If
         
     If PzGPreventDraggingAnemometer = "0" Then
         menuForm.mnuLockTemperatureGauge.Checked = False
@@ -960,7 +960,7 @@ Public Sub readSettingsFile(ByVal location As String, ByVal PzGSettingsFile As S
         ' general
         PzGStartup = fGetINISetting(location, "startup", PzGSettingsFile)
         PzGGaugeFunctions = fGetINISetting(location, "gaugeFunctions", PzGSettingsFile)
-        PzGPointerAnimate = fGetINISetting(location, "pointerAnimate", PzGSettingsFile)
+'        PzGPointerAnimate = fGetINISetting(location, "pointerAnimate", PzGSettingsFile)
         PzGSamplingInterval = fGetINISetting(location, "samplingInterval", PzGSettingsFile)
         PzGStormTestInterval = fGetINISetting(location, "stormTestInterval", PzGSettingsFile)
         PzGErrorInterval = fGetINISetting(location, "errorInterval", PzGSettingsFile)
@@ -1110,7 +1110,7 @@ Public Sub validateInputs()
     If PzGGaugeFunctions = vbNullString Then PzGGaugeFunctions = "1" ' always turn
 '        If PzGAnimationInterval = vbNullString Then PzGAnimationInterval = "130"
     If PzGStartup = vbNullString Then PzGStartup = "1"
-    If PzGPointerAnimate = vbNullString Then PzGPointerAnimate = "0"
+'    If PzGPointerAnimate = vbNullString Then PzGPointerAnimate = "0"
     If PzGSamplingInterval = vbNullString Then PzGSamplingInterval = "60"
     If PzGStormTestInterval = vbNullString Then PzGStormTestInterval = "3600"
     If PzGErrorInterval = vbNullString Then PzGErrorInterval = "3"

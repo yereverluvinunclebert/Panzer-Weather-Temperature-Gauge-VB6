@@ -344,7 +344,7 @@ Private Sub sbtnselect_mouseDown(ByRef sender As Object)
         End If
     End If
             
-    If panzerPrefs.Visible = True Then
+    If panzerPrefs.IsVisible = True Then
         panzerPrefs.txtIcao = PzGIcao
     End If
     
@@ -665,7 +665,7 @@ Private Sub SelectorForm_MouseDown(ByRef Button As Integer, ByRef Shift As Integ
     
         ' ensure that the associated forms pop to the front when the main gauge receives focus
         If fTemperature.temperatureGaugeForm.Visible = True Then fTemperature.temperatureGaugeForm.SetFocus
-        If panzerPrefs.Visible = True Then panzerPrefs.SetFocus
+        If panzerPrefs.IsVisible = True Then panzerPrefs.SetFocus
         If fSelector.SelectorForm.Visible = True Then fSelector.SelectorForm.SetFocus
         
         If PzGIgnoreMouse = "1" Then Exit Sub

@@ -150,7 +150,7 @@ Private Sub temperatureGaugeForm_BubblingEvent(ByRef sender As Object, ByRef Eve
                 If PzGEnableBalloonTooltips = "1" Then CreateToolTip temperatureGaugeForm.hwnd, "Click me to open the preferences utility. All advanced configuration of the widget is performed using the preference utility.", _
                      TTIconInfo, widgetName1 & " Prefs Button Help", , , , True
             Case "housing/tickbutton"
-                If PzGEnableBalloonTooltips = "1" Then CreateToolTip temperatureGaugeForm.hwnd, "Click here to toggle the pointer movement from a jerky pointer to a more fluid, continuous movement.", _
+                If PzGEnableBalloonTooltips = "1" Then CreateToolTip temperatureGaugeForm.hwnd, "This button is non-functional in this gauge.", _
                      TTIconInfo, widgetName1 & " Tick Button Help", , , , True
             Case "housing/switchfacesbutton"
                 If PzGEnableBalloonTooltips = "1" Then CreateToolTip temperatureGaugeForm.hwnd, "Click here to select between different faces showing alternative temperature scales, celsius/fahrenheit or kelvin.", _
@@ -178,8 +178,8 @@ Private Sub temperatureGaugeForm_BubblingEvent(ByRef sender As Object, ByRef Eve
                 Call lockbutton_mouseDown(sender)
             Case "housing/prefsbutton"
                 Call prefsbutton_mouseDown(sender)
-            Case "housing/tickbutton"
-                Call tickbutton_mouseDown(sender)
+'            Case "housing/tickbutton"
+'                Call tickbutton_mouseDown(sender)
             Case "housing/switchfacesbutton"
                  Call switchfacesbutton_mouseDown(sender)
             Case "housing/stopbutton"
@@ -445,47 +445,47 @@ prefsbutton_mouseDown_Error:
     MsgBox "Error " & Err.Number & " (" & Err.Description & ") in procedure prefsbutton_mouseDown of Class Module cfTemperature"
 
 End Sub
-'---------------------------------------------------------------------------------------
-' Procedure : tickbutton_mouseDown
-' Author    : Dean Beedell (yereverluvinunclebert)
-' Date      : 03/08/2023
-' Purpose   :
-'---------------------------------------------------------------------------------------
+''---------------------------------------------------------------------------------------
+'' Procedure : tickbutton_mouseDown
+'' Author    : Dean Beedell (yereverluvinunclebert)
+'' Date      : 03/08/2023
+'' Purpose   :
+''---------------------------------------------------------------------------------------
+''
+'Private Sub tickbutton_mouseDown(ByRef sender As Object)
 '
-Private Sub tickbutton_mouseDown(ByRef sender As Object)
-    
-    Dim fileToPlay As String: fileToPlay = vbNullString
-   
-    On Error GoTo tickbutton_mouseDown_Error
-        
-    If overlayTemperatureWidget.pointerAnimate = True Then
-        overlayTemperatureWidget.pointerAnimate = False
-        sender.Widget.Alpha = Val(PzGOpacity) / 100
-        PzGPointerAnimate = "0"
-    Else
-        overlayTemperatureWidget.pointerAnimate = True
-        sender.Widget.Alpha = 0 ' sender is the referring control
-        PzGPointerAnimate = "1"
-        
-    End If
-    sender.Widget.Refresh ' this removes the delay in the Button depressing
-    
-    fileToPlay = "lock.wav"
-    If PzGEnableSounds = "1" And fFExists(App.path & "\resources\sounds\" & fileToPlay) Then
-        PlaySound App.path & "\resources\sounds\" & fileToPlay, ByVal 0&, SND_FILENAME Or SND_ASYNC
-    End If
-    
-    sPutINISetting "Software\PzTemperatureGauge", "pointerAnimate", PzGPointerAnimate, PzGSettingsFile
-    panzerPrefs.cmbTickSwitchPref.ListIndex = Val(PzGPointerAnimate)
-        
-   On Error GoTo 0
-   Exit Sub
-
-tickbutton_mouseDown_Error:
-
-    MsgBox "Error " & Err.Number & " (" & Err.Description & ") in procedure tickbutton_mouseDown of Class Module cfTemperature"
-
-End Sub
+'    Dim fileToPlay As String: fileToPlay = vbNullString
+'
+'    On Error GoTo tickbutton_mouseDown_Error
+'
+'    If overlayTemperatureWidget.pointerAnimate = True Then
+'        overlayTemperatureWidget.pointerAnimate = False
+'        sender.Widget.Alpha = Val(PzGOpacity) / 100
+'        PzGPointerAnimate = "0"
+'    Else
+'        overlayTemperatureWidget.pointerAnimate = True
+'        sender.Widget.Alpha = 0 ' sender is the referring control
+'        PzGPointerAnimate = "1"
+'
+'    End If
+'    sender.Widget.Refresh ' this removes the delay in the Button depressing
+'
+'    fileToPlay = "lock.wav"
+'    If PzGEnableSounds = "1" And fFExists(App.path & "\resources\sounds\" & fileToPlay) Then
+'        PlaySound App.path & "\resources\sounds\" & fileToPlay, ByVal 0&, SND_FILENAME Or SND_ASYNC
+'    End If
+'
+'    sPutINISetting "Software\PzTemperatureGauge", "pointerAnimate", PzGPointerAnimate, PzGSettingsFile
+'    If panzerPrefs.IsVisible = True Then panzerPrefs.cmbTickSwitchPref.ListIndex = Val(PzGPointerAnimate)
+'
+'   On Error GoTo 0
+'   Exit Sub
+'
+'tickbutton_mouseDown_Error:
+'
+'    MsgBox "Error " & Err.Number & " (" & Err.Description & ") in procedure tickbutton_mouseDown of Class Module cfTemperature"
+'
+'End Sub
 
 
     
@@ -726,7 +726,7 @@ Private Sub temperatureGaugeForm_MouseDown(ByRef Button As Integer, ByRef Shift 
     Else
         ' ensure that the associated forms pop to the front when the main gauge receives focus
         If fSelector.SelectorForm.Visible = True Then fSelector.SelectorForm.SetFocus
-        If panzerPrefs.Visible = True Then panzerPrefs.SetFocus
+        If panzerPrefs.IsVisible = True Then panzerPrefs.SetFocus
         If fTemperature.temperatureGaugeForm.Visible = True Then fTemperature.temperatureGaugeForm.SetFocus
         
         If PzGIgnoreMouse = "1" Then Exit Sub

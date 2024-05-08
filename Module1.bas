@@ -290,7 +290,7 @@ Private Const VER_PLATFORM_WIN32_NT As Long = 2
 Public PzGStartup As String
 Public PzGGaugeFunctions As String
 'Public PzGAnimationInterval As String
-Public PzGPointerAnimate As String
+'Public PzGPointerAnimate As String
 Public PzGSamplingInterval As String
 Public PzGStormTestInterval As String
 Public PzGErrorInterval As String
@@ -2756,11 +2756,11 @@ Public Sub SwitchOff()
    On Error GoTo SwitchOff_Error
 
     overlayTemperatureWidget.Ticking = False
-    menuForm.mnuSwitchOff.Checked = True
-    menuForm.mnuTurnFunctionsOn.Checked = False
-    
-    PzGGaugeFunctions = "0"
-    sPutINISetting "Software\PzTemperatureGauge", "gaugeFunctions", PzGGaugeFunctions, PzGSettingsFile
+'    menuForm.mnuSwitchOff.Checked = True
+'    menuForm.mnuTurnFunctionsOn.Checked = False
+'
+'    PzGGaugeFunctions = "0"
+'    sPutINISetting "Software\PzTemperatureGauge", "gaugeFunctions", PzGGaugeFunctions, PzGSettingsFile
 
    On Error GoTo 0
    Exit Sub
