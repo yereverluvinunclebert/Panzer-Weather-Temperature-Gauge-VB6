@@ -202,47 +202,20 @@ Public Sub mainRoutine(ByVal restart As Boolean)
     ' validate the inputs of any data from the input settings file
     Call validateInputs
     
-    If PzGGaugeFunctions = "1" Then
-        overlayTemperatureWidget.Ticking = True
-'        overlayAnemoWidget.Ticking = True
-'        overlayHumidWidget.Ticking = True
-        menuForm.mnuSwitchOff.Checked = False
-        menuForm.mnuTurnFunctionsOn.Checked = True
-    Else
-        overlayTemperatureWidget.Ticking = False
-'        overlayAnemoWidget.Ticking = False
-'        overlayHumidWidget.Ticking = False
-        menuForm.mnuSwitchOff.Checked = True
-        menuForm.mnuTurnFunctionsOn.Checked = False
-    End If
+    ' set menu items
+    Call setMenuItems
     
-    If PzGDefaultEditor <> vbNullString And PzGDebug = "1" Then
-        menuForm.mnuEditWidget.Caption = "Edit Widget using " & PzGDefaultEditor
-        menuForm.mnuEditWidget.Visible = True
-    Else
-        menuForm.mnuEditWidget.Visible = False
-    End If
-    
-    If PzGShowTaskbar = "0" Then
-        fTemperature.temperatureGaugeForm.ShowInTaskbar = False
-        fAnemometer.anemometerGaugeForm.ShowInTaskbar = False
-        fHumidity.humidityGaugeForm.ShowInTaskbar = False
-        fClipB.clipBForm.ShowInTaskbar = False
-    Else
-        fTemperature.temperatureGaugeForm.ShowInTaskbar = True
-        fAnemometer.anemometerGaugeForm.ShowInTaskbar = True
-        fHumidity.humidityGaugeForm.ShowInTaskbar = True
-        fClipB.clipBForm.ShowInTaskbar = True
-    End If
-    
-    ' set characteristics of widgets on the main gauge form
+    ' set taskbar entry
+    Call setTaskbarEntry
+        
+    ' set characteristics of widgets on the temperature gauge form
     Call adjustTempMainControls ' this needs to be here after the initialisation of the Cairo forms and widgets
 
-    ' set characteristics of widgets on the main gauge form
-    Call adjustAnemometerMainControls ' this needs to be here after the initialisation of the Cairo forms and widgets
+    ' set characteristics of widgets on the anemometer gauge form
+    Call adjustAnemometerMainControls
 
-    ' set characteristics of widgets on the main gauge form
-    Call adjustHumidityMainControls ' this needs to be here after the initialisation of the Cairo forms and widgets
+    ' set characteristics of widgets on the humidity gauge form
+    Call adjustHumidityMainControls
     
     ' set characteristics of widgets on the selector form
     Call adjustSelectorMainControls
@@ -738,6 +711,12 @@ Public Sub adjustTempMainControls()
    On Error GoTo adjustTempMainControls_Error
     
     fTemperature.tempAdjustZoom Val(PzGTemperatureGaugeSize) / 100
+    
+    If PzGGaugeFunctions = "1" Then
+        overlayTemperatureWidget.Ticking = True
+    Else
+        overlayTemperatureWidget.Ticking = False
+    End If
     
     ' set the characteristics of the interactive areas
     ' Note: set the Hover colour close to the original layer to avoid too much intrusion, 0 being grey
@@ -1815,4 +1794,76 @@ msgBoxA_Error:
     End With
 
 End Function
+
+
+' ----------------------------------------------------------------
+' Procedure Name: setTaskbarEntry
+' Purpose: set taskbar entry
+' Procedure Kind: Sub
+' Procedure Access: Private
+' Author: beededea
+' Date: 13/05/2024
+' ----------------------------------------------------------------
+Private Sub setTaskbarEntry()
+    
+    On Error GoTo setTaskbarEntry_Error
+    
+    If PzGShowTaskbar = "0" Then
+        fTemperature.temperatureGaugeForm.ShowInTaskbar = False
+        fAnemometer.anemometerGaugeForm.ShowInTaskbar = False
+        fHumidity.humidityGaugeForm.ShowInTaskbar = False
+        fClipB.clipBForm.ShowInTaskbar = False
+    Else
+        fTemperature.temperatureGaugeForm.ShowInTaskbar = True
+        fAnemometer.anemometerGaugeForm.ShowInTaskbar = True
+        fHumidity.humidityGaugeForm.ShowInTaskbar = True
+        fClipB.clipBForm.ShowInTaskbar = True
+    End If
+
+    On Error GoTo 0
+    Exit Sub
+
+setTaskbarEntry_Error:
+
+    MsgBox "Error " & Err.Number & " (" & Err.Description & ") in procedure setTaskbarEntry, line " & Erl & "."
+
+End Sub
+
+
+
+' ----------------------------------------------------------------
+' Procedure Name: setMenuItems
+' Purpose: set menu items
+' Procedure Kind: Sub
+' Procedure Access: Private
+' Author: beededea
+' Date: 13/05/2024
+' ----------------------------------------------------------------
+Private Sub setMenuItems()
+    On Error GoTo setMenuItems_Error
+    
+    If PzGGaugeFunctions = "1" Then
+        menuForm.mnuSwitchOff.Checked = False
+        menuForm.mnuTurnFunctionsOn.Checked = True
+    Else
+        menuForm.mnuSwitchOff.Checked = True
+        menuForm.mnuTurnFunctionsOn.Checked = False
+    End If
+    
+    If PzGDefaultEditor <> vbNullString And PzGDebug = "1" Then
+        menuForm.mnuEditWidget.Caption = "Edit Widget using " & PzGDefaultEditor
+        menuForm.mnuEditWidget.Visible = True
+    Else
+        menuForm.mnuEditWidget.Visible = False
+    End If
+    
+    On Error GoTo 0
+    Exit Sub
+
+setMenuItems_Error:
+
+    MsgBox "Error " & Err.Number & " (" & Err.Description & ") in procedure setMenuItems, line " & Erl & "."
+
+End Sub
+    
 
