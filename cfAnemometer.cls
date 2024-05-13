@@ -440,50 +440,7 @@ prefsbutton_mouseDown_Error:
     MsgBox "Error " & Err.Number & " (" & Err.Description & ") in procedure prefsbutton_mouseDown of Class Module cfAnemometer"
 
 End Sub
-''---------------------------------------------------------------------------------------
-'' Procedure : tickbutton_mouseDown
-'' Author    : Dean Beedell (yereverluvinunclebert)
-'' Date      : 03/08/2023
-'' Purpose   :
-''---------------------------------------------------------------------------------------
-''
-'Private Sub tickbutton_mouseDown(ByRef sender As Object)
-'
-'    Dim fileToPlay As String: fileToPlay = vbNullString
-'
-'    On Error GoTo tickbutton_mouseDown_Error
-'
-'    If overlayAnemoWidget.pointerAnimate = True Then
-'        overlayAnemoWidget.pointerAnimate = False
-'        sender.Widget.Alpha = Val(PzGOpacity) / 100
-'        PzGPointerAnimate = "0"
-'    Else
-'        overlayAnemoWidget.pointerAnimate = True
-'        sender.Widget.Alpha = 0 ' sender is the referring control
-'        PzGPointerAnimate = "1"
-'
-'    End If
-'    sender.Widget.Refresh ' this removes the delay in the Button depressing
-'
-'    fileToPlay = "lock.wav"
-'    If PzGEnableSounds = "1" And fFExists(App.path & "\resources\sounds\" & fileToPlay) Then
-'        PlaySound App.path & "\resources\sounds\" & fileToPlay, ByVal 0&, SND_FILENAME Or SND_ASYNC
-'    End If
-'
-'    sPutINISetting "Software\PzAnemometerGauge", "pointerAnimate", PzGPointerAnimate, PzGSettingsFile
-'    If panzerPrefs.IsVisible = True Then panzerPrefs.cmbTickSwitchPref.ListIndex = Val(PzGPointerAnimate)
-'
-'   On Error GoTo 0
-'   Exit Sub
-'
-'tickbutton_mouseDown_Error:
-'
-'    MsgBox "Error " & Err.Number & " (" & Err.Description & ") in procedure tickbutton_mouseDown of Class Module cfAnemometer"
-'
-'End Sub
 
-
-    
 
 
 '---------------------------------------------------------------------------------------
@@ -646,27 +603,6 @@ anemometerGaugeForm_MouseWheel_Error:
     MsgBox "Error " & Err.Number & " (" & Err.Description & ") in procedure anemometerGaugeForm_MouseWheel of Class Module cfAnemometer"
 End Sub
 
-''
-''---------------------------------------------------------------------------------------
-'' Procedure : anemometerGaugeForm_ResizeWithDimensionsDIP
-'' Author    : Dean Beedell (yereverluvinunclebert)
-'' Date      : 31/07/2023
-'' Purpose   : put any other resizing action in here - unused
-''---------------------------------------------------------------------------------------
-''
-'Private Sub anemometerGaugeForm_ResizeWithDimensionsDIP(ByVal dx As Single, ByVal dy As Single)
-'   On Error GoTo anemometerGaugeForm_ResizeWithDimensionsDIP_Error
-'
-'  'If Not CloseWidget Is Nothing Then CloseWidget.Move dx - 32, 0, 32, 32 'place the close-widget at the top-right of the form
-'
-'   On Error GoTo 0
-'   Exit Sub
-'
-'anemometerGaugeForm_ResizeWithDimensionsDIP_Error:
-'
-'    MsgBox "Error " & Err.Number & " (" & Err.Description & ") in procedure anemometerGaugeForm_ResizeWithDimensionsDIP of Class Module cfAnemometer"
-'End Sub
-
 '---------------------------------------------------------------------------------------
 ' Procedure : anemoAdjustZoom
 ' Author    : olaf schmidt
@@ -685,14 +621,10 @@ Public Sub anemoAdjustZoom(ByVal NewZoom As Single)
     ' when resized from the gauge scroll up/down it needs to write it back so the size is correct when prefs opened.
     PzGAnemometerGaugeSize = LTrim$(Str$(NewZoom * 100))
     If panzerPrefs.IsVisible = True Then
-        If panzerPrefs.cmbGaugeType.ListIndex = 0 Then
-            panzerPrefs.sliGaugeSize.Value = Val(PzGAnemometerGaugeSize)
-            sPutINISetting "Software\PzAnemometerGauge", "anemometerGaugeSize", PzGAnemometerGaugeSize, PzGSettingsFile
-        End If
-        If panzerPrefs.cmbGaugeType.ListIndex = 1 Then
-            panzerPrefs.sliGaugeSize.Value = Val(PzGAnemometerGaugeSize)
-            sPutINISetting "Software\PzAnemometerGauge", "anemometerGaugeSize", PzGAnemometerGaugeSize, PzGSettingsFile
-        End If
+
+        panzerPrefs.sliGaugeSize.Value = Val(PzGAnemometerGaugeSize)
+        sPutINISetting "Software\PzAnemometerGauge", "anemometerGaugeSize", PzGAnemometerGaugeSize, PzGSettingsFile
+
     End If
     
    On Error GoTo 0
@@ -715,9 +647,10 @@ Private Sub anemometerGaugeForm_MouseDown(ByRef Button As Integer, ByRef Shift A
     gblOriginatingForm = "anemometerForm"
     If Button = vbRightButton Then
 
-        
         menuForm.mnuLockTemperatureGauge.Visible = False
+        menuForm.mnuLockHumidityGauge.Visible = False
         menuForm.mnuLockAnemometerGauge.Visible = True
+
         Call menuForm.PopupMenu(menuForm.mnuMainMenu)
     Else
         ' ensure that the associated forms pop to the front when the main gauge receives focus
@@ -736,7 +669,5 @@ W_MouseDown_Error:
 
     MsgBox "Error " & Err.Number & " (" & Err.Description & ") in procedure W_MouseDown of Class Module cwOverlayTemp"
 End Sub
-
-'Private Sub anemometerGaugeForm_
 
 

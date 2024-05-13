@@ -289,7 +289,12 @@ Public Property Let Ticking(ByVal newValue As Boolean)
     menuForm.mnuSwitchOff.Checked = mTicking
     menuForm.mnuTurnFunctionsOn.Checked = Not mTicking
     
-    PzGGaugeFunctions = Val(mTicking)
+    If mTicking = True Then
+        PzGGaugeFunctions = "1"
+    Else
+        PzGGaugeFunctions = "0"
+    End If
+    
     sPutINISetting "Software\PzTemperatureGauge", "gaugeFunctions", PzGGaugeFunctions, PzGSettingsFile
 
 
@@ -1232,78 +1237,6 @@ End Sub
   
 
 
-    
-'---------------------------------------------------------------------------------------
-' Procedure : calcAnimationData
-' Author    : set the animation variables and call the routine to move the gauge pointer
-' Date      : 30/07/2023
-' Purpose   :
-'---------------------------------------------------------------------------------------
-'
-Private Sub calcAnimationData()
-    Dim degDiff As Double: degDiff = 0
-'    Dim min  As Integer: min = 0
-'    Dim max  As Integer: max = 0
-    Dim tempPercent As Double: tempPercent = 0
-    
-    On Error GoTo calcAnimationData_Error
-    ' temperatureValue = -14 ' debug
-
-    If mPointerAnimate = True Then
-        If tmrAnimator.Enabled = False Then
-        
-            ' oldSDeg stored
-            oldSDeg = SDeg
-                    
-            ' obtain the new temperature in percentage
-            tempPercent = ((temperatureValue + 30) / 80) * 100
-            
-            ' calculate the new cpu amount in degrees
-            If weHaveData = True Then
-                newSDeg = (tempPercent * 3) + 30
-            Else
-                newSDeg = 30
-            End If
-                        
-            If oldSDeg = newSDeg Then Exit Sub
-            
-            ' calculate the difference
-            degDiff = newSDeg - oldSDeg
-            
-            ' if the result is negative animate CCW
-
-            animateCCW = degDiff < 0 ' true/false
-            
-            Select Case degDiff
-                Case Is <= 5
-                    animationDivisions = 4
-                Case Is <= 10
-                    animationDivisions = 8
-                Case Is > 10
-                    animationDivisions = 16
-                Case Is > 20
-                    animationDivisions = 24
-            End Select
-            
-            ' divide that by 24 (one second duration)
-            animationQuanta = Abs(degDiff / animationDivisions)
-            
-            tmrAnimator.Enabled = True
-            
-        End If
-    Else
-        Call obtainTemperature
-    End If
-    
-    W.Parent.Refresh
-
-   On Error GoTo 0
-   Exit Sub
-
-calcAnimationData_Error:
-
-    MsgBox "Error " & Err.Number & " (" & Err.Description & ") in procedure calcAnimationData of Class Module cwOverlayTemp"
-End Sub
 
 ' ----------------------------------------------------------------
 ' Procedure Name: obtainTemperature
@@ -1665,6 +1598,7 @@ Private Sub myStatusProc()
 
     ' calculate humidity
     humidityValue = fGetHumidity(temp_c, dewpoint_c)
+    overlayHumidWidget.humidity = humidityValue
     
     ' determine the precipitation
     precipitationDepth = fGetPrecipitation(precip_in)
@@ -1737,9 +1671,7 @@ Private Sub myStatusProc()
     
     ' for setting the balloon tooltip using the WeatherDetails property
     mWeatherDetails = thisTooltip
-    
-
-    
+        
 '        fclibForm.
 '    sLblMETARText
     'overlayTemperatureWidget.WeatherDetails
@@ -1749,7 +1681,7 @@ Private Sub myStatusProc()
     firstPoll = False
     
     ' set the animation variables and call the routine to move the gauge pointer
-    Call calcAnimationData
+    Call obtainTemperature
     
     On Error GoTo 0
     Exit Sub
@@ -1972,16 +1904,16 @@ End Function
 ' ----------------------------------------------------------------
 Private Function fGetHumidity(ByVal temp_c As String, ByVal dewpoint_c As String) As Long
 
-    Dim Humidity As Long: Humidity = 0
+    Dim humidity As Long: humidity = 0
     
     debugFlg = 0
 
     On Error GoTo fGetHumidity_Error
     
-    Humidity = Round(100 * (((112 - (0.1 * CInt(temp_c)) + CInt(dewpoint_c)) / (112 + (0.9 * CInt(temp_c)))) ^ 8))
-    If debugFlg = 1 Then Debug.Print ("fGetHumidity - humidity " + CStr(Humidity))
+    humidity = Round(100 * (((112 - (0.1 * CInt(temp_c)) + CInt(dewpoint_c)) / (112 + (0.9 * CInt(temp_c)))) ^ 8))
+    If debugFlg = 1 Then Debug.Print ("fGetHumidity - humidity " + CStr(humidity))
     
-    fGetHumidity = Humidity ' return
+    fGetHumidity = humidity ' return
     
     On Error GoTo 0
     Exit Function
@@ -3324,10 +3256,10 @@ fGetDistance_Error:
 
 End Function
   
-    ' determine the precipitation
+    
 ' ----------------------------------------------------------------
 ' Procedure Name: fGetPrecipitation
-' Purpose:
+' Purpose: ' determine the precipitation
 ' Procedure Kind: Function
 ' Procedure Access: Private
 ' Parameter precip_in (String):

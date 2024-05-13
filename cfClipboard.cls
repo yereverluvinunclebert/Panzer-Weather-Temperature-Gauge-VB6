@@ -165,11 +165,11 @@ Private Sub ClipBForm_BubblingEvent(ByRef sender As Object, ByRef EventName As S
     If EventName = "W_MouseMove" Then
         Select Case LCase$(sender.Widget.key)
             Case "clipboard"
-                If PzGEnableBalloonTooltips = "1" Then CreateToolTip clipBForm.hwnd, " " _
-                    & "This is the Weather Clipboard. It displays the current weather in a text form " _
-                    & "interpreted from the chosen METAR data feed. " & vbCrLf _
-                    & "Copy the contents using the right click menu option - Copy METAR data - " _
-                    & "you can then paste the weather wherever you wish." & vbCrLf _
+                If PzGEnableBalloonTooltips = "1" Then CreateToolTip clipBForm.hwnd, _
+                    "This is the Weather Clipboard. It displays the current weather in a text form " _
+                    & "interpreted from your chosen METAR data feed. " & vbCrLf & vbCrLf _
+                    & "You can copy the contents using the right click menu option, 'Copy Current Weather to Clipboard' - " _
+                    & "Then you can paste the weather text wherever you wish." & vbCrLf _
                     & vbCrLf & "(Right Click to open the menu and the preferences. CTRL+ Mouse scrollwheel UP/DOWN to resize)" _
                     , TTIconInfo, widgetName3 & " Weather Clipboard.", , , , True
         End Select

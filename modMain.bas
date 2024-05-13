@@ -48,11 +48,15 @@ Public overlayClipbWidget As cwOverlayClipb
 Public fAnemometer As New cfAnemometer
 Public overlayAnemoWidget As cwOverlayAnemo
 
+Public fHumidity As New cfHumidity
+Public overlayHumidWidget As cwOverlayHumid
+
 Public sunriseSunset As cwSunriseSunset
 Public widgetName1 As String
 Public widgetName2 As String
 Public widgetName3 As String
 Public widgetName4 As String
+Public widgetName5 As String
 
 'Public startupFlg As Boolean
 
@@ -99,6 +103,7 @@ Public Sub mainRoutine(ByVal restart As Boolean)
     Dim selectorPSDFullPath As String: selectorPSDFullPath = vbNullString
     Dim clipBPSDFullPath As String: clipBPSDFullPath = vbNullString
     Dim anemometerPSDFullPath As String: anemometerPSDFullPath = vbNullString
+    Dim humidityPSDFullPath As String: humidityPSDFullPath = vbNullString
 
     Dim licenceState As Integer: licenceState = 0
 
@@ -113,8 +118,11 @@ Public Sub mainRoutine(ByVal restart As Boolean)
     widgetName3 = "Clipboard"
     clipBPSDFullPath = App.path & "\Res\Panzer Weather Clipboard VB6.psd"
     
-    widgetName4 = "Anemometer"
+    widgetName4 = "Anemometer Gauge"
     anemometerPSDFullPath = App.path & "\Res\Panzer Weather Anemometer Gauge VB6.psd"
+    
+    widgetName5 = "Humidity Gauge"
+    humidityPSDFullPath = App.path & "\Res\Panzer Weather Humidity Gauge VB6.psd"
     
     prefsCurrentWidth = 9075
     prefsCurrentHeight = 16450
@@ -167,6 +175,7 @@ Public Sub mainRoutine(ByVal restart As Boolean)
         Call loadSelectorExcludePathCollection
         Call loadClipBExcludePathCollection
         Call loadAnemometerExcludePathCollection
+        Call loadHumidityExcludePathCollection
     End If
     
     ' start the load of the PSD files using the RC6 PSD-Parser.instance
@@ -174,6 +183,7 @@ Public Sub mainRoutine(ByVal restart As Boolean)
     Call fSelector.InitSelectorFromPSD(selectorPSDFullPath)
     Call fClipB.InitClipBFromPSD(clipBPSDFullPath)
     Call fAnemometer.InitAnemometerFromPSD(anemometerPSDFullPath)
+    Call fHumidity.InitHumidityFromPSD(humidityPSDFullPath)
     
     ' resolve VB6 sizing width bug
     Call determineScreenDimensions
@@ -189,17 +199,67 @@ Public Sub mainRoutine(ByVal restart As Boolean)
     
     ' run the functions that are ALSO called at reload time elsewhere.
     
+    ' validate the inputs of any data from the input settings file
+    Call validateInputs
+    
+    If PzGGaugeFunctions = "1" Then
+        overlayTemperatureWidget.Ticking = True
+'        overlayAnemoWidget.Ticking = True
+'        overlayHumidWidget.Ticking = True
+        menuForm.mnuSwitchOff.Checked = False
+        menuForm.mnuTurnFunctionsOn.Checked = True
+    Else
+        overlayTemperatureWidget.Ticking = False
+'        overlayAnemoWidget.Ticking = False
+'        overlayHumidWidget.Ticking = False
+        menuForm.mnuSwitchOff.Checked = True
+        menuForm.mnuTurnFunctionsOn.Checked = False
+    End If
+    
+    If PzGDefaultEditor <> vbNullString And PzGDebug = "1" Then
+        menuForm.mnuEditWidget.Caption = "Edit Widget using " & PzGDefaultEditor
+        menuForm.mnuEditWidget.Visible = True
+    Else
+        menuForm.mnuEditWidget.Visible = False
+    End If
+    
+    If PzGShowTaskbar = "0" Then
+        fTemperature.temperatureGaugeForm.ShowInTaskbar = False
+        fAnemometer.anemometerGaugeForm.ShowInTaskbar = False
+        fHumidity.humidityGaugeForm.ShowInTaskbar = False
+        fClipB.clipBForm.ShowInTaskbar = False
+    Else
+        fTemperature.temperatureGaugeForm.ShowInTaskbar = True
+        fAnemometer.anemometerGaugeForm.ShowInTaskbar = True
+        fHumidity.humidityGaugeForm.ShowInTaskbar = True
+        fClipB.clipBForm.ShowInTaskbar = True
+    End If
+    
     ' set characteristics of widgets on the main gauge form
     Call adjustTempMainControls ' this needs to be here after the initialisation of the Cairo forms and widgets
+
+    ' set characteristics of widgets on the main gauge form
+    Call adjustAnemometerMainControls ' this needs to be here after the initialisation of the Cairo forms and widgets
+
+    ' set characteristics of widgets on the main gauge form
+    Call adjustHumidityMainControls ' this needs to be here after the initialisation of the Cairo forms and widgets
     
     ' set characteristics of widgets on the selector form
     Call adjustSelectorMainControls
     
     ' set characteristics of widgets on the clipboard form
     Call adjustClipBMainControls
+    
+    ' set the z-ordering of the window
+    Call setAlphaFormZordering
+    
+    ' set the tooltips on the main screen
+    Call setMainTooltips
+    
+    ' set the hiding time for the hiding timer, can't read the minutes from comboxbox as the prefs isn't yet open
+    Call setHidingTime
 
-    ' set characteristics of widgets on the main gauge form
-    Call adjustAnemometerMainControls ' this needs to be here after the initialisation of the Cairo forms and widgets
+    If minutesToHide > 0 Then menuForm.mnuHideWidget.Caption = "Hide Widget for " & minutesToHide & " min."
 
     ' move/hide onto/from the main screen
     Call mainScreen
@@ -302,6 +362,9 @@ Private Sub initialiseGlobalVars()
     
     PzGTemperatureGaugeSize = vbNullString
     PzGAnemometerGaugeSize = vbNullString
+    PzGHumidityGaugeSize = vbNullString
+    
+    
     PzGClipBSize = vbNullString
     PzGSelectorSize = vbNullString
     
@@ -317,6 +380,9 @@ Private Sub initialiseGlobalVars()
     
     PzGAnemometerLandscape = vbNullString
     PzGAnemometerPortrait = vbNullString
+    
+    PzGHumidityLandscape = vbNullString
+    PzGHumidityPortrait = vbNullString
     
     PzGTemperatureLandscapeHoffset = vbNullString
     PzGTemperatureLandscapeVoffset = vbNullString
@@ -352,6 +418,8 @@ Private Sub initialiseGlobalVars()
     PzGWindowLevel = vbNullString
     PzGPreventDraggingTemperature = vbNullString
     PzGPreventDraggingAnemometer = vbNullString
+    PzGPreventDraggingHumidity = vbNullString
+    
     PzGOpacity = vbNullString
 
     
@@ -668,38 +736,8 @@ End Sub
 Public Sub adjustTempMainControls()
    
    On Error GoTo adjustTempMainControls_Error
-
-    ' validate the inputs of any data from the input settings file
-    Call validateInputs
     
     fTemperature.tempAdjustZoom Val(PzGTemperatureGaugeSize) / 100
-
-    If PzGGaugeFunctions = "1" Then
-        overlayTemperatureWidget.Ticking = True
-        menuForm.mnuSwitchOff.Checked = False
-        menuForm.mnuTurnFunctionsOn.Checked = True
-    Else
-        overlayTemperatureWidget.Ticking = False
-        menuForm.mnuSwitchOff.Checked = True
-        menuForm.mnuTurnFunctionsOn.Checked = False
-    End If
-    
-    If PzGDefaultEditor <> vbNullString And PzGDebug = "1" Then
-        menuForm.mnuEditWidget.Caption = "Edit Widget using " & PzGDefaultEditor
-        menuForm.mnuEditWidget.Visible = True
-    Else
-        menuForm.mnuEditWidget.Visible = False
-    End If
-    
-    If PzGShowTaskbar = "0" Then
-        fTemperature.temperatureGaugeForm.ShowInTaskbar = False
-        fAnemometer.anemometerGaugeForm.ShowInTaskbar = False
-        fClipB.clipBForm.ShowInTaskbar = False
-    Else
-        fTemperature.temperatureGaugeForm.ShowInTaskbar = True
-        fAnemometer.anemometerGaugeForm.ShowInTaskbar = True
-        fClipB.clipBForm.ShowInTaskbar = True
-    End If
     
     ' set the characteristics of the interactive areas
     ' Note: set the Hover colour close to the original layer to avoid too much intrusion, 0 being grey
@@ -772,17 +810,7 @@ Public Sub adjustTempMainControls()
     overlayTemperatureWidget.thisOpacity = Val(PzGOpacity)
     overlayTemperatureWidget.samplingInterval = Val(PzGSamplingInterval)
     overlayTemperatureWidget.thisFace = Val(PzGTemperatureScale)
-               
-    ' set the z-ordering of the window
-    Call setAlphaFormZordering
-    
-    ' set the tooltips on the main screen
-    Call setMainTooltips
-    
-    ' set the hiding time for the hiding timer, can't read the minutes from comboxbox as the prefs isn't yet open
-    Call setHidingTime
 
-    If minutesToHide > 0 Then menuForm.mnuHideWidget.Caption = "Hide Widget for " & minutesToHide & " min."
     
    On Error GoTo 0
    Exit Sub
@@ -810,27 +838,6 @@ Public Sub adjustAnemometerMainControls()
     'Call validateInputs
     
     fAnemometer.anemoAdjustZoom Val(PzGAnemometerGaugeSize) / 100
-
-    If PzGGaugeFunctions = "1" Then
-        menuForm.mnuSwitchOff.Checked = False
-        menuForm.mnuTurnFunctionsOn.Checked = True
-    Else
-        menuForm.mnuSwitchOff.Checked = True
-        menuForm.mnuTurnFunctionsOn.Checked = False
-    End If
-    
-    If PzGDefaultEditor <> vbNullString And PzGDebug = "1" Then
-        menuForm.mnuEditWidget.Caption = "Edit Widget using " & PzGDefaultEditor
-        menuForm.mnuEditWidget.Visible = True
-    Else
-        menuForm.mnuEditWidget.Visible = False
-    End If
-    
-    If PzGShowTaskbar = "0" Then
-        fAnemometer.anemometerGaugeForm.ShowInTaskbar = False
-    Else
-        fAnemometer.anemometerGaugeForm.ShowInTaskbar = True
-    End If
     
     ' set the characteristics of the interactive areas
     ' Note: set the Hover colour close to the original layer to avoid too much intrusion, 0 being grey
@@ -912,6 +919,104 @@ adjustAnemometerMainControls_Error:
 
 End Sub
 
+
+
+'---------------------------------------------------------------------------------------
+' Procedure : adjustHumidityMainControls
+' Author    : Dean Beedell (yereverluvinunclebert)
+' Date      : 27/04/2023
+' Purpose   : called at runtime and on restart, sets the characteristics of the gauge, individual controls and menus
+'---------------------------------------------------------------------------------------
+'
+Public Sub adjustHumidityMainControls()
+   
+   On Error GoTo adjustHumidityMainControls_Error
+
+    ' validate the inputs of any data from the input settings file
+    'Call validateInputs
+    
+    fHumidity.HumidAdjustZoom Val(PzGHumidityGaugeSize) / 100
+    
+    ' set the characteristics of the interactive areas
+    ' Note: set the Hover colour close to the original layer to avoid too much intrusion, 0 being grey
+    With fHumidity.humidityGaugeForm.Widgets("housing/helpbutton").Widget
+        .HoverColor = 0 ' set the hover colour to grey - this may change later with new RC6
+        .MousePointer = IDC_HAND
+        .Alpha = Val(PzGOpacity) / 100
+    End With
+     
+    With fHumidity.humidityGaugeForm.Widgets("housing/startbutton").Widget
+        .HoverColor = 0 ' set the hover colour to grey - this may change later with new RC6
+        .MousePointer = IDC_HAND
+        .Alpha = Val(PzGOpacity) / 100
+        .Tag = 0.25
+    End With
+      
+    With fHumidity.humidityGaugeForm.Widgets("housing/stopbutton").Widget
+        .HoverColor = 0 ' set the hover colour to grey - this may change later with new RC6
+        .MousePointer = IDC_HAND
+        .Alpha = Val(PzGOpacity) / 100
+        .Tag = 0.25
+    End With
+      
+    With fHumidity.humidityGaugeForm.Widgets("housing/switchfacesbutton").Widget
+        .HoverColor = 0 ' set the hover colour to grey - this may change later with new RC6
+        .MousePointer = IDC_HAND
+        .Alpha = Val(PzGOpacity) / 100
+    End With
+          
+    With fHumidity.humidityGaugeForm.Widgets("housing/lockbutton").Widget
+        .HoverColor = 0 ' set the hover colour to grey - this may change later with new RC6
+        .MousePointer = IDC_HAND
+    End With
+          
+    With fHumidity.humidityGaugeForm.Widgets("housing/prefsbutton").Widget
+        .HoverColor = 0 ' set the hover colour to grey - this may change later with new RC6
+        .MousePointer = IDC_HAND
+        .Alpha = Val(PzGOpacity) / 100
+    End With
+          
+    With fHumidity.humidityGaugeForm.Widgets("housing/tickbutton").Widget
+        .HoverColor = 0 ' set the hover colour to grey - this may change later with new RC6
+        .MousePointer = IDC_HAND
+    End With
+    
+    With fHumidity.humidityGaugeForm.Widgets("housing/surround").Widget
+        .HoverColor = 0 ' set the hover colour to grey - this may change later with new RC6
+        .MousePointer = IDC_SIZEALL
+        .Alpha = Val(PzGOpacity) / 100
+    End With
+    
+'    If PzGPointerAnimate = "0" Then
+'        overlayHumidWidget.pointerAnimate = False
+'        fHumidity.HumidityGaugeForm.Widgets("housing/tickbutton").Widget.Alpha = Val(PzGOpacity) / 100
+'    Else
+'        overlayHumidWidget.pointerAnimate = True
+'        fHumidity.HumidityGaugeForm.Widgets("housing/tickbutton").Widget.Alpha = 0
+'    End If
+        
+    If PzGPreventDraggingHumidity = "0" Then
+        menuForm.mnuLockTemperatureGauge.Checked = False
+        overlayHumidWidget.Locked = False
+        fHumidity.humidityGaugeForm.Widgets("housing/lockbutton").Widget.Alpha = Val(PzGOpacity) / 100
+    Else
+        menuForm.mnuLockTemperatureGauge.Checked = True
+        overlayHumidWidget.Locked = True ' this is just here for continuity's sake, it is also set at the time the control is selected
+        fHumidity.humidityGaugeForm.Widgets("housing/lockbutton").Widget.Alpha = 0
+    End If
+
+    overlayHumidWidget.thisOpacity = Val(PzGOpacity)
+               
+    
+   On Error GoTo 0
+   Exit Sub
+
+adjustHumidityMainControls_Error:
+
+    MsgBox "Error " & Err.Number & " (" & Err.Description & ") in procedure adjustHumidityMainControls of Module modMain"
+
+End Sub
+
 '---------------------------------------------------------------------------------------
 ' Procedure : setAlphaFormZordering
 ' Author    : Dean Beedell (yereverluvinunclebert)
@@ -982,6 +1087,8 @@ Public Sub readSettingsFile(ByVal location As String, ByVal PzGSettingsFile As S
         
         PzGTemperatureGaugeSize = fGetINISetting(location, "temperatureGaugeSize", PzGSettingsFile)
         PzGAnemometerGaugeSize = fGetINISetting("Software\PzAnemometerGauge", "anemometerGaugeSize", PzGSettingsFile)
+        PzGHumidityGaugeSize = fGetINISetting("Software\PzHumidityGauge", "humidityGaugeSize", PzGSettingsFile)
+        
         
         PzGClipBSize = fGetINISetting("Software\PzClipB", "clipBSize", PzGSettingsFile)
         PzGSelectorSize = fGetINISetting("Software\PzSelector", "selectorSize", PzGSettingsFile)
@@ -1004,6 +1111,9 @@ Public Sub readSettingsFile(ByVal location As String, ByVal PzGSettingsFile As S
           
         PzGAnemometerLandscape = fGetINISetting("Software\PzAnemometerGauge", "anemometerLandscape", PzGSettingsFile)
         PzGAnemometerPortrait = fGetINISetting("Software\PzAnemometerGauge", "anemometerPortrait", PzGSettingsFile)
+          
+        PzGHumidityLandscape = fGetINISetting("Software\PzHumidityGauge", "humidityLandscape", PzGSettingsFile)
+        PzGHumidityPortrait = fGetINISetting("Software\PzHumidityGauge", "humidityPortrait", PzGSettingsFile)
               
         PzGAnemometerLandscapeHoffset = fGetINISetting("Software\PzAnemometerGauge", "anemometerLandscapeHoffset", PzGSettingsFile)
         PzGAnemometerLandscapeVoffset = fGetINISetting("Software\PzAnemometerGauge", "anemometerLandscapeVoffset", PzGSettingsFile)
@@ -1042,6 +1152,12 @@ Public Sub readSettingsFile(ByVal location As String, ByVal PzGSettingsFile As S
         PzGAnemometerFormHighDpiYPos = fGetINISetting("Software\PzAnemometerGauge", "anemometerFormHighDpiYPos", PzGSettingsFile)
         PzGAnemometerFormLowDpiXPos = fGetINISetting("Software\PzAnemometerGauge", "anemometerFormLowDpiXPos", PzGSettingsFile)
         PzGAnemometerFormLowDpiYPos = fGetINISetting("Software\PzAnemometerGauge", "anemometerFormLowDpiYPos", PzGSettingsFile)
+        
+        ' other
+        PzGHumidityFormHighDpiXPos = fGetINISetting("Software\PzHumidityGauge", "humidityFormHighDpiXPos", PzGSettingsFile)
+        PzGHumidityFormHighDpiYPos = fGetINISetting("Software\PzHumidityGauge", "humidityFormHighDpiYPos", PzGSettingsFile)
+        PzGHumidityFormLowDpiXPos = fGetINISetting("Software\PzHumidityGauge", "humidityFormLowDpiXPos", PzGSettingsFile)
+        PzGHumidityFormLowDpiYPos = fGetINISetting("Software\PzHumidityGauge", "humidityFormLowDpiYPos", PzGSettingsFile)
                 
         ' other
         PzGClipBFormHighDpiXPos = fGetINISetting("Software\PzClipB", "clipBFormHighDpiXPos", PzGSettingsFile)
@@ -1062,6 +1178,8 @@ Public Sub readSettingsFile(ByVal location As String, ByVal PzGSettingsFile As S
         PzGWindowLevel = fGetINISetting(location, "windowLevel", PzGSettingsFile)
         PzGPreventDraggingTemperature = fGetINISetting(location, "preventDraggingTemperature", PzGSettingsFile)
         PzGPreventDraggingAnemometer = fGetINISetting("Software\PzAnemometerGauge", "preventDraggingAnemometer", PzGSettingsFile)
+        PzGPreventDraggingHumidity = fGetINISetting("Software\PzHumidityGauge", "PzGPreventDraggingHumidity", PzGSettingsFile)
+        
         
         PzGOpacity = fGetINISetting(location, "opacity", PzGSettingsFile)
         
@@ -1107,7 +1225,7 @@ Public Sub validateInputs()
    On Error GoTo validateInputs_Error
             
         ' general
-    If PzGGaugeFunctions = vbNullString Then PzGGaugeFunctions = "1" ' always turn
+    If PzGGaugeFunctions = vbNullString Then PzGGaugeFunctions = "1" ' always turn on
 '        If PzGAnimationInterval = vbNullString Then PzGAnimationInterval = "130"
     If PzGStartup = vbNullString Then PzGStartup = "1"
 '    If PzGPointerAnimate = vbNullString Then PzGPointerAnimate = "0"
@@ -1132,6 +1250,7 @@ Public Sub validateInputs()
     If PzGDpiAwareness = vbNullString Then PzGDpiAwareness = "0"
     If PzGTemperatureGaugeSize = vbNullString Then PzGTemperatureGaugeSize = "50"
     If PzGAnemometerGaugeSize = vbNullString Then PzGAnemometerGaugeSize = "50"
+    If PzGHumidityGaugeSize = vbNullString Then PzGHumidityGaugeSize = "50"
     
     If PzGClipBSize = vbNullString Then PzGClipBSize = "50"
     If PzGSelectorSize = vbNullString Then PzGSelectorSize = "100"
@@ -1169,6 +1288,14 @@ Public Sub validateInputs()
     If PzGAnemometerPortraitHoffset = vbNullString Then PzGAnemometerPortraitHoffset = vbNullString
     If PzGAnemometerPortraitVoffset = vbNullString Then PzGAnemometerPortraitVoffset = vbNullString
     
+    If PzGHumidityLandscape = vbNullString Then PzGHumidityLandscape = "0"
+    If PzGHumidityPortrait = vbNullString Then PzGHumidityPortrait = "0"
+    If PzGHumidityLandscapeHoffset = vbNullString Then PzGHumidityLandscapeHoffset = vbNullString
+    If PzGHumidityLandscapeVoffset = vbNullString Then PzGHumidityLandscapeVoffset = vbNullString
+    If PzGHumidityPortraitHoffset = vbNullString Then PzGHumidityPortraitHoffset = vbNullString
+    If PzGHumidityPortraitVoffset = vbNullString Then PzGHumidityPortraitVoffset = vbNullString
+   
+    
     If PzGTemperatureVLocationPerc = vbNullString Then PzGTemperatureVLocationPerc = vbNullString
     If PzGTemperatureHLocationPerc = vbNullString Then PzGTemperatureHLocationPerc = vbNullString
             
@@ -1186,7 +1313,7 @@ Public Sub validateInputs()
     If PzGIgnoreMouse = vbNullString Then PzGIgnoreMouse = "0"
     If PzGPreventDraggingTemperature = vbNullString Then PzGPreventDraggingTemperature = "0"
     If PzGPreventDraggingAnemometer = vbNullString Then PzGPreventDraggingAnemometer = "0"
-    
+    If PzGPreventDraggingHumidity = vbNullString Then PzGPreventDraggingHumidity = "0"
     
     ' other
     If PzGFirstTimeRun = vbNullString Then PzGFirstTimeRun = "true"
@@ -1568,6 +1695,48 @@ Private Sub loadAnemometerExcludePathCollection()
 loadAnemometerExcludePathCollection_Error:
 
     MsgBox "Error " & Err.Number & " (" & Err.Description & ") in procedure loadAnemometerExcludePathCollection of Module modMain"
+
+End Sub
+
+
+
+'---------------------------------------------------------------------------------------
+' Procedure : loadHumidityExcludePathCollection
+' Author    : Dean Beedell (yereverluvinunclebert)
+' Date      : 30/07/2023
+' Purpose   : Do not create Widgets for those in the exclude list.
+'             all non UI-interacting elements (no mouse events) must be inserted here
+'---------------------------------------------------------------------------------------
+'
+Private Sub loadHumidityExcludePathCollection()
+
+    'all of these will be rendered in cwOverlay in the same order as below
+    On Error GoTo loadHumidityExcludePathCollection_Error
+
+    With fHumidity.collHumidityPSDNonUIElements ' the exclude list
+
+        .Add Empty, "humidityface"
+        
+        .Add Empty, "bigreflection"     'all reflections
+        .Add Empty, "windowreflection"
+
+        .Add Empty, "redlamptrue"
+        .Add Empty, "redlampfalse"
+        
+        .Add Empty, "directionpointer"
+        
+        .Add Empty, "pointerShadow"
+        .Add Empty, "pointer"
+       
+        
+    End With
+
+   On Error GoTo 0
+   Exit Sub
+
+loadHumidityExcludePathCollection_Error:
+
+    MsgBox "Error " & Err.Number & " (" & Err.Description & ") in procedure loadHumidityExcludePathCollection of Module modMain"
 
 End Sub
 

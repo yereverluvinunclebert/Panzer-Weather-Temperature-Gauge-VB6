@@ -314,6 +314,7 @@ Public PzGDpiAwareness As String
 
 Public PzGTemperatureGaugeSize As String
 Public PzGAnemometerGaugeSize As String
+Public PzGHumidityGaugeSize As String
 
 Public PzGClipBSize As String
 Public PzGSelectorSize As String
@@ -341,11 +342,23 @@ Public PzGAnemometerLandscapeVoffset As String
 Public PzGAnemometerPortraitHoffset As String
 Public PzGAnemometerPortraitVoffset As String
 
+Public PzGHumidityLandscape As String
+Public PzGHumidityPortrait As String
+
+Public PzGHumidityLandscapeHoffset As String
+Public PzGHumidityLandscapeVoffset As String
+Public PzGHumidityPortraitHoffset As String
+Public PzGHumidityPortraitVoffset As String
+
 Public PzGTemperatureVLocationPerc As String
 Public PzGTemperatureHLocationPerc As String
 
+
 Public PzGAnemometerVLocationPerc As String
 Public PzGAnemometerHLocationPerc As String
+
+Public PzGHumidityVLocationPerc As String
+Public PzGHumidityHLocationPerc As String
 
 ' sounds
 Public PzGEnableSounds  As String
@@ -368,6 +381,8 @@ Public PzGPrefsFontColour  As String
 Public PzGWindowLevel As String
 Public PzGPreventDraggingTemperature As String
 Public PzGPreventDraggingAnemometer As String
+Public PzGPreventDraggingHumidity As String
+
 
 Public PzGOpacity  As String
 Public PzGWidgetHidden  As String
@@ -393,6 +408,11 @@ Public PzGAnemometerFormHighDpiXPos As String
 Public PzGAnemometerFormHighDpiYPos As String
 Public PzGAnemometerFormLowDpiXPos As String
 Public PzGAnemometerFormLowDpiYPos As String
+
+Public PzGHumidityFormHighDpiXPos As String
+Public PzGHumidityFormHighDpiYPos As String
+Public PzGHumidityFormLowDpiXPos As String
+Public PzGHumidityFormLowDpiYPos As String
 
 Public PzGClipBFormHighDpiXPos As String
 Public PzGClipBFormHighDpiYPos As String
@@ -1987,6 +2007,22 @@ Public Sub makeVisibleFormElements()
     End If
     fAnemometer.anemometerGaugeForm.Show
 
+
+    ' position the Humidity gauge explicitly by px position
+    If PzGWidgetPosition = "0" Then
+        If PzGDpiAwareness = "1" Then
+            fHumidity.humidityGaugeForm.Left = Val(PzGHumidityFormHighDpiXPos)
+            fHumidity.humidityGaugeForm.Top = Val(PzGHumidityFormHighDpiYPos)
+        Else
+            fHumidity.humidityGaugeForm.Left = Val(PzGHumidityFormLowDpiXPos)
+            fHumidity.humidityGaugeForm.Top = Val(PzGHumidityFormLowDpiYPos)
+        End If
+    Else ' by percentage (tablet)
+        fHumidity.humidityGaugeForm.Left = screenWidthPixels * (PzGHumidityHLocationPerc / 100)
+        fHumidity.humidityGaugeForm.Top = screenHeightPixels * (PzGHumidityVLocationPerc / 100)
+    End If
+    fHumidity.humidityGaugeForm.Show
+
     On Error GoTo 0
     Exit Sub
 
@@ -2240,6 +2276,13 @@ Public Sub mainScreen()
         PzGAnemometerHLocationPerc = Str$(fAnemometer.anemometerGaugeForm.Left / screenWidthPixels * 100)
         PzGAnemometerVLocationPerc = Str$(fAnemometer.anemometerGaugeForm.Top / screenHeightPixels * 100)
     End If
+    
+     ' calculate the current hlocation in % of the screen
+    ' store the current hlocation in % of the screen
+    If PzGWidgetPosition = "1" Then
+        PzGHumidityHLocationPerc = Str$(fHumidity.humidityGaugeForm.Left / screenWidthPixels * 100)
+        PzGHumidityVLocationPerc = Str$(fHumidity.humidityGaugeForm.Top / screenHeightPixels * 100)
+    End If
    
    On Error GoTo 0
    Exit Sub
@@ -2296,6 +2339,7 @@ Public Sub unloadAllForms(ByVal endItAll As Boolean)
     helpWidget.Widgets.RemoveAll
     fTemperature.temperatureGaugeForm.Widgets.RemoveAll
     fAnemometer.anemometerGaugeForm.Widgets.RemoveAll
+    fHumidity.humidityGaugeForm.Widgets.RemoveAll
     fSelector.SelectorForm.Widgets.RemoveAll
     fClipB.clipBForm.Widgets.RemoveAll
     
@@ -2312,6 +2356,7 @@ Public Sub unloadAllForms(ByVal endItAll As Boolean)
     fMain.helpForm.Unload
     fTemperature.temperatureGaugeForm.Unload
     fAnemometer.anemometerGaugeForm.Unload
+    fHumidity.humidityGaugeForm.Unload
     fSelector.SelectorForm.Unload
     fClipB.clipBForm.Unload
     fMain.licenceForm.Unload
@@ -2323,6 +2368,7 @@ Public Sub unloadAllForms(ByVal endItAll As Boolean)
     Set fMain.helpForm = Nothing
     Set fTemperature.temperatureGaugeForm = Nothing
     Set fAnemometer.anemometerGaugeForm = Nothing
+    Set fHumidity.humidityGaugeForm = Nothing
     Set fSelector.SelectorForm = Nothing
     Set fMain.licenceForm = Nothing
     
@@ -2463,6 +2509,49 @@ saveAnemometerGaugePosition_Error:
     
 End Sub
     
+'---------------------------------------------------------------------------------------
+' Procedure : saveHumidityGaugePosition
+' Author    : Dean Beedell (yereverluvinunclebert)
+' Date      : 04/08/2023
+' Purpose   :
+'---------------------------------------------------------------------------------------
+'
+Public Sub saveHumidityGaugePosition()
+
+   On Error GoTo saveHumidityGaugePosition_Error
+
+    If PzGDpiAwareness = "1" Then
+        PzGHumidityFormHighDpiXPos = Str$(fHumidity.humidityGaugeForm.Left) ' saving in pixels
+        PzGHumidityFormHighDpiYPos = Str$(fHumidity.humidityGaugeForm.Top)
+        sPutINISetting "Software\PzHumidityGauge", "humidityFormHighDpiXPos", PzGHumidityFormHighDpiXPos, PzGSettingsFile
+        sPutINISetting "Software\PzHumidityGauge", "humidityFormHighDpiYPos", PzGHumidityFormHighDpiYPos, PzGSettingsFile
+    Else
+        PzGHumidityFormLowDpiXPos = Str$(fHumidity.humidityGaugeForm.Left) ' saving in pixels
+        PzGHumidityFormLowDpiYPos = Str$(fHumidity.humidityGaugeForm.Top)
+        sPutINISetting "Software\PzHumidityGauge", "humidityFormLowDpiXPos", PzGHumidityFormLowDpiXPos, PzGSettingsFile
+        sPutINISetting "Software\PzHumidityGauge", "humidityFormLowDpiYPos", PzGHumidityFormLowDpiYPos, PzGSettingsFile
+    End If
+    
+    ' calculate the current hlocation in % of the screen
+    ' store the current hlocation in % of the screen
+    If PzGWidgetPosition = "1" Then
+        PzGHumidityHLocationPerc = Str$(fHumidity.humidityGaugeForm.Left / screenWidthPixels * 100)
+        PzGHumidityVLocationPerc = Str$(fHumidity.humidityGaugeForm.Top / screenHeightPixels * 100)
+    End If
+
+    
+    PzGHumidityGaugeSize = Str$(fHumidity.humidityGaugeForm.WidgetRoot.Zoom * 100)
+    sPutINISetting "Software\PzHumidityGauge", "humidityGaugeSize", PzGHumidityGaugeSize, PzGSettingsFile
+
+   On Error GoTo 0
+   Exit Sub
+
+saveHumidityGaugePosition_Error:
+
+    MsgBox "Error " & Err.Number & " (" & Err.Description & ") in procedure saveHumidityGaugePosition of Module Module1"
+    
+End Sub
+      
  '---------------------------------------------------------------------------------------
 ' Procedure : saveClipboardGaugePosition
 ' Author    : Dean Beedell (yereverluvinunclebert)

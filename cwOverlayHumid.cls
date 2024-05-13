@@ -6,24 +6,24 @@ BEGIN
   DataSourceBehavior  = 0  'vbNone
   MTSTransactionMode  = 0  'NotAnMTSObject
 END
-Attribute VB_Name = "cwOverlayAnemo"
+Attribute VB_Name = "cwOverlayHumid"
 Attribute VB_GlobalNameSpace = False
 Attribute VB_Creatable = True
 Attribute VB_PredeclaredId = False
 Attribute VB_Exposed = False
 '@IgnoreModule AssignmentNotUsed, IntegerDataType, ModuleWithoutFolder
 '---------------------------------------------------------------------------------------
-' Module    : cwOverlayAnemo
+' Module    : cwOverlayHumid
 ' Author    : Dean Beedell (yereverluvinunclebert)
 ' Date      : 31/07/2023
 ' Purpose   : create a fully click-through Widget, which allows for all kind of
-'             things to render on top of the PSD-generated Widgets created in cfAnemometer
+'             things to render on top of the PSD-generated Widgets created in cfHumidity
 '---------------------------------------------------------------------------------------
 
 Option Explicit
 
-'these Public Properties are set in the Parent (here, cfAnemometer)
-Public cCollOverlayAnemoImages As cCollection
+'these Public Properties are set in the Parent (here, cfHumidity)
+Public cCollOverlayHumidImages As cCollection
 
 
 Public cxPerc As Single
@@ -32,14 +32,11 @@ Public cyPerc As Single
 Private WithEvents W As cWidgetBase
 Attribute W.VB_VarHelpID = -1
 
-Private windSpeedSDeg As Single
-Private windDirectionSDeg As Single
+Private thisHumidity As Long
+Private mHumidity  As Integer
 
-Private mWindSpeed  As Integer
-Private mWindDirection  As Integer
-
-
-Private oldWindSpeedSDeg As Double
+Private humiditySDeg As Single
+Private oldHumiditySDeg As Double
 Private newSDeg As Double
 Private animationQuanta As Double
 Private animationAmount As Double
@@ -49,7 +46,7 @@ Private animateCCW As Boolean
 
 Private mPointerAnimate As Boolean ' property PointerAnimate
 Private mLocked As Boolean ' property Locked
-Private mAnemometerDetails As String ' property
+Private mHumidityDetails As String ' property
 Private mHidden As Boolean ' property Hidden
 Private mThisOpacity As String ' property ThisOpacity
 
@@ -70,13 +67,13 @@ Private Sub Class_Initialize()
     Set W = Cairo.WidgetBase
         W.BackColor = -1  'we don't use any BackColor here, transparent
         W.ImplementsHitTest = True 'when at False, no HitTest-Event would be triggered
-                    
+                         
    On Error GoTo 0
    Exit Sub
 
 Class_Initialize_Error:
 
-    MsgBox "Error " & Err.Number & " (" & Err.Description & ") in procedure Class_Initialize of Class Module cwOverlayAnemo"
+    MsgBox "Error " & Err.Number & " (" & Err.Description & ") in procedure Class_Initialize of Class Module cwOverlayHumid"
 End Sub
 
 '---------------------------------------------------------------------------------------
@@ -96,7 +93,7 @@ Public Property Get Widget() As cWidgetBase
 
 Widget_Error:
 
-    MsgBox "Error " & Err.Number & " (" & Err.Description & ") in procedure Widget of Class Module cwOverlayAnemo"
+    MsgBox "Error " & Err.Number & " (" & Err.Description & ") in procedure Widget of Class Module cwOverlayHumid"
 End Property
 '---------------------------------------------------------------------------------------
 ' Procedure : Widgets
@@ -115,89 +112,50 @@ Public Property Get Widgets() As cWidgets
 
 Widgets_Error:
 
-    MsgBox "Error " & Err.Number & " (" & Err.Description & ") in procedure Widgets of Class Module cwOverlayAnemo"
+    MsgBox "Error " & Err.Number & " (" & Err.Description & ") in procedure Widgets of Class Module cwOverlayHumid"
 End Property
 '---------------------------------------------------------------------------------------
-' Property : WindSpeed
+' Property : Humidity
 ' Author    : Dean Beedell (yereverluvinunclebert)
 ' Date      : 17/05/2023
 ' Purpose   :
 '---------------------------------------------------------------------------------------
 '
-Public Property Get windSpeed() As Integer
-   On Error GoTo WindSpeedGet_Error
+Public Property Get humidity() As Integer
+   On Error GoTo HumidityGet_Error
 
-   windSpeed = mWindSpeed
+   humidity = mHumidity
 
    On Error GoTo 0
    Exit Property
 
-WindSpeedGet_Error:
+HumidityGet_Error:
 
-    MsgBox "Error " & Err.Number & " (" & Err.Description & ") in Property WindSpeed of Class Module cwOverlayTemp"
+    MsgBox "Error " & Err.Number & " (" & Err.Description & ") in Property Humidity of Class Module cwOverlayTemp"
 End Property
 '---------------------------------------------------------------------------------------
-' Property  : WindSpeed
+' Property  : Humidity
 ' Author    : Dean Beedell (yereverluvinunclebert)
 ' Date      : 17/05/2023
 ' Purpose   :
 '---------------------------------------------------------------------------------------
 '
-Public Property Let windSpeed(ByVal newValue As Integer)
-   On Error GoTo WindSpeedLet_Error
+Public Property Let humidity(ByVal newValue As Integer)
+   On Error GoTo HumidityLet_Error
 
-   If mWindSpeed <> newValue Then mWindSpeed = newValue Else Exit Property
+   If mHumidity <> newValue Then mHumidity = newValue Else Exit Property
    
-   Call obtainWindSpeed
+   Call obtainHumidity
 
    On Error GoTo 0
    Exit Property
 
-WindSpeedLet_Error:
+HumidityLet_Error:
 
-    MsgBox "Error " & Err.Number & " (" & Err.Description & ") in Property WindSpeed of Class Module cwOverlayTemp"
+    MsgBox "Error " & Err.Number & " (" & Err.Description & ") in Property Humidity of Class Module cwOverlayTemp"
 End Property
 
-'---------------------------------------------------------------------------------------
-' Property : windDirection
-' Author    : Dean Beedell (yereverluvinunclebert)
-' Date      : 17/05/2023
-' Purpose   :
-'---------------------------------------------------------------------------------------
-'
-Public Property Get windDirection() As Integer
-   On Error GoTo windDirectionGet_Error
 
-   windDirection = mWindDirection
-
-   On Error GoTo 0
-   Exit Property
-
-windDirectionGet_Error:
-
-    MsgBox "Error " & Err.Number & " (" & Err.Description & ") in Property windDirection of Class Module cwOverlayTemp"
-End Property
-'---------------------------------------------------------------------------------------
-' Property  : windDirection
-' Author    : Dean Beedell (yereverluvinunclebert)
-' Date      : 17/05/2023
-' Purpose   :
-'---------------------------------------------------------------------------------------
-'
-Public Property Let windDirection(ByVal newValue As Integer)
-   On Error GoTo windDirectionLet_Error
-
-   If mWindDirection <> newValue Then mWindDirection = newValue Else Exit Property
-   
-    Call obtainWindDirection
-
-   On Error GoTo 0
-   Exit Property
-
-windDirectionLet_Error:
-
-    MsgBox "Error " & Err.Number & " (" & Err.Description & ") in Property windDirection of Class Module cwOverlayTemp"
-End Property
 
 '---------------------------------------------------------------------------------------
 ' Property : thisOpacity
@@ -216,7 +174,7 @@ Public Property Get thisOpacity() As String
 
 thisOpacityGet_Error:
 
-    MsgBox "Error " & Err.Number & " (" & Err.Description & ") in Property thisOpacity of Class Module cwOverlayAnemo"
+    MsgBox "Error " & Err.Number & " (" & Err.Description & ") in Property thisOpacity of Class Module cwOverlayHumid"
 End Property
 '---------------------------------------------------------------------------------------
 ' Property  : thisOpacity
@@ -235,7 +193,7 @@ Public Property Let thisOpacity(ByVal newValue As String)
 
 thisOpacityLet_Error:
 
-    MsgBox "Error " & Err.Number & " (" & Err.Description & ") in Property thisOpacity of Class Module cwOverlayAnemo"
+    MsgBox "Error " & Err.Number & " (" & Err.Description & ") in Property thisOpacity of Class Module cwOverlayHumid"
 End Property
 
 
@@ -256,7 +214,7 @@ Public Property Get pointerAnimate() As Boolean
 
 pointerAnimateGet_Error:
 
-    MsgBox "Error " & Err.Number & " (" & Err.Description & ") in Property pointerAnimate of Class Module cwOverlayAnemo"
+    MsgBox "Error " & Err.Number & " (" & Err.Description & ") in Property pointerAnimate of Class Module cwOverlayHumid"
 End Property
 '---------------------------------------------------------------------------------------
 ' Property  : pointerAnimate
@@ -314,40 +272,40 @@ Public Property Let Locked(ByVal newValue As Boolean)
     fileToPlay = "lock.wav"
 
     If mLocked = True Then
-        menuForm.mnuLockAnemometerGauge.Checked = True
+        menuForm.mnuLockHumidityGauge.Checked = True
         If panzerPrefs.IsVisible = True Then
             panzerPrefs.chkPreventDragging.Value = 1
             panzerPrefs.cmbLandscape.ListIndex = 1
         End If
 
-        PzGPreventDraggingAnemometer = "1"
+        PzGPreventDraggingHumidity = "1"
         If aspectRatio = "landscape" Then
-            PzGAnemometerLandscape = "1"
+            PzGHumidityLandscape = "1"
         Else
-            PzGAnemometerPortrait = "1"
+            PzGHumidityPortrait = "1"
         End If
             
-        fAnemometer.anemometerGaugeForm.Widgets("housing/lockbutton").Widget.Alpha = 0
+        fHumidity.humidityGaugeForm.Widgets("housing/lockbutton").Widget.Alpha = 0
     Else
-        menuForm.mnuLockAnemometerGauge.Checked = False
+        menuForm.mnuLockHumidityGauge.Checked = False
         If panzerPrefs.IsVisible = True Then
             panzerPrefs.chkPreventDragging.Value = 0
             panzerPrefs.cmbLandscape.ListIndex = 0
         End If
 
-        PzGPreventDraggingAnemometer = "0"
+        PzGPreventDraggingHumidity = "0"
         If aspectRatio = "landscape" Then
-            PzGAnemometerLandscape = "0"
+            PzGHumidityLandscape = "0"
         Else
-            PzGAnemometerPortrait = "0"
+            PzGHumidityPortrait = "0"
         End If
             
-        fAnemometer.anemometerGaugeForm.Widgets("housing/lockbutton").Widget.Alpha = Val(PzGOpacity) / 100
+        fHumidity.humidityGaugeForm.Widgets("housing/lockbutton").Widget.Alpha = Val(PzGOpacity) / 100
     End If
 
-    fAnemometer.anemometerGaugeForm.Refresh
+    fHumidity.humidityGaugeForm.Refresh
 
-    sPutINISetting "Software\PzAnemometerGauge", "preventDraggingTemperature", PzGPreventDraggingAnemometer, PzGSettingsFile
+    sPutINISetting "Software\PzHumidityGauge", "preventDraggingTemperature", PzGPreventDraggingHumidity, PzGSettingsFile
 
     If PzGEnableSounds = "1" And fFExists(App.path & "\resources\sounds\" & fileToPlay) Then
         PlaySound App.path & "\resources\sounds\" & fileToPlay, ByVal 0&, SND_FILENAME Or SND_ASYNC
@@ -465,9 +423,9 @@ Private Sub W_Paint(CC As RC6.cCairoContext, ByVal xAbs As Single, ByVal yAbs As
     W.Refresh
     someOpacity = (Val(mThisOpacity) / 100) * 0.75
     
-    For i = 0 To cCollOverlayAnemoImages.Count - 1 ' this is the ExcludedPaths collection populated in cfTemperature by duplicating collTemperaturePSDNonUIElements.
-      arr = cCollOverlayAnemoImages.ItemByIndex(i)
-      key = cCollOverlayAnemoImages.KeyByIndex(i)
+    For i = 0 To cCollOverlayHumidImages.Count - 1 ' this is the ExcludedPaths collection populated in cfTemperature by duplicating collTemperaturePSDNonUIElements.
+      arr = cCollOverlayHumidImages.ItemByIndex(i)
+      key = cCollOverlayHumidImages.KeyByIndex(i)
       
       If IsArray(arr) Then
              CC.Save
@@ -477,51 +435,26 @@ Private Sub W_Paint(CC As RC6.cCairoContext, ByVal xAbs As Single, ByVal yAbs As
             ' for specific keys perform rotation actions, clock hands &c
              Select Case key
                  
-                 Case "anemometerface"
+                 Case "Humidityface"
                     
                         Set Pat.Matrix = Pat.Matrix.TranslateCoords(-arr(0), -arr(1)) 'shift the Pattern via the original X,Y PSD-Offsets (stored in Arr(0) and Arr(1))
                         CC.Paint arr(2), Pat 'render the Pattern
-        
-                Case "redlamptrue"
-                    
-                    If mWindSpeed >= 34 Then
-                        Set Pat.Matrix = Pat.Matrix.TranslateCoords(-arr(0), -arr(1)) 'shift the Pattern via the original X,Y PSD-Offsets (stored in Arr(0) and Arr(1))
-                        CC.Paint arr(2), Pat 'render the Pattern
-                    End If
-                    
-                 Case "redlampfalse"
-                    
-                    If mWindSpeed < 34 Then
-                        Set Pat.Matrix = Pat.Matrix.TranslateCoords(-arr(0), -arr(1))
-                        CC.Paint arr(2), Pat ' render the Pattern
-                    End If
-                                    
-                    
-                 Case "directionpointer"
-                                         
-                    Set Pat.Matrix = Pat.Matrix.TranslateCoords(4, 180) 'shift to the "rotation-point" within the Pattern
-                    CC.TranslateDrawings W.Width * cxPerc, W.Height * cyPerc 'shift to the center-point of the Overlay-Widget-area
-                    
-                    ' windDirectionSDeg = 180 ' debug
-                    
-                    CC.RotateDrawingsDeg windDirectionSDeg
-                    CC.Paint arr(2), Pat 'render the Pattern with the current PSD-LayerAlpha, present in Arr(2)
-                  
+                                            
                  Case "pointerShadow", "pointer"
 
-                    If Val(mWindSpeed) >= 100 Then
+                    If Val(mHumidity) >= 100 Then
                         boxLeft = 415
                     Else
                         boxLeft = 420
                     End If
 
                      ' draw the date and day in the windows just once to retain opacity
-                    CC.DrawText boxLeft, 185, 180, 200, CStr(mWindSpeed), , , 2, True, , someOpacity
+                    CC.DrawText boxLeft, 185, 180, 200, CStr(mHumidity), , , 2, True, , someOpacity
 
                     Set Pat.Matrix = Pat.Matrix.TranslateCoords(11, 246) 'shift to the "rotation-point" within the Pattern
                     CC.TranslateDrawings W.Width * cxPerc, W.Height * cyPerc 'shift to the center-point of the Overlay-Widget-area
 
-                    CC.RotateDrawingsDeg windSpeedSDeg
+                    CC.RotateDrawingsDeg humiditySDeg
                     CC.Paint arr(2), Pat 'render the Pattern with the current PSD-LayerAlpha, present in Arr(2)
 
                  Case Else 'plain output for everything else ... this includes the reflection-layers,
@@ -547,22 +480,22 @@ End Sub
 
 '
 ' ----------------------------------------------------------------
-' Procedure Name: obtainWindSpeed
+' Procedure Name: obtainHumidity
 ' Purpose:
 ' Procedure Kind: Sub
 ' Procedure Access: Private
 ' Author: Dean Beedell (yereverluvinunclebert)
 ' Date: 13/01/2024
 ' ----------------------------------------------------------------
-Private Sub obtainWindSpeed()
+Private Sub obtainHumidity()
 
-    On Error GoTo obtainWindSpeed_Error
+    On Error GoTo obtainHumidity_Error
     
     ' calculate the new cpu amount in degrees
-    If mWindSpeed = 0 Then
-        windSpeedSDeg = 30
+    If mHumidity = 0 Then
+        humiditySDeg = 30
     Else
-        windSpeedSDeg = (mWindSpeed * 3) + 30
+        humiditySDeg = (mHumidity * 3) + 30
     End If
 
     W.Parent.Refresh
@@ -570,37 +503,14 @@ Private Sub obtainWindSpeed()
     On Error GoTo 0
     Exit Sub
 
-obtainWindSpeed_Error:
+obtainHumidity_Error:
 
-    MsgBox "Error " & Err.Number & " (" & Err.Description & ") in procedure obtainWindSpeed, line " & Erl & "."
-
-End Sub
-
-'
-' ----------------------------------------------------------------
-' Procedure Name: obtainWindDirection
-' Purpose:
-' Procedure Kind: Sub
-' Procedure Access: Private
-' Author: Dean Beedell (yereverluvinunclebert)
-' Date: 13/01/2024
-' ----------------------------------------------------------------
-Private Sub obtainWindDirection()
-
-    On Error GoTo obtainWindDirection_Error
-    
-    windDirectionSDeg = mWindDirection
-
-    W.Parent.Refresh
-
-    On Error GoTo 0
-    Exit Sub
-
-obtainWindDirection_Error:
-
-    MsgBox "Error " & Err.Number & " (" & Err.Description & ") in procedure obtainWindDirection, line " & Erl & "."
+    MsgBox "Error " & Err.Number & " (" & Err.Description & ") in procedure obtainHumidity, line " & Erl & "."
 
 End Sub
+
+
+
 
 
 

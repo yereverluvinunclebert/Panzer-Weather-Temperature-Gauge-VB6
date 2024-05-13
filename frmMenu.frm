@@ -104,6 +104,9 @@ Begin VB.Form menuForm
       Begin VB.Menu mnuLockAnemometerGauge 
          Caption         =   "Lock Anemometer Gauge"
       End
+      Begin VB.Menu mnuLockHumidityGauge 
+         Caption         =   "Lock Humidity Gauge"
+      End
       Begin VB.Menu mnuHideWidget 
          Caption         =   "Hide Widget"
       End
