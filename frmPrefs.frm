@@ -2314,6 +2314,8 @@ Private Sub cmbGaugeType_Click()
         panzerPrefs.sliGaugeSize.Value = Val(PzGTemperatureGaugeSize)
     End If
 
+    'Anemometer gauge
+    
     If cmbGaugeType.ListIndex = 1 Then
         If aspectRatio = "landscape" Then
             If PzGDpiAwareness = "1" Then
@@ -2349,6 +2351,8 @@ Private Sub cmbGaugeType_Click()
 
     End If
     
+    'humidity gauge
+    
     If cmbGaugeType.ListIndex = 2 Then
         If aspectRatio = "landscape" Then
             If PzGDpiAwareness = "1" Then
@@ -2381,6 +2385,43 @@ Private Sub cmbGaugeType_Click()
         End If
         
         panzerPrefs.sliGaugeSize.Value = Val(PzGHumidityGaugeSize)
+
+    End If
+    
+    'barometer gauge
+    
+    If cmbGaugeType.ListIndex = 3 Then
+        If aspectRatio = "landscape" Then
+            If PzGDpiAwareness = "1" Then
+                txtLandscapeHoffset.Text = PzGBarometerFormHighDpiXPos
+                txtLandscapeVoffset.Text = PzGBarometerFormHighDpiYPos
+                txtLandscapeHoffset.ToolTipText = "Last Sampled Form X Horizontal Position : " & PzGBarometerFormHighDpiXPos & "px"
+                txtLandscapeVoffset.ToolTipText = "Last Sampled Form Y Vertical Position : " & PzGBarometerFormHighDpiYPos & "px"
+            Else
+                txtLandscapeHoffset.Text = PzGBarometerFormLowDpiXPos
+                txtLandscapeVoffset.Text = PzGBarometerFormLowDpiYPos
+                txtLandscapeHoffset.ToolTipText = "Last Sampled Form X Horizontal Position : " & PzGBarometerFormLowDpiXPos & "px"
+                txtLandscapeVoffset.ToolTipText = "Last Sampled Form Y Vertical Position : " & PzGBarometerFormLowDpiYPos & "px"
+            End If
+        Else
+            txtPortraitHoffset.Text = fBarometer.barometerGaugeForm.Left
+            txtPortraitVoffset.Text = fBarometer.barometerGaugeForm.Top
+            If PzGDpiAwareness = "1" Then
+                txtPortraitHoffset.ToolTipText = "Last Sampled Form X Horizontal Position : " & PzGBarometerFormHighDpiXPos & "px"
+                txtPortraitVoffset.ToolTipText = "Last Sampled Form Y Vertical Position : " & PzGBarometerFormHighDpiYPos & "px"
+            Else
+                txtPortraitHoffset.ToolTipText = "Last Sampled Form X Horizontal Position : " & PzGBarometerFormLowDpiXPos & "px"
+                txtPortraitVoffset.ToolTipText = "Last Sampled Form Y Vertical Position : " & PzGBarometerFormLowDpiYPos & "px"
+            End If
+        End If
+                
+        If overlayAnemoWidget.Locked Then
+            chkPreventDragging.Value = 1
+        Else
+            chkPreventDragging.Value = 0
+        End If
+        
+        panzerPrefs.sliGaugeSize.Value = Val(PzGBarometerGaugeSize)
 
     End If
     
@@ -3259,6 +3300,33 @@ Private Sub chkPreventDragging_Click()
             End If
         End If
     End If
+            
+    If cmbGaugeType.ListIndex = 3 Then ' Barometer
+        ' immediately make the widget locked in place
+        If chkPreventDragging.Value = 0 Then
+            overlayHumidWidget.Locked = False
+            PzGPreventDraggingBarometer = "0"
+            menuForm.mnuLockBarometerGauge.Checked = False
+            If aspectRatio = "landscape" Then
+                txtLandscapeHoffset.Text = vbNullString
+                txtLandscapeVoffset.Text = vbNullString
+            Else
+                txtPortraitHoffset.Text = vbNullString
+                txtPortraitVoffset.Text = vbNullString
+            End If
+        Else
+            overlayHumidWidget.Locked = True
+            PzGPreventDraggingBarometer = "1"
+            menuForm.mnuLockBarometerGauge.Checked = True
+            If aspectRatio = "landscape" Then
+                txtLandscapeHoffset.Text = fBarometer.barometerGaugeForm.Left
+                txtLandscapeVoffset.Text = fBarometer.barometerGaugeForm.Top
+            Else
+                txtPortraitHoffset.Text = fBarometer.barometerGaugeForm.Left
+                txtPortraitVoffset.Text = fBarometer.barometerGaugeForm.Top
+            End If
+        End If
+    End If
 
     On Error GoTo 0
     Exit Sub
@@ -3854,16 +3922,55 @@ Private Sub btnSave_Click()
         sPutINISetting "Software\PzTemperatureGauge", "showTaskbar", PzGShowTaskbar, PzGSettingsFile
         sPutINISetting "Software\PzTemperatureGauge", "dpiAwareness", PzGDpiAwareness, PzGSettingsFile
         
-        
         sPutINISetting "Software\PzTemperatureGauge", "temperatureGaugeSize", PzGTemperatureGaugeSize, PzGSettingsFile
-        sPutINISetting "Software\PzAnemometerGauge", "anemometerGaugeSize", PzGAnemometerGaugeSize, PzGSettingsFile
-        sPutINISetting "Software\PzHumidityGauge", "humidityGaugeSize", PzGHumidityGaugeSize, PzGSettingsFile
+        sPutINISetting "Software\PzTemperatureGauge", "temperatureLandscape", PzGTemperatureLandscape, PzGSettingsFile
+        sPutINISetting "Software\PzTemperatureGauge", "temperaturePortrait", PzGTemperaturePortrait, PzGSettingsFile
+        sPutINISetting "Software\PzTemperatureGauge", "temperatureVLocationPerc", PzGTemperatureVLocationPerc, PzGSettingsFile
+        sPutINISetting "Software\PzTemperatureGauge", "temperatureHLocationPerc", PzGTemperatureHLocationPerc, PzGSettingsFile
+        sPutINISetting "Software\PzTemperatureGauge", "temperatureFormHighDpiXPos", PzGTemperatureFormHighDpiXPos, PzGSettingsFile
+        sPutINISetting "Software\PzTemperatureGauge", "temperatureFormHighDpiYPos", PzGTemperatureFormHighDpiYPos, PzGSettingsFile
+        sPutINISetting "Software\PzTemperatureGauge", "temperatureFormLowDpiXPos", PzGTemperatureFormLowDpiXPos, PzGSettingsFile
+        sPutINISetting "Software\PzTemperatureGauge", "temperatureFormLowDpiYPos", PzGTemperatureFormLowDpiYPos, PzGSettingsFile
+        sPutINISetting "Software\PzTemperatureGauge", "preventDraggingTemperature", PzGPreventDraggingTemperature, PzGSettingsFile
         
+        sPutINISetting "Software\PzAnemometerGauge", "anemometerGaugeSize", PzGAnemometerGaugeSize, PzGSettingsFile
+        sPutINISetting "Software\PzAnemometerGauge", "anemometerLandscape", PzGAnemometerLandscape, PzGSettingsFile
+        sPutINISetting "Software\PzAnemometerGauge", "anemometerPortrait", PzGAnemometerPortrait, PzGSettingsFile
+        sPutINISetting "Software\PzAnemometerGauge", "anemometerVLocationPerc", PzGAnemometerVLocationPerc, PzGSettingsFile
+        sPutINISetting "Software\PzAnemometerGauge", "anemometerHLocationPerc", PzGAnemometerHLocationPerc, PzGSettingsFile
+        sPutINISetting "Software\PzAnemometerGauge", "anemometerFormHighDpiXPos", PzGAnemometerFormHighDpiXPos, PzGSettingsFile
+        sPutINISetting "Software\PzAnemometerGauge", "anemometerFormHighDpiYPos", PzGAnemometerFormHighDpiYPos, PzGSettingsFile
+        sPutINISetting "Software\PzAnemometerGauge", "anemometerFormLowDpiXPos", PzGAnemometerFormLowDpiXPos, PzGSettingsFile
+        sPutINISetting "Software\PzAnemometerGauge", "anemometerFormLowDpiYPos", PzGAnemometerFormLowDpiYPos, PzGSettingsFile
+        sPutINISetting "Software\PzAnemometerGauge", "preventDraggingAnemometer", PzGPreventDraggingAnemometer, PzGSettingsFile
+               
+        sPutINISetting "Software\PzHumidityGauge", "humidityGaugeSize", PzGHumidityGaugeSize, PzGSettingsFile
+        sPutINISetting "Software\PzHumidityGauge", "humidityLandscape", PzGHumidityLandscape, PzGSettingsFile
+        sPutINISetting "Software\PzHumidityGauge", "humidityPortrait", PzGHumidityPortrait, PzGSettingsFile
+        sPutINISetting "Software\PzHumidityGauge", "humidityVLocationPerc", PzGHumidityVLocationPerc, PzGSettingsFile
+        sPutINISetting "Software\PzHumidityGauge", "humidityHLocationPerc", PzGHumidityHLocationPerc, PzGSettingsFile
+        sPutINISetting "Software\PzHumidityGauge", "humidityFormHighDpiXPos", PzGHumidityFormHighDpiXPos, PzGSettingsFile
+        sPutINISetting "Software\PzHumidityGauge", "humidityFormHighDpiYPos", PzGHumidityFormHighDpiYPos, PzGSettingsFile
+        sPutINISetting "Software\PzHumidityGauge", "humidityFormLowDpiXPos", PzGHumidityFormLowDpiXPos, PzGSettingsFile
+        sPutINISetting "Software\PzHumidityGauge", "humidityFormLowDpiYPos", PzGHumidityFormLowDpiYPos, PzGSettingsFile
+        sPutINISetting "Software\PzHumidityGauge", "preventDraggingHumidity", PzGPreventDraggingHumidity, PzGSettingsFile
+               
+        sPutINISetting "Software\PzBarometerGauge", "barometerGaugeSize", PzGBarometerGaugeSize, PzGSettingsFile
+        sPutINISetting "Software\PzBarometerGauge", "barometerLandscape", PzGBarometerLandscape, PzGSettingsFile
+        sPutINISetting "Software\PzBarometerGauge", "barometerPortrait", PzGBarometerPortrait, PzGSettingsFile
+        sPutINISetting "Software\PzBarometerGauge", "barometerVLocationPerc", PzGBarometerVLocationPerc, PzGSettingsFile
+        sPutINISetting "Software\PzBarometerGauge", "barometerHLocationPerc", PzGBarometerHLocationPerc, PzGSettingsFile
+        sPutINISetting "Software\PzBarometerGauge", "barometerFormHighDpiXPos", PzGBarometerFormHighDpiXPos, PzGSettingsFile
+        sPutINISetting "Software\PzBarometerGauge", "barometerFormHighDpiYPos", PzGBarometerFormHighDpiYPos, PzGSettingsFile
+        sPutINISetting "Software\PzBarometerGauge", "barometerFormLowDpiXPos", PzGBarometerFormLowDpiXPos, PzGSettingsFile
+        sPutINISetting "Software\PzBarometerGauge", "barometerFormLowDpiYPos", PzGBarometerFormLowDpiYPos, PzGSettingsFile
+        sPutINISetting "Software\PzBarometerGauge", "preventDraggingBarometer", PzGPreventDraggingBarometer, PzGSettingsFile
+
+
         sPutINISetting "Software\PzClipB", "clipBSize", PzGClipBSize, PzGSettingsFile
         sPutINISetting "Software\PzSelector", "selectorSize", PzGSelectorSize, PzGSettingsFile
         
         sPutINISetting "Software\PzTemperatureGauge", "scrollWheelDirection", PzGScrollWheelDirection, PzGSettingsFile
-                
         sPutINISetting "Software\PzTemperatureGauge", "gaugeFunctions", PzGGaugeFunctions, PzGSettingsFile
 '        sPutINISetting "Software\PzTemperatureGauge", "pointerAnimate", PzGPointerAnimate, PzGSettingsFile
         sPutINISetting "Software\PzTemperatureGauge", "samplingInterval", PzGSamplingInterval, PzGSettingsFile
@@ -3885,11 +3992,6 @@ Private Sub btnSave_Click()
         
         sPutINISetting "Software\PzTemperatureGauge", "widgetPosition", PzGWidgetPosition, PzGSettingsFile
         
-        sPutINISetting "Software\PzTemperatureGauge", "temperatureLandscape", PzGTemperatureLandscape, PzGSettingsFile
-        sPutINISetting "Software\PzTemperatureGauge", "temperaturePortrait", PzGTemperaturePortrait, PzGSettingsFile
-        
-        sPutINISetting "Software\PzAnemometerGauge", "anemometerLandscape", PzGAnemometerLandscape, PzGSettingsFile
-        sPutINISetting "Software\PzAnemometerGauge", "anemometerPortrait", PzGAnemometerPortrait, PzGSettingsFile
 
         sPutINISetting "Software\PzTemperatureGauge", "prefsFont", PzGPrefsFont, PzGSettingsFile
         sPutINISetting "Software\PzTemperatureGauge", "tempFormFont", PzGTempFormFont, PzGSettingsFile
@@ -3901,9 +4003,6 @@ Private Sub btnSave_Click()
 
         'save the values from the Windows Config Items
         sPutINISetting "Software\PzTemperatureGauge", "windowLevel", PzGWindowLevel, PzGSettingsFile
-        sPutINISetting "Software\PzTemperatureGauge", "preventDraggingTemperature", PzGPreventDraggingTemperature, PzGSettingsFile
-        sPutINISetting "Software\PzAnemometerGauge", "preventDraggingAnemometer", PzGPreventDraggingAnemometer, PzGSettingsFile
-        sPutINISetting "Software\PzHumidityGauge", "preventDraggingHumidity", PzGPreventDraggingHumidity, PzGSettingsFile
         
         
         sPutINISetting "Software\PzTemperatureGauge", "opacity", PzGOpacity, PzGSettingsFile
@@ -3921,26 +4020,7 @@ Private Sub btnSave_Click()
         sPutINISetting "Software\PzTemperatureGauge", "openFile", PzGOpenFile, PzGSettingsFile
         sPutINISetting "Software\PzTemperatureGauge", "defaultEditor", PzGDefaultEditor, PzGSettingsFile
         
-        sPutINISetting "Software\PzTemperatureGauge", "temperatureVLocationPerc", PzGTemperatureVLocationPerc, PzGSettingsFile
-        sPutINISetting "Software\PzTemperatureGauge", "temperatureHLocationPerc", PzGTemperatureHLocationPerc, PzGSettingsFile
-        
-        sPutINISetting "Software\PzAnemometerGauge", "anemometerVLocationPerc", PzGAnemometerVLocationPerc, PzGSettingsFile
-        sPutINISetting "Software\PzAnemometerGauge", "anemometerHLocationPerc", PzGAnemometerHLocationPerc, PzGSettingsFile
-        
-        sPutINISetting "Software\PzTemperatureGauge", "temperatureFormHighDpiXPos", PzGTemperatureFormHighDpiXPos, PzGSettingsFile
-        sPutINISetting "Software\PzTemperatureGauge", "temperatureFormHighDpiYPos", PzGTemperatureFormHighDpiYPos, PzGSettingsFile
-        sPutINISetting "Software\PzTemperatureGauge", "temperatureFormLowDpiXPos", PzGTemperatureFormLowDpiXPos, PzGSettingsFile
-        sPutINISetting "Software\PzTemperatureGauge", "temperatureFormLowDpiYPos", PzGTemperatureFormLowDpiYPos, PzGSettingsFile
-                 
-        sPutINISetting "Software\PzAnemometerGauge", "anemometerFormHighDpiXPos", PzGAnemometerFormHighDpiXPos, PzGSettingsFile
-        sPutINISetting "Software\PzAnemometerGauge", "anemometerFormHighDpiYPos", PzGAnemometerFormHighDpiYPos, PzGSettingsFile
-        sPutINISetting "Software\PzAnemometerGauge", "anemometerFormLowDpiXPos", PzGAnemometerFormLowDpiXPos, PzGSettingsFile
-        sPutINISetting "Software\PzAnemometerGauge", "anemometerFormLowDpiYPos", PzGAnemometerFormLowDpiYPos, PzGSettingsFile
-       
-        sPutINISetting "Software\PzHumidityGauge", "humidityFormHighDpiXPos", PzGHumidityFormHighDpiXPos, PzGSettingsFile
-        sPutINISetting "Software\PzHumidityGauge", "humidityFormHighDpiYPos", PzGHumidityFormHighDpiYPos, PzGSettingsFile
-        sPutINISetting "Software\PzHumidityGauge", "humidityFormLowDpiXPos", PzGHumidityFormLowDpiXPos, PzGSettingsFile
-        sPutINISetting "Software\PzHumidityGauge", "humidityFormLowDpiYPos", PzGHumidityFormLowDpiYPos, PzGSettingsFile
+
       
         sPutINISetting "Software\PzClipB", "clipBFormHighDpiXPos", PzGClipBFormHighDpiXPos, PzGSettingsFile
         sPutINISetting "Software\PzClipB", "clipBFormHighDpiYPos", PzGClipBFormHighDpiYPos, PzGSettingsFile
@@ -4270,6 +4350,24 @@ Private Sub adjustPrefsControls()
         txtLandscapeVoffset.Text = PzGAnemometerLandscapeVoffset
         txtPortraitHoffset.Text = PzGAnemometerPortraitHoffset
         txtPortraitVoffset.Text = PzGAnemometerPortraitVoffset
+    End If
+      
+    If cmbGaugeType.ListIndex = 3 Then ' Barometer
+        cmbLandscape.ListIndex = Val(PzGBarometerLandscape)
+        cmbPortrait.ListIndex = Val(PzGBarometerPortrait)
+        txtLandscapeHoffset.Text = PzGBarometerLandscapeHoffset
+        txtLandscapeVoffset.Text = PzGBarometerLandscapeVoffset
+        txtPortraitHoffset.Text = PzGBarometerPortraitHoffset
+        txtPortraitVoffset.Text = PzGBarometerPortraitVoffset
+    End If
+      
+    If cmbGaugeType.ListIndex = 2 Then ' Humidity
+        cmbLandscape.ListIndex = Val(PzGHumidityLandscape)
+        cmbPortrait.ListIndex = Val(PzGHumidityPortrait)
+        txtLandscapeHoffset.Text = PzGHumidityLandscapeHoffset
+        txtLandscapeVoffset.Text = PzGHumidityLandscapeVoffset
+        txtPortraitHoffset.Text = PzGHumidityPortraitHoffset
+        txtPortraitVoffset.Text = PzGHumidityPortraitVoffset
     End If
     
     ' Windows tab
@@ -5119,7 +5217,11 @@ Private Sub sliGaugeSize_Change()
     End If
     
     If cmbGaugeType.ListIndex = 2 Then ' fHumidity gauge
-        If gblAllowSizeChangeFlg = True Then Call fHumidity.HumidAdjustZoom(sliGaugeSize.Value / 100)
+        If gblAllowSizeChangeFlg = True Then Call fHumidity.humidAdjustZoom(sliGaugeSize.Value / 100)
+    End If
+
+    If cmbGaugeType.ListIndex = 3 Then ' barometer gauge
+        If gblAllowSizeChangeFlg = True Then Call fBarometer.baromAdjustZoom(sliGaugeSize.Value / 100)
     End If
 
     On Error GoTo 0

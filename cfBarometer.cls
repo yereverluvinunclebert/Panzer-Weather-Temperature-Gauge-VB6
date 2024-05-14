@@ -21,14 +21,14 @@ Attribute VB_Exposed = False
 '@IgnoreModule AssignmentNotUsed, IntegerDataType, ModuleWithoutFolder
 Option Explicit 'simple Alpha-Form (...to be filled with (mostly Img-) Content via .Widgets.Add)
 
-Public WithEvents BarometerGaugeForm As cWidgetForm
-Attribute BarometerGaugeForm.VB_VarHelpID = -1
+Public WithEvents barometerGaugeForm As cWidgetForm
+Attribute barometerGaugeForm.VB_VarHelpID = -1
 
 Public collBarometerPSDNonUIElements As cCollection, FX As Long, FY As Long, FZ As Single  'available on the outside, even after the Form was closed
 
 Private PSDWidth As Long
 Private PSDHeight As Long
-'Private mGlowing As Boolean
+
 
 '---------------------------------------------------------------------------------------
 ' Procedure : Class_Initialize
@@ -40,7 +40,6 @@ Private PSDHeight As Long
 Private Sub Class_Initialize()
    On Error GoTo Class_Initialize_Error
 
-    'mGlowing = False ' when the alpha for the overlays arrives this might be usable
     Set collBarometerPSDNonUIElements = New_c.Collection(False)
 
    On Error GoTo 0
@@ -72,8 +71,8 @@ Public Sub InitBarometerFromPSD(ByRef PSD_FileNameOrByteArray As Variant)
     On Error GoTo InitBarometerFromPSD_Error
 
     'create the Alpha-capable Top-Level-Form
-    Set BarometerGaugeForm = Cairo.WidgetForms.Create(IIf(App.LogMode, AlphaNoTaskbarEntry, AlphaWithTaskbarEntry), widgetName4, True, 1, 1)
-        BarometerGaugeForm.WidgetRoot.BackColor = -1
+    Set barometerGaugeForm = Cairo.WidgetForms.Create(IIf(App.LogMode, AlphaNoTaskbarEntry, AlphaWithTaskbarEntry), widgetName6, True, 1, 1)
+        barometerGaugeForm.WidgetRoot.BackColor = -1
  
     With New_c.SimplePSD(PSD_FileNameOrByteArray)  'create a new PSD-Parser.instance (and load the passed content)
         PSDWidth = .Width
@@ -92,7 +91,7 @@ Public Sub InitBarometerFromPSD(ByRef PSD_FileNameOrByteArray As Variant)
                         collBarometerPSDNonUIElements(.LayerPath(i)) = Array(.LayerX(i), .LayerY(i), Val(PzGOpacity) / 100)  'here we update the so far empty slots with the PSD-offsets
                 
                     Else 'everything not in the exclude-list will get its own Widget-instance
-                        Set W = BarometerGaugeForm.Widgets.Add(New cwAlphaImg, LCase$(.LayerPath(i)), .LayerX(i), .LayerY(i), .LayerWidth(i), .LayerHeight(i)).Widget
+                        Set W = barometerGaugeForm.Widgets.Add(New cwAlphaImg, LCase$(.LayerPath(i)), .LayerX(i), .LayerY(i), .LayerWidth(i), .LayerHeight(i)).Widget
                             W.ImageKey = W.key 'W.Key equals ImageList-Key, set above - and LayerPath(i) at this point ... set it also as the ImageKey of our new created Widget
                         If PzGOpacity < 1 Then
                             W.Alpha = Val(PzGOpacity) / 100
@@ -116,7 +115,7 @@ Public Sub InitBarometerFromPSD(ByRef PSD_FileNameOrByteArray As Variant)
         Next i
     End With '<-- the Parser-instance will be destroyed here (freeing the Memory, the internal PSD-Layers have occupied)
     
-    Set overlayBaromWidget = BarometerGaugeForm.Widgets.Add(New cwOverlayBarom, "Overlay", 0, 0, PSDWidth, PSDHeight)
+    Set overlayBaromWidget = barometerGaugeForm.Widgets.Add(New cwOverlayBarom, "Overlay", 0, 0, PSDWidth, PSDHeight)
     Set overlayBaromWidget.cCollOverlayBaromImages = collBarometerPSDNonUIElements 'make the excluded PSD-Surface-Paths known to the Overlay-Widget
         overlayBaromWidget.cxPerc = 0.4940476 'define the relative center (within cwOverlayTemp, which has the same size as the Form and the PSD...) this is used for clock-hand-positioning
         overlayBaromWidget.cyPerc = 0.4727272
@@ -130,45 +129,45 @@ InitBarometerFromPSD_Error:
 End Sub
 '
 '---------------------------------------------------------------------------------------
-' Procedure : BarometerGaugeForm_BubblingEvent
+' Procedure : barometerGaugeForm_BubblingEvent
 ' Author    : Dean Beedell (yereverluvinunclebert)
 ' Date      : 31/07/2023
 ' Purpose   : central handling of all Click-Events
 '---------------------------------------------------------------------------------------
 '
-Private Sub BarometerGaugeForm_BubblingEvent(ByRef sender As Object, ByRef EventName As String, ByRef P1 As Variant, ByRef P2 As Variant, ByRef P3 As Variant, ByRef P4 As Variant, ByRef P5 As Variant, ByRef P6 As Variant, ByRef P7 As Variant)
-   On Error GoTo BarometerGaugeForm_BubblingEvent_Error
+Private Sub barometerGaugeForm_BubblingEvent(ByRef sender As Object, ByRef EventName As String, ByRef P1 As Variant, ByRef P2 As Variant, ByRef P3 As Variant, ByRef P4 As Variant, ByRef P5 As Variant, ByRef P6 As Variant, ByRef P7 As Variant)
+   On Error GoTo barometerGaugeForm_BubblingEvent_Error
 
     If PzGIgnoreMouse = "1" Then Exit Sub
     
     If EventName = "W_MouseMove" Then
         Select Case LCase$(sender.Widget.key)
             Case "housing/lockbutton"
-                If PzGEnableBalloonTooltips = "1" Then CreateToolTip BarometerGaugeForm.hwnd, "Click me to lock the widget in place. This lock can be released by clicking again on the lock button, or in the preferences. A locking sound will denote the button's operation.", _
-                     TTIconInfo, widgetName4 & " Lock Button Help", , , , True
+                If PzGEnableBalloonTooltips = "1" Then CreateToolTip barometerGaugeForm.hwnd, "Click me to lock the widget in place. This lock can be released by clicking again on the lock button, or in the preferences. A locking sound will denote the button's operation.", _
+                     TTIconInfo, widgetName6 & " Lock Button Help", , , , True
             Case "housing/prefsbutton"
-                If PzGEnableBalloonTooltips = "1" Then CreateToolTip BarometerGaugeForm.hwnd, "Click me to open the preferences utility. All advanced configuration of the widget is performed using the preference utility.", _
-                     TTIconInfo, widgetName4 & " Prefs Button Help", , , , True
+                If PzGEnableBalloonTooltips = "1" Then CreateToolTip barometerGaugeForm.hwnd, "Click me to open the preferences utility. All advanced configuration of the widget is performed using the preference utility.", _
+                     TTIconInfo, widgetName6 & " Prefs Button Help", , , , True
             Case "housing/tickbutton"
-                If PzGEnableBalloonTooltips = "1" Then CreateToolTip BarometerGaugeForm.hwnd, "This button is non-functional in this gauge.", _
-                     TTIconInfo, widgetName4 & " Tick Button Help", , , , True
+                If PzGEnableBalloonTooltips = "1" Then CreateToolTip barometerGaugeForm.hwnd, "This button is non-functional in this gauge.", _
+                     TTIconInfo, widgetName6 & " Tick Button Help", , , , True
             Case "housing/switchfacesbutton"
-                If PzGEnableBalloonTooltips = "1" Then CreateToolTip BarometerGaugeForm.hwnd, "This button is non-functional in this gauge.", _
-                     TTIconInfo, widgetName4 & " Switch Faces Button Help", , , , True
+                If PzGEnableBalloonTooltips = "1" Then CreateToolTip barometerGaugeForm.hwnd, "This button is non-functional in this gauge.", _
+                     TTIconInfo, widgetName6 & " Switch Faces Button Help", , , , True
             Case "housing/stopbutton"
-                If PzGEnableBalloonTooltips = "1" Then CreateToolTip BarometerGaugeForm.hwnd, "This button stops all animated gauge functions for this widget, pointer movement, digital displays &c .", _
-                     TTIconInfo, widgetName4 & " Stop Button Help", , , , True
+                If PzGEnableBalloonTooltips = "1" Then CreateToolTip barometerGaugeForm.hwnd, "This button stops all animated gauge functions for this widget, pointer movement, digital displays &c .", _
+                     TTIconInfo, widgetName6 & " Stop Button Help", , , , True
             Case "housing/startbutton"
-                If PzGEnableBalloonTooltips = "1" Then CreateToolTip BarometerGaugeForm.hwnd, "This button restarts all stopped animated gauge functions for this widget, pointer movement &c .", _
-                     TTIconInfo, widgetName4 & " Start Button Help", , , , True
+                If PzGEnableBalloonTooltips = "1" Then CreateToolTip barometerGaugeForm.hwnd, "This button restarts all stopped animated gauge functions for this widget, pointer movement &c .", _
+                     TTIconInfo, widgetName6 & " Start Button Help", , , , True
             Case "housing/helpbutton"
-                If PzGEnableBalloonTooltips = "1" Then CreateToolTip BarometerGaugeForm.hwnd, "This button opens the one-page help file for this widget. There is a further detailed CHM help file available from the right-click menu that contains all the information that you need to run this widget.", _
-                     TTIconInfo, widgetName4 & " Help Button Help", , , , True
+                If PzGEnableBalloonTooltips = "1" Then CreateToolTip barometerGaugeForm.hwnd, "This button opens the one-page help file for this widget. There is a further detailed CHM help file available from the right-click menu that contains all the information that you need to run this widget.", _
+                     TTIconInfo, widgetName6 & " Help Button Help", , , , True
             Case Else
-                If PzGEnableBalloonTooltips = "1" Then CreateToolTip BarometerGaugeForm.hwnd, " " & overlayTemperatureWidget.WeatherDetails _
+                If PzGEnableBalloonTooltips = "1" Then CreateToolTip barometerGaugeForm.hwnd, " " & overlayTemperatureWidget.WeatherDetails _
                     & vbCrLf & "" _
                     & vbCrLf & "Right Click to open the menu and the preferences. CTRL+ Mouse scrollwheel UP/DOWN to resize." _
-                    , TTIconInfo, widgetName4 & " METAR summary Information.", , , , True
+                    , TTIconInfo, widgetName6 & " METAR summary Information.", , , , True
         End Select
     End If
     
@@ -178,8 +177,6 @@ Private Sub BarometerGaugeForm_BubblingEvent(ByRef sender As Object, ByRef Event
                 Call lockbutton_mouseDown(sender)
             Case "housing/prefsbutton"
                 Call prefsbutton_mouseDown(sender)
-'            Case "housing/tickbutton"
-'                Call tickbutton_mouseDown(sender)
             Case "housing/switchfacesbutton"
                  Call switchfacesbutton_mouseDown(sender)
             Case "housing/stopbutton"
@@ -207,8 +204,6 @@ Private Sub BarometerGaugeForm_BubblingEvent(ByRef sender As Object, ByRef Event
     
     If EventName = "W_Click" Then
         Select Case LCase$(sender.Widget.key)
-'            Case "housing/helpbutton"
-'                 Call helpbutton_click
             Case "housing/startbutton"
                  Call startbutton_click
             Case Else
@@ -219,9 +214,9 @@ Private Sub BarometerGaugeForm_BubblingEvent(ByRef sender As Object, ByRef Event
    On Error GoTo 0
    Exit Sub
 
-BarometerGaugeForm_BubblingEvent_Error:
+barometerGaugeForm_BubblingEvent_Error:
 
-    MsgBox "Error " & Err.Number & " (" & Err.Description & ") in procedure BarometerGaugeForm_BubblingEvent of Class Module cfBarometer"
+    MsgBox "Error " & Err.Number & " (" & Err.Description & ") in procedure barometerGaugeForm_BubblingEvent of Class Module cfBarometer"
 End Sub
 '---------------------------------------------------------------------------------------
 ' Procedure : helpbutton_click
@@ -394,7 +389,9 @@ Private Sub lockbutton_mouseDown(ByRef sender As Object)
     Else
         sender.Widget.Alpha = Val(PzGOpacity) / 100
     End If
+    
     sender.Widget.Refresh ' this removes the delay in the lockButton depressing
+    
     If PzGPreventDraggingBarometer = "1" Then
         overlayBaromWidget.Locked = False
     Else
@@ -423,14 +420,14 @@ Private Sub prefsbutton_mouseDown(ByRef sender As Object)
     On Error GoTo prefsbutton_mouseDown_Error
 
     sender.Widget.Alpha = 0
-    'Sender.Widget.Visible = False
     sender.Widget.Refresh ' this removes the delay in the Button depressing
+    
     fileToPlay = "winding.wav"
     If PzGEnableSounds = "1" And fFExists(App.path & "\resources\sounds\" & fileToPlay) Then
         PlaySound App.path & "\resources\sounds\" & fileToPlay, ByVal 0&, SND_FILENAME Or SND_ASYNC
     End If
-   'MsgBox "prefsbutton_mouseDown"
-   Call makeProgramPreferencesAvailable
+
+    Call makeProgramPreferencesAvailable
 
    On Error GoTo 0
    Exit Sub
@@ -440,67 +437,22 @@ prefsbutton_mouseDown_Error:
     MsgBox "Error " & Err.Number & " (" & Err.Description & ") in procedure prefsbutton_mouseDown of Class Module cfBarometer"
 
 End Sub
-''---------------------------------------------------------------------------------------
-'' Procedure : tickbutton_mouseDown
-'' Author    : Dean Beedell (yereverluvinunclebert)
-'' Date      : 03/08/2023
-'' Purpose   :
-''---------------------------------------------------------------------------------------
-''
-'Private Sub tickbutton_mouseDown(ByRef sender As Object)
-'
-'    Dim fileToPlay As String: fileToPlay = vbNullString
-'
-'    On Error GoTo tickbutton_mouseDown_Error
-'
-'    If overlayBaromWidget.pointerAnimate = True Then
-'        overlayBaromWidget.pointerAnimate = False
-'        sender.Widget.Alpha = Val(PzGOpacity) / 100
-'        PzGPointerAnimate = "0"
-'    Else
-'        overlayBaromWidget.pointerAnimate = True
-'        sender.Widget.Alpha = 0 ' sender is the referring control
-'        PzGPointerAnimate = "1"
-'
-'    End If
-'    sender.Widget.Refresh ' this removes the delay in the Button depressing
-'
-'    fileToPlay = "lock.wav"
-'    If PzGEnableSounds = "1" And fFExists(App.path & "\resources\sounds\" & fileToPlay) Then
-'        PlaySound App.path & "\resources\sounds\" & fileToPlay, ByVal 0&, SND_FILENAME Or SND_ASYNC
-'    End If
-'
-'    sPutINISetting "Software\PzBarometerGauge", "pointerAnimate", PzGPointerAnimate, PzGSettingsFile
-'    If panzerPrefs.IsVisible = True Then panzerPrefs.cmbTickSwitchPref.ListIndex = Val(PzGPointerAnimate)
-'
-'   On Error GoTo 0
-'   Exit Sub
-'
-'tickbutton_mouseDown_Error:
-'
-'    MsgBox "Error " & Err.Number & " (" & Err.Description & ") in procedure tickbutton_mouseDown of Class Module cfBarometer"
-'
-'End Sub
 
-
-    
 
 
 '---------------------------------------------------------------------------------------
-' Procedure : BarometerGaugeForm_DblClick
+' Procedure : barometerGaugeForm_DblClick
 ' Author    : Dean Beedell (yereverluvinunclebert)
 ' Date      : 05/05/2023
 ' Purpose   :
 '---------------------------------------------------------------------------------------
 '
-Private Sub BarometerGaugeForm_DblClick()
+Private Sub barometerGaugeForm_DblClick()
     Dim userprof As String: userprof = vbNullString
     
     Dim thisCommand As String: thisCommand = vbNullString
     
-    On Error GoTo BarometerGaugeForm_DblClick_Error
-
-    '    If PzGIgnoreMouse = "1" Then Exit Sub
+    On Error GoTo barometerGaugeForm_DblClick_Error
 
     If LTrim$(PzGDblClickCommand) = vbNullString Then Exit Sub
     
@@ -519,19 +471,19 @@ Private Sub BarometerGaugeForm_DblClick()
     
     If SHIFT_1 = True Then
         SHIFT_1 = False
-        Call ShellExecute(fBarometer.BarometerGaugeForm.hwnd, "Open", PzGOpenFile, vbNullString, App.path, 1)
+        Call ShellExecute(fBarometer.barometerGaugeForm.hwnd, "Open", PzGOpenFile, vbNullString, App.path, 1)
     Else
-        Call ShellExecute(fBarometer.BarometerGaugeForm.hwnd, "runas", thisCommand, vbNullString, App.path, 1)
+        Call ShellExecute(fBarometer.barometerGaugeForm.hwnd, "runas", thisCommand, vbNullString, App.path, 1)
     End If
 
     On Error GoTo 0
     Exit Sub
 
-BarometerGaugeForm_DblClick_Error:
+barometerGaugeForm_DblClick_Error:
 
     With Err
          If .Number <> 0 Then
-            MsgBox "Error " & Err.Number & " (" & Err.Description & ") in procedure BarometerGaugeForm_DblClick of Class Module cfMain"
+            MsgBox "Error " & Err.Number & " (" & Err.Description & ") in procedure barometerGaugeForm_DblClick of Class Module cfMain"
             Resume Next
           End If
     End With
@@ -539,92 +491,91 @@ End Sub
 
 
 '---------------------------------------------------------------------------------------
-' Procedure : BarometerGaugeForm_KeyDown
+' Procedure : barometerGaugeForm_KeyDown
 ' Author    : Dean Beedell (yereverluvinunclebert)
 ' Date      : 01/06/2019
 ' Purpose   : get F5 and SHIFT keypresses
 '---------------------------------------------------------------------------------------
 '
-Private Sub BarometerGaugeForm_KeyDown(ByRef KeyCode As Integer, ByRef Shift As Integer)
-    On Error GoTo BarometerGaugeForm_KeyDown_Error
+Private Sub barometerGaugeForm_KeyDown(ByRef KeyCode As Integer, ByRef Shift As Integer)
+    On Error GoTo barometerGaugeForm_KeyDown_Error
 
     Call getKeyPress(KeyCode, Shift) ' will not catch Shift or CTRL keypresses on their own, must be combination with another key.
 
     On Error GoTo 0
     Exit Sub
 
-BarometerGaugeForm_KeyDown_Error:
+barometerGaugeForm_KeyDown_Error:
 
-    MsgBox "Error " & Err.Number & " (" & Err.Description & ") in procedure BarometerGaugeForm_KeyDown of Class Module cfMain"
+    MsgBox "Error " & Err.Number & " (" & Err.Description & ") in procedure barometerGaugeForm_KeyDown of Class Module cfMain"
 End Sub
 ''
 '---------------------------------------------------------------------------------------
-' Procedure : BarometerGaugeForm_MouseUp
+' Procedure : barometerGaugeForm_MouseUp
 ' Author    : Dean Beedell (yereverluvinunclebert)
 ' Date      : 05/05/2023
 ' Purpose   : save the form x,y position when ever the gauge/form is dragged
 '---------------------------------------------------------------------------------------
 '
-Private Sub BarometerGaugeForm_MouseUp(ByRef Button As Integer, ByRef Shift As Integer, ByRef X As Single, ByRef Y As Single)
-    On Error GoTo BarometerGaugeForm_MouseUp_Error
+Private Sub barometerGaugeForm_MouseUp(ByRef Button As Integer, ByRef Shift As Integer, ByRef X As Single, ByRef Y As Single)
+    On Error GoTo barometerGaugeForm_MouseUp_Error
     
     Call saveBarometerGaugePosition
 
     On Error GoTo 0
     Exit Sub
 
-BarometerGaugeForm_MouseUp_Error:
+barometerGaugeForm_MouseUp_Error:
 
     With Err
          If .Number <> 0 Then
-            MsgBox "Error " & Err.Number & " (" & Err.Description & ") in procedure BarometerGaugeForm_MouseUp of Class Module cfMain"
+            MsgBox "Error " & Err.Number & " (" & Err.Description & ") in procedure barometerGaugeForm_MouseUp of Class Module cfMain"
             Resume Next
           End If
     End With
 End Sub
 
 '---------------------------------------------------------------------------------------
-' Procedure : BarometerGaugeForm_MouseMove
+' Procedure : barometerGaugeForm_MouseMove
 ' Author    : Dean Beedell (yereverluvinunclebert)
 ' Date      : 31/07/2023
 ' Purpose   :
 '---------------------------------------------------------------------------------------
 '
-Private Sub BarometerGaugeForm_MouseMove(ByRef Button As Integer, ByRef Shift As Integer, ByRef X As Single, ByRef Y As Single)
+Private Sub barometerGaugeForm_MouseMove(ByRef Button As Integer, ByRef Shift As Integer, ByRef X As Single, ByRef Y As Single)
   Static x0 As Single, y0 As Single: If Button = 0 Then x0 = X: y0 = Y 'just store the offsets when no button is down
   
-   On Error GoTo BarometerGaugeForm_MouseMove_Error
+   On Error GoTo barometerGaugeForm_MouseMove_Error
     
     If overlayBaromWidget.Locked = True Then Exit Sub
     If PzGIgnoreMouse = "1" Then Exit Sub
 
-    If Button = vbLeftButton And Not BarometerGaugeForm.ActiveWidget Is Nothing Then 'Form-Dragging (under certain conditions)
+    If Button = vbLeftButton And Not barometerGaugeForm.ActiveWidget Is Nothing Then 'Form-Dragging (under certain conditions)
 
-      FX = (X - x0) * BarometerGaugeForm.WidgetRoot.Zoom + BarometerGaugeForm.Left
-      FY = (Y - y0) * BarometerGaugeForm.WidgetRoot.Zoom + BarometerGaugeForm.Top
-      BarometerGaugeForm.Move FX, FY
+      FX = (X - x0) * barometerGaugeForm.WidgetRoot.Zoom + barometerGaugeForm.Left
+      FY = (Y - y0) * barometerGaugeForm.WidgetRoot.Zoom + barometerGaugeForm.Top
+      barometerGaugeForm.Move FX, FY
     End If
-
 
    On Error GoTo 0
    Exit Sub
 
-BarometerGaugeForm_MouseMove_Error:
+barometerGaugeForm_MouseMove_Error:
 
-    MsgBox "Error " & Err.Number & " (" & Err.Description & ") in procedure BarometerGaugeForm_MouseMove of Class Module cfBarometer"
+    MsgBox "Error " & Err.Number & " (" & Err.Description & ") in procedure barometerGaugeForm_MouseMove of Class Module cfBarometer"
 End Sub
 
 '---------------------------------------------------------------------------------------
-' Procedure : BarometerGaugeForm_MouseWheel
+' Procedure : barometerGaugeForm_MouseWheel
 ' Author    : Dean Beedell (yereverluvinunclebert)
 ' Date      : 31/07/2023
 ' Purpose   : rotate forward positive = smaller
 '---------------------------------------------------------------------------------------
 '
-Private Sub BarometerGaugeForm_MouseWheel(ByVal MouseKeys As Long, ByVal Rotation As Long, ByVal Xpos As Single, ByVal Ypos As Single)
+Private Sub barometerGaugeForm_MouseWheel(ByVal MouseKeys As Long, ByVal Rotation As Long, ByVal Xpos As Single, ByVal Ypos As Single)
    Dim RotationDirection As Long: RotationDirection = 0
    
-   On Error GoTo BarometerGaugeForm_MouseWheel_Error
+   On Error GoTo barometerGaugeForm_MouseWheel_Error
 
     If PzGScrollWheelDirection = "1" Then
         If Rotation > 0 Then
@@ -636,71 +587,47 @@ Private Sub BarometerGaugeForm_MouseWheel(ByVal MouseKeys As Long, ByVal Rotatio
         RotationDirection = Rotation
     End If
     
-   If MouseKeys = 8 Then Call BaromAdjustZoom(FZ + RotationDirection / 2400)   'change the Zoom only, when the Ctrl-Key is down
+   If MouseKeys = 8 Then Call baromAdjustZoom(FZ + RotationDirection / 2400)   'change the Zoom only, when the Ctrl-Key is down
 
    On Error GoTo 0
    Exit Sub
 
-BarometerGaugeForm_MouseWheel_Error:
+barometerGaugeForm_MouseWheel_Error:
 
-    MsgBox "Error " & Err.Number & " (" & Err.Description & ") in procedure BarometerGaugeForm_MouseWheel of Class Module cfBarometer"
+    MsgBox "Error " & Err.Number & " (" & Err.Description & ") in procedure barometerGaugeForm_MouseWheel of Class Module cfBarometer"
 End Sub
 
-''
-''---------------------------------------------------------------------------------------
-'' Procedure : BarometerGaugeForm_ResizeWithDimensionsDIP
-'' Author    : Dean Beedell (yereverluvinunclebert)
-'' Date      : 31/07/2023
-'' Purpose   : put any other resizing action in here - unused
-''---------------------------------------------------------------------------------------
-''
-'Private Sub BarometerGaugeForm_ResizeWithDimensionsDIP(ByVal dx As Single, ByVal dy As Single)
-'   On Error GoTo BarometerGaugeForm_ResizeWithDimensionsDIP_Error
-'
-'  'If Not CloseWidget Is Nothing Then CloseWidget.Move dx - 32, 0, 32, 32 'place the close-widget at the top-right of the form
-'
-'   On Error GoTo 0
-'   Exit Sub
-'
-'BarometerGaugeForm_ResizeWithDimensionsDIP_Error:
-'
-'    MsgBox "Error " & Err.Number & " (" & Err.Description & ") in procedure BarometerGaugeForm_ResizeWithDimensionsDIP of Class Module cfBarometer"
-'End Sub
 
 '---------------------------------------------------------------------------------------
-' Procedure : BaromAdjustZoom
+' Procedure : baromAdjustZoom
 ' Author    : olaf schmidt
 ' Date      : 31/07/2023
 ' Purpose   :
 '---------------------------------------------------------------------------------------
 '
-Public Sub BaromAdjustZoom(ByVal NewZoom As Single)
-   On Error GoTo BaromAdjustZoom_Error
+Public Sub baromAdjustZoom(ByVal NewZoom As Single)
+   On Error GoTo baromAdjustZoom_Error
 
       FZ = NewZoom
       If FZ < 0.05 Then FZ = 0.05 Else If FZ > 3 Then FZ = 3 'keep FZ within a sane ZoomInterval
-      BarometerGaugeForm.WidgetRoot.Zoom = FZ '* BarometerGaugeForm.WidgetRoot.CurrentMonitor.Zoom '<-- if the multiplicator is activated, we'd have DPI-awareness on high-res monitors
-      BarometerGaugeForm.Move BarometerGaugeForm.Left, BarometerGaugeForm.Top, PSDWidth * BarometerGaugeForm.WidgetRoot.Zoom, PSDHeight * BarometerGaugeForm.WidgetRoot.Zoom
+      barometerGaugeForm.WidgetRoot.Zoom = FZ '* barometerGaugeForm.WidgetRoot.CurrentMonitor.Zoom '<-- if the multiplicator is activated, we'd have DPI-awareness on high-res monitors
+      barometerGaugeForm.Move barometerGaugeForm.Left, barometerGaugeForm.Top, PSDWidth * barometerGaugeForm.WidgetRoot.Zoom, PSDHeight * barometerGaugeForm.WidgetRoot.Zoom
       
     ' when resized from the gauge scroll up/down it needs to write it back so the size is correct when prefs opened.
     PzGBarometerGaugeSize = LTrim$(Str$(NewZoom * 100))
     If panzerPrefs.IsVisible = True Then
-        If panzerPrefs.cmbGaugeType.ListIndex = 0 Then
-            panzerPrefs.sliGaugeSize.Value = Val(PzGBarometerGaugeSize)
-            sPutINISetting "Software\PzBarometerGauge", "BarometerGaugeSize", PzGBarometerGaugeSize, PzGSettingsFile
-        End If
-        If panzerPrefs.cmbGaugeType.ListIndex = 1 Then
-            panzerPrefs.sliGaugeSize.Value = Val(PzGBarometerGaugeSize)
-            sPutINISetting "Software\PzBarometerGauge", "BarometerGaugeSize", PzGBarometerGaugeSize, PzGSettingsFile
-        End If
+
+        panzerPrefs.sliGaugeSize.Value = Val(PzGBarometerGaugeSize)
+        sPutINISetting "Software\PzBarometerGauge", "BarometerGaugeSize", PzGBarometerGaugeSize, PzGSettingsFile
+
     End If
     
    On Error GoTo 0
    Exit Sub
 
-BaromAdjustZoom_Error:
+baromAdjustZoom_Error:
 
-    MsgBox "Error " & Err.Number & " (" & Err.Description & ") in procedure BaromAdjustZoom of Class Module cfBarometer"
+    MsgBox "Error " & Err.Number & " (" & Err.Description & ") in procedure baromAdjustZoom of Class Module cfBarometer"
 End Sub
 '---------------------------------------------------------------------------------------
 ' Procedure : W_MouseDown
@@ -709,21 +636,22 @@ End Sub
 ' Purpose   :
 '---------------------------------------------------------------------------------------
 '
-Private Sub BarometerGaugeForm_MouseDown(ByRef Button As Integer, ByRef Shift As Integer, ByRef X As Single, ByRef Y As Single)
+Private Sub barometerGaugeForm_MouseDown(ByRef Button As Integer, ByRef Shift As Integer, ByRef X As Single, ByRef Y As Single)
    On Error GoTo W_MouseDown_Error
 
     gblOriginatingForm = "BarometerForm"
     If Button = vbRightButton Then
 
-        
         menuForm.mnuLockTemperatureGauge.Visible = False
+        menuForm.mnuLockHumidityGauge.Visible = False
         menuForm.mnuLockBarometerGauge.Visible = True
+        menuForm.mnuLockAnemometerGauge.Visible = False
         Call menuForm.PopupMenu(menuForm.mnuMainMenu)
     Else
         ' ensure that the associated forms pop to the front when the main gauge receives focus
         If fSelector.SelectorForm.Visible = True Then fSelector.SelectorForm.SetFocus
         If panzerPrefs.IsVisible = True Then panzerPrefs.SetFocus
-        If fBarometer.BarometerGaugeForm.Visible = True Then fBarometer.BarometerGaugeForm.SetFocus
+        If fBarometer.barometerGaugeForm.Visible = True Then fBarometer.barometerGaugeForm.SetFocus
         
         If PzGIgnoreMouse = "1" Then Exit Sub
         ' do whatever you want with a mouseDown here, not doing anything at the moment but we will...
@@ -737,7 +665,9 @@ W_MouseDown_Error:
     MsgBox "Error " & Err.Number & " (" & Err.Description & ") in procedure W_MouseDown of Class Module cwOverlayTemp"
 End Sub
 
-'Private Sub BarometerGaugeForm_
+'Private Sub barometerGaugeForm_
+
+
 
 
 

@@ -130,14 +130,14 @@ InitHumidityFromPSD_Error:
 End Sub
 '
 '---------------------------------------------------------------------------------------
-' Procedure : HumidityGaugeForm_BubblingEvent
+' Procedure : humidityGaugeForm_BubblingEvent
 ' Author    : Dean Beedell (yereverluvinunclebert)
 ' Date      : 31/07/2023
 ' Purpose   : central handling of all Click-Events
 '---------------------------------------------------------------------------------------
 '
-Private Sub HumidityGaugeForm_BubblingEvent(ByRef sender As Object, ByRef EventName As String, ByRef P1 As Variant, ByRef P2 As Variant, ByRef P3 As Variant, ByRef P4 As Variant, ByRef P5 As Variant, ByRef P6 As Variant, ByRef P7 As Variant)
-   On Error GoTo HumidityGaugeForm_BubblingEvent_Error
+Private Sub humidityGaugeForm_BubblingEvent(ByRef sender As Object, ByRef EventName As String, ByRef P1 As Variant, ByRef P2 As Variant, ByRef P3 As Variant, ByRef P4 As Variant, ByRef P5 As Variant, ByRef P6 As Variant, ByRef P7 As Variant)
+   On Error GoTo humidityGaugeForm_BubblingEvent_Error
 
     If PzGIgnoreMouse = "1" Then Exit Sub
     
@@ -215,9 +215,9 @@ Private Sub HumidityGaugeForm_BubblingEvent(ByRef sender As Object, ByRef EventN
    On Error GoTo 0
    Exit Sub
 
-HumidityGaugeForm_BubblingEvent_Error:
+humidityGaugeForm_BubblingEvent_Error:
 
-    MsgBox "Error " & Err.Number & " (" & Err.Description & ") in procedure HumidityGaugeForm_BubblingEvent of Class Module cfHumidity"
+    MsgBox "Error " & Err.Number & " (" & Err.Description & ") in procedure humidityGaugeForm_BubblingEvent of Class Module cfHumidity"
 End Sub
 '---------------------------------------------------------------------------------------
 ' Procedure : helpbutton_click
@@ -442,18 +442,18 @@ End Sub
 
 
 '---------------------------------------------------------------------------------------
-' Procedure : HumidityGaugeForm_DblClick
+' Procedure : humidityGaugeForm_DblClick
 ' Author    : Dean Beedell (yereverluvinunclebert)
 ' Date      : 05/05/2023
 ' Purpose   :
 '---------------------------------------------------------------------------------------
 '
-Private Sub HumidityGaugeForm_DblClick()
+Private Sub humidityGaugeForm_DblClick()
     Dim userprof As String: userprof = vbNullString
     
     Dim thisCommand As String: thisCommand = vbNullString
     
-    On Error GoTo HumidityGaugeForm_DblClick_Error
+    On Error GoTo humidityGaugeForm_DblClick_Error
 
     If LTrim$(PzGDblClickCommand) = vbNullString Then Exit Sub
     
@@ -480,11 +480,11 @@ Private Sub HumidityGaugeForm_DblClick()
     On Error GoTo 0
     Exit Sub
 
-HumidityGaugeForm_DblClick_Error:
+humidityGaugeForm_DblClick_Error:
 
     With Err
          If .Number <> 0 Then
-            MsgBox "Error " & Err.Number & " (" & Err.Description & ") in procedure HumidityGaugeForm_DblClick of Class Module cfMain"
+            MsgBox "Error " & Err.Number & " (" & Err.Description & ") in procedure humidityGaugeForm_DblClick of Class Module cfMain"
             Resume Next
           End If
     End With
@@ -492,61 +492,61 @@ End Sub
 
 
 '---------------------------------------------------------------------------------------
-' Procedure : HumidityGaugeForm_KeyDown
+' Procedure : humidityGaugeForm_KeyDown
 ' Author    : Dean Beedell (yereverluvinunclebert)
 ' Date      : 01/06/2019
 ' Purpose   : get F5 and SHIFT keypresses
 '---------------------------------------------------------------------------------------
 '
-Private Sub HumidityGaugeForm_KeyDown(ByRef KeyCode As Integer, ByRef Shift As Integer)
-    On Error GoTo HumidityGaugeForm_KeyDown_Error
+Private Sub humidityGaugeForm_KeyDown(ByRef KeyCode As Integer, ByRef Shift As Integer)
+    On Error GoTo humidityGaugeForm_KeyDown_Error
 
     Call getKeyPress(KeyCode, Shift) ' will not catch Shift or CTRL keypresses on their own, must be combination with another key.
 
     On Error GoTo 0
     Exit Sub
 
-HumidityGaugeForm_KeyDown_Error:
+humidityGaugeForm_KeyDown_Error:
 
-    MsgBox "Error " & Err.Number & " (" & Err.Description & ") in procedure HumidityGaugeForm_KeyDown of Class Module cfMain"
+    MsgBox "Error " & Err.Number & " (" & Err.Description & ") in procedure humidityGaugeForm_KeyDown of Class Module cfMain"
 End Sub
 ''
 '---------------------------------------------------------------------------------------
-' Procedure : HumidityGaugeForm_MouseUp
+' Procedure : humidityGaugeForm_MouseUp
 ' Author    : Dean Beedell (yereverluvinunclebert)
 ' Date      : 05/05/2023
 ' Purpose   : save the form x,y position when ever the gauge/form is dragged
 '---------------------------------------------------------------------------------------
 '
-Private Sub HumidityGaugeForm_MouseUp(ByRef Button As Integer, ByRef Shift As Integer, ByRef X As Single, ByRef Y As Single)
-    On Error GoTo HumidityGaugeForm_MouseUp_Error
+Private Sub humidityGaugeForm_MouseUp(ByRef Button As Integer, ByRef Shift As Integer, ByRef X As Single, ByRef Y As Single)
+    On Error GoTo humidityGaugeForm_MouseUp_Error
     
     Call saveHumidityGaugePosition
 
     On Error GoTo 0
     Exit Sub
 
-HumidityGaugeForm_MouseUp_Error:
+humidityGaugeForm_MouseUp_Error:
 
     With Err
          If .Number <> 0 Then
-            MsgBox "Error " & Err.Number & " (" & Err.Description & ") in procedure HumidityGaugeForm_MouseUp of Class Module cfMain"
+            MsgBox "Error " & Err.Number & " (" & Err.Description & ") in procedure humidityGaugeForm_MouseUp of Class Module cfMain"
             Resume Next
           End If
     End With
 End Sub
 
 '---------------------------------------------------------------------------------------
-' Procedure : HumidityGaugeForm_MouseMove
+' Procedure : humidityGaugeForm_MouseMove
 ' Author    : Dean Beedell (yereverluvinunclebert)
 ' Date      : 31/07/2023
 ' Purpose   :
 '---------------------------------------------------------------------------------------
 '
-Private Sub HumidityGaugeForm_MouseMove(ByRef Button As Integer, ByRef Shift As Integer, ByRef X As Single, ByRef Y As Single)
+Private Sub humidityGaugeForm_MouseMove(ByRef Button As Integer, ByRef Shift As Integer, ByRef X As Single, ByRef Y As Single)
   Static x0 As Single, y0 As Single: If Button = 0 Then x0 = X: y0 = Y 'just store the offsets when no button is down
   
-   On Error GoTo HumidityGaugeForm_MouseMove_Error
+   On Error GoTo humidityGaugeForm_MouseMove_Error
     
     If overlayHumidWidget.Locked = True Then Exit Sub
     If PzGIgnoreMouse = "1" Then Exit Sub
@@ -561,22 +561,22 @@ Private Sub HumidityGaugeForm_MouseMove(ByRef Button As Integer, ByRef Shift As 
    On Error GoTo 0
    Exit Sub
 
-HumidityGaugeForm_MouseMove_Error:
+humidityGaugeForm_MouseMove_Error:
 
-    MsgBox "Error " & Err.Number & " (" & Err.Description & ") in procedure HumidityGaugeForm_MouseMove of Class Module cfHumidity"
+    MsgBox "Error " & Err.Number & " (" & Err.Description & ") in procedure humidityGaugeForm_MouseMove of Class Module cfHumidity"
 End Sub
 
 '---------------------------------------------------------------------------------------
-' Procedure : HumidityGaugeForm_MouseWheel
+' Procedure : humidityGaugeForm_MouseWheel
 ' Author    : Dean Beedell (yereverluvinunclebert)
 ' Date      : 31/07/2023
 ' Purpose   : rotate forward positive = smaller
 '---------------------------------------------------------------------------------------
 '
-Private Sub HumidityGaugeForm_MouseWheel(ByVal MouseKeys As Long, ByVal Rotation As Long, ByVal Xpos As Single, ByVal Ypos As Single)
+Private Sub humidityGaugeForm_MouseWheel(ByVal MouseKeys As Long, ByVal Rotation As Long, ByVal Xpos As Single, ByVal Ypos As Single)
    Dim RotationDirection As Long: RotationDirection = 0
    
-   On Error GoTo HumidityGaugeForm_MouseWheel_Error
+   On Error GoTo humidityGaugeForm_MouseWheel_Error
 
     If PzGScrollWheelDirection = "1" Then
         If Rotation > 0 Then
@@ -588,14 +588,14 @@ Private Sub HumidityGaugeForm_MouseWheel(ByVal MouseKeys As Long, ByVal Rotation
         RotationDirection = Rotation
     End If
     
-   If MouseKeys = 8 Then Call HumidAdjustZoom(FZ + RotationDirection / 2400)   'change the Zoom only, when the Ctrl-Key is down
+   If MouseKeys = 8 Then Call humidAdjustZoom(FZ + RotationDirection / 2400)   'change the Zoom only, when the Ctrl-Key is down
 
    On Error GoTo 0
    Exit Sub
 
-HumidityGaugeForm_MouseWheel_Error:
+humidityGaugeForm_MouseWheel_Error:
 
-    MsgBox "Error " & Err.Number & " (" & Err.Description & ") in procedure HumidityGaugeForm_MouseWheel of Class Module cfHumidity"
+    MsgBox "Error " & Err.Number & " (" & Err.Description & ") in procedure humidityGaugeForm_MouseWheel of Class Module cfHumidity"
 End Sub
 
 
@@ -606,12 +606,12 @@ End Sub
 ' Purpose   :
 '---------------------------------------------------------------------------------------
 '
-Public Sub HumidAdjustZoom(ByVal NewZoom As Single)
-   On Error GoTo HumidAdjustZoom_Error
+Public Sub humidAdjustZoom(ByVal NewZoom As Single)
+   On Error GoTo humidAdjustZoom_Error
 
       FZ = NewZoom
       If FZ < 0.05 Then FZ = 0.05 Else If FZ > 3 Then FZ = 3 'keep FZ within a sane ZoomInterval
-      humidityGaugeForm.WidgetRoot.Zoom = FZ '* HumidityGaugeForm.WidgetRoot.CurrentMonitor.Zoom '<-- if the multiplicator is activated, we'd have DPI-awareness on high-res monitors
+      humidityGaugeForm.WidgetRoot.Zoom = FZ '* humidityGaugeForm.WidgetRoot.CurrentMonitor.Zoom '<-- if the multiplicator is activated, we'd have DPI-awareness on high-res monitors
       humidityGaugeForm.Move humidityGaugeForm.Left, humidityGaugeForm.Top, PSDWidth * humidityGaugeForm.WidgetRoot.Zoom, PSDHeight * humidityGaugeForm.WidgetRoot.Zoom
       
     ' when resized from the gauge scroll up/down it needs to write it back so the size is correct when prefs opened.
@@ -626,9 +626,9 @@ Public Sub HumidAdjustZoom(ByVal NewZoom As Single)
    On Error GoTo 0
    Exit Sub
 
-HumidAdjustZoom_Error:
+humidAdjustZoom_Error:
 
-    MsgBox "Error " & Err.Number & " (" & Err.Description & ") in procedure HumidAdjustZoom of Class Module cfHumidity"
+    MsgBox "Error " & Err.Number & " (" & Err.Description & ") in procedure humidAdjustZoom of Class Module cfHumidity"
 End Sub
 '---------------------------------------------------------------------------------------
 ' Procedure : W_MouseDown
@@ -637,7 +637,7 @@ End Sub
 ' Purpose   :
 '---------------------------------------------------------------------------------------
 '
-Private Sub HumidityGaugeForm_MouseDown(ByRef Button As Integer, ByRef Shift As Integer, ByRef X As Single, ByRef Y As Single)
+Private Sub humidityGaugeForm_MouseDown(ByRef Button As Integer, ByRef Shift As Integer, ByRef X As Single, ByRef Y As Single)
    On Error GoTo W_MouseDown_Error
 
     gblOriginatingForm = "HumidityForm"
@@ -646,6 +646,8 @@ Private Sub HumidityGaugeForm_MouseDown(ByRef Button As Integer, ByRef Shift As 
         menuForm.mnuLockTemperatureGauge.Visible = False
         menuForm.mnuLockHumidityGauge.Visible = True
         menuForm.mnuLockAnemometerGauge.Visible = False
+        menuForm.mnuLockBarometerGauge.Visible = False
+        
         Call menuForm.PopupMenu(menuForm.mnuMainMenu)
     Else
         ' ensure that the associated forms pop to the front when the main gauge receives focus
@@ -665,7 +667,7 @@ W_MouseDown_Error:
     MsgBox "Error " & Err.Number & " (" & Err.Description & ") in procedure W_MouseDown of Class Module cwOverlayTemp"
 End Sub
 
-'Private Sub HumidityGaugeForm_
+'Private Sub humidityGaugeForm_
 
 
 

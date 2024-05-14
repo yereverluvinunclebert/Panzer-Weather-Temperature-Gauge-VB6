@@ -51,12 +51,16 @@ Public overlayAnemoWidget As cwOverlayAnemo
 Public fHumidity As New cfHumidity
 Public overlayHumidWidget As cwOverlayHumid
 
+Public fBarometer As New cfBarometer
+Public overlayBaromWidget As cwOverlayBarom
+
 Public sunriseSunset As cwSunriseSunset
 Public widgetName1 As String
 Public widgetName2 As String
 Public widgetName3 As String
 Public widgetName4 As String
 Public widgetName5 As String
+Public widgetName6 As String
 
 'Public startupFlg As Boolean
 
@@ -103,7 +107,8 @@ Public Sub mainRoutine(ByVal restart As Boolean)
     Dim selectorPSDFullPath As String: selectorPSDFullPath = vbNullString
     Dim clipBPSDFullPath As String: clipBPSDFullPath = vbNullString
     Dim anemometerPSDFullPath As String: anemometerPSDFullPath = vbNullString
-    Dim humidityPSDFullPath As String: humidityPSDFullPath = vbNullString
+    Dim HumidityPSDFullPath As String: HumidityPSDFullPath = vbNullString
+    Dim barometerPSDFullPath As String: barometerPSDFullPath = vbNullString
 
     Dim licenceState As Integer: licenceState = 0
 
@@ -122,7 +127,10 @@ Public Sub mainRoutine(ByVal restart As Boolean)
     anemometerPSDFullPath = App.path & "\Res\Panzer Weather Anemometer Gauge VB6.psd"
     
     widgetName5 = "Humidity Gauge"
-    humidityPSDFullPath = App.path & "\Res\Panzer Weather Humidity Gauge VB6.psd"
+    HumidityPSDFullPath = App.path & "\Res\Panzer Weather Humidity Gauge VB6.psd"
+    
+    widgetName6 = "Barometer Gauge"
+    barometerPSDFullPath = App.path & "\Res\Panzer Weather Barometer Gauge VB6.psd"
     
     prefsCurrentWidth = 9075
     prefsCurrentHeight = 16450
@@ -176,6 +184,7 @@ Public Sub mainRoutine(ByVal restart As Boolean)
         Call loadClipBExcludePathCollection
         Call loadAnemometerExcludePathCollection
         Call loadHumidityExcludePathCollection
+        Call loadBarometerExcludePathCollection
     End If
     
     ' start the load of the PSD files using the RC6 PSD-Parser.instance
@@ -183,7 +192,8 @@ Public Sub mainRoutine(ByVal restart As Boolean)
     Call fSelector.InitSelectorFromPSD(selectorPSDFullPath)
     Call fClipB.InitClipBFromPSD(clipBPSDFullPath)
     Call fAnemometer.InitAnemometerFromPSD(anemometerPSDFullPath)
-    Call fHumidity.InitHumidityFromPSD(humidityPSDFullPath)
+    Call fHumidity.InitHumidityFromPSD(HumidityPSDFullPath)
+    Call fBarometer.InitBarometerFromPSD(barometerPSDFullPath)
     
     ' resolve VB6 sizing width bug
     Call determineScreenDimensions
@@ -214,8 +224,11 @@ Public Sub mainRoutine(ByVal restart As Boolean)
     ' set characteristics of widgets on the anemometer gauge form
     Call adjustAnemometerMainControls
 
-    ' set characteristics of widgets on the humidity gauge form
+    ' set characteristics of widgets on the Humidity gauge form
     Call adjustHumidityMainControls
+
+    ' set characteristics of widgets on the Humidity gauge form
+    Call adjustBarometerMainControls
     
     ' set characteristics of widgets on the selector form
     Call adjustSelectorMainControls
@@ -333,10 +346,6 @@ Private Sub initialiseGlobalVars()
     PzGShowTaskbar = vbNullString
     PzGDpiAwareness = vbNullString
     
-    PzGTemperatureGaugeSize = vbNullString
-    PzGAnemometerGaugeSize = vbNullString
-    PzGHumidityGaugeSize = vbNullString
-    
     
     PzGClipBSize = vbNullString
     PzGSelectorSize = vbNullString
@@ -350,26 +359,45 @@ Private Sub initialiseGlobalVars()
     
     PzGTemperatureLandscape = vbNullString
     PzGTemperaturePortrait = vbNullString
-    
-    PzGAnemometerLandscape = vbNullString
-    PzGAnemometerPortrait = vbNullString
-    
-    PzGHumidityLandscape = vbNullString
-    PzGHumidityPortrait = vbNullString
-    
+    PzGTemperatureGaugeSize = vbNullString
     PzGTemperatureLandscapeHoffset = vbNullString
     PzGTemperatureLandscapeVoffset = vbNullString
     PzGTemperaturePortraitHoffset = vbNullString
     PzGTemperaturePortraitVoffset = vbNullString
+    PzGTemperatureVLocationPerc = vbNullString
+    PzGTemperatureHLocationPerc = vbNullString
+    PzGPreventDraggingTemperature = vbNullString
+    PzGTemperatureFormHighDpiXPos = vbNullString
+    PzGTemperatureFormHighDpiYPos = vbNullString
+    PzGTemperatureFormLowDpiXPos = vbNullString
+    PzGTemperatureFormLowDpiYPos = vbNullString
     
+    PzGAnemometerGaugeSize = vbNullString
+    PzGAnemometerLandscape = vbNullString
+    PzGAnemometerPortrait = vbNullString
+    PzGAnemometerFormHighDpiXPos = vbNullString
+    PzGAnemometerFormHighDpiYPos = vbNullString
+    PzGAnemometerFormLowDpiXPos = vbNullString
+    PzGAnemometerFormLowDpiYPos = vbNullString
     PzGAnemometerLandscapeHoffset = vbNullString
     PzGAnemometerLandscapeVoffset = vbNullString
     PzGAnemometerPortraitHoffset = vbNullString
     PzGAnemometerPortraitVoffset = vbNullString
-       
-    PzGTemperatureVLocationPerc = vbNullString
-    PzGTemperatureHLocationPerc = vbNullString
+    PzGPreventDraggingAnemometer = vbNullString
     
+    PzGBarometerGaugeSize = vbNullString
+    PzGBarometerLandscape = vbNullString
+    PzGBarometerPortrait = vbNullString
+    PzGBarometerFormHighDpiXPos = vbNullString
+    PzGBarometerFormHighDpiYPos = vbNullString
+    PzGBarometerFormLowDpiXPos = vbNullString
+    PzGBarometerFormLowDpiYPos = vbNullString
+    PzGBarometerLandscapeHoffset = vbNullString
+    PzGBarometerLandscapeVoffset = vbNullString
+    PzGBarometerPortraitHoffset = vbNullString
+    PzGBarometerPortraitVoffset = vbNullString
+    PzGPreventDraggingBarometer = vbNullString
+        
     ' sounds
     PzGEnableSounds = vbNullString
     
@@ -389,10 +417,8 @@ Private Sub initialiseGlobalVars()
     
     ' window
     PzGWindowLevel = vbNullString
-    PzGPreventDraggingTemperature = vbNullString
-    PzGPreventDraggingAnemometer = vbNullString
-    PzGPreventDraggingHumidity = vbNullString
     
+
     PzGOpacity = vbNullString
 
     
@@ -407,16 +433,6 @@ Private Sub initialiseGlobalVars()
     
     PzGTrinketsDir = vbNullString
     PzGTrinketsFile = vbNullString
-    
-    PzGTemperatureFormHighDpiXPos = vbNullString
-    PzGTemperatureFormHighDpiYPos = vbNullString
-    PzGTemperatureFormLowDpiXPos = vbNullString
-    PzGTemperatureFormLowDpiYPos = vbNullString
-    
-    PzGAnemometerFormHighDpiXPos = vbNullString
-    PzGAnemometerFormHighDpiYPos = vbNullString
-    PzGAnemometerFormLowDpiXPos = vbNullString
-    PzGAnemometerFormLowDpiYPos = vbNullString
     
     PzGClipBFormHighDpiXPos = vbNullString
     PzGClipBFormHighDpiYPos = vbNullString
@@ -914,7 +930,7 @@ Public Sub adjustHumidityMainControls()
     ' validate the inputs of any data from the input settings file
     'Call validateInputs
     
-    fHumidity.HumidAdjustZoom Val(PzGHumidityGaugeSize) / 100
+    fHumidity.humidAdjustZoom Val(PzGHumidityGaugeSize) / 100
     
     ' set the characteristics of the interactive areas
     ' Note: set the Hover colour close to the original layer to avoid too much intrusion, 0 being grey
@@ -968,10 +984,10 @@ Public Sub adjustHumidityMainControls()
     
 '    If PzGPointerAnimate = "0" Then
 '        overlayHumidWidget.pointerAnimate = False
-'        fHumidity.HumidityGaugeForm.Widgets("housing/tickbutton").Widget.Alpha = Val(PzGOpacity) / 100
+'        fHumidity.humidityGaugeForm.Widgets("housing/tickbutton").Widget.Alpha = Val(PzGOpacity) / 100
 '    Else
 '        overlayHumidWidget.pointerAnimate = True
-'        fHumidity.HumidityGaugeForm.Widgets("housing/tickbutton").Widget.Alpha = 0
+'        fHumidity.humidityGaugeForm.Widgets("housing/tickbutton").Widget.Alpha = 0
 '    End If
         
     If PzGPreventDraggingHumidity = "0" Then
@@ -996,6 +1012,101 @@ adjustHumidityMainControls_Error:
 
 End Sub
 
+
+
+'---------------------------------------------------------------------------------------
+' Procedure : adjustBarometerMainControls
+' Author    : Dean Beedell (yereverluvinunclebert)
+' Date      : 27/04/2023
+' Purpose   : called at runtime and on restart, sets the characteristics of the gauge, individual controls and menus
+'---------------------------------------------------------------------------------------
+'
+Public Sub adjustBarometerMainControls()
+   
+   On Error GoTo adjustBarometerMainControls_Error
+
+    ' validate the inputs of any data from the input settings file
+    'Call validateInputs
+    
+    fBarometer.baromAdjustZoom Val(PzGBarometerGaugeSize) / 100
+    
+    ' set the characteristics of the interactive areas
+    ' Note: set the Hover colour close to the original layer to avoid too much intrusion, 0 being grey
+    With fBarometer.barometerGaugeForm.Widgets("housing/helpbutton").Widget
+        .HoverColor = 0 ' set the hover colour to grey - this may change later with new RC6
+        .MousePointer = IDC_HAND
+        .Alpha = Val(PzGOpacity) / 100
+    End With
+     
+    With fBarometer.barometerGaugeForm.Widgets("housing/startbutton").Widget
+        .HoverColor = 0 ' set the hover colour to grey - this may change later with new RC6
+        .MousePointer = IDC_HAND
+        .Alpha = Val(PzGOpacity) / 100
+        .Tag = 0.25
+    End With
+      
+    With fBarometer.barometerGaugeForm.Widgets("housing/stopbutton").Widget
+        .HoverColor = 0 ' set the hover colour to grey - this may change later with new RC6
+        .MousePointer = IDC_HAND
+        .Alpha = Val(PzGOpacity) / 100
+        .Tag = 0.25
+    End With
+      
+    With fBarometer.barometerGaugeForm.Widgets("housing/switchfacesbutton").Widget
+        .HoverColor = 0 ' set the hover colour to grey - this may change later with new RC6
+        .MousePointer = IDC_HAND
+        .Alpha = Val(PzGOpacity) / 100
+    End With
+          
+    With fBarometer.barometerGaugeForm.Widgets("housing/lockbutton").Widget
+        .HoverColor = 0 ' set the hover colour to grey - this may change later with new RC6
+        .MousePointer = IDC_HAND
+    End With
+          
+    With fBarometer.barometerGaugeForm.Widgets("housing/prefsbutton").Widget
+        .HoverColor = 0 ' set the hover colour to grey - this may change later with new RC6
+        .MousePointer = IDC_HAND
+        .Alpha = Val(PzGOpacity) / 100
+    End With
+          
+    With fBarometer.barometerGaugeForm.Widgets("housing/tickbutton").Widget
+        .HoverColor = 0 ' set the hover colour to grey - this may change later with new RC6
+        .MousePointer = IDC_HAND
+    End With
+    
+    With fBarometer.barometerGaugeForm.Widgets("housing/surround").Widget
+        .HoverColor = 0 ' set the hover colour to grey - this may change later with new RC6
+        .MousePointer = IDC_SIZEALL
+        .Alpha = Val(PzGOpacity) / 100
+    End With
+            
+    With fBarometer.barometerGaugeForm.Widgets("manualpointer").Widget
+        .HoverColor = 0 ' set the hover colour to grey - this may change later with new RC6
+        .MousePointer = IDC_SIZEALL
+        .Alpha = Val(PzGOpacity) / 100
+    End With
+        
+    If PzGPreventDraggingBarometer = "0" Then
+        menuForm.mnuLockTemperatureGauge.Checked = False
+        overlayBaromWidget.Locked = False
+        fBarometer.barometerGaugeForm.Widgets("housing/lockbutton").Widget.Alpha = Val(PzGOpacity) / 100
+    Else
+        menuForm.mnuLockTemperatureGauge.Checked = True
+        overlayBaromWidget.Locked = True ' this is just here for continuity's sake, it is also set at the time the control is selected
+        fBarometer.barometerGaugeForm.Widgets("housing/lockbutton").Widget.Alpha = 0
+    End If
+
+    overlayBaromWidget.thisOpacity = Val(PzGOpacity)
+               
+    
+   On Error GoTo 0
+   Exit Sub
+
+adjustBarometerMainControls_Error:
+
+    MsgBox "Error " & Err.Number & " (" & Err.Description & ") in procedure adjustBarometerMainControls of Module modMain"
+
+End Sub
 '---------------------------------------------------------------------------------------
 ' Procedure : setAlphaFormZordering
 ' Author    : Dean Beedell (yereverluvinunclebert)
@@ -1010,14 +1121,20 @@ Public Sub setAlphaFormZordering()
     If Val(PzGWindowLevel) = 0 Then
         Call SetWindowPos(fTemperature.temperatureGaugeForm.hwnd, HWND_BOTTOM, 0&, 0&, 0&, 0&, OnTopFlags)
         Call SetWindowPos(fAnemometer.anemometerGaugeForm.hwnd, HWND_BOTTOM, 0&, 0&, 0&, 0&, OnTopFlags)
+        Call SetWindowPos(fHumidity.humidityGaugeForm.hwnd, HWND_BOTTOM, 0&, 0&, 0&, 0&, OnTopFlags)
+        Call SetWindowPos(fBarometer.barometerGaugeForm.hwnd, HWND_BOTTOM, 0&, 0&, 0&, 0&, OnTopFlags)
         Call SetWindowPos(fClipB.clipBForm.hwnd, HWND_BOTTOM, 0&, 0&, 0&, 0&, OnTopFlags)
     ElseIf Val(PzGWindowLevel) = 1 Then
         Call SetWindowPos(fTemperature.temperatureGaugeForm.hwnd, HWND_TOP, 0&, 0&, 0&, 0&, OnTopFlags)
         Call SetWindowPos(fAnemometer.anemometerGaugeForm.hwnd, HWND_TOP, 0&, 0&, 0&, 0&, OnTopFlags)
+        Call SetWindowPos(fHumidity.humidityGaugeForm.hwnd, HWND_TOP, 0&, 0&, 0&, 0&, OnTopFlags)
+        Call SetWindowPos(fBarometer.barometerGaugeForm.hwnd, HWND_TOP, 0&, 0&, 0&, 0&, OnTopFlags)
         Call SetWindowPos(fClipB.clipBForm.hwnd, HWND_TOP, 0&, 0&, 0&, 0&, OnTopFlags)
     ElseIf Val(PzGWindowLevel) = 2 Then
         Call SetWindowPos(fTemperature.temperatureGaugeForm.hwnd, HWND_TOPMOST, 0&, 0&, 0&, 0&, OnTopFlags)
         Call SetWindowPos(fAnemometer.anemometerGaugeForm.hwnd, HWND_TOPMOST, 0&, 0&, 0&, 0&, OnTopFlags)
+        Call SetWindowPos(fHumidity.humidityGaugeForm.hwnd, HWND_TOPMOST, 0&, 0&, 0&, 0&, OnTopFlags)
+        Call SetWindowPos(fBarometer.barometerGaugeForm.hwnd, HWND_TOPMOST, 0&, 0&, 0&, 0&, OnTopFlags)
         Call SetWindowPos(fClipB.clipBForm.hwnd, HWND_TOPMOST, 0&, 0&, 0&, 0&, OnTopFlags)
     End If
 
@@ -1064,9 +1181,6 @@ Public Sub readSettingsFile(ByVal location As String, ByVal PzGSettingsFile As S
         PzGShowTaskbar = fGetINISetting(location, "showTaskbar", PzGSettingsFile)
         PzGDpiAwareness = fGetINISetting(location, "dpiAwareness", PzGSettingsFile)
         
-        PzGTemperatureGaugeSize = fGetINISetting(location, "temperatureGaugeSize", PzGSettingsFile)
-        PzGAnemometerGaugeSize = fGetINISetting("Software\PzAnemometerGauge", "anemometerGaugeSize", PzGSettingsFile)
-        PzGHumidityGaugeSize = fGetINISetting("Software\PzHumidityGauge", "humidityGaugeSize", PzGSettingsFile)
         
         
         PzGClipBSize = fGetINISetting("Software\PzClipB", "clipBSize", PzGSettingsFile)
@@ -1080,28 +1194,51 @@ Public Sub readSettingsFile(ByVal location As String, ByVal PzGSettingsFile As S
         
         PzGWidgetPosition = fGetINISetting(location, "widgetPosition", PzGSettingsFile)
         
+        PzGTemperatureGaugeSize = fGetINISetting(location, "temperatureGaugeSize", PzGSettingsFile)
         PzGTemperatureLandscape = fGetINISetting(location, "temperatureLandscape", PzGSettingsFile)
         PzGTemperaturePortrait = fGetINISetting(location, "temperaturePortrait", PzGSettingsFile)
-        
         PzGTemperatureLandscapeHoffset = fGetINISetting(location, "temperatureLandscapeHoffset", PzGSettingsFile)
         PzGTemperatureLandscapeVoffset = fGetINISetting(location, "temperatureLandscapeYoffset", PzGSettingsFile)
         PzGTemperaturePortraitHoffset = fGetINISetting(location, "temperaturePortraitHoffset", PzGSettingsFile)
         PzGTemperaturePortraitVoffset = fGetINISetting(location, "temperaturePortraitVoffset", PzGSettingsFile)
-          
+        PzGTemperatureVLocationPerc = fGetINISetting(location, "temperatureVLocationPerc", PzGSettingsFile)
+        PzGTemperatureHLocationPerc = fGetINISetting(location, "temperatureHLocationPerc", PzGSettingsFile)
+        PzGTemperatureFormHighDpiXPos = fGetINISetting("Software\PzTemperatureGauge", "temperatureFormHighDpiXPos", PzGSettingsFile)
+        PzGTemperatureFormHighDpiYPos = fGetINISetting("Software\PzTemperatureGauge", "temperatureFormHighDpiYPos", PzGSettingsFile)
+        PzGTemperatureFormLowDpiXPos = fGetINISetting("Software\PzTemperatureGauge", "temperatureFormLowDpiXPos", PzGSettingsFile)
+        PzGTemperatureFormLowDpiYPos = fGetINISetting("Software\PzTemperatureGauge", "temperatureFormLowDpiYPos", PzGSettingsFile)
+        PzGPreventDraggingTemperature = fGetINISetting(location, "preventDraggingTemperature", PzGSettingsFile)
+        
         PzGAnemometerLandscape = fGetINISetting("Software\PzAnemometerGauge", "anemometerLandscape", PzGSettingsFile)
         PzGAnemometerPortrait = fGetINISetting("Software\PzAnemometerGauge", "anemometerPortrait", PzGSettingsFile)
-          
-        PzGHumidityLandscape = fGetINISetting("Software\PzHumidityGauge", "humidityLandscape", PzGSettingsFile)
-        PzGHumidityPortrait = fGetINISetting("Software\PzHumidityGauge", "humidityPortrait", PzGSettingsFile)
-              
+        PzGAnemometerGaugeSize = fGetINISetting("Software\PzAnemometerGauge", "anemometerGaugeSize", PzGSettingsFile)
         PzGAnemometerLandscapeHoffset = fGetINISetting("Software\PzAnemometerGauge", "anemometerLandscapeHoffset", PzGSettingsFile)
         PzGAnemometerLandscapeVoffset = fGetINISetting("Software\PzAnemometerGauge", "anemometerLandscapeVoffset", PzGSettingsFile)
         PzGAnemometerPortraitHoffset = fGetINISetting("Software\PzAnemometerGauge", "anemometerPortraitHoffset", PzGSettingsFile)
         PzGAnemometerPortraitVoffset = fGetINISetting("Software\PzAnemometerGauge", "anemometerPortraitVoffset", PzGSettingsFile)
+        PzGAnemometerVLocationPerc = fGetINISetting("Software\PzAnemometerGauge", "anemometerVLocationPerc", PzGSettingsFile)
+        PzGAnemometerHLocationPerc = fGetINISetting("Software\PzAnemometerGauge", "anemometerHLocationPerc", PzGSettingsFile)
+        PzGAnemometerFormHighDpiXPos = fGetINISetting("Software\PzAnemometerGauge", "anemometerFormHighDpiXPos", PzGSettingsFile)
+        PzGAnemometerFormHighDpiYPos = fGetINISetting("Software\PzAnemometerGauge", "anemometerFormHighDpiYPos", PzGSettingsFile)
+        PzGAnemometerFormLowDpiXPos = fGetINISetting("Software\PzAnemometerGauge", "anemometerFormLowDpiXPos", PzGSettingsFile)
+        PzGAnemometerFormLowDpiYPos = fGetINISetting("Software\PzAnemometerGauge", "anemometerFormLowDpiYPos", PzGSettingsFile)
+        PzGPreventDraggingAnemometer = fGetINISetting("Software\PzAnemometerGauge", "preventDraggingAnemometer", PzGSettingsFile)
         
-        PzGTemperatureVLocationPerc = fGetINISetting(location, "temperatureVLocationPerc", PzGSettingsFile)
-        PzGTemperatureHLocationPerc = fGetINISetting(location, "temperatureHLocationPerc", PzGSettingsFile)
-
+        PzGBarometerLandscape = fGetINISetting("Software\PzBarometerGauge", "barometerLandscape", PzGSettingsFile)
+        PzGBarometerPortrait = fGetINISetting("Software\PzBarometerGauge", "barometerPortrait", PzGSettingsFile)
+        PzGBarometerGaugeSize = fGetINISetting("Software\PzBarometerGauge", "barometerGaugeSize", PzGSettingsFile)
+        PzGBarometerLandscapeHoffset = fGetINISetting("Software\PzBarometerGauge", "barometerLandscapeHoffset", PzGSettingsFile)
+        PzGBarometerLandscapeVoffset = fGetINISetting("Software\PzBarometerGauge", "barometerLandscapeVoffset", PzGSettingsFile)
+        PzGBarometerPortraitHoffset = fGetINISetting("Software\PzBarometerGauge", "barometerPortraitHoffset", PzGSettingsFile)
+        PzGBarometerPortraitVoffset = fGetINISetting("Software\PzBarometerGauge", "barometerPortraitVoffset", PzGSettingsFile)
+        PzGBarometerVLocationPerc = fGetINISetting("Software\PzBarometerGauge", "barometerVLocationPerc", PzGSettingsFile)
+        PzGBarometerHLocationPerc = fGetINISetting("Software\PzBarometerGauge", "barometerHLocationPerc", PzGSettingsFile)
+        PzGBarometerFormHighDpiXPos = fGetINISetting("Software\PzBarometerGauge", "barometerFormHighDpiXPos", PzGSettingsFile)
+        PzGBarometerFormHighDpiYPos = fGetINISetting("Software\PzBarometerGauge", "barometerFormHighDpiYPos", PzGSettingsFile)
+        PzGBarometerFormLowDpiXPos = fGetINISetting("Software\PzBarometerGauge", "barometerFormLowDpiXPos", PzGSettingsFile)
+        PzGBarometerFormLowDpiYPos = fGetINISetting("Software\PzBarometerGauge", "barometerFormLowDpiYPos", PzGSettingsFile)
+        PzGPreventDraggingBarometer = fGetINISetting("Software\PzBarometerGauge", "preventDraggingBarometer", PzGSettingsFile)
+             
         ' font
         PzGTempFormFont = fGetINISetting(location, "tempFormFont", PzGSettingsFile)
         PzGPrefsFont = fGetINISetting(location, "prefsFont", PzGSettingsFile)
@@ -1119,24 +1256,6 @@ Public Sub readSettingsFile(ByVal location As String, ByVal PzGSettingsFile As S
         PzGDblClickCommand = fGetINISetting(location, "dblClickCommand", PzGSettingsFile)
         PzGOpenFile = fGetINISetting(location, "openFile", PzGSettingsFile)
         PzGDefaultEditor = fGetINISetting(location, "defaultEditor", PzGSettingsFile)
-        
-        ' other
-        PzGTemperatureFormHighDpiXPos = fGetINISetting("Software\PzTemperatureGauge", "temperatureFormHighDpiXPos", PzGSettingsFile)
-        PzGTemperatureFormHighDpiYPos = fGetINISetting("Software\PzTemperatureGauge", "temperatureFormHighDpiYPos", PzGSettingsFile)
-        PzGTemperatureFormLowDpiXPos = fGetINISetting("Software\PzTemperatureGauge", "temperatureFormLowDpiXPos", PzGSettingsFile)
-        PzGTemperatureFormLowDpiYPos = fGetINISetting("Software\PzTemperatureGauge", "temperatureFormLowDpiYPos", PzGSettingsFile)
-        
-        ' other
-        PzGAnemometerFormHighDpiXPos = fGetINISetting("Software\PzAnemometerGauge", "anemometerFormHighDpiXPos", PzGSettingsFile)
-        PzGAnemometerFormHighDpiYPos = fGetINISetting("Software\PzAnemometerGauge", "anemometerFormHighDpiYPos", PzGSettingsFile)
-        PzGAnemometerFormLowDpiXPos = fGetINISetting("Software\PzAnemometerGauge", "anemometerFormLowDpiXPos", PzGSettingsFile)
-        PzGAnemometerFormLowDpiYPos = fGetINISetting("Software\PzAnemometerGauge", "anemometerFormLowDpiYPos", PzGSettingsFile)
-        
-        ' other
-        PzGHumidityFormHighDpiXPos = fGetINISetting("Software\PzHumidityGauge", "humidityFormHighDpiXPos", PzGSettingsFile)
-        PzGHumidityFormHighDpiYPos = fGetINISetting("Software\PzHumidityGauge", "humidityFormHighDpiYPos", PzGSettingsFile)
-        PzGHumidityFormLowDpiXPos = fGetINISetting("Software\PzHumidityGauge", "humidityFormLowDpiXPos", PzGSettingsFile)
-        PzGHumidityFormLowDpiYPos = fGetINISetting("Software\PzHumidityGauge", "humidityFormLowDpiYPos", PzGSettingsFile)
                 
         ' other
         PzGClipBFormHighDpiXPos = fGetINISetting("Software\PzClipB", "clipBFormHighDpiXPos", PzGSettingsFile)
@@ -1155,10 +1274,6 @@ Public Sub readSettingsFile(ByVal location As String, ByVal PzGSettingsFile As S
         
         ' window
         PzGWindowLevel = fGetINISetting(location, "windowLevel", PzGSettingsFile)
-        PzGPreventDraggingTemperature = fGetINISetting(location, "preventDraggingTemperature", PzGSettingsFile)
-        PzGPreventDraggingAnemometer = fGetINISetting("Software\PzAnemometerGauge", "preventDraggingAnemometer", PzGSettingsFile)
-        PzGPreventDraggingHumidity = fGetINISetting("Software\PzHumidityGauge", "PzGPreventDraggingHumidity", PzGSettingsFile)
-        
         
         PzGOpacity = fGetINISetting(location, "opacity", PzGSettingsFile)
         
@@ -1168,7 +1283,6 @@ Public Sub readSettingsFile(ByVal location As String, ByVal PzGSettingsFile As S
         PzGOldPressureStorage = fGetINISetting(location, "oldPressureStorage", PzGSettingsFile)
         PzGPressureStorageDate = fGetINISetting(location, "pressureStorageDate", PzGSettingsFile)
         PzGCurrentPressureValue = fGetINISetting(location, "currentPressureValue", PzGSettingsFile)
-        
     
         ' we do not want the widget to hide at startup
         'PzGWidgetHidden = fGetINISetting(location, "widgetHidden", PzGSettingsFile)
@@ -1227,9 +1341,6 @@ Public Sub validateInputs()
     If PzGEnableBalloonTooltips = vbNullString Then PzGEnableBalloonTooltips = "1"
     If PzGShowTaskbar = vbNullString Then PzGShowTaskbar = "0"
     If PzGDpiAwareness = vbNullString Then PzGDpiAwareness = "0"
-    If PzGTemperatureGaugeSize = vbNullString Then PzGTemperatureGaugeSize = "50"
-    If PzGAnemometerGaugeSize = vbNullString Then PzGAnemometerGaugeSize = "50"
-    If PzGHumidityGaugeSize = vbNullString Then PzGHumidityGaugeSize = "50"
     
     If PzGClipBSize = vbNullString Then PzGClipBSize = "50"
     If PzGSelectorSize = vbNullString Then PzGSelectorSize = "100"
@@ -1253,30 +1364,50 @@ Public Sub validateInputs()
     If PzGGaugeType = vbNullString Then PzGGaugeType = "0"
     
     If PzGWidgetPosition = vbNullString Then PzGWidgetPosition = "0"
+    
+    If PzGTemperatureGaugeSize = vbNullString Then PzGTemperatureGaugeSize = "50"
     If PzGTemperatureLandscape = vbNullString Then PzGTemperatureLandscape = "0"
     If PzGTemperaturePortrait = vbNullString Then PzGTemperaturePortrait = "0"
     If PzGTemperatureLandscapeHoffset = vbNullString Then PzGTemperatureLandscapeHoffset = vbNullString
     If PzGTemperatureLandscapeVoffset = vbNullString Then PzGTemperatureLandscapeVoffset = vbNullString
     If PzGTemperaturePortraitHoffset = vbNullString Then PzGTemperaturePortraitHoffset = vbNullString
     If PzGTemperaturePortraitVoffset = vbNullString Then PzGTemperaturePortraitVoffset = vbNullString
+    If PzGTemperatureVLocationPerc = vbNullString Then PzGTemperatureVLocationPerc = vbNullString
+    If PzGTemperatureHLocationPerc = vbNullString Then PzGTemperatureHLocationPerc = vbNullString
+    If PzGPreventDraggingTemperature = vbNullString Then PzGPreventDraggingTemperature = "0"
     
+    If PzGAnemometerGaugeSize = vbNullString Then PzGAnemometerGaugeSize = "50"
     If PzGAnemometerLandscape = vbNullString Then PzGAnemometerLandscape = "0"
     If PzGAnemometerPortrait = vbNullString Then PzGAnemometerPortrait = "0"
     If PzGAnemometerLandscapeHoffset = vbNullString Then PzGAnemometerLandscapeHoffset = vbNullString
     If PzGAnemometerLandscapeVoffset = vbNullString Then PzGAnemometerLandscapeVoffset = vbNullString
     If PzGAnemometerPortraitHoffset = vbNullString Then PzGAnemometerPortraitHoffset = vbNullString
     If PzGAnemometerPortraitVoffset = vbNullString Then PzGAnemometerPortraitVoffset = vbNullString
+    If PzGAnemometerVLocationPerc = vbNullString Then PzGAnemometerVLocationPerc = vbNullString
+    If PzGAnemometerHLocationPerc = vbNullString Then PzGAnemometerHLocationPerc = vbNullString
+    If PzGPreventDraggingAnemometer = vbNullString Then PzGPreventDraggingAnemometer = "0"
     
+    If PzGHumidityGaugeSize = vbNullString Then PzGHumidityGaugeSize = "50"
     If PzGHumidityLandscape = vbNullString Then PzGHumidityLandscape = "0"
     If PzGHumidityPortrait = vbNullString Then PzGHumidityPortrait = "0"
     If PzGHumidityLandscapeHoffset = vbNullString Then PzGHumidityLandscapeHoffset = vbNullString
     If PzGHumidityLandscapeVoffset = vbNullString Then PzGHumidityLandscapeVoffset = vbNullString
     If PzGHumidityPortraitHoffset = vbNullString Then PzGHumidityPortraitHoffset = vbNullString
     If PzGHumidityPortraitVoffset = vbNullString Then PzGHumidityPortraitVoffset = vbNullString
-   
+    If PzGHumidityVLocationPerc = vbNullString Then PzGHumidityVLocationPerc = vbNullString
+    If PzGHumidityHLocationPerc = vbNullString Then PzGHumidityHLocationPerc = vbNullString
+    If PzGPreventDraggingHumidity = vbNullString Then PzGPreventDraggingHumidity = "0"
     
-    If PzGTemperatureVLocationPerc = vbNullString Then PzGTemperatureVLocationPerc = vbNullString
-    If PzGTemperatureHLocationPerc = vbNullString Then PzGTemperatureHLocationPerc = vbNullString
+    If PzGBarometerGaugeSize = vbNullString Then PzGBarometerGaugeSize = "50"
+    If PzGBarometerLandscape = vbNullString Then PzGBarometerLandscape = "0"
+    If PzGBarometerPortrait = vbNullString Then PzGBarometerPortrait = "0"
+    If PzGBarometerLandscapeHoffset = vbNullString Then PzGBarometerLandscapeHoffset = vbNullString
+    If PzGBarometerLandscapeVoffset = vbNullString Then PzGBarometerLandscapeVoffset = vbNullString
+    If PzGBarometerPortraitHoffset = vbNullString Then PzGBarometerPortraitHoffset = vbNullString
+    If PzGBarometerPortraitVoffset = vbNullString Then PzGBarometerPortraitVoffset = vbNullString
+    If PzGBarometerVLocationPerc = vbNullString Then PzGBarometerVLocationPerc = vbNullString
+    If PzGBarometerHLocationPerc = vbNullString Then PzGBarometerHLocationPerc = vbNullString
+    If PzGPreventDraggingBarometer = vbNullString Then PzGPreventDraggingBarometer = "0"
             
     ' development
     If PzGDebug = vbNullString Then PzGDebug = "0"
@@ -1290,9 +1421,6 @@ Public Sub validateInputs()
     If PzGWidgetHidden = vbNullString Then PzGWidgetHidden = "0"
     If PzGHidingTime = vbNullString Then PzGHidingTime = "0"
     If PzGIgnoreMouse = vbNullString Then PzGIgnoreMouse = "0"
-    If PzGPreventDraggingTemperature = vbNullString Then PzGPreventDraggingTemperature = "0"
-    If PzGPreventDraggingAnemometer = vbNullString Then PzGPreventDraggingAnemometer = "0"
-    If PzGPreventDraggingHumidity = vbNullString Then PzGPreventDraggingHumidity = "0"
     
     ' other
     If PzGFirstTimeRun = vbNullString Then PzGFirstTimeRun = "true"
@@ -1694,15 +1822,10 @@ Private Sub loadHumidityExcludePathCollection()
 
     With fHumidity.collHumidityPSDNonUIElements ' the exclude list
 
-        .Add Empty, "humidityface"
+        .Add Empty, "Humidityface"
         
         .Add Empty, "bigreflection"     'all reflections
         .Add Empty, "windowreflection"
-
-        .Add Empty, "redlamptrue"
-        .Add Empty, "redlampfalse"
-        
-        .Add Empty, "directionpointer"
         
         .Add Empty, "pointerShadow"
         .Add Empty, "pointer"
@@ -1719,43 +1842,44 @@ loadHumidityExcludePathCollection_Error:
 
 End Sub
 
-''---------------------------------------------------------------------------------------
-'' Procedure : ExportPngs
-'' Author    : Olaf
-'' Date      : 06/08/2023
-'' Purpose   :
-''---------------------------------------------------------------------------------------
-''
-'Sub exportPngs(PSD_FileNameOrByteArray, ByVal pngFolder As String)
-'   On Error GoTo ExportPngs_Error
+'---------------------------------------------------------------------------------------
+' Procedure : loadBarometerExcludePathCollection
+' Author    : Dean Beedell (yereverluvinunclebert)
+' Date      : 30/07/2023
+' Purpose   : Do not create Widgets for those in the exclude list.
+'             all non UI-interacting elements (no mouse events) must be inserted here
+'---------------------------------------------------------------------------------------
 '
-'  New_c.FSO.EnsurePath pngFolder 'make sure the PngFolder-Path "materializes itself" in the FileSystem
-'  New_c.FSO.EnsurePathEndSep pngFolder 'add a backslash to the PngFolder-param (in case it was missing)
-'
-'  With New_c.SimplePSD(PSD_FileNameOrByteArray)  'create a new PSD-Parser.instance (and load the passed content)
-'    Dim i As Long
-'    For i = 0 To .LayersCount - 1 'loop over all the Layers in the PSD
-'      If .LayerByteSize(i) Then   'this is an Alpha-Surface-Layer with "meat" (and not a group-specification)
-'         .LayerSurface(i).WriteContentToPngFile pngFolder & Replace(.LayerPath(i), "/", "_") & ".png"
-'      End If
-'    Next
-'  End With
-'
-'   On Error GoTo 0
-'   Exit Sub
-'
-'ExportPngs_Error:
-'
-'    MsgBox "Error " & Err.Number & " (" & Err.Description & ") in procedure ExportPngs of Module modMain"
-'End Sub
+Private Sub loadBarometerExcludePathCollection()
 
+    'all of these will be rendered in cwOverlay in the same order as below
+    On Error GoTo loadBarometerExcludePathCollection_Error
 
+    With fBarometer.collBarometerPSDNonUIElements ' the exclude list
 
+        .Add Empty, "barometermmhgface"
+        .Add Empty, "barometerinhgface"
+        .Add Empty, "barometerhpaface"
+        .Add Empty, "barometermbface"
+        
+        .Add Empty, "bigreflection"     'all reflections
+        .Add Empty, "windowreflection"
+        
+        .Add Empty, "pointerShadow"
+        .Add Empty, "pointer"
+       
+        
+    End With
 
+   On Error GoTo 0
+   Exit Sub
 
+loadBarometerExcludePathCollection_Error:
 
+    MsgBox "Error " & Err.Number & " (" & Err.Description & ") in procedure loadBarometerExcludePathCollection of Module modMain"
 
-     
+End Sub
+
 
 
 
@@ -1812,12 +1936,14 @@ Private Sub setTaskbarEntry()
         fTemperature.temperatureGaugeForm.ShowInTaskbar = False
         fAnemometer.anemometerGaugeForm.ShowInTaskbar = False
         fHumidity.humidityGaugeForm.ShowInTaskbar = False
+        fBarometer.barometerGaugeForm.ShowInTaskbar = False
         fClipB.clipBForm.ShowInTaskbar = False
     Else
         fTemperature.temperatureGaugeForm.ShowInTaskbar = True
         fAnemometer.anemometerGaugeForm.ShowInTaskbar = True
         fHumidity.humidityGaugeForm.ShowInTaskbar = True
-        fClipB.clipBForm.ShowInTaskbar = True
+        fBarometer.barometerGaugeForm.ShowInTaskbar = True
+       fClipB.clipBForm.ShowInTaskbar = True
     End If
 
     On Error GoTo 0

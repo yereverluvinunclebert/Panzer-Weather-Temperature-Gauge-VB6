@@ -1380,7 +1380,7 @@ End Sub
 ' ----------------------------------------------------------------
 Private Sub myStatusProc()
 
-    Dim humidityValue  As Long: humidityValue = 0
+    Dim HumidityValue  As Long: HumidityValue = 0
     Dim pressureValue As Double: pressureValue = 0
     Dim TheDate As Date: TheDate = #1/1/2000 12:00:00 PM#
     Dim secsDif As Double: secsDif = 0
@@ -1436,11 +1436,11 @@ Private Sub myStatusProc()
     Dim thisTooltip As String: thisTooltip = vbNullString
     
     
-'    Dim humidityBackgroundToolTip As String: humidityBackgroundToolTip = vbNullString
-'    Dim thermometerBackgroundToolTip As String: humidityBackgroundToolTip = vbNullString
-'    Dim anemometerBackgroundToolTip As String: humidityBackgroundToolTip = vbNullString
-'    Dim weatherIconGaugeBackgroundToolTip As String: humidityBackgroundToolTip = vbNullString
-'    Dim barometerBackgroundToolTip As String: humidityBackgroundToolTip = vbNullString
+'    Dim HumidityBackgroundToolTip As String: HumidityBackgroundToolTip = vbNullString
+'    Dim thermometerBackgroundToolTip As String: HumidityBackgroundToolTip = vbNullString
+'    Dim anemometerBackgroundToolTip As String: HumidityBackgroundToolTip = vbNullString
+'    Dim weatherIconGaugeBackgroundToolTip As String: HumidityBackgroundToolTip = vbNullString
+'    Dim barometerBackgroundToolTip As String: HumidityBackgroundToolTip = vbNullString
     
     Dim weatherIconToolTip As String: weatherIconToolTip = vbNullString
     
@@ -1596,9 +1596,9 @@ Private Sub myStatusProc()
     
     'temperatureValue = 40
 
-    ' calculate humidity
-    humidityValue = fGetHumidity(temp_c, dewpoint_c)
-    overlayHumidWidget.humidity = humidityValue
+    ' calculate Humidity
+    HumidityValue = fGetHumidity(temp_c, dewpoint_c)
+    overlayHumidWidget.thisHumidity = HumidityValue
     
     ' determine the precipitation
     precipitationDepth = fGetPrecipitation(precip_in)
@@ -1647,7 +1647,7 @@ Private Sub myStatusProc()
     If (debugFlg = 1) Then Debug.Print ("%myStatusProc - difString " & difString)
 
     ' set the hover over tooltips on the gauges
-    thisTooltip = setHoverTooltip(precipitationDepth, visibilityDistance, skyClarityString, humidityValue, temperatureValue, pressureValue, weekDayDate, wind_dir_degrees, wind_speed_kt, precip_in, wx_string)
+    thisTooltip = setHoverTooltip(precipitationDepth, visibilityDistance, skyClarityString, HumidityValue, temperatureValue, pressureValue, weekDayDate, wind_dir_degrees, wind_speed_kt, precip_in, wx_string)
     thisTooltip = thisTooltip & vbCrLf & raw_text
     
     fClipB.sLblMETARText.Caption = thisTooltip
@@ -1658,11 +1658,11 @@ Private Sub myStatusProc()
     'PzGLastTooltip = thisTooltip
     
     ' set the tooltips to the various gauges
-'    humidityBackgroundToolTip = thisTooltip
-'    thermometerBackgroundToolTip = humidityBackgroundToolTip
-'    anemometerBackgroundToolTip = humidityBackgroundToolTip
-'    weatherIconGaugeBackgroundToolTip = humidityBackgroundToolTip
-'    barometerBackgroundToolTip = humidityBackgroundToolTip
+'    HumidityBackgroundToolTip = thisTooltip
+'    thermometerBackgroundToolTip = HumidityBackgroundToolTip
+'    anemometerBackgroundToolTip = HumidityBackgroundToolTip
+'    weatherIconGaugeBackgroundToolTip = HumidityBackgroundToolTip
+'    barometerBackgroundToolTip = HumidityBackgroundToolTip
 
     weatherIconToolTip = setIconTooltip(wx_string, sky_condition_items(), uboundSkyConditions)
     If (weatherIconToolTip = vbNullString) Then
@@ -1894,7 +1894,7 @@ End Function
 
 ' ----------------------------------------------------------------
 ' Procedure Name: fGetHumidity
-' Purpose: calculate humidity
+' Purpose: calculate Humidity
 ' Procedure Kind: Function
 ' Procedure Access: Public
 ' Parameter temp_c ():
@@ -1911,7 +1911,7 @@ Private Function fGetHumidity(ByVal temp_c As String, ByVal dewpoint_c As String
     On Error GoTo fGetHumidity_Error
     
     humidity = Round(100 * (((112 - (0.1 * CInt(temp_c)) + CInt(dewpoint_c)) / (112 + (0.9 * CInt(temp_c)))) ^ 8))
-    If debugFlg = 1 Then Debug.Print ("fGetHumidity - humidity " + CStr(humidity))
+    If debugFlg = 1 Then Debug.Print ("fGetHumidity - Humidity " + CStr(humidity))
     
     fGetHumidity = humidity ' return
     
@@ -2233,7 +2233,7 @@ End Function
 ' Author: Dean Beedell (yereverluvinunclebert)
 ' Date: 17/03/2024
 ' ----------------------------------------------------------------
-Private Function setHoverTooltip(ByVal precipitationDepth As String, ByVal visibilityDistance As String, ByVal skyClarityString As String, ByVal humidityValue As Double, ByVal temperatureValue As Double, ByVal pressureValue As Double, ByVal weekDayDate As String, ByVal wind_dir_degrees As String, ByVal wind_speed_kt As String, ByVal precip_in As String, ByVal wx_string As String) As String
+Private Function setHoverTooltip(ByVal precipitationDepth As String, ByVal visibilityDistance As String, ByVal skyClarityString As String, ByVal HumidityValue As Double, ByVal temperatureValue As Double, ByVal pressureValue As Double, ByVal weekDayDate As String, ByVal wind_dir_degrees As String, ByVal wind_speed_kt As String, ByVal precip_in As String, ByVal wx_string As String) As String
     
     Dim force As String: force = vbNullString
     Dim tooltipString As String: tooltipString = vbNullString
@@ -2270,7 +2270,7 @@ Private Function setHoverTooltip(ByVal precipitationDepth As String, ByVal visib
         tooltipString = tooltipString & "Temperature" & ": " & Round(Int(temperatureValue + 273.15), 2) & " K " & vbCrLf
     End If
     
-    tooltipString = tooltipString & "Humidity : " & humidityValue & " % " & vbCrLf
+    tooltipString = tooltipString & "Humidity : " & HumidityValue & " % " & vbCrLf
     tooltipString = tooltipString & "Clouds : " & skyClarityString & " " & vbCrLf
     tooltipString = tooltipString & "Visibility : " & visibilityDistance & vbCrLf
     

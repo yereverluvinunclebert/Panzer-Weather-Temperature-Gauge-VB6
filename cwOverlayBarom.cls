@@ -6,24 +6,24 @@ BEGIN
   DataSourceBehavior  = 0  'vbNone
   MTSTransactionMode  = 0  'NotAnMTSObject
 END
-Attribute VB_Name = "cwOverlayHumid"
+Attribute VB_Name = "cwOverlayBarom"
 Attribute VB_GlobalNameSpace = False
 Attribute VB_Creatable = True
 Attribute VB_PredeclaredId = False
 Attribute VB_Exposed = False
 '@IgnoreModule AssignmentNotUsed, IntegerDataType, ModuleWithoutFolder
 '---------------------------------------------------------------------------------------
-' Module    : cwOverlayHumid
+' Module    : cwOverlayBarom
 ' Author    : Dean Beedell (yereverluvinunclebert)
 ' Date      : 31/07/2023
 ' Purpose   : create a fully click-through Widget, which allows for all kind of
-'             things to render on top of the PSD-generated Widgets created in cfHumidity
+'             things to render on top of the PSD-generated Widgets created in cfBarometer
 '---------------------------------------------------------------------------------------
 
 Option Explicit
 
-'these Public Properties are set in the Parent (here, cfHumidity)
-Public cCollOverlayHumidImages As cCollection
+'these Public Properties are set in the Parent (here, cfBarometer)
+Public cCollOverlayBaromImages As cCollection
 
 
 Public cxPerc As Single
@@ -32,10 +32,11 @@ Public cyPerc As Single
 Private WithEvents W As cWidgetBase
 Attribute W.VB_VarHelpID = -1
 
-Private mThisHumidity  As Integer
+Private thisPressure As Long
+Private mPressure  As Integer
 
-Private HumiditySDeg As Single
-Private oldHumiditySDeg As Double
+Private pressureSDeg As Single
+Private oldPressureSDeg As Double
 Private newSDeg As Double
 Private animationQuanta As Double
 Private animationAmount As Double
@@ -45,7 +46,7 @@ Private animateCCW As Boolean
 
 Private mPointerAnimate As Boolean ' property PointerAnimate
 Private mLocked As Boolean ' property Locked
-Private mthisHumidityDetails As String ' property
+Private mPressureDetails As String ' property
 Private mHidden As Boolean ' property Hidden
 Private mThisOpacity As String ' property ThisOpacity
 
@@ -72,7 +73,7 @@ Private Sub Class_Initialize()
 
 Class_Initialize_Error:
 
-    MsgBox "Error " & Err.Number & " (" & Err.Description & ") in procedure Class_Initialize of Class Module cwOverlayHumid"
+    MsgBox "Error " & Err.Number & " (" & Err.Description & ") in procedure Class_Initialize of Class Module cwOverlayBarom"
 End Sub
 
 '---------------------------------------------------------------------------------------
@@ -92,7 +93,7 @@ Public Property Get Widget() As cWidgetBase
 
 Widget_Error:
 
-    MsgBox "Error " & Err.Number & " (" & Err.Description & ") in procedure Widget of Class Module cwOverlayHumid"
+    MsgBox "Error " & Err.Number & " (" & Err.Description & ") in procedure Widget of Class Module cwOverlayBarom"
 End Property
 '---------------------------------------------------------------------------------------
 ' Procedure : Widgets
@@ -111,47 +112,47 @@ Public Property Get Widgets() As cWidgets
 
 Widgets_Error:
 
-    MsgBox "Error " & Err.Number & " (" & Err.Description & ") in procedure Widgets of Class Module cwOverlayHumid"
+    MsgBox "Error " & Err.Number & " (" & Err.Description & ") in procedure Widgets of Class Module cwOverlayBarom"
 End Property
 '---------------------------------------------------------------------------------------
-' Property : thisHumidity
+' Property : Pressure
 ' Author    : Dean Beedell (yereverluvinunclebert)
 ' Date      : 17/05/2023
 ' Purpose   :
 '---------------------------------------------------------------------------------------
 '
-Public Property Get thisHumidity() As Integer
-   On Error GoTo thisHumidityGet_Error
+Public Property Get pressure() As Integer
+   On Error GoTo PressureGet_Error
 
-   thisHumidity = mThisHumidity
+   pressure = mPressure
 
    On Error GoTo 0
    Exit Property
 
-thisHumidityGet_Error:
+PressureGet_Error:
 
-    MsgBox "Error " & Err.Number & " (" & Err.Description & ") in Property thisHumidity of Class Module cwOverlayHumid"
+    MsgBox "Error " & Err.Number & " (" & Err.Description & ") in Property Pressure of Class Module cwOverlayTemp"
 End Property
 '---------------------------------------------------------------------------------------
-' Property  : thisHumidity
+' Property  : Pressure
 ' Author    : Dean Beedell (yereverluvinunclebert)
 ' Date      : 17/05/2023
 ' Purpose   :
 '---------------------------------------------------------------------------------------
 '
-Public Property Let thisHumidity(ByVal newValue As Integer)
-   On Error GoTo thisHumidityLet_Error
+Public Property Let pressure(ByVal newValue As Integer)
+   On Error GoTo PressureLet_Error
 
-   If mThisHumidity <> newValue Then mThisHumidity = newValue Else Exit Property
+   If mPressure <> newValue Then mPressure = newValue Else Exit Property
    
-   Call obtainHumidity
+   Call obtainPressure
 
    On Error GoTo 0
    Exit Property
 
-thisHumidityLet_Error:
+PressureLet_Error:
 
-    MsgBox "Error " & Err.Number & " (" & Err.Description & ") in Property thisHumidity of Class Module cwOverlayHumid"
+    MsgBox "Error " & Err.Number & " (" & Err.Description & ") in Property Pressure of Class Module cwOverlayTemp"
 End Property
 
 
@@ -173,7 +174,7 @@ Public Property Get thisOpacity() As String
 
 thisOpacityGet_Error:
 
-    MsgBox "Error " & Err.Number & " (" & Err.Description & ") in Property thisOpacity of Class Module cwOverlayHumid"
+    MsgBox "Error " & Err.Number & " (" & Err.Description & ") in Property thisOpacity of Class Module cwOverlayBarom"
 End Property
 '---------------------------------------------------------------------------------------
 ' Property  : thisOpacity
@@ -192,7 +193,7 @@ Public Property Let thisOpacity(ByVal newValue As String)
 
 thisOpacityLet_Error:
 
-    MsgBox "Error " & Err.Number & " (" & Err.Description & ") in Property thisOpacity of Class Module cwOverlayHumid"
+    MsgBox "Error " & Err.Number & " (" & Err.Description & ") in Property thisOpacity of Class Module cwOverlayBarom"
 End Property
 
 
@@ -213,7 +214,7 @@ Public Property Get pointerAnimate() As Boolean
 
 pointerAnimateGet_Error:
 
-    MsgBox "Error " & Err.Number & " (" & Err.Description & ") in Property pointerAnimate of Class Module cwOverlayHumid"
+    MsgBox "Error " & Err.Number & " (" & Err.Description & ") in Property pointerAnimate of Class Module cwOverlayBarom"
 End Property
 '---------------------------------------------------------------------------------------
 ' Property  : pointerAnimate
@@ -232,7 +233,7 @@ Public Property Let pointerAnimate(ByVal newValue As Boolean)
 
 pointerAnimateLet_Error:
 
-    MsgBox "Error " & Err.Number & " (" & Err.Description & ") in Property pointerAnimate of Class Module cwOverlayHumid"
+    MsgBox "Error " & Err.Number & " (" & Err.Description & ") in Property pointerAnimate of Class Module cwOverlayTemp"
 End Property
 
 '---------------------------------------------------------------------------------------
@@ -252,7 +253,7 @@ Public Property Get Locked() As Boolean
 
 LockedGet_Error:
 
-    MsgBox "Error " & Err.Number & " (" & Err.Description & ") in Property Locked of Class Module cwOverlayHumid"
+    MsgBox "Error " & Err.Number & " (" & Err.Description & ") in Property Locked of Class Module cwOverlayTemp"
 End Property
 '---------------------------------------------------------------------------------------
 ' Property  : Locked
@@ -271,40 +272,40 @@ Public Property Let Locked(ByVal newValue As Boolean)
     fileToPlay = "lock.wav"
 
     If mLocked = True Then
-        menuForm.mnuLockHumidityGauge.Checked = True
+        menuForm.mnuLockBarometerGauge.Checked = True
         If panzerPrefs.IsVisible = True Then
             panzerPrefs.chkPreventDragging.Value = 1
             panzerPrefs.cmbLandscape.ListIndex = 1
         End If
 
-        PzGPreventDraggingHumidity = "1"
+        PzGPreventDraggingBarometer = "1"
         If aspectRatio = "landscape" Then
-            PzGHumidityLandscape = "1"
+            PzGBarometerLandscape = "1"
         Else
-            PzGHumidityPortrait = "1"
+            PzGBarometerPortrait = "1"
         End If
             
-        fHumidity.humidityGaugeForm.Widgets("housing/lockbutton").Widget.Alpha = 0
+        fBarometer.barometerGaugeForm.Widgets("housing/lockbutton").Widget.Alpha = 0
     Else
-        menuForm.mnuLockHumidityGauge.Checked = False
+        menuForm.mnuLockBarometerGauge.Checked = False
         If panzerPrefs.IsVisible = True Then
             panzerPrefs.chkPreventDragging.Value = 0
             panzerPrefs.cmbLandscape.ListIndex = 0
         End If
 
-        PzGPreventDraggingHumidity = "0"
+        PzGPreventDraggingBarometer = "0"
         If aspectRatio = "landscape" Then
-            PzGHumidityLandscape = "0"
+            PzGBarometerLandscape = "0"
         Else
-            PzGHumidityPortrait = "0"
+            PzGBarometerPortrait = "0"
         End If
             
-        fHumidity.humidityGaugeForm.Widgets("housing/lockbutton").Widget.Alpha = Val(PzGOpacity) / 100
+        fBarometer.barometerGaugeForm.Widgets("housing/lockbutton").Widget.Alpha = Val(PzGOpacity) / 100
     End If
 
-    fHumidity.humidityGaugeForm.Refresh
+    fBarometer.barometerGaugeForm.Refresh
 
-    sPutINISetting "Software\PzHumidityGauge", "preventDraggingTemperature", PzGPreventDraggingHumidity, PzGSettingsFile
+    sPutINISetting "Software\PzBarometerGauge", "preventDraggingTemperature", PzGPreventDraggingBarometer, PzGSettingsFile
 
     If PzGEnableSounds = "1" And fFExists(App.path & "\resources\sounds\" & fileToPlay) Then
         PlaySound App.path & "\resources\sounds\" & fileToPlay, ByVal 0&, SND_FILENAME Or SND_ASYNC
@@ -315,7 +316,7 @@ Public Property Let Locked(ByVal newValue As Boolean)
 
 LockedLet_Error:
 
-    MsgBox "Error " & Err.Number & " (" & Err.Description & ") in Property Locked of Class Module cwOverlayHumid"
+    MsgBox "Error " & Err.Number & " (" & Err.Description & ") in Property Locked of Class Module cwOverlayTemp"
 End Property
 
 
@@ -338,7 +339,7 @@ Public Property Get Hidden() As Boolean
 
 HiddenGet_Error:
 
-    MsgBox "Error " & Err.Number & " (" & Err.Description & ") in Property Hidden of Class Module cwOverlayHumid"
+    MsgBox "Error " & Err.Number & " (" & Err.Description & ") in Property Hidden of Class Module cwOverlayTemp"
 End Property
 '---------------------------------------------------------------------------------------
 ' Property  : Hidden
@@ -366,7 +367,7 @@ Public Property Let Hidden(ByVal newValue As Boolean)
 
 HiddenLet_Error:
 
-    MsgBox "Error " & Err.Number & " (" & Err.Description & ") in Property Hidden of Class Module cwOverlayHumid"
+    MsgBox "Error " & Err.Number & " (" & Err.Description & ") in Property Hidden of Class Module cwOverlayTemp"
 End Property
 
     
@@ -389,7 +390,7 @@ Private Sub W_HitTest(ByVal X As Single, ByVal Y As Single, HitResultHit As Bool
 
 W_HitTest_Error:
 
-    MsgBox "Error " & Err.Number & " (" & Err.Description & ") in procedure W_HitTest of Class Module cwOverlayHumid"
+    MsgBox "Error " & Err.Number & " (" & Err.Description & ") in procedure W_HitTest of Class Module cwOverlayTemp"
 End Sub
 
 
@@ -422,9 +423,9 @@ Private Sub W_Paint(CC As RC6.cCairoContext, ByVal xAbs As Single, ByVal yAbs As
     W.Refresh
     someOpacity = (Val(mThisOpacity) / 100) * 0.75
     
-    For i = 0 To cCollOverlayHumidImages.Count - 1 ' this is the ExcludedPaths collection populated in cfTemperature by duplicating collTemperaturePSDNonUIElements.
-      arr = cCollOverlayHumidImages.ItemByIndex(i)
-      key = cCollOverlayHumidImages.KeyByIndex(i)
+    For i = 0 To cCollOverlayBaromImages.Count - 1 ' this is the ExcludedPaths collection populated in cfTemperature by duplicating collTemperaturePSDNonUIElements.
+      arr = cCollOverlayBaromImages.ItemByIndex(i)
+      key = cCollOverlayBaromImages.KeyByIndex(i)
       
       If IsArray(arr) Then
              CC.Save
@@ -434,26 +435,26 @@ Private Sub W_Paint(CC As RC6.cCairoContext, ByVal xAbs As Single, ByVal yAbs As
             ' for specific keys perform rotation actions, clock hands &c
              Select Case key
                  
-                 Case "Humidityface"
+                 Case "barometerface"
                     
                         Set Pat.Matrix = Pat.Matrix.TranslateCoords(-arr(0), -arr(1)) 'shift the Pattern via the original X,Y PSD-Offsets (stored in Arr(0) and Arr(1))
                         CC.Paint arr(2), Pat 'render the Pattern
                                             
                  Case "pointerShadow", "pointer"
 
-                    If Val(mThisHumidity) >= 100 Then
+                    If Val(mPressure) >= 100 Then
                         boxLeft = 415
                     Else
                         boxLeft = 420
                     End If
 
                      ' draw the date and day in the windows just once to retain opacity
-                    CC.DrawText boxLeft, 185, 180, 200, CStr(mThisHumidity), , , 2, True, , someOpacity
+                    CC.DrawText boxLeft, 185, 180, 200, CStr(mPressure), , , 2, True, , someOpacity
 
                     Set Pat.Matrix = Pat.Matrix.TranslateCoords(11, 246) 'shift to the "rotation-point" within the Pattern
                     CC.TranslateDrawings W.Width * cxPerc, W.Height * cyPerc 'shift to the center-point of the Overlay-Widget-area
 
-                    CC.RotateDrawingsDeg HumiditySDeg
+                    CC.RotateDrawingsDeg pressureSDeg
                     CC.Paint arr(2), Pat 'render the Pattern with the current PSD-LayerAlpha, present in Arr(2)
 
                  Case Else 'plain output for everything else ... this includes the reflection-layers,
@@ -472,29 +473,29 @@ Private Sub W_Paint(CC As RC6.cCairoContext, ByVal xAbs As Single, ByVal yAbs As
 
 W_Paint_Error:
 
-    MsgBox "Error " & Err.Number & " (" & Err.Description & ") in procedure W_Paint of Class Module cwOverlayHumid"
+    MsgBox "Error " & Err.Number & " (" & Err.Description & ") in procedure W_Paint of Class Module cwOverlayTemp"
 End Sub
 
 
 
 '
 ' ----------------------------------------------------------------
-' Procedure Name: obtainHumidity
+' Procedure Name: obtainPressure
 ' Purpose:
 ' Procedure Kind: Sub
 ' Procedure Access: Private
 ' Author: Dean Beedell (yereverluvinunclebert)
 ' Date: 13/01/2024
 ' ----------------------------------------------------------------
-Private Sub obtainHumidity()
+Private Sub obtainPressure()
 
-    On Error GoTo obtainHumidity_Error
+    On Error GoTo obtainPressure_Error
     
     ' calculate the new cpu amount in degrees
-    If mThisHumidity = 0 Then
-        HumiditySDeg = 30
+    If mPressure = 0 Then
+        pressureSDeg = 30
     Else
-        HumiditySDeg = (mThisHumidity * 3) + 30
+        pressureSDeg = (mPressure * 3) + 30
     End If
 
     W.Parent.Refresh
@@ -502,11 +503,12 @@ Private Sub obtainHumidity()
     On Error GoTo 0
     Exit Sub
 
-obtainHumidity_Error:
+obtainPressure_Error:
 
-    MsgBox "Error " & Err.Number & " (" & Err.Description & ") in procedure obtainHumidity, line " & Erl & "."
+    MsgBox "Error " & Err.Number & " (" & Err.Description & ") in procedure obtainPressure, line " & Erl & "."
 
 End Sub
+
 
 
 

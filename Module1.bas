@@ -312,9 +312,6 @@ Public PzGEnableBalloonTooltips As String
 Public PzGShowTaskbar As String
 Public PzGDpiAwareness As String
 
-Public PzGTemperatureGaugeSize As String
-Public PzGAnemometerGaugeSize As String
-Public PzGHumidityGaugeSize As String
 
 Public PzGClipBSize As String
 Public PzGSelectorSize As String
@@ -326,39 +323,67 @@ Public PzGAspectHidden As String
 Public PzGGaugeType As String
 
 Public PzGWidgetPosition As String
+
+Public PzGTemperatureGaugeSize As String
 Public PzGTemperatureLandscape As String
 Public PzGTemperaturePortrait As String
-
 Public PzGTemperatureLandscapeHoffset As String
 Public PzGTemperatureLandscapeVoffset As String
 Public PzGTemperaturePortraitHoffset As String
 Public PzGTemperaturePortraitVoffset As String
+Public PzGTemperatureVLocationPerc As String
+Public PzGTemperatureHLocationPerc As String
+Public PzGPreventDraggingTemperature As String
+Public PzGTemperatureFormHighDpiXPos As String
+Public PzGTemperatureFormHighDpiYPos As String
+Public PzGTemperatureFormLowDpiXPos As String
+Public PzGTemperatureFormLowDpiYPos As String
 
+Public PzGAnemometerGaugeSize As String
 Public PzGAnemometerLandscape As String
 Public PzGAnemometerPortrait As String
-
 Public PzGAnemometerLandscapeHoffset As String
 Public PzGAnemometerLandscapeVoffset As String
 Public PzGAnemometerPortraitHoffset As String
 Public PzGAnemometerPortraitVoffset As String
+Public PzGAnemometerVLocationPerc As String
+Public PzGAnemometerHLocationPerc As String
+Public PzGPreventDraggingAnemometer As String
+Public PzGAnemometerFormHighDpiXPos As String
+Public PzGAnemometerFormHighDpiYPos As String
+Public PzGAnemometerFormLowDpiXPos As String
+Public PzGAnemometerFormLowDpiYPos As String
 
+Public PzGHumidityGaugeSize As String
 Public PzGHumidityLandscape As String
 Public PzGHumidityPortrait As String
-
 Public PzGHumidityLandscapeHoffset As String
 Public PzGHumidityLandscapeVoffset As String
 Public PzGHumidityPortraitHoffset As String
 Public PzGHumidityPortraitVoffset As String
-
-Public PzGTemperatureVLocationPerc As String
-Public PzGTemperatureHLocationPerc As String
-
-
-Public PzGAnemometerVLocationPerc As String
-Public PzGAnemometerHLocationPerc As String
-
 Public PzGHumidityVLocationPerc As String
 Public PzGHumidityHLocationPerc As String
+Public PzGPreventDraggingHumidity As String
+Public PzGHumidityFormHighDpiXPos As String
+Public PzGHumidityFormHighDpiYPos As String
+Public PzGHumidityFormLowDpiXPos As String
+Public PzGHumidityFormLowDpiYPos As String
+
+
+Public PzGBarometerGaugeSize As String
+Public PzGBarometerLandscape As String
+Public PzGBarometerPortrait As String
+Public PzGBarometerLandscapeHoffset As String
+Public PzGBarometerLandscapeVoffset As String
+Public PzGBarometerPortraitHoffset As String
+Public PzGBarometerPortraitVoffset As String
+Public PzGBarometerVLocationPerc As String
+Public PzGBarometerHLocationPerc As String
+Public PzGPreventDraggingBarometer As String
+Public PzGBarometerFormHighDpiXPos As String
+Public PzGBarometerFormHighDpiYPos As String
+Public PzGBarometerFormLowDpiXPos As String
+Public PzGBarometerFormLowDpiYPos As String
 
 ' sounds
 Public PzGEnableSounds  As String
@@ -379,10 +404,6 @@ Public PzGPrefsFontColour  As String
 
 ' window
 Public PzGWindowLevel As String
-Public PzGPreventDraggingTemperature As String
-Public PzGPreventDraggingAnemometer As String
-Public PzGPreventDraggingHumidity As String
-
 
 Public PzGOpacity  As String
 Public PzGWidgetHidden  As String
@@ -399,20 +420,6 @@ Public PzGSettingsFile As String
 Public PzGTrinketsDir      As String
 Public PzGTrinketsFile      As String
 
-Public PzGTemperatureFormHighDpiXPos As String
-Public PzGTemperatureFormHighDpiYPos As String
-Public PzGTemperatureFormLowDpiXPos As String
-Public PzGTemperatureFormLowDpiYPos As String
-
-Public PzGAnemometerFormHighDpiXPos As String
-Public PzGAnemometerFormHighDpiYPos As String
-Public PzGAnemometerFormLowDpiXPos As String
-Public PzGAnemometerFormLowDpiYPos As String
-
-Public PzGHumidityFormHighDpiXPos As String
-Public PzGHumidityFormHighDpiYPos As String
-Public PzGHumidityFormLowDpiXPos As String
-Public PzGHumidityFormLowDpiYPos As String
 
 Public PzGClipBFormHighDpiXPos As String
 Public PzGClipBFormHighDpiYPos As String
@@ -566,163 +573,7 @@ fDirExists_Error:
 
     MsgBox "Error " & Err.Number & " (" & Err.Description & ") in procedure fDirExists of Module Module1"
 End Function
-''---------------------------------------------------------------------------------------
-'' Procedure : fFExists
-'' Author    : Dean Beedell (yereverluvinunclebert)
-'' Date      : 17/10/2019
-'' Purpose   :
-''---------------------------------------------------------------------------------------
-''
-'Public Function fFExists(ByRef OrigFile As String) As Boolean
-'    Dim FS As Object
-'    On Error GoTo fFExists_Error
-'   'If debugflg = 1  Then Debug.Print "%fFExists"
-'
-'    Set FS = CreateObject("Scripting.FileSystemObject")
-'    fFExists = FS.FileExists(OrigFile)
-'
-'   On Error GoTo 0
-'   Exit Function
-'
-'fFExists_Error:
-'
-'    MsgBox "Error " & Err.Number & " (" & Err.Description & ") in procedure fFExists of module module1"
-'End Function
 
-
-'---------------------------------------------------------------------------------------
-' Procedure : fDirExists
-' Author    : Dean Beedell (yereverluvinunclebert)
-' Date      : 17/10/2019
-' Purpose   :
-'---------------------------------------------------------------------------------------
-'
-'Public Function fDirExists(ByRef OrigFile As String) As Boolean
-'    Dim FS As Object
-'    On Error GoTo fDirExists_Error
-'   '''If debugflg = 1  Then msgBox "%fDirExists"
-'
-'    Set FS = CreateObject("Scripting.FileSystemObject")
-'    fDirExists = FS.FolderExists(OrigFile)
-'
-'   On Error GoTo 0
-'   Exit Function
-'
-'fDirExists_Error:
-'
-'    MsgBox "Error " & Err.Number & " (" & Err.Description & ") in procedure fDirExists of module module1"
-'End Function
-
-
-
-
-'---------------------------------------------------------------------------------------
-' Procedure : fExtractSuffix
-' Author    : Dean Beedell (yereverluvinunclebert)
-' Date      : 20/06/2019
-' Purpose   : extract the suffix from a filename
-'---------------------------------------------------------------------------------------
-'
-'Public Function fExtractSuffix(ByVal strPath As String) As String
-'
-'
-'    Dim stringBits() As String ' string array
-'    Dim upperBit As Integer: upperBit = 0
-'
-'    On Error GoTo fExtractSuffix_Error
-'    '''If debugflg = 1  Then DebugPrint "%" & "fnExtractSuffix"
-'
-'    If strPath = vbNullString Then
-'        fExtractSuffix = vbNullString
-'        Exit Function
-'    End If
-'
-'    If InStr(strPath, ".") <> 0 Then
-'        stringBits = Split(strPath, ".")
-'        upperBit = UBound(stringBits)
-'        fExtractSuffix = stringBits(upperBit)
-'    Else
-'        fExtractSuffix = strPath
-'    End If
-'
-'   On Error GoTo 0
-'   Exit Function
-'
-'fExtractSuffix_Error:
-'
-'    MsgBox "Error " & Err.Number & " (" & Err.Description & ") in procedure fExtractSuffix of module module1"
-'End Function
-'---------------------------------------------------------------------------------------
-' Procedure : fExtractSuffixWithDot
-' Author    : Dean Beedell (yereverluvinunclebert)
-' Date      : 20/06/2019
-' Purpose   : extract the suffix from a filename
-'---------------------------------------------------------------------------------------
-'
-'Public Function fExtractSuffixWithDot(ByVal strPath As String) As String
-'
-'    Dim stringBits() As String ' string array
-'    Dim upperBit As Integer:    upperBit = 0
-'
-'    On Error GoTo fExtractSuffixWithDot_Error
-'    '''If debugflg = 1  Then DebugPrint "%" & "fExtractSuffixWithDot"
-'
-'    If strPath = vbNullString Then
-'        fExtractSuffixWithDot = vbNullString
-'        Exit Function
-'    End If
-'
-'    If InStr(strPath, ".") <> 0 Then
-'        stringBits = Split(strPath, ".")
-'        upperBit = UBound(stringBits)
-'        fExtractSuffixWithDot = "." & stringBits(upperBit)
-'    Else
-'        fExtractSuffixWithDot = vbNullString
-'    End If
-'
-'   On Error GoTo 0
-'   Exit Function
-'
-'fExtractSuffixWithDot_Error:
-'
-'    MsgBox "Error " & Err.Number & " (" & Err.Description & ") in procedure fExtractSuffixWithDot of module module1"
-'End Function
-
-'---------------------------------------------------------------------------------------
-' Procedure : fExtractFileNameNoSuffix
-' Author    : Dean Beedell (yereverluvinunclebert)
-' Date      : 20/06/2019
-' Purpose   : extract the filename without a suffix
-'---------------------------------------------------------------------------------------
-'
-'Public Function fExtractFileNameNoSuffix(ByVal strPath As String) As String
-'
-'    Dim stringBits() As String ' string array
-'    Dim lowerBit As Integer:    lowerBit = 0
-'
-'    On Error GoTo fExtractFileNameNoSuffix_Error
-'    '''If debugflg = 1  Then DebugPrint "%" & "fnExtractFileNameNoSuffix"
-'
-'    If strPath = vbNullString Then
-'        fExtractFileNameNoSuffix = vbNullString
-'        Exit Function
-'    End If
-'
-'    If InStr(strPath, ".") <> 0 Then
-'        stringBits = Split(strPath, ".")
-'        lowerBit = LBound(stringBits)
-'        fExtractFileNameNoSuffix = stringBits(lowerBit)
-'    Else
-'        fExtractFileNameNoSuffix = strPath
-'    End If
-'
-'   On Error GoTo 0
-'   Exit Function
-'
-'fExtractFileNameNoSuffix_Error:
-'
-'    MsgBox "Error " & Err.Number & " (" & Err.Description & ") in procedure fExtractFileNameNoSuffix of module module1"
-'End Function
 '
 '---------------------------------------------------------------------------------------
 ' Procedure : fLicenceState
@@ -2022,6 +1873,22 @@ Public Sub makeVisibleFormElements()
         fHumidity.humidityGaugeForm.Top = screenHeightPixels * (PzGHumidityVLocationPerc / 100)
     End If
     fHumidity.humidityGaugeForm.Show
+    
+    
+    ' position the Barometer gauge explicitly by px position
+    If PzGWidgetPosition = "0" Then
+        If PzGDpiAwareness = "1" Then
+            fBarometer.barometerGaugeForm.Left = Val(PzGBarometerFormHighDpiXPos)
+            fBarometer.barometerGaugeForm.Top = Val(PzGBarometerFormHighDpiYPos)
+        Else
+            fBarometer.barometerGaugeForm.Left = Val(PzGBarometerFormLowDpiXPos)
+            fBarometer.barometerGaugeForm.Top = Val(PzGBarometerFormLowDpiYPos)
+        End If
+    Else ' by percentage (tablet)
+        fBarometer.barometerGaugeForm.Left = screenWidthPixels * (PzGBarometerHLocationPerc / 100)
+        fBarometer.barometerGaugeForm.Top = screenHeightPixels * (PzGBarometerVLocationPerc / 100)
+    End If
+    fBarometer.barometerGaugeForm.Show
 
     On Error GoTo 0
     Exit Sub
@@ -2283,6 +2150,13 @@ Public Sub mainScreen()
         PzGHumidityHLocationPerc = Str$(fHumidity.humidityGaugeForm.Left / screenWidthPixels * 100)
         PzGHumidityVLocationPerc = Str$(fHumidity.humidityGaugeForm.Top / screenHeightPixels * 100)
     End If
+     
+     ' calculate the current hlocation in % of the screen
+    ' store the current hlocation in % of the screen
+    If PzGWidgetPosition = "1" Then
+        PzGBarometerHLocationPerc = Str$(fBarometer.barometerGaugeForm.Left / screenWidthPixels * 100)
+        PzGBarometerVLocationPerc = Str$(fBarometer.barometerGaugeForm.Top / screenHeightPixels * 100)
+    End If
    
    On Error GoTo 0
    Exit Sub
@@ -2340,6 +2214,7 @@ Public Sub unloadAllForms(ByVal endItAll As Boolean)
     fTemperature.temperatureGaugeForm.Widgets.RemoveAll
     fAnemometer.anemometerGaugeForm.Widgets.RemoveAll
     fHumidity.humidityGaugeForm.Widgets.RemoveAll
+    fBarometer.barometerGaugeForm.Widgets.RemoveAll
     fSelector.SelectorForm.Widgets.RemoveAll
     fClipB.clipBForm.Widgets.RemoveAll
     
@@ -2357,6 +2232,7 @@ Public Sub unloadAllForms(ByVal endItAll As Boolean)
     fTemperature.temperatureGaugeForm.Unload
     fAnemometer.anemometerGaugeForm.Unload
     fHumidity.humidityGaugeForm.Unload
+    fBarometer.barometerGaugeForm.Unload
     fSelector.SelectorForm.Unload
     fClipB.clipBForm.Unload
     fMain.licenceForm.Unload
@@ -2369,6 +2245,7 @@ Public Sub unloadAllForms(ByVal endItAll As Boolean)
     Set fTemperature.temperatureGaugeForm = Nothing
     Set fAnemometer.anemometerGaugeForm = Nothing
     Set fHumidity.humidityGaugeForm = Nothing
+    Set fBarometer.barometerGaugeForm = Nothing
     Set fSelector.SelectorForm = Nothing
     Set fMain.licenceForm = Nothing
     
@@ -2523,13 +2400,13 @@ Public Sub saveHumidityGaugePosition()
     If PzGDpiAwareness = "1" Then
         PzGHumidityFormHighDpiXPos = Str$(fHumidity.humidityGaugeForm.Left) ' saving in pixels
         PzGHumidityFormHighDpiYPos = Str$(fHumidity.humidityGaugeForm.Top)
-        sPutINISetting "Software\PzHumidityGauge", "humidityFormHighDpiXPos", PzGHumidityFormHighDpiXPos, PzGSettingsFile
-        sPutINISetting "Software\PzHumidityGauge", "humidityFormHighDpiYPos", PzGHumidityFormHighDpiYPos, PzGSettingsFile
+        sPutINISetting "Software\PzHumidityGauge", "HumidityFormHighDpiXPos", PzGHumidityFormHighDpiXPos, PzGSettingsFile
+        sPutINISetting "Software\PzHumidityGauge", "HumidityFormHighDpiYPos", PzGHumidityFormHighDpiYPos, PzGSettingsFile
     Else
         PzGHumidityFormLowDpiXPos = Str$(fHumidity.humidityGaugeForm.Left) ' saving in pixels
         PzGHumidityFormLowDpiYPos = Str$(fHumidity.humidityGaugeForm.Top)
-        sPutINISetting "Software\PzHumidityGauge", "humidityFormLowDpiXPos", PzGHumidityFormLowDpiXPos, PzGSettingsFile
-        sPutINISetting "Software\PzHumidityGauge", "humidityFormLowDpiYPos", PzGHumidityFormLowDpiYPos, PzGSettingsFile
+        sPutINISetting "Software\PzHumidityGauge", "HumidityFormLowDpiXPos", PzGHumidityFormLowDpiXPos, PzGSettingsFile
+        sPutINISetting "Software\PzHumidityGauge", "HumidityFormLowDpiYPos", PzGHumidityFormLowDpiYPos, PzGSettingsFile
     End If
     
     ' calculate the current hlocation in % of the screen
@@ -2552,6 +2429,49 @@ saveHumidityGaugePosition_Error:
     
 End Sub
       
+      
+ '---------------------------------------------------------------------------------------
+' Procedure : saveBarometerGaugePosition
+' Author    : Dean Beedell (yereverluvinunclebert)
+' Date      : 04/08/2023
+' Purpose   :
+'---------------------------------------------------------------------------------------
+'
+Public Sub saveBarometerGaugePosition()
+
+   On Error GoTo saveBarometerGaugePosition_Error
+
+    If PzGDpiAwareness = "1" Then
+        PzGBarometerFormHighDpiXPos = Str$(fBarometer.barometerGaugeForm.Left) ' saving in pixels
+        PzGBarometerFormHighDpiYPos = Str$(fBarometer.barometerGaugeForm.Top)
+        sPutINISetting "Software\PzBarometerGauge", "barometerFormHighDpiXPos", PzGBarometerFormHighDpiXPos, PzGSettingsFile
+        sPutINISetting "Software\PzBarometerGauge", "barometerFormHighDpiYPos", PzGBarometerFormHighDpiYPos, PzGSettingsFile
+    Else
+        PzGBarometerFormLowDpiXPos = Str$(fBarometer.barometerGaugeForm.Left) ' saving in pixels
+        PzGBarometerFormLowDpiYPos = Str$(fBarometer.barometerGaugeForm.Top)
+        sPutINISetting "Software\PzBarometerGauge", "barometerFormLowDpiXPos", PzGBarometerFormLowDpiXPos, PzGSettingsFile
+        sPutINISetting "Software\PzBarometerGauge", "barometerFormLowDpiYPos", PzGBarometerFormLowDpiYPos, PzGSettingsFile
+    End If
+    
+    ' calculate the current hlocation in % of the screen
+    ' store the current hlocation in % of the screen
+    If PzGWidgetPosition = "1" Then
+        PzGBarometerHLocationPerc = Str$(fBarometer.barometerGaugeForm.Left / screenWidthPixels * 100)
+        PzGBarometerVLocationPerc = Str$(fBarometer.barometerGaugeForm.Top / screenHeightPixels * 100)
+    End If
+
+    
+    PzGBarometerGaugeSize = Str$(fBarometer.barometerGaugeForm.WidgetRoot.Zoom * 100)
+    sPutINISetting "Software\PzBarometerGauge", "barometerGaugeSize", PzGBarometerGaugeSize, PzGSettingsFile
+
+   On Error GoTo 0
+   Exit Sub
+
+saveBarometerGaugePosition_Error:
+
+    MsgBox "Error " & Err.Number & " (" & Err.Description & ") in procedure saveBarometerGaugePosition of Module Module1"
+    
+End Sub
  '---------------------------------------------------------------------------------------
 ' Procedure : saveClipboardGaugePosition
 ' Author    : Dean Beedell (yereverluvinunclebert)
@@ -2869,7 +2789,7 @@ End Sub
 ' Purpose   :
 '---------------------------------------------------------------------------------------
 '
-Public Sub TurnFunctionsOn()
+Public Sub TurnFunctionsOn() ' deanieboy
     
     Dim fileToPlay As String: fileToPlay = vbNullString
 
