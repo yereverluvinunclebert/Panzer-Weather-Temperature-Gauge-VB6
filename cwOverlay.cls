@@ -1589,6 +1589,8 @@ Private Sub myStatusProc()
     
     'write the current pressure value so that it can be made available to the storm checker timer, straight away.
     PzGCurrentPressureValue = pressureValue
+    overlayBaromWidget.thisPressure = pressureValue
+
     sPutINISetting "Software\PzTemperatureGauge", "currentPressureValue", PzGCurrentPressureValue, PzGSettingsFile
 
     ' set temperature

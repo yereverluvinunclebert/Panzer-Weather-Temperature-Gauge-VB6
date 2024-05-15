@@ -2133,29 +2133,29 @@ Public Sub mainScreen()
     ' calculate the current hlocation in % of the screen
     ' store the current hlocation in % of the screen
     If PzGWidgetPosition = "1" Then
-        PzGTemperatureHLocationPerc = Str$(fTemperature.temperatureGaugeForm.Left / screenWidthPixels * 100)
-        PzGTemperatureVLocationPerc = Str$(fTemperature.temperatureGaugeForm.Top / screenHeightPixels * 100)
+        PzGTemperatureHLocationPerc = CStr(fTemperature.temperatureGaugeForm.Left / screenWidthPixels * 100)
+        PzGTemperatureVLocationPerc = CStr(fTemperature.temperatureGaugeForm.Top / screenHeightPixels * 100)
     End If
     
      ' calculate the current hlocation in % of the screen
     ' store the current hlocation in % of the screen
     If PzGWidgetPosition = "1" Then
-        PzGAnemometerHLocationPerc = Str$(fAnemometer.anemometerGaugeForm.Left / screenWidthPixels * 100)
-        PzGAnemometerVLocationPerc = Str$(fAnemometer.anemometerGaugeForm.Top / screenHeightPixels * 100)
+        PzGAnemometerHLocationPerc = CStr(fAnemometer.anemometerGaugeForm.Left / screenWidthPixels * 100)
+        PzGAnemometerVLocationPerc = CStr(fAnemometer.anemometerGaugeForm.Top / screenHeightPixels * 100)
     End If
     
      ' calculate the current hlocation in % of the screen
     ' store the current hlocation in % of the screen
     If PzGWidgetPosition = "1" Then
-        PzGHumidityHLocationPerc = Str$(fHumidity.humidityGaugeForm.Left / screenWidthPixels * 100)
-        PzGHumidityVLocationPerc = Str$(fHumidity.humidityGaugeForm.Top / screenHeightPixels * 100)
+        PzGHumidityHLocationPerc = CStr(fHumidity.humidityGaugeForm.Left / screenWidthPixels * 100)
+        PzGHumidityVLocationPerc = CStr(fHumidity.humidityGaugeForm.Top / screenHeightPixels * 100)
     End If
      
      ' calculate the current hlocation in % of the screen
     ' store the current hlocation in % of the screen
     If PzGWidgetPosition = "1" Then
-        PzGBarometerHLocationPerc = Str$(fBarometer.barometerGaugeForm.Left / screenWidthPixels * 100)
-        PzGBarometerVLocationPerc = Str$(fBarometer.barometerGaugeForm.Top / screenHeightPixels * 100)
+        PzGBarometerHLocationPerc = CStr(fBarometer.barometerGaugeForm.Left / screenWidthPixels * 100)
+        PzGBarometerVLocationPerc = CStr(fBarometer.barometerGaugeForm.Top / screenHeightPixels * 100)
     End If
    
    On Error GoTo 0
@@ -2311,13 +2311,13 @@ Public Sub saveTemperatureGaugePosition()
    On Error GoTo saveTemperatureGaugePosition_Error
 
     If PzGDpiAwareness = "1" Then
-        PzGTemperatureFormHighDpiXPos = Str$(fTemperature.temperatureGaugeForm.Left) ' saving in pixels
-        PzGTemperatureFormHighDpiYPos = Str$(fTemperature.temperatureGaugeForm.Top)
+        PzGTemperatureFormHighDpiXPos = CStr(fTemperature.temperatureGaugeForm.Left) ' saving in pixels
+        PzGTemperatureFormHighDpiYPos = CStr(fTemperature.temperatureGaugeForm.Top)
         sPutINISetting "Software\PzTemperatureGauge", "temperatureFormHighDpiXPos", PzGTemperatureFormHighDpiXPos, PzGSettingsFile
         sPutINISetting "Software\PzTemperatureGauge", "temperatureFormHighDpiYPos", PzGTemperatureFormHighDpiYPos, PzGSettingsFile
     Else
-        PzGTemperatureFormLowDpiXPos = Str$(fTemperature.temperatureGaugeForm.Left) ' saving in pixels
-        PzGTemperatureFormLowDpiYPos = Str$(fTemperature.temperatureGaugeForm.Top)
+        PzGTemperatureFormLowDpiXPos = CStr(fTemperature.temperatureGaugeForm.Left) ' saving in pixels
+        PzGTemperatureFormLowDpiYPos = CStr(fTemperature.temperatureGaugeForm.Top)
         sPutINISetting "Software\PzTemperatureGauge", "temperatureFormLowDpiXPos", PzGTemperatureFormLowDpiXPos, PzGSettingsFile
         sPutINISetting "Software\PzTemperatureGauge", "temperatureFormLowDpiYPos", PzGTemperatureFormLowDpiYPos, PzGSettingsFile
     End If
@@ -2325,13 +2325,13 @@ Public Sub saveTemperatureGaugePosition()
     ' calculate the current hlocation in % of the screen
     ' store the current hlocation in % of the screen
     If PzGWidgetPosition = "1" Then
-        PzGTemperatureHLocationPerc = Str$(fTemperature.temperatureGaugeForm.Left / screenWidthPixels * 100)
-        PzGTemperatureVLocationPerc = Str$(fTemperature.temperatureGaugeForm.Top / screenHeightPixels * 100)
+        PzGTemperatureHLocationPerc = CStr(fTemperature.temperatureGaugeForm.Left / screenWidthPixels * 100)
+        PzGTemperatureVLocationPerc = CStr(fTemperature.temperatureGaugeForm.Top / screenHeightPixels * 100)
     End If
 
     Debug.Print "saveTemperatureGaugePosition"
     ' now save the size
-    PzGTemperatureGaugeSize = Str$(fTemperature.temperatureGaugeForm.WidgetRoot.Zoom * 100)
+    PzGTemperatureGaugeSize = CStr(fTemperature.temperatureGaugeForm.WidgetRoot.Zoom * 100)
     sPutINISetting "Software\PzTemperatureGauge", "temperatureGaugeSize", PzGTemperatureGaugeSize, PzGSettingsFile
 
    On Error GoTo 0
@@ -2355,13 +2355,13 @@ Public Sub saveAnemometerGaugePosition()
    On Error GoTo saveAnemometerGaugePosition_Error
 
     If PzGDpiAwareness = "1" Then
-        PzGAnemometerFormHighDpiXPos = Str$(fAnemometer.anemometerGaugeForm.Left) ' saving in pixels
-        PzGAnemometerFormHighDpiYPos = Str$(fAnemometer.anemometerGaugeForm.Top)
+        PzGAnemometerFormHighDpiXPos = CStr(fAnemometer.anemometerGaugeForm.Left) ' saving in pixels
+        PzGAnemometerFormHighDpiYPos = CStr(fAnemometer.anemometerGaugeForm.Top)
         sPutINISetting "Software\PzAnemometerGauge", "anemometerFormHighDpiXPos", PzGAnemometerFormHighDpiXPos, PzGSettingsFile
         sPutINISetting "Software\PzAnemometerGauge", "anemometerFormHighDpiYPos", PzGAnemometerFormHighDpiYPos, PzGSettingsFile
     Else
-        PzGAnemometerFormLowDpiXPos = Str$(fAnemometer.anemometerGaugeForm.Left) ' saving in pixels
-        PzGAnemometerFormLowDpiYPos = Str$(fAnemometer.anemometerGaugeForm.Top)
+        PzGAnemometerFormLowDpiXPos = CStr(fAnemometer.anemometerGaugeForm.Left) ' saving in pixels
+        PzGAnemometerFormLowDpiYPos = CStr(fAnemometer.anemometerGaugeForm.Top)
         sPutINISetting "Software\PzAnemometerGauge", "anemometerFormLowDpiXPos", PzGAnemometerFormLowDpiXPos, PzGSettingsFile
         sPutINISetting "Software\PzAnemometerGauge", "anemometerFormLowDpiYPos", PzGAnemometerFormLowDpiYPos, PzGSettingsFile
     End If
@@ -2369,12 +2369,12 @@ Public Sub saveAnemometerGaugePosition()
     ' calculate the current hlocation in % of the screen
     ' store the current hlocation in % of the screen
     If PzGWidgetPosition = "1" Then
-        PzGAnemometerHLocationPerc = Str$(fAnemometer.anemometerGaugeForm.Left / screenWidthPixels * 100)
-        PzGAnemometerVLocationPerc = Str$(fAnemometer.anemometerGaugeForm.Top / screenHeightPixels * 100)
+        PzGAnemometerHLocationPerc = CStr(fAnemometer.anemometerGaugeForm.Left / screenWidthPixels * 100)
+        PzGAnemometerVLocationPerc = CStr(fAnemometer.anemometerGaugeForm.Top / screenHeightPixels * 100)
     End If
 
     
-    PzGAnemometerGaugeSize = Str$(fAnemometer.anemometerGaugeForm.WidgetRoot.Zoom * 100)
+    PzGAnemometerGaugeSize = CStr(fAnemometer.anemometerGaugeForm.WidgetRoot.Zoom * 100)
     sPutINISetting "Software\PzAnemometerGauge", "anemometerGaugeSize", PzGAnemometerGaugeSize, PzGSettingsFile
 
    On Error GoTo 0
@@ -2398,26 +2398,26 @@ Public Sub saveHumidityGaugePosition()
    On Error GoTo saveHumidityGaugePosition_Error
 
     If PzGDpiAwareness = "1" Then
-        PzGHumidityFormHighDpiXPos = Str$(fHumidity.humidityGaugeForm.Left) ' saving in pixels
-        PzGHumidityFormHighDpiYPos = Str$(fHumidity.humidityGaugeForm.Top)
-        sPutINISetting "Software\PzHumidityGauge", "HumidityFormHighDpiXPos", PzGHumidityFormHighDpiXPos, PzGSettingsFile
-        sPutINISetting "Software\PzHumidityGauge", "HumidityFormHighDpiYPos", PzGHumidityFormHighDpiYPos, PzGSettingsFile
+        PzGHumidityFormHighDpiXPos = CStr(fHumidity.humidityGaugeForm.Left) ' saving in pixels
+        PzGHumidityFormHighDpiYPos = CStr(fHumidity.humidityGaugeForm.Top)
+        sPutINISetting "Software\PzHumidityGauge", "humidityFormHighDpiXPos", PzGHumidityFormHighDpiXPos, PzGSettingsFile
+        sPutINISetting "Software\PzHumidityGauge", "humidityFormHighDpiYPos", PzGHumidityFormHighDpiYPos, PzGSettingsFile
     Else
-        PzGHumidityFormLowDpiXPos = Str$(fHumidity.humidityGaugeForm.Left) ' saving in pixels
-        PzGHumidityFormLowDpiYPos = Str$(fHumidity.humidityGaugeForm.Top)
-        sPutINISetting "Software\PzHumidityGauge", "HumidityFormLowDpiXPos", PzGHumidityFormLowDpiXPos, PzGSettingsFile
-        sPutINISetting "Software\PzHumidityGauge", "HumidityFormLowDpiYPos", PzGHumidityFormLowDpiYPos, PzGSettingsFile
+        PzGHumidityFormLowDpiXPos = CStr(fHumidity.humidityGaugeForm.Left) ' saving in pixels
+        PzGHumidityFormLowDpiYPos = CStr(fHumidity.humidityGaugeForm.Top)
+        sPutINISetting "Software\PzHumidityGauge", "humidityFormLowDpiXPos", PzGHumidityFormLowDpiXPos, PzGSettingsFile
+        sPutINISetting "Software\PzHumidityGauge", "humidityFormLowDpiYPos", PzGHumidityFormLowDpiYPos, PzGSettingsFile
     End If
     
     ' calculate the current hlocation in % of the screen
     ' store the current hlocation in % of the screen
     If PzGWidgetPosition = "1" Then
-        PzGHumidityHLocationPerc = Str$(fHumidity.humidityGaugeForm.Left / screenWidthPixels * 100)
-        PzGHumidityVLocationPerc = Str$(fHumidity.humidityGaugeForm.Top / screenHeightPixels * 100)
+        PzGHumidityHLocationPerc = CStr(fHumidity.humidityGaugeForm.Left / screenWidthPixels * 100)
+        PzGHumidityVLocationPerc = CStr(fHumidity.humidityGaugeForm.Top / screenHeightPixels * 100)
     End If
 
     
-    PzGHumidityGaugeSize = Str$(fHumidity.humidityGaugeForm.WidgetRoot.Zoom * 100)
+    PzGHumidityGaugeSize = CStr(fHumidity.humidityGaugeForm.WidgetRoot.Zoom * 100)
     sPutINISetting "Software\PzHumidityGauge", "humidityGaugeSize", PzGHumidityGaugeSize, PzGSettingsFile
 
    On Error GoTo 0
@@ -2442,13 +2442,13 @@ Public Sub saveBarometerGaugePosition()
    On Error GoTo saveBarometerGaugePosition_Error
 
     If PzGDpiAwareness = "1" Then
-        PzGBarometerFormHighDpiXPos = Str$(fBarometer.barometerGaugeForm.Left) ' saving in pixels
-        PzGBarometerFormHighDpiYPos = Str$(fBarometer.barometerGaugeForm.Top)
+        PzGBarometerFormHighDpiXPos = CStr(fBarometer.barometerGaugeForm.Left) ' saving in pixels
+        PzGBarometerFormHighDpiYPos = CStr(fBarometer.barometerGaugeForm.Top)
         sPutINISetting "Software\PzBarometerGauge", "barometerFormHighDpiXPos", PzGBarometerFormHighDpiXPos, PzGSettingsFile
         sPutINISetting "Software\PzBarometerGauge", "barometerFormHighDpiYPos", PzGBarometerFormHighDpiYPos, PzGSettingsFile
     Else
-        PzGBarometerFormLowDpiXPos = Str$(fBarometer.barometerGaugeForm.Left) ' saving in pixels
-        PzGBarometerFormLowDpiYPos = Str$(fBarometer.barometerGaugeForm.Top)
+        PzGBarometerFormLowDpiXPos = CStr(fBarometer.barometerGaugeForm.Left) ' saving in pixels
+        PzGBarometerFormLowDpiYPos = CStr(fBarometer.barometerGaugeForm.Top)
         sPutINISetting "Software\PzBarometerGauge", "barometerFormLowDpiXPos", PzGBarometerFormLowDpiXPos, PzGSettingsFile
         sPutINISetting "Software\PzBarometerGauge", "barometerFormLowDpiYPos", PzGBarometerFormLowDpiYPos, PzGSettingsFile
     End If
@@ -2456,12 +2456,12 @@ Public Sub saveBarometerGaugePosition()
     ' calculate the current hlocation in % of the screen
     ' store the current hlocation in % of the screen
     If PzGWidgetPosition = "1" Then
-        PzGBarometerHLocationPerc = Str$(fBarometer.barometerGaugeForm.Left / screenWidthPixels * 100)
-        PzGBarometerVLocationPerc = Str$(fBarometer.barometerGaugeForm.Top / screenHeightPixels * 100)
+        PzGBarometerHLocationPerc = CStr(fBarometer.barometerGaugeForm.Left / screenWidthPixels * 100)
+        PzGBarometerVLocationPerc = CStr(fBarometer.barometerGaugeForm.Top / screenHeightPixels * 100)
     End If
 
     
-    PzGBarometerGaugeSize = Str$(fBarometer.barometerGaugeForm.WidgetRoot.Zoom * 100)
+    PzGBarometerGaugeSize = CStr(fBarometer.barometerGaugeForm.WidgetRoot.Zoom * 100)
     sPutINISetting "Software\PzBarometerGauge", "barometerGaugeSize", PzGBarometerGaugeSize, PzGSettingsFile
 
    On Error GoTo 0
@@ -2484,18 +2484,18 @@ Public Sub saveClipboardGaugePosition()
    On Error GoTo saveClipboardGaugePosition_Error
 
     If PzGDpiAwareness = "1" Then
-        PzGClipBFormHighDpiXPos = Str$(fClipB.clipBForm.Left) ' saving in pixels
-        PzGClipBFormHighDpiYPos = Str$(fClipB.clipBForm.Top)
+        PzGClipBFormHighDpiXPos = CStr(fClipB.clipBForm.Left) ' saving in pixels
+        PzGClipBFormHighDpiYPos = CStr(fClipB.clipBForm.Top)
         sPutINISetting "Software\PzClipB", "clipBFormHighDpiXPos", PzGClipBFormHighDpiXPos, PzGSettingsFile
         sPutINISetting "Software\PzClipB", "clipBFormHighDpiYPos", PzGClipBFormHighDpiYPos, PzGSettingsFile
     Else
-        PzGClipBFormLowDpiXPos = Str$(fClipB.clipBForm.Left) ' saving in pixels
-        PzGClipBFormLowDpiYPos = Str$(fClipB.clipBForm.Top)
+        PzGClipBFormLowDpiXPos = CStr(fClipB.clipBForm.Left) ' saving in pixels
+        PzGClipBFormLowDpiYPos = CStr(fClipB.clipBForm.Top)
         sPutINISetting "Software\PzClipB", "clipBFormLowDpiXPos", PzGClipBFormLowDpiXPos, PzGSettingsFile
         sPutINISetting "Software\PzClipB", "clipBFormLowDpiYPos", PzGClipBFormLowDpiYPos, PzGSettingsFile
     End If
     
-    PzGClipBSize = Str$(fClipB.clipBForm.WidgetRoot.Zoom * 100)
+    PzGClipBSize = CStr(fClipB.clipBForm.WidgetRoot.Zoom * 100)
     sPutINISetting "Software\PzClipB", "clipBSize", PzGClipBSize, PzGSettingsFile
 
    On Error GoTo 0
@@ -2520,18 +2520,18 @@ Public Sub saveSelectorGaugePosition()
    On Error GoTo saveSelectorGaugePosition_Error
 
     If PzGDpiAwareness = "1" Then
-        PzGSelectorFormHighDpiXPos = Str$(fSelector.SelectorForm.Left) ' saving in pixels
-        PzGSelectorFormHighDpiYPos = Str$(fSelector.SelectorForm.Top)
+        PzGSelectorFormHighDpiXPos = CStr(fSelector.SelectorForm.Left) ' saving in pixels
+        PzGSelectorFormHighDpiYPos = CStr(fSelector.SelectorForm.Top)
         sPutINISetting "Software\PzSelector", "selectorFormHighDpiXPos", PzGSelectorFormHighDpiXPos, PzGSettingsFile
         sPutINISetting "Software\PzSelector", "selectorFormHighDpiYPos", PzGSelectorFormHighDpiYPos, PzGSettingsFile
     Else
-        PzGSelectorFormLowDpiXPos = Str$(fSelector.SelectorForm.Left) ' saving in pixels
-        PzGSelectorFormLowDpiYPos = Str$(fSelector.SelectorForm.Top)
+        PzGSelectorFormLowDpiXPos = CStr(fSelector.SelectorForm.Left) ' saving in pixels
+        PzGSelectorFormLowDpiYPos = CStr(fSelector.SelectorForm.Top)
         sPutINISetting "Software\PzSelector", "selectorFormLowDpiXPos", PzGSelectorFormLowDpiXPos, PzGSettingsFile
         sPutINISetting "Software\PzSelector", "selectorFormLowDpiYPos", PzGSelectorFormLowDpiYPos, PzGSettingsFile
     End If
     
-    PzGSelectorSize = Str$(fSelector.SelectorForm.WidgetRoot.Zoom * 100)
+    PzGSelectorSize = CStr(fSelector.SelectorForm.WidgetRoot.Zoom * 100)
     sPutINISetting "Software\PzSelector", "SelectorSize", PzGSelectorSize, PzGSettingsFile
 
    On Error GoTo 0
@@ -2644,15 +2644,15 @@ Public Sub writePrefsPosition()
 
     If panzerPrefs.WindowState = vbNormal Then ' when vbMinimised the value = -48000  !
         If PzGDpiAwareness = "1" Then
-            PzGPrefsFormHighDpiXPosTwips = Str$(panzerPrefs.Left)
-            PzGPrefsFormHighDpiYPosTwips = Str$(panzerPrefs.Top)
+            PzGPrefsFormHighDpiXPosTwips = CStr(panzerPrefs.Left)
+            PzGPrefsFormHighDpiYPosTwips = CStr(panzerPrefs.Top)
             
             ' now write those params to the toolSettings.ini
             sPutINISetting "Software\PzTemperatureGauge", "prefsFormHighDpiXPosTwips", PzGPrefsFormHighDpiXPosTwips, PzGSettingsFile
             sPutINISetting "Software\PzTemperatureGauge", "prefsFormHighDpiYPosTwips", PzGPrefsFormHighDpiYPosTwips, PzGSettingsFile
         Else
-            PzGPrefsFormLowDpiXPosTwips = Str$(panzerPrefs.Left)
-            PzGPrefsFormLowDpiYPosTwips = Str$(panzerPrefs.Top)
+            PzGPrefsFormLowDpiXPosTwips = CStr(panzerPrefs.Left)
+            PzGPrefsFormLowDpiYPosTwips = CStr(panzerPrefs.Top)
             
             ' now write those params to the toolSettings.ini
             sPutINISetting "Software\PzTemperatureGauge", "prefsFormLowDpiXPosTwips", PzGPrefsFormLowDpiXPosTwips, PzGSettingsFile

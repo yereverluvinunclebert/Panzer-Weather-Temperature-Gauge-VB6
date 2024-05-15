@@ -32,8 +32,8 @@ Public cyPerc As Single
 Private WithEvents W As cWidgetBase
 Attribute W.VB_VarHelpID = -1
 
-Private thisPressure As Long
-Private mPressure  As Integer
+
+Private mThisPressure  As Long
 
 Private pressureSDeg As Single
 Private oldPressureSDeg As Double
@@ -44,9 +44,10 @@ Private animationDivisions As Integer
 Private animationInterval As Integer
 Private animateCCW As Boolean
 
+Private mThisFace As Integer             ' property mThisFace
 Private mPointerAnimate As Boolean ' property PointerAnimate
 Private mLocked As Boolean ' property Locked
-Private mPressureDetails As String ' property
+Private mThisPressureDetails As String ' property
 Private mHidden As Boolean ' property Hidden
 Private mThisOpacity As String ' property ThisOpacity
 
@@ -115,44 +116,44 @@ Widgets_Error:
     MsgBox "Error " & Err.Number & " (" & Err.Description & ") in procedure Widgets of Class Module cwOverlayBarom"
 End Property
 '---------------------------------------------------------------------------------------
-' Property : Pressure
+' Property : thisPressure
 ' Author    : Dean Beedell (yereverluvinunclebert)
 ' Date      : 17/05/2023
 ' Purpose   :
 '---------------------------------------------------------------------------------------
 '
-Public Property Get pressure() As Integer
-   On Error GoTo PressureGet_Error
+Public Property Get thisPressure() As Integer
+   On Error GoTo thisPressureGet_Error
 
-   pressure = mPressure
+   thisPressure = mThisPressure
 
    On Error GoTo 0
    Exit Property
 
-PressureGet_Error:
+thisPressureGet_Error:
 
-    MsgBox "Error " & Err.Number & " (" & Err.Description & ") in Property Pressure of Class Module cwOverlayTemp"
+    MsgBox "Error " & Err.Number & " (" & Err.Description & ") in Property thisPressure of Class Module cwOverlayBarom"
 End Property
 '---------------------------------------------------------------------------------------
-' Property  : Pressure
+' Property  : thisPressure
 ' Author    : Dean Beedell (yereverluvinunclebert)
 ' Date      : 17/05/2023
 ' Purpose   :
 '---------------------------------------------------------------------------------------
 '
-Public Property Let pressure(ByVal newValue As Integer)
-   On Error GoTo PressureLet_Error
+Public Property Let thisPressure(ByVal newValue As Integer)
+   On Error GoTo thisPressureLet_Error
 
-   If mPressure <> newValue Then mPressure = newValue Else Exit Property
+   If mThisPressure <> newValue Then mThisPressure = newValue Else Exit Property
    
    Call obtainPressure
 
    On Error GoTo 0
    Exit Property
 
-PressureLet_Error:
+thisPressureLet_Error:
 
-    MsgBox "Error " & Err.Number & " (" & Err.Description & ") in Property Pressure of Class Module cwOverlayTemp"
+    MsgBox "Error " & Err.Number & " (" & Err.Description & ") in Property thisPressure of Class Module cwOverlayBarom"
 End Property
 
 
@@ -233,7 +234,7 @@ Public Property Let pointerAnimate(ByVal newValue As Boolean)
 
 pointerAnimateLet_Error:
 
-    MsgBox "Error " & Err.Number & " (" & Err.Description & ") in Property pointerAnimate of Class Module cwOverlayTemp"
+    MsgBox "Error " & Err.Number & " (" & Err.Description & ") in Property pointerAnimate of Class Module cwOverlayBarom"
 End Property
 
 '---------------------------------------------------------------------------------------
@@ -253,7 +254,7 @@ Public Property Get Locked() As Boolean
 
 LockedGet_Error:
 
-    MsgBox "Error " & Err.Number & " (" & Err.Description & ") in Property Locked of Class Module cwOverlayTemp"
+    MsgBox "Error " & Err.Number & " (" & Err.Description & ") in Property Locked of Class Module cwOverlayBarom"
 End Property
 '---------------------------------------------------------------------------------------
 ' Property  : Locked
@@ -316,9 +317,48 @@ Public Property Let Locked(ByVal newValue As Boolean)
 
 LockedLet_Error:
 
-    MsgBox "Error " & Err.Number & " (" & Err.Description & ") in Property Locked of Class Module cwOverlayTemp"
+    MsgBox "Error " & Err.Number & " (" & Err.Description & ") in Property Locked of Class Module cwOverlayBarom"
 End Property
+'---------------------------------------------------------------------------------------
+' Property : thisFace
+' Author    : Dean Beedell (yereverluvinunclebert)
+' Date      : 17/05/2023
+' Purpose   :
+'---------------------------------------------------------------------------------------
+'
+Public Property Get thisFace() As Integer
+   On Error GoTo thisFaceGet_Error
 
+    thisFace = mThisFace
+
+   On Error GoTo 0
+   Exit Property
+
+thisFaceGet_Error:
+
+    MsgBox "Error " & Err.Number & " (" & Err.Description & ") in Property thisFace of Class Module cwOverlayTempTemperature"
+End Property
+'---------------------------------------------------------------------------------------
+' Property  : thisFace
+' Author    :
+' Date      : 09/05/2023
+' Purpose   :
+'---------------------------------------------------------------------------------------
+'
+Public Property Let thisFace(ByVal newValue As Integer)
+    On Error GoTo thisFaceLet_Error
+
+    If mThisFace <> newValue Then mThisFace = newValue Else Exit Property
+    
+    Call obtainPressure
+    
+    On Error GoTo 0
+    Exit Property
+
+thisFaceLet_Error:
+
+    MsgBox "Error " & Err.Number & " (" & Err.Description & ") in Property thisFace of Class Module cwOverlayTempTemperature"
+End Property
 
 
 
@@ -339,7 +379,7 @@ Public Property Get Hidden() As Boolean
 
 HiddenGet_Error:
 
-    MsgBox "Error " & Err.Number & " (" & Err.Description & ") in Property Hidden of Class Module cwOverlayTemp"
+    MsgBox "Error " & Err.Number & " (" & Err.Description & ") in Property Hidden of Class Module cwOverlayBarom"
 End Property
 '---------------------------------------------------------------------------------------
 ' Property  : Hidden
@@ -367,7 +407,7 @@ Public Property Let Hidden(ByVal newValue As Boolean)
 
 HiddenLet_Error:
 
-    MsgBox "Error " & Err.Number & " (" & Err.Description & ") in Property Hidden of Class Module cwOverlayTemp"
+    MsgBox "Error " & Err.Number & " (" & Err.Description & ") in Property Hidden of Class Module cwOverlayBarom"
 End Property
 
     
@@ -390,7 +430,7 @@ Private Sub W_HitTest(ByVal X As Single, ByVal Y As Single, HitResultHit As Bool
 
 W_HitTest_Error:
 
-    MsgBox "Error " & Err.Number & " (" & Err.Description & ") in procedure W_HitTest of Class Module cwOverlayTemp"
+    MsgBox "Error " & Err.Number & " (" & Err.Description & ") in procedure W_HitTest of Class Module cwOverlayBarom"
 End Sub
 
 
@@ -434,22 +474,45 @@ Private Sub W_Paint(CC As RC6.cCairoContext, ByVal xAbs As Single, ByVal yAbs As
                          
             ' for specific keys perform rotation actions, clock hands &c
              Select Case key
-                 
-                 Case "barometerface"
+    
+                 Case "barometermbface"
                     
+                    If mThisFace = 0 Then
+                        Set Pat.Matrix = Pat.Matrix.TranslateCoords(-arr(0), -arr(1))
+                        CC.Paint arr(2), Pat ' render the Pattern
+                    End If
+                 
+                 Case "barometerinhgface"
+                    
+                    If mThisFace = 1 Then
                         Set Pat.Matrix = Pat.Matrix.TranslateCoords(-arr(0), -arr(1)) 'shift the Pattern via the original X,Y PSD-Offsets (stored in Arr(0) and Arr(1))
                         CC.Paint arr(2), Pat 'render the Pattern
+                    End If
+                 
+                  Case "barometermmhgface"
+                    
+                    If mThisFace = 2 Then
+                        Set Pat.Matrix = Pat.Matrix.TranslateCoords(-arr(0), -arr(1)) 'shift the Pattern via the original X,Y PSD-Offsets (stored in Arr(0) and Arr(1))
+                        CC.Paint arr(2), Pat 'render the Pattern
+                    End If
+                                            
+                 Case "barometerhpaface"
+                 
+                    If mThisFace = 3 Then
+                        Set Pat.Matrix = Pat.Matrix.TranslateCoords(-arr(0), -arr(1)) 'shift the Pattern via the original X,Y PSD-Offsets (stored in Arr(0) and Arr(1))
+                        CC.Paint arr(2), Pat 'render the Pattern
+                    End If
                                             
                  Case "pointerShadow", "pointer"
 
-                    If Val(mPressure) >= 100 Then
+                    If Val(mThisPressure) >= 100 Then
                         boxLeft = 415
                     Else
                         boxLeft = 420
                     End If
 
                      ' draw the date and day in the windows just once to retain opacity
-                    CC.DrawText boxLeft, 185, 180, 200, CStr(mPressure), , , 2, True, , someOpacity
+                    CC.DrawText boxLeft, 185, 180, 200, CStr(mThisPressure), , , 2, True, , someOpacity
 
                     Set Pat.Matrix = Pat.Matrix.TranslateCoords(11, 246) 'shift to the "rotation-point" within the Pattern
                     CC.TranslateDrawings W.Width * cxPerc, W.Height * cyPerc 'shift to the center-point of the Overlay-Widget-area
@@ -473,7 +536,7 @@ Private Sub W_Paint(CC As RC6.cCairoContext, ByVal xAbs As Single, ByVal yAbs As
 
 W_Paint_Error:
 
-    MsgBox "Error " & Err.Number & " (" & Err.Description & ") in procedure W_Paint of Class Module cwOverlayTemp"
+    MsgBox "Error " & Err.Number & " (" & Err.Description & ") in procedure W_Paint of Class Module cwOverlayBarom"
 End Sub
 
 
@@ -492,10 +555,10 @@ Private Sub obtainPressure()
     On Error GoTo obtainPressure_Error
     
     ' calculate the new cpu amount in degrees
-    If mPressure = 0 Then
+    If mThisPressure = 0 Then
         pressureSDeg = 30
     Else
-        pressureSDeg = (mPressure * 3) + 30
+        pressureSDeg = (mThisPressure * 3) + 30
     End If
 
     W.Parent.Refresh

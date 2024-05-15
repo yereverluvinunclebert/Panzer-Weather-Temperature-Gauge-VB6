@@ -152,7 +152,7 @@ Private Sub barometerGaugeForm_BubblingEvent(ByRef sender As Object, ByRef Event
                 If PzGEnableBalloonTooltips = "1" Then CreateToolTip barometerGaugeForm.hwnd, "This button is non-functional in this gauge.", _
                      TTIconInfo, widgetName6 & " Tick Button Help", , , , True
             Case "housing/switchfacesbutton"
-                If PzGEnableBalloonTooltips = "1" Then CreateToolTip barometerGaugeForm.hwnd, "This button is non-functional in this gauge.", _
+                If PzGEnableBalloonTooltips = "1" Then CreateToolTip barometerGaugeForm.hwnd, "You can select alternative pressure scale faces by pressinbg this button.", _
                      TTIconInfo, widgetName6 & " Switch Faces Button Help", , , , True
             Case "housing/stopbutton"
                 If PzGEnableBalloonTooltips = "1" Then CreateToolTip barometerGaugeForm.hwnd, "This button stops all animated gauge functions for this widget, pointer movement, digital displays &c .", _
@@ -343,6 +343,9 @@ switchfacesbutton_mouseDown_Error:
     MsgBox "Error " & Err.Number & " (" & Err.Description & ") in procedure switchfacesbutton_mouseDown of Class Module cfBarometer"
 
 End Sub
+
+
+
 '---------------------------------------------------------------------------------------
 ' Procedure : switchfacesbutton_mouseUp
 ' Author    : Dean Beedell (yereverluvinunclebert)
@@ -353,7 +356,6 @@ End Sub
 Private Sub switchfacesbutton_mouseUp(ByRef sender As Object)
     
     Dim fileToPlay As String: fileToPlay = vbNullString
-    
     Dim currFace As Integer: currFace = 0
     
     On Error GoTo switchfacesbutton_mouseUp_Error
@@ -363,6 +365,13 @@ Private Sub switchfacesbutton_mouseUp(ByRef sender As Object)
         
     fileToPlay = "till.wav"
     
+    currFace = Val(PzGPressureScale)
+    currFace = currFace + 1
+    If currFace > 2 Then currFace = 0
+    PzGPressureScale = LTrim$(Str$(currFace))
+    
+    overlayBaromWidget.thisFace = Val(PzGPressureScale)
+    
     If PzGEnableSounds = "1" And fFExists(App.path & "\resources\sounds\" & fileToPlay) Then
         PlaySound App.path & "\resources\sounds\" & fileToPlay, ByVal 0&, SND_FILENAME Or SND_ASYNC
     End If
@@ -371,9 +380,11 @@ Private Sub switchfacesbutton_mouseUp(ByRef sender As Object)
 
 switchfacesbutton_mouseUp_Error:
 
-    MsgBox "Error " & Err.Number & " (" & Err.Description & ") in procedure switchfacesbutton_mouseUp of Class Module cfBarometer"
+    MsgBox "Error " & Err.Number & " (" & Err.Description & ") in procedure switchfacesbutton_mouseUp of Class Module cfTemperature"
 
 End Sub
+
+
 '---------------------------------------------------------------------------------------
 ' Procedure : lockbutton_mouseDown
 ' Author    : Dean Beedell (yereverluvinunclebert)
