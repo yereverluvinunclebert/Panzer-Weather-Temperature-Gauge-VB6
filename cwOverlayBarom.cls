@@ -275,7 +275,8 @@ Public Property Let Locked(ByVal newValue As Boolean)
     If mLocked = True Then
         menuForm.mnuLockBarometerGauge.Checked = True
         If panzerPrefs.IsVisible = True Then
-            panzerPrefs.chkPreventDragging.Value = 1
+             panzerPrefs.cmbGaugeType.ListIndex = 3
+             panzerPrefs.chkPreventDragging.Value = 1
             panzerPrefs.cmbLandscape.ListIndex = 1
         End If
 
@@ -290,7 +291,8 @@ Public Property Let Locked(ByVal newValue As Boolean)
     Else
         menuForm.mnuLockBarometerGauge.Checked = False
         If panzerPrefs.IsVisible = True Then
-            panzerPrefs.chkPreventDragging.Value = 0
+             panzerPrefs.cmbGaugeType.ListIndex = 3
+             panzerPrefs.chkPreventDragging.Value = 0
             panzerPrefs.cmbLandscape.ListIndex = 0
         End If
 
@@ -349,6 +351,10 @@ Public Property Let thisFace(ByVal newValue As Integer)
     On Error GoTo thisFaceLet_Error
 
     If mThisFace <> newValue Then mThisFace = newValue Else Exit Property
+    
+    If panzerPrefs.IsVisible = True Then
+        panzerPrefs.cmbPressureScale.ListIndex = newValue
+    End If
     
     Call obtainPressure
     
@@ -502,17 +508,36 @@ Private Sub W_Paint(CC As RC6.cCairoContext, ByVal xAbs As Single, ByVal yAbs As
                         Set Pat.Matrix = Pat.Matrix.TranslateCoords(-arr(0), -arr(1)) 'shift the Pattern via the original X,Y PSD-Offsets (stored in Arr(0) and Arr(1))
                         CC.Paint arr(2), Pat 'render the Pattern
                     End If
+                    
+                 Case "redlamp"
+                    
+                    If mThisPressure >= 80 Then
+                        Set Pat.Matrix = Pat.Matrix.TranslateCoords(-arr(0), -arr(1)) 'shift the Pattern via the original X,Y PSD-Offsets (stored in Arr(0) and Arr(1))
+                        CC.Paint arr(2), Pat 'render the Pattern
+                    End If
+                    
+                 Case "greenlamp"
+                    
+                    If mThisPressure < 80 Then
+                        Set Pat.Matrix = Pat.Matrix.TranslateCoords(-arr(0), -arr(1))
+                        CC.Paint arr(2), Pat ' render the Pattern
+                    End If
+                                            
+                 Case "manualpointer"
+                 
+                        Set Pat.Matrix = Pat.Matrix.TranslateCoords(-arr(0), -arr(1)) 'shift the Pattern via the original X,Y PSD-Offsets (stored in Arr(0) and Arr(1))
+                        CC.Paint arr(2), Pat 'render the Pattern
                                             
                  Case "pointerShadow", "pointer"
 
                     If Val(mThisPressure) >= 100 Then
-                        boxLeft = 415
+                        boxLeft = 260
                     Else
-                        boxLeft = 420
+                        boxLeft = 265
                     End If
 
                      ' draw the date and day in the windows just once to retain opacity
-                    CC.DrawText boxLeft, 185, 180, 200, CStr(mThisPressure), , , 2, True, , someOpacity
+                    CC.DrawText boxLeft, 110, 170, 200, CStr(mThisPressure), , , 2, True, , someOpacity
 
                     Set Pat.Matrix = Pat.Matrix.TranslateCoords(11, 246) 'shift to the "rotation-point" within the Pattern
                     CC.TranslateDrawings W.Width * cxPerc, W.Height * cyPerc 'shift to the center-point of the Overlay-Widget-area

@@ -362,7 +362,7 @@ Private Sub switchfacesbutton_mouseUp(ByRef sender As Object)
     sender.Widget.Alpha = Val(PzGOpacity) / 100
     sender.Widget.Refresh
         
-    fileToPlay = "till.wav"
+    fileToPlay = "clunk.wav"
     
     If PzGEnableSounds = "1" And fFExists(App.path & "\resources\sounds\" & fileToPlay) Then
         PlaySound App.path & "\resources\sounds\" & fileToPlay, ByVal 0&, SND_FILENAME Or SND_ASYNC

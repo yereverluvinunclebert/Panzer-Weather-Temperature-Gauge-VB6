@@ -152,7 +152,7 @@ Private Sub barometerGaugeForm_BubblingEvent(ByRef sender As Object, ByRef Event
                 If PzGEnableBalloonTooltips = "1" Then CreateToolTip barometerGaugeForm.hwnd, "This button is non-functional in this gauge.", _
                      TTIconInfo, widgetName6 & " Tick Button Help", , , , True
             Case "housing/switchfacesbutton"
-                If PzGEnableBalloonTooltips = "1" Then CreateToolTip barometerGaugeForm.hwnd, "You can select alternative pressure scale faces by pressinbg this button.", _
+                If PzGEnableBalloonTooltips = "1" Then CreateToolTip barometerGaugeForm.hwnd, "Click here to select between different pressure faces showing alternative scales, ie. millibars, inches of mercury, mm of mercury or hectopascals.", _
                      TTIconInfo, widgetName6 & " Switch Faces Button Help", , , , True
             Case "housing/stopbutton"
                 If PzGEnableBalloonTooltips = "1" Then CreateToolTip barometerGaugeForm.hwnd, "This button stops all animated gauge functions for this widget, pointer movement, digital displays &c .", _
@@ -363,11 +363,11 @@ Private Sub switchfacesbutton_mouseUp(ByRef sender As Object)
     sender.Widget.Alpha = Val(PzGOpacity) / 100
     sender.Widget.Refresh
         
-    fileToPlay = "till.wav"
+    fileToPlay = "clunk.wav"
     
     currFace = Val(PzGPressureScale)
     currFace = currFace + 1
-    If currFace > 2 Then currFace = 0
+    If currFace > 3 Then currFace = 0
     PzGPressureScale = LTrim$(Str$(currFace))
     
     overlayBaromWidget.thisFace = Val(PzGPressureScale)
@@ -380,7 +380,7 @@ Private Sub switchfacesbutton_mouseUp(ByRef sender As Object)
 
 switchfacesbutton_mouseUp_Error:
 
-    MsgBox "Error " & Err.Number & " (" & Err.Description & ") in procedure switchfacesbutton_mouseUp of Class Module cfTemperature"
+    MsgBox "Error " & Err.Number & " (" & Err.Description & ") in procedure switchfacesbutton_mouseUp of Class Module cfBarometer"
 
 End Sub
 

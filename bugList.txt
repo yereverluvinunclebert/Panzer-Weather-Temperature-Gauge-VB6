@@ -43,15 +43,25 @@ add the text - done
 add anemometer - done
 fix the prefs operating with multiple gauges - done
 
+add the barometer gauge - done
+add the humidity gauge - done
+
 TODO
 
 fix population of the RC6 combobox - wip
 
 move the weather code to a separate module.bas or a class
 
-add the barometer gauge
-add the humidity gauge
+refactor to use just one cwOverlay file
+
 add the pictorial gauge
+
+barometer - read the correct face at startup and select that, as per temperature gauge
+tiny tooltips for other gauges?
+anmeometer gauge knots/metres face switch
+barometer manual pointer
+
+
 
 add the clipboard clock hands functionality
 

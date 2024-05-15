@@ -1079,12 +1079,6 @@ Public Sub adjustBarometerMainControls()
         .MousePointer = IDC_SIZEALL
         .Alpha = Val(PzGOpacity) / 100
     End With
-            
-    With fBarometer.barometerGaugeForm.Widgets("manualpointer").Widget
-        .HoverColor = 0 ' set the hover colour to grey - this may change later with new RC6
-        .MousePointer = IDC_SIZEALL
-        .Alpha = Val(PzGOpacity) / 100
-    End With
         
     If PzGPreventDraggingBarometer = "0" Then
         menuForm.mnuLockTemperatureGauge.Checked = False
@@ -1795,7 +1789,8 @@ Private Sub loadAnemometerExcludePathCollection()
 
     With fAnemometer.collAnemometerPSDNonUIElements ' the exclude list
 
-        .Add Empty, "anemometerface"
+        .Add Empty, "anemometerknotsface"
+        .Add Empty, "anemometermetresface"
         
         .Add Empty, "bigreflection"     'all reflections
         .Add Empty, "windowreflection"
@@ -1877,9 +1872,14 @@ Private Sub loadBarometerExcludePathCollection()
         .Add Empty, "barometerhpaface"
         .Add Empty, "barometermbface"
         
+        .Add Empty, "greenlamp"
+        .Add Empty, "redlamp"
+        
         .Add Empty, "bigreflection"     'all reflections
         .Add Empty, "windowreflection"
         
+        .Add Empty, "manualpointer"
+       
         .Add Empty, "pointerShadow"
         .Add Empty, "pointer"
        

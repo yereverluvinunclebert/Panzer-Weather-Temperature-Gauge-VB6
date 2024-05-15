@@ -358,7 +358,6 @@ End Sub
 Private Sub switchfacesbutton_mouseUp(ByRef sender As Object)
     
     Dim fileToPlay As String: fileToPlay = vbNullString
-    
     Dim currFace As Integer: currFace = 0
     
     On Error GoTo switchfacesbutton_mouseUp_Error
@@ -366,7 +365,14 @@ Private Sub switchfacesbutton_mouseUp(ByRef sender As Object)
     sender.Widget.Alpha = Val(PzGOpacity) / 100
     sender.Widget.Refresh
         
-    fileToPlay = "till.wav"
+    fileToPlay = "clunk.wav"
+    
+    currFace = Val(PzGWindSpeedScale)
+    currFace = currFace + 1
+    If currFace > 1 Then currFace = 0
+    PzGWindSpeedScale = LTrim$(Str$(currFace))
+    
+    overlayAnemoWidget.thisFace = Val(PzGWindSpeedScale)
     
     If PzGEnableSounds = "1" And fFExists(App.path & "\resources\sounds\" & fileToPlay) Then
         PlaySound App.path & "\resources\sounds\" & fileToPlay, ByVal 0&, SND_FILENAME Or SND_ASYNC

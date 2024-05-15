@@ -273,7 +273,8 @@ Public Property Let Locked(ByVal newValue As Boolean)
     If mLocked = True Then
         menuForm.mnuLockHumidityGauge.Checked = True
         If panzerPrefs.IsVisible = True Then
-            panzerPrefs.chkPreventDragging.Value = 1
+             panzerPrefs.cmbGaugeType.ListIndex = 2
+             panzerPrefs.chkPreventDragging.Value = 1
             panzerPrefs.cmbLandscape.ListIndex = 1
         End If
 
@@ -288,7 +289,8 @@ Public Property Let Locked(ByVal newValue As Boolean)
     Else
         menuForm.mnuLockHumidityGauge.Checked = False
         If panzerPrefs.IsVisible = True Then
-            panzerPrefs.chkPreventDragging.Value = 0
+             panzerPrefs.cmbGaugeType.ListIndex = 2
+             panzerPrefs.chkPreventDragging.Value = 0
             panzerPrefs.cmbLandscape.ListIndex = 0
         End If
 
@@ -442,13 +444,13 @@ Private Sub W_Paint(CC As RC6.cCairoContext, ByVal xAbs As Single, ByVal yAbs As
                  Case "pointerShadow", "pointer"
 
                     If Val(mThisHumidity) >= 100 Then
-                        boxLeft = 415
+                        boxLeft = 260
                     Else
-                        boxLeft = 420
+                        boxLeft = 265
                     End If
 
                      ' draw the date and day in the windows just once to retain opacity
-                    CC.DrawText boxLeft, 185, 180, 200, CStr(mThisHumidity), , , 2, True, , someOpacity
+                    CC.DrawText boxLeft, 110, 170, 200, CStr(mThisHumidity), , , 2, True, , someOpacity
 
                     Set Pat.Matrix = Pat.Matrix.TranslateCoords(11, 246) 'shift to the "rotation-point" within the Pattern
                     CC.TranslateDrawings W.Width * cxPerc, W.Height * cyPerc 'shift to the center-point of the Overlay-Widget-area

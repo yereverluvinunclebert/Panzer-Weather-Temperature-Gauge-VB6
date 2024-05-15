@@ -377,7 +377,7 @@ Public Property Get thisFace() As Integer
    On Error GoTo thisFaceGet_Error
 
     thisFace = mThisFace
-
+   
    On Error GoTo 0
    Exit Property
 
@@ -396,6 +396,10 @@ Public Property Let thisFace(ByVal newValue As Integer)
     On Error GoTo thisFaceLet_Error
 
     If mThisFace <> newValue Then mThisFace = newValue Else Exit Property
+    
+    If panzerPrefs.IsVisible = True Then
+        panzerPrefs.cmbTemperatureScale.ListIndex = newValue
+    End If
     
     Call obtainTemperature
     
@@ -527,6 +531,7 @@ Public Property Let Locked(ByVal newValue As Boolean)
     If mLocked = True Then
         menuForm.mnuLockTemperatureGauge.Checked = True
         If panzerPrefs.IsVisible = True Then
+            panzerPrefs.cmbGaugeType.ListIndex = 0
             panzerPrefs.chkPreventDragging.Value = 1
             panzerPrefs.cmbLandscape.ListIndex = 1
         End If
@@ -542,6 +547,7 @@ Public Property Let Locked(ByVal newValue As Boolean)
     Else
         menuForm.mnuLockTemperatureGauge.Checked = False
         If panzerPrefs.IsVisible = True Then
+            panzerPrefs.cmbGaugeType.ListIndex = 0
             panzerPrefs.chkPreventDragging.Value = 0
             panzerPrefs.cmbLandscape.ListIndex = 0
         End If
@@ -555,6 +561,8 @@ Public Property Let Locked(ByVal newValue As Boolean)
         
         fTemperature.temperatureGaugeForm.Widgets("housing/lockbutton").Widget.Alpha = Val(PzGOpacity) / 100
     End If
+    
+    
 
     fTemperature.temperatureGaugeForm.Refresh
 
@@ -2248,7 +2256,7 @@ Private Function setHoverTooltip(ByVal precipitationDepth As String, ByVal visib
 
     force = Str$(beaufortConversion(wind_speed_kt))
 
-    tooltipString = CStr(weekDayDate) & vbCrLf & vbCrLf
+    tooltipString = CStr(weekDayDate) & vbCrLf
     tooltipString = tooltipString & PzGIcao & " " & icaoLocation1 & ", " & vbCrLf & icaoLocation2 & ", " & icaoLocation3 & " " & vbCrLf
 
     If (PzGPressureScale = "0") Then ' "millibars") Then
@@ -2281,7 +2289,7 @@ Private Function setHoverTooltip(ByVal precipitationDepth As String, ByVal visib
     Else
         tooltipString = tooltipString & "Wind speed is" & " " & Int(wind_speed_kt * 0.51444) & " m/sec, "
     End If
-    tooltipString = tooltipString & "strength force" & force & ", " & "direction" & " " & compassDirection & vbCrLf
+    tooltipString = tooltipString & "strength force" & force & ", " & vbCrLf & "direction" & " " & compassDirection & vbCrLf
 
     If (wx_string <> vbNullString) Then
       wx_str = getMetarDescription(wx_string)    ' get the interpreted wx string data

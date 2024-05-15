@@ -364,7 +364,7 @@ Private Sub switchfacesbutton_mouseUp(ByRef sender As Object)
     sender.Widget.Alpha = Val(PzGOpacity) / 100
     sender.Widget.Refresh
         
-    fileToPlay = "till.wav"
+    fileToPlay = "clunk.wav"
     
     currFace = Val(PzGTemperatureScale)
     currFace = currFace + 1

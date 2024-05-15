@@ -38,6 +38,7 @@ Private windDirectionSDeg As Single
 Private mWindSpeed  As Integer
 Private mWindDirection  As Integer
 
+Private mThisFace As Integer
 
 Private oldWindSpeedSDeg As Double
 Private newSDeg As Double
@@ -316,6 +317,7 @@ Public Property Let Locked(ByVal newValue As Boolean)
     If mLocked = True Then
         menuForm.mnuLockAnemometerGauge.Checked = True
         If panzerPrefs.IsVisible = True Then
+            panzerPrefs.cmbGaugeType.ListIndex = 1
             panzerPrefs.chkPreventDragging.Value = 1
             panzerPrefs.cmbLandscape.ListIndex = 1
         End If
@@ -331,6 +333,7 @@ Public Property Let Locked(ByVal newValue As Boolean)
     Else
         menuForm.mnuLockAnemometerGauge.Checked = False
         If panzerPrefs.IsVisible = True Then
+            panzerPrefs.cmbGaugeType.ListIndex = 1
             panzerPrefs.chkPreventDragging.Value = 0
             panzerPrefs.cmbLandscape.ListIndex = 0
         End If
@@ -361,8 +364,50 @@ LockedLet_Error:
     MsgBox "Error " & Err.Number & " (" & Err.Description & ") in Property Locked of Class Module cwOverlayTemp"
 End Property
 
+'---------------------------------------------------------------------------------------
+' Property : thisFace
+' Author    : Dean Beedell (yereverluvinunclebert)
+' Date      : 17/05/2023
+' Purpose   :
+'---------------------------------------------------------------------------------------
+'
+Public Property Get thisFace() As Integer
+   On Error GoTo thisFaceGet_Error
 
+    thisFace = mThisFace
 
+   On Error GoTo 0
+   Exit Property
+
+thisFaceGet_Error:
+
+    MsgBox "Error " & Err.Number & " (" & Err.Description & ") in Property thisFace of Class Module cwOverlayTempTemperature"
+End Property
+'---------------------------------------------------------------------------------------
+' Property  : thisFace
+' Author    :
+' Date      : 09/05/2023
+' Purpose   :
+'---------------------------------------------------------------------------------------
+'
+Public Property Let thisFace(ByVal newValue As Integer)
+    On Error GoTo thisFaceLet_Error
+
+    If mThisFace <> newValue Then mThisFace = newValue Else Exit Property
+    
+    If panzerPrefs.IsVisible = True Then
+        panzerPrefs.cmbWindSpeedScale.ListIndex = newValue
+    End If
+    
+    Call obtainWindSpeed
+    
+    On Error GoTo 0
+    Exit Property
+
+thisFaceLet_Error:
+
+    MsgBox "Error " & Err.Number & " (" & Err.Description & ") in Property thisFace of Class Module cwOverlayTempTemperature"
+End Property
 
 '---------------------------------------------------------------------------------------
 ' Property  : Hidden
@@ -477,11 +522,21 @@ Private Sub W_Paint(CC As RC6.cCairoContext, ByVal xAbs As Single, ByVal yAbs As
             ' for specific keys perform rotation actions, clock hands &c
              Select Case key
                  
-                 Case "anemometerface"
+                 Case "anemometermetresface"
                     
-                        Set Pat.Matrix = Pat.Matrix.TranslateCoords(-arr(0), -arr(1)) 'shift the Pattern via the original X,Y PSD-Offsets (stored in Arr(0) and Arr(1))
-                        CC.Paint arr(2), Pat 'render the Pattern
-        
+                    If mThisFace = 0 Then
+                        Set Pat.Matrix = Pat.Matrix.TranslateCoords(-arr(0), -arr(1))
+                        CC.Paint arr(2), Pat ' render the Pattern
+                    End If
+                 
+                 
+                 Case "anemometerknotsface"
+                    
+                    If mThisFace = 1 Then
+                        Set Pat.Matrix = Pat.Matrix.TranslateCoords(-arr(0), -arr(1))
+                        CC.Paint arr(2), Pat ' render the Pattern
+                    End If
+                 
                 Case "redlamptrue"
                     
                     If mWindSpeed >= 34 Then
