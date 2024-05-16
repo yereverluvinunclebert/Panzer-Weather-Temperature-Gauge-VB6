@@ -401,6 +401,9 @@ Public Property Let thisFace(ByVal newValue As Integer)
         panzerPrefs.cmbTemperatureScale.ListIndex = newValue
     End If
     
+    PzGTemperatureScale = mThisFace
+    sPutINISetting "Software\PzTemperatureGauge", "temperatureScale", PzGTemperatureScale, PzGSettingsFile
+    
     Call obtainTemperature
     
     On Error GoTo 0

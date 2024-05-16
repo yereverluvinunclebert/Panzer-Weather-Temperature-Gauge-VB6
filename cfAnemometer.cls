@@ -153,7 +153,7 @@ Private Sub anemometerGaugeForm_BubblingEvent(ByRef sender As Object, ByRef Even
                 If PzGEnableBalloonTooltips = "1" Then CreateToolTip anemometerGaugeForm.hwnd, "This button is non-functional in this gauge.", _
                      TTIconInfo, widgetName4 & " Tick Button Help", , , , True
             Case "housing/switchfacesbutton"
-                If PzGEnableBalloonTooltips = "1" Then CreateToolTip anemometerGaugeForm.hwnd, "This button is non-functional in this gauge.", _
+                If PzGEnableBalloonTooltips = "1" Then CreateToolTip anemometerGaugeForm.hwnd, "Click here to select between different faces showing alternative scales, ie. knots or metres per second.", _
                      TTIconInfo, widgetName4 & " Switch Faces Button Help", , , , True
             Case "housing/stopbutton"
                 If PzGEnableBalloonTooltips = "1" Then CreateToolTip anemometerGaugeForm.hwnd, "This button stops all animated gauge functions for this widget, pointer movement, digital displays &c .", _

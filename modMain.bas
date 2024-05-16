@@ -916,6 +916,8 @@ Public Sub adjustAnemometerMainControls()
     End If
 
     overlayAnemoWidget.thisOpacity = Val(PzGOpacity)
+    
+    overlayAnemoWidget.thisFace = Val(PzGWindSpeedScale)
                
     
    On Error GoTo 0
@@ -1014,6 +1016,7 @@ Public Sub adjustHumidityMainControls()
     End If
 
     overlayHumidWidget.thisOpacity = Val(PzGOpacity)
+
                
     
    On Error GoTo 0
@@ -1105,6 +1108,7 @@ Public Sub adjustBarometerMainControls()
 
     overlayBaromWidget.thisOpacity = Val(PzGOpacity)
                
+    overlayBaromWidget.thisFace = Val(PzGPressureScale)
     
    On Error GoTo 0
    Exit Sub

@@ -2469,8 +2469,7 @@ Private Sub cmbPressureScale_Click()
     On Error GoTo cmbPressureScale_Click_Error
     
     btnSave.Enabled = True ' enable the save button
-    PzGPressureScale = LTrim$(Str$(cmbPressureScale.ListIndex))
-    sPutINISetting "Software\PzTemperatureGauge", "pressureScale", PzGPressureScale, PzGSettingsFile
+
     
     overlayBaromWidget.thisFace = cmbPressureScale.ListIndex
     
@@ -2495,8 +2494,7 @@ Private Sub cmbTemperatureScale_Click()
     
     On Error GoTo cmbTemperatureScale_Click_Error
     btnSave.Enabled = True ' enable the save button
-    PzGTemperatureScale = LTrim$(Str$(cmbTemperatureScale.ListIndex))
-    sPutINISetting "Software\PzTemperatureGauge", "temperatureScale", PzGTemperatureScale, PzGSettingsFile
+
     
     overlayTemperatureWidget.thisFace = cmbTemperatureScale.ListIndex
     
@@ -2521,8 +2519,8 @@ Private Sub cmbWindSpeedScale_Click()
     
     On Error GoTo cmbWindSpeedScale_Click_Error
     btnSave.Enabled = True ' enable the save button
-    PzGWindSpeedScale = LTrim$(Str$(cmbWindSpeedScale.ListIndex))
-    sPutINISetting "Software\PzTemperatureGauge", "windSpeedScale", PzGWindSpeedScale, PzGSettingsFile
+'    PzGWindSpeedScale = LTrim$(Str$(cmbWindSpeedScale.ListIndex))
+'    sPutINISetting "Software\PzTemperatureGauge", "windSpeedScale", PzGWindSpeedScale, PzGSettingsFile
         
     overlayAnemoWidget.thisFace = cmbWindSpeedScale.ListIndex
 
@@ -3822,10 +3820,7 @@ Private Sub btnSave_Click()
     PzGTemperatureScale = cmbTemperatureScale.ListIndex
     PzGPressureScale = cmbPressureScale.ListIndex
     PzGMetricImperial = cmbMetricImperial.ListIndex
-    
-    
-    
-    'PzGWindSpeedScale = cmbWindSpeedScale.ListIndex
+    PzGWindSpeedScale = cmbWindSpeedScale.ListIndex
     
     ' sounds
     PzGEnableSounds = LTrim$(Str$(chkEnableSounds.Value))

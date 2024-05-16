@@ -401,6 +401,9 @@ Public Property Let thisFace(ByVal newValue As Integer)
         panzerPrefs.cmbWindSpeedScale.ListIndex = newValue
     End If
     
+    PzGWindSpeedScale = mThisFace
+    sPutINISetting "Software\PzTemperatureGauge", "windSpeedScale", PzGWindSpeedScale, PzGSettingsFile
+
     Call obtainWindSpeed
     
     On Error GoTo 0

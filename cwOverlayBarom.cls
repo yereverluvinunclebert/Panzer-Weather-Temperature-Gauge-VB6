@@ -355,8 +355,11 @@ Public Property Let thisFace(ByVal newValue As Integer)
     If mThisFace <> newValue Then mThisFace = newValue Else Exit Property
     
     If panzerPrefs.IsVisible = True Then
-        panzerPrefs.cmbPressureScale.ListIndex = newValue
+        panzerPrefs.cmbPressureScale.ListIndex = mThisFace
     End If
+    
+    PzGPressureScale = mThisFace
+    sPutINISetting "Software\PzTemperatureGauge", "pressureScale", PzGPressureScale, PzGSettingsFile
     
     Call obtainPressure
     
