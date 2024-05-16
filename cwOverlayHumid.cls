@@ -308,7 +308,7 @@ Public Property Let Locked(ByVal newValue As Boolean)
 
     fHumidity.humidityGaugeForm.Refresh
 
-    sPutINISetting "Software\PzHumidityGauge", "preventDraggingTemperature", PzGPreventDraggingHumidity, PzGSettingsFile
+    sPutINISetting "Software\PzHumidityGauge", "preventDraggingHumidity", PzGPreventDraggingHumidity, PzGSettingsFile
 
     If PzGEnableSounds = "1" And fFExists(App.path & "\resources\sounds\" & fileToPlay) Then
         PlaySound App.path & "\resources\sounds\" & fileToPlay, ByVal 0&, SND_FILENAME Or SND_ASYNC
