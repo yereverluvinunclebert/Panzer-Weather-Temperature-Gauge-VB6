@@ -374,7 +374,7 @@ Begin VB.Form panzerPrefs
                Top             =   2865
                Width           =   960
             End
-            Begin VB.ComboBox cmbPortrait 
+            Begin VB.ComboBox cmbPortraitLocked 
                Height          =   315
                Left            =   1965
                Style           =   2  'Dropdown List
@@ -383,7 +383,7 @@ Begin VB.Form panzerPrefs
                Top             =   2025
                Width           =   2160
             End
-            Begin VB.ComboBox cmbLandscape 
+            Begin VB.ComboBox cmbLandscapeLocked 
                Height          =   315
                Left            =   1965
                Style           =   2  'Dropdown List
@@ -3216,9 +3216,9 @@ Private Sub chkPreventDragging_Click()
 
     btnSave.Enabled = True ' enable the save button
 '    If chkPreventDragging.Value = 0 Then
-'        cmbLandscape.ListIndex = 0
+'        cmbLandscapeLocked.ListIndex = 0
 '    Else
-'        cmbLandscape.ListIndex = 1
+'        cmbLandscapeLocked.ListIndex = 1
 '    End If
     
     If cmbGaugeType.ListIndex = 0 Then ' temperature
@@ -3491,11 +3491,11 @@ End Sub
 
 
 
-Private Sub cmbLandscape_Click()
+Private Sub cmbLandscapeLocked_Click()
     btnSave.Enabled = True ' enable the save button
 End Sub
 
-Private Sub cmbPortrait_Click()
+Private Sub cmbPortraitLocked_Click()
     btnSave.Enabled = True ' enable the save button
 End Sub
 
@@ -3511,18 +3511,18 @@ Private Sub cmbWidgetPosition_Click()
 
     btnSave.Enabled = True ' enable the save button
     If cmbWidgetPosition.ListIndex = 1 Then
-        cmbLandscape.ListIndex = 0
-        cmbPortrait.ListIndex = 0
-        cmbLandscape.Enabled = False
-        cmbPortrait.Enabled = False
+        cmbLandscapeLocked.ListIndex = 0
+        cmbPortraitLocked.ListIndex = 0
+        cmbLandscapeLocked.Enabled = False
+        cmbPortraitLocked.Enabled = False
         txtLandscapeHoffset.Enabled = False
         txtLandscapeVoffset.Enabled = False
         txtPortraitHoffset.Enabled = False
         txtPortraitVoffset.Enabled = False
         
     Else
-        cmbLandscape.Enabled = True
-        cmbPortrait.Enabled = True
+        cmbLandscapeLocked.Enabled = True
+        cmbPortraitLocked.Enabled = True
         txtLandscapeHoffset.Enabled = True
         txtLandscapeVoffset.Enabled = True
         txtPortraitHoffset.Enabled = True
@@ -3843,47 +3843,43 @@ Private Sub btnSave_Click()
     PzGWidgetPosition = LTrim$(Str$(cmbWidgetPosition.ListIndex))
         
     If cmbGaugeType.ListIndex = 0 Then ' temperature
-        PzGTemperatureLandscape = LTrim$(Str$(cmbLandscape.ListIndex))
-        PzGTemperaturePortrait = LTrim$(Str$(cmbPortrait.ListIndex))
-        PzGTemperatureLandscapeHoffset = txtLandscapeHoffset.Text
-        PzGTemperatureLandscapeVoffset = txtLandscapeVoffset.Text
-        PzGTemperaturePortraitHoffset = txtPortraitHoffset.Text
-        PzGTemperaturePortraitVoffset = txtPortraitVoffset.Text
+        PzGTemperatureLandscapeLocked = LTrim$(Str$(cmbLandscapeLocked.ListIndex))
+        PzGTemperaturePortraitLocked = LTrim$(Str$(cmbPortraitLocked.ListIndex))
+        PzGTemperatureLandscapeLockedHoffset = txtLandscapeHoffset.Text
+        PzGTemperatureLandscapeLockedVoffset = txtLandscapeVoffset.Text
+        PzGTemperaturePortraitLockedHoffset = txtPortraitHoffset.Text
+        PzGTemperaturePortraitLockedVoffset = txtPortraitVoffset.Text
     End If
     
-    If cmbGaugeType.ListIndex = 0 Then ' anemometer
-        PzGAnemometerLandscape = LTrim$(Str$(cmbLandscape.ListIndex))
-        PzGAnemometerPortrait = LTrim$(Str$(cmbPortrait.ListIndex))
-        PzGAnemometerLandscapeHoffset = txtLandscapeHoffset.Text
-        PzGAnemometerLandscapeVoffset = txtLandscapeVoffset.Text
-        PzGAnemometerPortraitHoffset = txtPortraitHoffset.Text
-        PzGAnemometerPortraitVoffset = txtPortraitVoffset.Text
+    If cmbGaugeType.ListIndex = 1 Then ' anemometer
+        PzGAnemometerLandscapeLocked = LTrim$(Str$(cmbLandscapeLocked.ListIndex))
+        PzGAnemometerPortraitLocked = LTrim$(Str$(cmbPortraitLocked.ListIndex))
+        PzGAnemometerLandscapeLockedHoffset = txtLandscapeHoffset.Text
+        PzGAnemometerLandscapeLockedVoffset = txtLandscapeVoffset.Text
+        PzGAnemometerPortraitLockedHoffset = txtPortraitHoffset.Text
+        PzGAnemometerPortraitLockedVoffset = txtPortraitVoffset.Text
     End If
     
-'    If cmbGaugeType.ListIndex = 0 Then ' temperature
-'        PzGTemperatureLandscapeHoffset = txtLandscapeHoffset.Text
-'        PzGTemperatureLandscapeVoffset = txtLandscapeVoffset.Text
-'        PzGTemperaturePortraitHoffset = txtPortraitHoffset.Text
-'        PzGTemperaturePortraitVoffset = txtPortraitVoffset.Text
-'    End If
-'
-'    If cmbGaugeType.ListIndex = 0 Then ' temperature
-'        PzGTemperatureLandscapeHoffset = txtLandscapeHoffset.Text
-'        PzGTemperatureLandscapeVoffset = txtLandscapeVoffset.Text
-'        PzGTemperaturePortraitHoffset = txtPortraitHoffset.Text
-'        PzGTemperaturePortraitVoffset = txtPortraitVoffset.Text
-'    End If
-'
-'
-'    If cmbGaugeType.ListIndex = 0 Then ' temperature
-'        PzGTemperatureLandscapeHoffset = txtLandscapeHoffset.Text
-'        PzGTemperatureLandscapeVoffset = txtLandscapeVoffset.Text
-'        PzGTemperaturePortraitHoffset = txtPortraitHoffset.Text
-'        PzGTemperaturePortraitVoffset = txtPortraitVoffset.Text
-'    End If
+    If cmbGaugeType.ListIndex = 2 Then ' humidity
+        PzGHumidityLandscapeLocked = LTrim$(Str$(cmbLandscapeLocked.ListIndex))
+        PzGHumidityPortraitLocked = LTrim$(Str$(cmbPortraitLocked.ListIndex))
+        PzGHumidityLandscapeLockedHoffset = txtLandscapeHoffset.Text
+        PzGHumidityLandscapeLockedVoffset = txtLandscapeVoffset.Text
+        PzGHumidityPortraitLockedHoffset = txtPortraitHoffset.Text
+        PzGHumidityPortraitLockedVoffset = txtPortraitVoffset.Text
+    End If
     
+    If cmbGaugeType.ListIndex = 3 Then ' Barometer
+        PzGBarometerLandscapeLocked = LTrim$(Str$(cmbLandscapeLocked.ListIndex))
+        PzGBarometerPortraitLocked = LTrim$(Str$(cmbPortraitLocked.ListIndex))
+        PzGBarometerLandscapeLockedHoffset = txtLandscapeHoffset.Text
+        PzGBarometerLandscapeLockedVoffset = txtLandscapeVoffset.Text
+        PzGBarometerPortraitLockedHoffset = txtPortraitHoffset.Text
+        PzGBarometerPortraitLockedVoffset = txtPortraitVoffset.Text
+    End If
     
-    
+    'deanieboy
+        
 '    PzGTemperatureVLocationPerc
 '    PzGTemperatureHLocationPerc
 
@@ -3928,8 +3924,8 @@ Private Sub btnSave_Click()
         sPutINISetting "Software\PzTemperatureGauge", "dpiAwareness", PzGDpiAwareness, PzGSettingsFile
         
         sPutINISetting "Software\PzTemperatureGauge", "temperatureGaugeSize", PzGTemperatureGaugeSize, PzGSettingsFile
-        sPutINISetting "Software\PzTemperatureGauge", "temperatureLandscape", PzGTemperatureLandscape, PzGSettingsFile
-        sPutINISetting "Software\PzTemperatureGauge", "temperaturePortrait", PzGTemperaturePortrait, PzGSettingsFile
+        sPutINISetting "Software\PzTemperatureGauge", "temperatureLandscapeLocked", PzGTemperatureLandscapeLocked, PzGSettingsFile
+        sPutINISetting "Software\PzTemperatureGauge", "temperaturePortraitLocked", PzGTemperaturePortraitLocked, PzGSettingsFile
         sPutINISetting "Software\PzTemperatureGauge", "temperatureVLocationPerc", PzGTemperatureVLocationPerc, PzGSettingsFile
         sPutINISetting "Software\PzTemperatureGauge", "temperatureHLocationPerc", PzGTemperatureHLocationPerc, PzGSettingsFile
         sPutINISetting "Software\PzTemperatureGauge", "temperatureFormHighDpiXPos", PzGTemperatureFormHighDpiXPos, PzGSettingsFile
@@ -3939,8 +3935,8 @@ Private Sub btnSave_Click()
         sPutINISetting "Software\PzTemperatureGauge", "preventDraggingTemperature", PzGPreventDraggingTemperature, PzGSettingsFile
         
         sPutINISetting "Software\PzAnemometerGauge", "anemometerGaugeSize", PzGAnemometerGaugeSize, PzGSettingsFile
-        sPutINISetting "Software\PzAnemometerGauge", "anemometerLandscape", PzGAnemometerLandscape, PzGSettingsFile
-        sPutINISetting "Software\PzAnemometerGauge", "anemometerPortrait", PzGAnemometerPortrait, PzGSettingsFile
+        sPutINISetting "Software\PzAnemometerGauge", "anemometerLandscapeLocked", PzGAnemometerLandscapeLocked, PzGSettingsFile
+        sPutINISetting "Software\PzAnemometerGauge", "anemometerPortraitLocked", PzGAnemometerPortraitLocked, PzGSettingsFile
         sPutINISetting "Software\PzAnemometerGauge", "anemometerVLocationPerc", PzGAnemometerVLocationPerc, PzGSettingsFile
         sPutINISetting "Software\PzAnemometerGauge", "anemometerHLocationPerc", PzGAnemometerHLocationPerc, PzGSettingsFile
         sPutINISetting "Software\PzAnemometerGauge", "anemometerFormHighDpiXPos", PzGAnemometerFormHighDpiXPos, PzGSettingsFile
@@ -3950,8 +3946,8 @@ Private Sub btnSave_Click()
         sPutINISetting "Software\PzAnemometerGauge", "preventDraggingAnemometer", PzGPreventDraggingAnemometer, PzGSettingsFile
                
         sPutINISetting "Software\PzHumidityGauge", "humidityGaugeSize", PzGHumidityGaugeSize, PzGSettingsFile
-        sPutINISetting "Software\PzHumidityGauge", "humidityLandscape", PzGHumidityLandscape, PzGSettingsFile
-        sPutINISetting "Software\PzHumidityGauge", "humidityPortrait", PzGHumidityPortrait, PzGSettingsFile
+        sPutINISetting "Software\PzHumidityGauge", "humidityLandscapeLocked", PzGHumidityLandscapeLocked, PzGSettingsFile
+        sPutINISetting "Software\PzHumidityGauge", "humidityPortraitLocked", PzGHumidityPortraitLocked, PzGSettingsFile
         sPutINISetting "Software\PzHumidityGauge", "humidityVLocationPerc", PzGHumidityVLocationPerc, PzGSettingsFile
         sPutINISetting "Software\PzHumidityGauge", "humidityHLocationPerc", PzGHumidityHLocationPerc, PzGSettingsFile
         sPutINISetting "Software\PzHumidityGauge", "humidityFormHighDpiXPos", PzGHumidityFormHighDpiXPos, PzGSettingsFile
@@ -3961,8 +3957,8 @@ Private Sub btnSave_Click()
         sPutINISetting "Software\PzHumidityGauge", "preventDraggingHumidity", PzGPreventDraggingHumidity, PzGSettingsFile
                
         sPutINISetting "Software\PzBarometerGauge", "barometerGaugeSize", PzGBarometerGaugeSize, PzGSettingsFile
-        sPutINISetting "Software\PzBarometerGauge", "barometerLandscape", PzGBarometerLandscape, PzGSettingsFile
-        sPutINISetting "Software\PzBarometerGauge", "barometerPortrait", PzGBarometerPortrait, PzGSettingsFile
+        sPutINISetting "Software\PzBarometerGauge", "barometerLandscapeLocked", PzGBarometerLandscapeLocked, PzGSettingsFile
+        sPutINISetting "Software\PzBarometerGauge", "barometerPortraitLocked", PzGBarometerPortraitLocked, PzGSettingsFile
         sPutINISetting "Software\PzBarometerGauge", "barometerVLocationPerc", PzGBarometerVLocationPerc, PzGSettingsFile
         sPutINISetting "Software\PzBarometerGauge", "barometerHLocationPerc", PzGBarometerHLocationPerc, PzGSettingsFile
         sPutINISetting "Software\PzBarometerGauge", "barometerFormHighDpiXPos", PzGBarometerFormHighDpiXPos, PzGSettingsFile
@@ -4337,42 +4333,42 @@ Private Sub adjustPrefsControls()
         End If
     End If
     
-    'cmbLandscape
+    'cmbLandscapeLocked
     
     If cmbGaugeType.ListIndex = 0 Then ' temperature
-        cmbLandscape.ListIndex = Val(PzGTemperatureLandscape)
-        cmbPortrait.ListIndex = Val(PzGTemperaturePortrait)
-        txtLandscapeHoffset.Text = PzGTemperatureLandscapeHoffset
-        txtLandscapeVoffset.Text = PzGTemperatureLandscapeVoffset
-        txtPortraitHoffset.Text = PzGTemperaturePortraitHoffset
-        txtPortraitVoffset.Text = PzGTemperaturePortraitVoffset
+        cmbLandscapeLocked.ListIndex = Val(PzGTemperatureLandscapeLocked)
+        cmbPortraitLocked.ListIndex = Val(PzGTemperaturePortraitLocked)
+        txtLandscapeHoffset.Text = PzGTemperatureLandscapeLockedHoffset
+        txtLandscapeVoffset.Text = PzGTemperatureLandscapeLockedVoffset
+        txtPortraitHoffset.Text = PzGTemperaturePortraitLockedHoffset
+        txtPortraitVoffset.Text = PzGTemperaturePortraitLockedVoffset
     End If
     
     If cmbGaugeType.ListIndex = 1 Then ' Anemometer
-        cmbLandscape.ListIndex = Val(PzGAnemometerLandscape)
-        cmbPortrait.ListIndex = Val(PzGAnemometerPortrait)
-        txtLandscapeHoffset.Text = PzGAnemometerLandscapeHoffset
-        txtLandscapeVoffset.Text = PzGAnemometerLandscapeVoffset
-        txtPortraitHoffset.Text = PzGAnemometerPortraitHoffset
-        txtPortraitVoffset.Text = PzGAnemometerPortraitVoffset
+        cmbLandscapeLocked.ListIndex = Val(PzGAnemometerLandscapeLocked)
+        cmbPortraitLocked.ListIndex = Val(PzGAnemometerPortraitLocked)
+        txtLandscapeHoffset.Text = PzGAnemometerLandscapeLockedHoffset
+        txtLandscapeVoffset.Text = PzGAnemometerLandscapeLockedVoffset
+        txtPortraitHoffset.Text = PzGAnemometerPortraitLockedHoffset
+        txtPortraitVoffset.Text = PzGAnemometerPortraitLockedVoffset
     End If
       
     If cmbGaugeType.ListIndex = 3 Then ' Barometer
-        cmbLandscape.ListIndex = Val(PzGBarometerLandscape)
-        cmbPortrait.ListIndex = Val(PzGBarometerPortrait)
-        txtLandscapeHoffset.Text = PzGBarometerLandscapeHoffset
-        txtLandscapeVoffset.Text = PzGBarometerLandscapeVoffset
-        txtPortraitHoffset.Text = PzGBarometerPortraitHoffset
-        txtPortraitVoffset.Text = PzGBarometerPortraitVoffset
+        cmbLandscapeLocked.ListIndex = Val(PzGBarometerLandscapeLocked)
+        cmbPortraitLocked.ListIndex = Val(PzGBarometerPortraitLocked)
+        txtLandscapeHoffset.Text = PzGBarometerLandscapeLockedHoffset
+        txtLandscapeVoffset.Text = PzGBarometerLandscapeLockedVoffset
+        txtPortraitHoffset.Text = PzGBarometerPortraitLockedHoffset
+        txtPortraitVoffset.Text = PzGBarometerPortraitLockedVoffset
     End If
       
     If cmbGaugeType.ListIndex = 2 Then ' Humidity
-        cmbLandscape.ListIndex = Val(PzGHumidityLandscape)
-        cmbPortrait.ListIndex = Val(PzGHumidityPortrait)
-        txtLandscapeHoffset.Text = PzGHumidityLandscapeHoffset
-        txtLandscapeVoffset.Text = PzGHumidityLandscapeVoffset
-        txtPortraitHoffset.Text = PzGHumidityPortraitHoffset
-        txtPortraitVoffset.Text = PzGHumidityPortraitVoffset
+        cmbLandscapeLocked.ListIndex = Val(PzGHumidityLandscapeLocked)
+        cmbPortraitLocked.ListIndex = Val(PzGHumidityPortraitLocked)
+        txtLandscapeHoffset.Text = PzGHumidityLandscapeLockedHoffset
+        txtLandscapeVoffset.Text = PzGHumidityLandscapeLockedVoffset
+        txtPortraitHoffset.Text = PzGHumidityPortraitLockedHoffset
+        txtPortraitVoffset.Text = PzGHumidityPortraitLockedVoffset
     End If
     
     ' Windows tab
@@ -4444,15 +4440,15 @@ Private Sub populatePrefsComboBoxes()
     cmbWidgetPosition.AddItem "enabled", 1
     cmbWidgetPosition.ItemData(1) = 1
     
-    cmbLandscape.AddItem "disabled", 0
-    cmbLandscape.ItemData(0) = 0
-    cmbLandscape.AddItem "enabled", 1
-    cmbLandscape.ItemData(1) = 1
+    cmbLandscapeLocked.AddItem "disabled", 0
+    cmbLandscapeLocked.ItemData(0) = 0
+    cmbLandscapeLocked.AddItem "enabled", 1
+    cmbLandscapeLocked.ItemData(1) = 1
     
-    cmbPortrait.AddItem "disabled", 0
-    cmbPortrait.ItemData(0) = 0
-    cmbPortrait.AddItem "enabled", 1
-    cmbPortrait.ItemData(1) = 1
+    cmbPortraitLocked.AddItem "disabled", 0
+    cmbPortraitLocked.ItemData(0) = 0
+    cmbPortraitLocked.AddItem "enabled", 1
+    cmbPortraitLocked.ItemData(1) = 1
     
     cmbDebug.AddItem "Debug OFF", 0
     cmbDebug.ItemData(0) = 0
@@ -5445,8 +5441,8 @@ Public Sub setPrefsTooltips()
         txtPortraitHoffset.ToolTipText = "Field to hold the horizontal offset for the widget position in portrait mode."
         txtLandscapeVoffset.ToolTipText = "Field to hold the horizontal offset for the widget position in landscape mode."
         txtLandscapeHoffset.ToolTipText = "Field to hold the horizontal offset for the widget position in landscape mode."
-        cmbLandscape.ToolTipText = "The widget can be locked into landscape mode, it ensures that the widget always appears where you want it to. Using the fields below, you can assign a default x/y position for Landscape mode. "
-        cmbPortrait.ToolTipText = "The widget can be locked into portrait mode, it ensures that the widget always appears where you want it to. Using the fields below, you can assign a default x/y position for portrait mode. "
+        cmbLandscapeLocked.ToolTipText = "The widget can be locked into landscape mode, it ensures that the widget always appears where you want it to. Using the fields below, you can assign a default x/y position for Landscape mode. "
+        cmbPortraitLocked.ToolTipText = "The widget can be locked into portrait mode, it ensures that the widget always appears where you want it to. Using the fields below, you can assign a default x/y position for portrait mode. "
         cmbWidgetPosition.ToolTipText = "Tablets only. The widget can be positioned proportionally when switching between portrait/landscape. If you want to enable this, disable the options below."
         cmbAspectHidden.ToolTipText = " Here you can choose whether the widget is hidden by default in either landscape or portrait mode or not at all. This allows you to have certain widgets that do not obscure the screen in one mode or another. If you accidentally set it so you can't find it on screen then change the setting here to none."
         chkEnableSounds.ToolTipText = "Check this box to enable or disable all of the sounds used during any animation on the main screen."
@@ -5532,8 +5528,8 @@ Public Sub setPrefsTooltips()
         txtPortraitHoffset.ToolTipText = vbNullString
         txtLandscapeVoffset.ToolTipText = vbNullString
         txtLandscapeHoffset.ToolTipText = vbNullString
-        cmbLandscape.ToolTipText = vbNullString
-        cmbPortrait.ToolTipText = vbNullString
+        cmbLandscapeLocked.ToolTipText = vbNullString
+        cmbPortraitLocked.ToolTipText = vbNullString
         cmbWidgetPosition.ToolTipText = vbNullString
         cmbAspectHidden.ToolTipText = vbNullString
         chkEnableSounds.ToolTipText = vbNullString

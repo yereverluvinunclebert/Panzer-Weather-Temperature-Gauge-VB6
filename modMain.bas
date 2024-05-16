@@ -357,13 +357,13 @@ Private Sub initialiseGlobalVars()
     PzGGaugeType = vbNullString
     PzGWidgetPosition = vbNullString
     
-    PzGTemperatureLandscape = vbNullString
-    PzGTemperaturePortrait = vbNullString
+    PzGTemperatureLandscapeLocked = vbNullString
+    PzGTemperaturePortraitLocked = vbNullString
     PzGTemperatureGaugeSize = vbNullString
-    PzGTemperatureLandscapeHoffset = vbNullString
-    PzGTemperatureLandscapeVoffset = vbNullString
-    PzGTemperaturePortraitHoffset = vbNullString
-    PzGTemperaturePortraitVoffset = vbNullString
+    PzGTemperatureLandscapeLockedHoffset = vbNullString
+    PzGTemperatureLandscapeLockedVoffset = vbNullString
+    PzGTemperaturePortraitLockedHoffset = vbNullString
+    PzGTemperaturePortraitLockedVoffset = vbNullString
     PzGTemperatureVLocationPerc = vbNullString
     PzGTemperatureHLocationPerc = vbNullString
     PzGPreventDraggingTemperature = vbNullString
@@ -373,29 +373,42 @@ Private Sub initialiseGlobalVars()
     PzGTemperatureFormLowDpiYPos = vbNullString
     
     PzGAnemometerGaugeSize = vbNullString
-    PzGAnemometerLandscape = vbNullString
-    PzGAnemometerPortrait = vbNullString
+    PzGAnemometerLandscapeLocked = vbNullString
+    PzGAnemometerPortraitLocked = vbNullString
     PzGAnemometerFormHighDpiXPos = vbNullString
     PzGAnemometerFormHighDpiYPos = vbNullString
     PzGAnemometerFormLowDpiXPos = vbNullString
     PzGAnemometerFormLowDpiYPos = vbNullString
-    PzGAnemometerLandscapeHoffset = vbNullString
-    PzGAnemometerLandscapeVoffset = vbNullString
-    PzGAnemometerPortraitHoffset = vbNullString
-    PzGAnemometerPortraitVoffset = vbNullString
+    PzGAnemometerLandscapeLockedHoffset = vbNullString
+    PzGAnemometerLandscapeLockedVoffset = vbNullString
+    PzGAnemometerPortraitLockedHoffset = vbNullString
+    PzGAnemometerPortraitLockedVoffset = vbNullString
     PzGPreventDraggingAnemometer = vbNullString
     
+    PzGHumidityGaugeSize = vbNullString
+    PzGHumidityLandscapeLocked = vbNullString
+    PzGHumidityPortraitLocked = vbNullString
+    PzGHumidityFormHighDpiXPos = vbNullString
+    PzGHumidityFormHighDpiYPos = vbNullString
+    PzGHumidityFormLowDpiXPos = vbNullString
+    PzGHumidityFormLowDpiYPos = vbNullString
+    PzGHumidityLandscapeLockedHoffset = vbNullString
+    PzGHumidityLandscapeLockedVoffset = vbNullString
+    PzGHumidityPortraitLockedHoffset = vbNullString
+    PzGHumidityPortraitLockedVoffset = vbNullString
+    PzGPreventDraggingHumidity = vbNullString
+    
     PzGBarometerGaugeSize = vbNullString
-    PzGBarometerLandscape = vbNullString
-    PzGBarometerPortrait = vbNullString
+    PzGBarometerLandscapeLocked = vbNullString
+    PzGBarometerPortraitLocked = vbNullString
     PzGBarometerFormHighDpiXPos = vbNullString
     PzGBarometerFormHighDpiYPos = vbNullString
     PzGBarometerFormLowDpiXPos = vbNullString
     PzGBarometerFormLowDpiYPos = vbNullString
-    PzGBarometerLandscapeHoffset = vbNullString
-    PzGBarometerLandscapeVoffset = vbNullString
-    PzGBarometerPortraitHoffset = vbNullString
-    PzGBarometerPortraitVoffset = vbNullString
+    PzGBarometerLandscapeLockedHoffset = vbNullString
+    PzGBarometerLandscapeLockedVoffset = vbNullString
+    PzGBarometerPortraitLockedHoffset = vbNullString
+    PzGBarometerPortraitLockedVoffset = vbNullString
     PzGPreventDraggingBarometer = vbNullString
         
     ' sounds
@@ -1189,12 +1202,12 @@ Public Sub readSettingsFile(ByVal location As String, ByVal PzGSettingsFile As S
         PzGWidgetPosition = fGetINISetting(location, "widgetPosition", PzGSettingsFile)
         
         PzGTemperatureGaugeSize = fGetINISetting(location, "temperatureGaugeSize", PzGSettingsFile)
-        PzGTemperatureLandscape = fGetINISetting(location, "temperatureLandscape", PzGSettingsFile)
-        PzGTemperaturePortrait = fGetINISetting(location, "temperaturePortrait", PzGSettingsFile)
-        PzGTemperatureLandscapeHoffset = fGetINISetting(location, "temperatureLandscapeHoffset", PzGSettingsFile)
-        PzGTemperatureLandscapeVoffset = fGetINISetting(location, "temperatureLandscapeYoffset", PzGSettingsFile)
-        PzGTemperaturePortraitHoffset = fGetINISetting(location, "temperaturePortraitHoffset", PzGSettingsFile)
-        PzGTemperaturePortraitVoffset = fGetINISetting(location, "temperaturePortraitVoffset", PzGSettingsFile)
+        PzGTemperatureLandscapeLocked = fGetINISetting(location, "temperatureLandscapeLocked", PzGSettingsFile)
+        PzGTemperaturePortraitLocked = fGetINISetting(location, "temperaturePortraitLocked", PzGSettingsFile)
+        PzGTemperatureLandscapeLockedHoffset = fGetINISetting(location, "temperatureLandscapeHoffset", PzGSettingsFile)
+        PzGTemperatureLandscapeLockedVoffset = fGetINISetting(location, "temperatureLandscapeYoffset", PzGSettingsFile)
+        PzGTemperaturePortraitLockedHoffset = fGetINISetting(location, "temperaturePortraitHoffset", PzGSettingsFile)
+        PzGTemperaturePortraitLockedVoffset = fGetINISetting(location, "temperaturePortraitVoffset", PzGSettingsFile)
         PzGTemperatureVLocationPerc = fGetINISetting(location, "temperatureVLocationPerc", PzGSettingsFile)
         PzGTemperatureHLocationPerc = fGetINISetting(location, "temperatureHLocationPerc", PzGSettingsFile)
         PzGTemperatureFormHighDpiXPos = fGetINISetting("Software\PzTemperatureGauge", "temperatureFormHighDpiXPos", PzGSettingsFile)
@@ -1203,13 +1216,13 @@ Public Sub readSettingsFile(ByVal location As String, ByVal PzGSettingsFile As S
         PzGTemperatureFormLowDpiYPos = fGetINISetting("Software\PzTemperatureGauge", "temperatureFormLowDpiYPos", PzGSettingsFile)
         PzGPreventDraggingTemperature = fGetINISetting(location, "preventDraggingTemperature", PzGSettingsFile)
         
-        PzGAnemometerLandscape = fGetINISetting("Software\PzAnemometerGauge", "anemometerLandscape", PzGSettingsFile)
-        PzGAnemometerPortrait = fGetINISetting("Software\PzAnemometerGauge", "anemometerPortrait", PzGSettingsFile)
+        PzGAnemometerLandscapeLocked = fGetINISetting("Software\PzAnemometerGauge", "anemometerLandscapeLocked", PzGSettingsFile)
+        PzGAnemometerPortraitLocked = fGetINISetting("Software\PzAnemometerGauge", "anemometerPortraitLocked", PzGSettingsFile)
         PzGAnemometerGaugeSize = fGetINISetting("Software\PzAnemometerGauge", "anemometerGaugeSize", PzGSettingsFile)
-        PzGAnemometerLandscapeHoffset = fGetINISetting("Software\PzAnemometerGauge", "anemometerLandscapeHoffset", PzGSettingsFile)
-        PzGAnemometerLandscapeVoffset = fGetINISetting("Software\PzAnemometerGauge", "anemometerLandscapeVoffset", PzGSettingsFile)
-        PzGAnemometerPortraitHoffset = fGetINISetting("Software\PzAnemometerGauge", "anemometerPortraitHoffset", PzGSettingsFile)
-        PzGAnemometerPortraitVoffset = fGetINISetting("Software\PzAnemometerGauge", "anemometerPortraitVoffset", PzGSettingsFile)
+        PzGAnemometerLandscapeLockedHoffset = fGetINISetting("Software\PzAnemometerGauge", "anemometerLandscapeHoffset", PzGSettingsFile)
+        PzGAnemometerLandscapeLockedVoffset = fGetINISetting("Software\PzAnemometerGauge", "anemometerLandscapeVoffset", PzGSettingsFile)
+        PzGAnemometerPortraitLockedHoffset = fGetINISetting("Software\PzAnemometerGauge", "anemometerPortraitHoffset", PzGSettingsFile)
+        PzGAnemometerPortraitLockedVoffset = fGetINISetting("Software\PzAnemometerGauge", "anemometerPortraitVoffset", PzGSettingsFile)
         PzGAnemometerVLocationPerc = fGetINISetting("Software\PzAnemometerGauge", "anemometerVLocationPerc", PzGSettingsFile)
         PzGAnemometerHLocationPerc = fGetINISetting("Software\PzAnemometerGauge", "anemometerHLocationPerc", PzGSettingsFile)
         PzGAnemometerFormHighDpiXPos = fGetINISetting("Software\PzAnemometerGauge", "anemometerFormHighDpiXPos", PzGSettingsFile)
@@ -1218,13 +1231,13 @@ Public Sub readSettingsFile(ByVal location As String, ByVal PzGSettingsFile As S
         PzGAnemometerFormLowDpiYPos = fGetINISetting("Software\PzAnemometerGauge", "anemometerFormLowDpiYPos", PzGSettingsFile)
         PzGPreventDraggingAnemometer = fGetINISetting("Software\PzAnemometerGauge", "preventDraggingAnemometer", PzGSettingsFile)
         
-        PzGHumidityLandscape = fGetINISetting("Software\PzHumidityGauge", "humidityLandscape", PzGSettingsFile)
-        PzGHumidityPortrait = fGetINISetting("Software\PzHumidityGauge", "humidityPortrait", PzGSettingsFile)
+        PzGHumidityLandscapeLocked = fGetINISetting("Software\PzHumidityGauge", "humidityLandscapeLocked", PzGSettingsFile)
+        PzGHumidityPortraitLocked = fGetINISetting("Software\PzHumidityGauge", "humidityPortraitLocked", PzGSettingsFile)
         PzGHumidityGaugeSize = fGetINISetting("Software\PzHumidityGauge", "humidityGaugeSize", PzGSettingsFile)
-        PzGHumidityLandscapeHoffset = fGetINISetting("Software\PzHumidityGauge", "humidityLandscapeHoffset", PzGSettingsFile)
-        PzGHumidityLandscapeVoffset = fGetINISetting("Software\PzHumidityGauge", "humidityLandscapeVoffset", PzGSettingsFile)
-        PzGHumidityPortraitHoffset = fGetINISetting("Software\PzHumidityGauge", "humidityPortraitHoffset", PzGSettingsFile)
-        PzGHumidityPortraitVoffset = fGetINISetting("Software\PzHumidityGauge", "humidityPortraitVoffset", PzGSettingsFile)
+        PzGHumidityLandscapeLockedHoffset = fGetINISetting("Software\PzHumidityGauge", "humidityLandscapeHoffset", PzGSettingsFile)
+        PzGHumidityLandscapeLockedVoffset = fGetINISetting("Software\PzHumidityGauge", "humidityLandscapeVoffset", PzGSettingsFile)
+        PzGHumidityPortraitLockedHoffset = fGetINISetting("Software\PzHumidityGauge", "humidityPortraitHoffset", PzGSettingsFile)
+        PzGHumidityPortraitLockedVoffset = fGetINISetting("Software\PzHumidityGauge", "humidityPortraitVoffset", PzGSettingsFile)
         PzGHumidityVLocationPerc = fGetINISetting("Software\PzHumidityGauge", "humidityVLocationPerc", PzGSettingsFile)
         PzGHumidityHLocationPerc = fGetINISetting("Software\PzHumidityGauge", "humidityHLocationPerc", PzGSettingsFile)
         PzGHumidityFormHighDpiXPos = fGetINISetting("Software\PzHumidityGauge", "humidityFormHighDpiXPos", PzGSettingsFile)
@@ -1233,13 +1246,13 @@ Public Sub readSettingsFile(ByVal location As String, ByVal PzGSettingsFile As S
         PzGHumidityFormLowDpiYPos = fGetINISetting("Software\PzHumidityGauge", "humidityFormLowDpiYPos", PzGSettingsFile)
         PzGPreventDraggingHumidity = fGetINISetting("Software\PzHumidityGauge", "preventDraggingHumidity", PzGSettingsFile)
          
-        PzGBarometerLandscape = fGetINISetting("Software\PzBarometerGauge", "barometerLandscape", PzGSettingsFile)
-        PzGBarometerPortrait = fGetINISetting("Software\PzBarometerGauge", "barometerPortrait", PzGSettingsFile)
+        PzGBarometerLandscapeLocked = fGetINISetting("Software\PzBarometerGauge", "barometerLandscapeLocked", PzGSettingsFile)
+        PzGBarometerPortraitLocked = fGetINISetting("Software\PzBarometerGauge", "barometerPortraitLocked", PzGSettingsFile)
         PzGBarometerGaugeSize = fGetINISetting("Software\PzBarometerGauge", "barometerGaugeSize", PzGSettingsFile)
-        PzGBarometerLandscapeHoffset = fGetINISetting("Software\PzBarometerGauge", "barometerLandscapeHoffset", PzGSettingsFile)
-        PzGBarometerLandscapeVoffset = fGetINISetting("Software\PzBarometerGauge", "barometerLandscapeVoffset", PzGSettingsFile)
-        PzGBarometerPortraitHoffset = fGetINISetting("Software\PzBarometerGauge", "barometerPortraitHoffset", PzGSettingsFile)
-        PzGBarometerPortraitVoffset = fGetINISetting("Software\PzBarometerGauge", "barometerPortraitVoffset", PzGSettingsFile)
+        PzGBarometerLandscapeLockedHoffset = fGetINISetting("Software\PzBarometerGauge", "barometerLandscapeHoffset", PzGSettingsFile)
+        PzGBarometerLandscapeLockedVoffset = fGetINISetting("Software\PzBarometerGauge", "barometerLandscapeVoffset", PzGSettingsFile)
+        PzGBarometerPortraitLockedHoffset = fGetINISetting("Software\PzBarometerGauge", "barometerPortraitHoffset", PzGSettingsFile)
+        PzGBarometerPortraitLockedVoffset = fGetINISetting("Software\PzBarometerGauge", "barometerPortraitVoffset", PzGSettingsFile)
         PzGBarometerVLocationPerc = fGetINISetting("Software\PzBarometerGauge", "barometerVLocationPerc", PzGSettingsFile)
         PzGBarometerHLocationPerc = fGetINISetting("Software\PzBarometerGauge", "barometerHLocationPerc", PzGSettingsFile)
         PzGBarometerFormHighDpiXPos = fGetINISetting("Software\PzBarometerGauge", "barometerFormHighDpiXPos", PzGSettingsFile)
@@ -1375,45 +1388,45 @@ Public Sub validateInputs()
     If PzGWidgetPosition = vbNullString Then PzGWidgetPosition = "0"
     
     If PzGTemperatureGaugeSize = vbNullString Then PzGTemperatureGaugeSize = "50"
-    If PzGTemperatureLandscape = vbNullString Then PzGTemperatureLandscape = "0"
-    If PzGTemperaturePortrait = vbNullString Then PzGTemperaturePortrait = "0"
-    If PzGTemperatureLandscapeHoffset = vbNullString Then PzGTemperatureLandscapeHoffset = vbNullString
-    If PzGTemperatureLandscapeVoffset = vbNullString Then PzGTemperatureLandscapeVoffset = vbNullString
-    If PzGTemperaturePortraitHoffset = vbNullString Then PzGTemperaturePortraitHoffset = vbNullString
-    If PzGTemperaturePortraitVoffset = vbNullString Then PzGTemperaturePortraitVoffset = vbNullString
+    If PzGTemperatureLandscapeLocked = vbNullString Then PzGTemperatureLandscapeLocked = "0"
+    If PzGTemperaturePortraitLocked = vbNullString Then PzGTemperaturePortraitLocked = "0"
+    If PzGTemperatureLandscapeLockedHoffset = vbNullString Then PzGTemperatureLandscapeLockedHoffset = vbNullString
+    If PzGTemperatureLandscapeLockedVoffset = vbNullString Then PzGTemperatureLandscapeLockedVoffset = vbNullString
+    If PzGTemperaturePortraitLockedHoffset = vbNullString Then PzGTemperaturePortraitLockedHoffset = vbNullString
+    If PzGTemperaturePortraitLockedVoffset = vbNullString Then PzGTemperaturePortraitLockedVoffset = vbNullString
     If PzGTemperatureVLocationPerc = vbNullString Then PzGTemperatureVLocationPerc = vbNullString
     If PzGTemperatureHLocationPerc = vbNullString Then PzGTemperatureHLocationPerc = vbNullString
     If PzGPreventDraggingTemperature = vbNullString Then PzGPreventDraggingTemperature = "0"
     
     If PzGAnemometerGaugeSize = vbNullString Then PzGAnemometerGaugeSize = "50"
-    If PzGAnemometerLandscape = vbNullString Then PzGAnemometerLandscape = "0"
-    If PzGAnemometerPortrait = vbNullString Then PzGAnemometerPortrait = "0"
-    If PzGAnemometerLandscapeHoffset = vbNullString Then PzGAnemometerLandscapeHoffset = vbNullString
-    If PzGAnemometerLandscapeVoffset = vbNullString Then PzGAnemometerLandscapeVoffset = vbNullString
-    If PzGAnemometerPortraitHoffset = vbNullString Then PzGAnemometerPortraitHoffset = vbNullString
-    If PzGAnemometerPortraitVoffset = vbNullString Then PzGAnemometerPortraitVoffset = vbNullString
+    If PzGAnemometerLandscapeLocked = vbNullString Then PzGAnemometerLandscapeLocked = "0"
+    If PzGAnemometerPortraitLocked = vbNullString Then PzGAnemometerPortraitLocked = "0"
+    If PzGAnemometerLandscapeLockedHoffset = vbNullString Then PzGAnemometerLandscapeLockedHoffset = vbNullString
+    If PzGAnemometerLandscapeLockedVoffset = vbNullString Then PzGAnemometerLandscapeLockedVoffset = vbNullString
+    If PzGAnemometerPortraitLockedHoffset = vbNullString Then PzGAnemometerPortraitLockedHoffset = vbNullString
+    If PzGAnemometerPortraitLockedVoffset = vbNullString Then PzGAnemometerPortraitLockedVoffset = vbNullString
     If PzGAnemometerVLocationPerc = vbNullString Then PzGAnemometerVLocationPerc = vbNullString
     If PzGAnemometerHLocationPerc = vbNullString Then PzGAnemometerHLocationPerc = vbNullString
     If PzGPreventDraggingAnemometer = vbNullString Then PzGPreventDraggingAnemometer = "0"
     
     If PzGHumidityGaugeSize = vbNullString Then PzGHumidityGaugeSize = "50"
-    If PzGHumidityLandscape = vbNullString Then PzGHumidityLandscape = "0"
-    If PzGHumidityPortrait = vbNullString Then PzGHumidityPortrait = "0"
-    If PzGHumidityLandscapeHoffset = vbNullString Then PzGHumidityLandscapeHoffset = vbNullString
-    If PzGHumidityLandscapeVoffset = vbNullString Then PzGHumidityLandscapeVoffset = vbNullString
-    If PzGHumidityPortraitHoffset = vbNullString Then PzGHumidityPortraitHoffset = vbNullString
-    If PzGHumidityPortraitVoffset = vbNullString Then PzGHumidityPortraitVoffset = vbNullString
+    If PzGHumidityLandscapeLocked = vbNullString Then PzGHumidityLandscapeLocked = "0"
+    If PzGHumidityPortraitLocked = vbNullString Then PzGHumidityPortraitLocked = "0"
+    If PzGHumidityLandscapeLockedHoffset = vbNullString Then PzGHumidityLandscapeLockedHoffset = vbNullString
+    If PzGHumidityLandscapeLockedVoffset = vbNullString Then PzGHumidityLandscapeLockedVoffset = vbNullString
+    If PzGHumidityPortraitLockedHoffset = vbNullString Then PzGHumidityPortraitLockedHoffset = vbNullString
+    If PzGHumidityPortraitLockedVoffset = vbNullString Then PzGHumidityPortraitLockedVoffset = vbNullString
     If PzGHumidityVLocationPerc = vbNullString Then PzGHumidityVLocationPerc = vbNullString
     If PzGHumidityHLocationPerc = vbNullString Then PzGHumidityHLocationPerc = vbNullString
     If PzGPreventDraggingHumidity = vbNullString Then PzGPreventDraggingHumidity = "0"
     
     If PzGBarometerGaugeSize = vbNullString Then PzGBarometerGaugeSize = "50"
-    If PzGBarometerLandscape = vbNullString Then PzGBarometerLandscape = "0"
-    If PzGBarometerPortrait = vbNullString Then PzGBarometerPortrait = "0"
-    If PzGBarometerLandscapeHoffset = vbNullString Then PzGBarometerLandscapeHoffset = vbNullString
-    If PzGBarometerLandscapeVoffset = vbNullString Then PzGBarometerLandscapeVoffset = vbNullString
-    If PzGBarometerPortraitHoffset = vbNullString Then PzGBarometerPortraitHoffset = vbNullString
-    If PzGBarometerPortraitVoffset = vbNullString Then PzGBarometerPortraitVoffset = vbNullString
+    If PzGBarometerLandscapeLocked = vbNullString Then PzGBarometerLandscapeLocked = "0"
+    If PzGBarometerPortraitLocked = vbNullString Then PzGBarometerPortraitLocked = "0"
+    If PzGBarometerLandscapeLockedHoffset = vbNullString Then PzGBarometerLandscapeLockedHoffset = vbNullString
+    If PzGBarometerLandscapeLockedVoffset = vbNullString Then PzGBarometerLandscapeLockedVoffset = vbNullString
+    If PzGBarometerPortraitLockedHoffset = vbNullString Then PzGBarometerPortraitLockedHoffset = vbNullString
+    If PzGBarometerPortraitLockedVoffset = vbNullString Then PzGBarometerPortraitLockedVoffset = vbNullString
     If PzGBarometerVLocationPerc = vbNullString Then PzGBarometerVLocationPerc = vbNullString
     If PzGBarometerHLocationPerc = vbNullString Then PzGBarometerHLocationPerc = vbNullString
     If PzGPreventDraggingBarometer = vbNullString Then PzGPreventDraggingBarometer = "0"

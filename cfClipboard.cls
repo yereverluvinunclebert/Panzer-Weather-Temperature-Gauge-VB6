@@ -236,7 +236,7 @@ Private Sub ClipBForm_MouseMove(ByRef Button As Integer, ByRef Shift As Integer,
   
    On Error GoTo ClipBForm_MouseMove_Error
     
-    If overlayTemperatureWidget.Locked = True Then Exit Sub
+    'If overlayTemperatureWidget.Locked = True Then Exit Sub
     If PzGIgnoreMouse = "1" Then Exit Sub
 
     If Button = vbLeftButton And Not clipBForm.ActiveWidget Is Nothing Then 'Form-Dragging (under certain conditions)

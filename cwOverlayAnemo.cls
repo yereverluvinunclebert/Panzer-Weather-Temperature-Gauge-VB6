@@ -319,14 +319,15 @@ Public Property Let Locked(ByVal newValue As Boolean)
         If panzerPrefs.IsVisible = True Then
             panzerPrefs.cmbGaugeType.ListIndex = 1
             panzerPrefs.chkPreventDragging.Value = 1
-            panzerPrefs.cmbLandscape.ListIndex = 1
         End If
 
         PzGPreventDraggingAnemometer = "1"
         If aspectRatio = "landscape" Then
-            PzGAnemometerLandscape = "1"
+            PzGAnemometerLandscapeLocked = "1"
+            panzerPrefs.cmbLandscapeLocked.ListIndex = 1
         Else
-            PzGAnemometerPortrait = "1"
+            PzGAnemometerPortraitLocked = "1"
+            panzerPrefs.cmbPortraitLocked.ListIndex = 1
         End If
             
         fAnemometer.anemometerGaugeForm.Widgets("housing/lockbutton").Widget.Alpha = 0
@@ -335,14 +336,15 @@ Public Property Let Locked(ByVal newValue As Boolean)
         If panzerPrefs.IsVisible = True Then
             panzerPrefs.cmbGaugeType.ListIndex = 1
             panzerPrefs.chkPreventDragging.Value = 0
-            panzerPrefs.cmbLandscape.ListIndex = 0
         End If
 
         PzGPreventDraggingAnemometer = "0"
         If aspectRatio = "landscape" Then
-            PzGAnemometerLandscape = "0"
+            PzGAnemometerLandscapeLocked = "0"
+            panzerPrefs.cmbLandscapeLocked.ListIndex = 0
         Else
-            PzGAnemometerPortrait = "0"
+            PzGAnemometerPortraitLocked = "0"
+            panzerPrefs.cmbPortraitLocked.ListIndex = 0
         End If
             
         fAnemometer.anemometerGaugeForm.Widgets("housing/lockbutton").Widget.Alpha = Val(PzGOpacity) / 100

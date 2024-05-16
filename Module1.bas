@@ -325,12 +325,12 @@ Public PzGGaugeType As String
 Public PzGWidgetPosition As String
 
 Public PzGTemperatureGaugeSize As String
-Public PzGTemperatureLandscape As String
-Public PzGTemperaturePortrait As String
-Public PzGTemperatureLandscapeHoffset As String
-Public PzGTemperatureLandscapeVoffset As String
-Public PzGTemperaturePortraitHoffset As String
-Public PzGTemperaturePortraitVoffset As String
+Public PzGTemperatureLandscapeLocked As String
+Public PzGTemperaturePortraitLocked As String
+Public PzGTemperatureLandscapeLockedHoffset As String
+Public PzGTemperatureLandscapeLockedVoffset As String
+Public PzGTemperaturePortraitLockedHoffset As String
+Public PzGTemperaturePortraitLockedVoffset As String
 Public PzGTemperatureVLocationPerc As String
 Public PzGTemperatureHLocationPerc As String
 Public PzGPreventDraggingTemperature As String
@@ -340,12 +340,12 @@ Public PzGTemperatureFormLowDpiXPos As String
 Public PzGTemperatureFormLowDpiYPos As String
 
 Public PzGAnemometerGaugeSize As String
-Public PzGAnemometerLandscape As String
-Public PzGAnemometerPortrait As String
-Public PzGAnemometerLandscapeHoffset As String
-Public PzGAnemometerLandscapeVoffset As String
-Public PzGAnemometerPortraitHoffset As String
-Public PzGAnemometerPortraitVoffset As String
+Public PzGAnemometerLandscapeLocked As String
+Public PzGAnemometerPortraitLocked As String
+Public PzGAnemometerLandscapeLockedHoffset As String
+Public PzGAnemometerLandscapeLockedVoffset As String
+Public PzGAnemometerPortraitLockedHoffset As String
+Public PzGAnemometerPortraitLockedVoffset As String
 Public PzGAnemometerVLocationPerc As String
 Public PzGAnemometerHLocationPerc As String
 Public PzGPreventDraggingAnemometer As String
@@ -355,12 +355,12 @@ Public PzGAnemometerFormLowDpiXPos As String
 Public PzGAnemometerFormLowDpiYPos As String
 
 Public PzGHumidityGaugeSize As String
-Public PzGHumidityLandscape As String
-Public PzGHumidityPortrait As String
-Public PzGHumidityLandscapeHoffset As String
-Public PzGHumidityLandscapeVoffset As String
-Public PzGHumidityPortraitHoffset As String
-Public PzGHumidityPortraitVoffset As String
+Public PzGHumidityLandscapeLocked As String
+Public PzGHumidityPortraitLocked As String
+Public PzGHumidityLandscapeLockedHoffset As String
+Public PzGHumidityLandscapeLockedVoffset As String
+Public PzGHumidityPortraitLockedHoffset As String
+Public PzGHumidityPortraitLockedVoffset As String
 Public PzGHumidityVLocationPerc As String
 Public PzGHumidityHLocationPerc As String
 Public PzGPreventDraggingHumidity As String
@@ -371,12 +371,12 @@ Public PzGHumidityFormLowDpiYPos As String
 
 
 Public PzGBarometerGaugeSize As String
-Public PzGBarometerLandscape As String
-Public PzGBarometerPortrait As String
-Public PzGBarometerLandscapeHoffset As String
-Public PzGBarometerLandscapeVoffset As String
-Public PzGBarometerPortraitHoffset As String
-Public PzGBarometerPortraitVoffset As String
+Public PzGBarometerLandscapeLocked As String
+Public PzGBarometerPortraitLocked As String
+Public PzGBarometerLandscapeLockedHoffset As String
+Public PzGBarometerLandscapeLockedVoffset As String
+Public PzGBarometerPortraitLockedHoffset As String
+Public PzGBarometerPortraitLockedVoffset As String
 Public PzGBarometerVLocationPerc As String
 Public PzGBarometerHLocationPerc As String
 Public PzGPreventDraggingBarometer As String

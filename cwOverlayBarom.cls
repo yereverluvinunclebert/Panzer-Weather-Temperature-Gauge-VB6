@@ -277,14 +277,15 @@ Public Property Let Locked(ByVal newValue As Boolean)
         If panzerPrefs.IsVisible = True Then
              panzerPrefs.cmbGaugeType.ListIndex = 3
              panzerPrefs.chkPreventDragging.Value = 1
-            panzerPrefs.cmbLandscape.ListIndex = 1
         End If
 
         PzGPreventDraggingBarometer = "1"
         If aspectRatio = "landscape" Then
-            PzGBarometerLandscape = "1"
+            PzGBarometerLandscapeLocked = "1"
+            panzerPrefs.cmbLandscapeLocked.ListIndex = 1
         Else
-            PzGBarometerPortrait = "1"
+            PzGBarometerPortraitLocked = "1"
+            panzerPrefs.cmbPortraitLocked.ListIndex = 1
         End If
             
         fBarometer.barometerGaugeForm.Widgets("housing/lockbutton").Widget.Alpha = 0
@@ -293,14 +294,15 @@ Public Property Let Locked(ByVal newValue As Boolean)
         If panzerPrefs.IsVisible = True Then
              panzerPrefs.cmbGaugeType.ListIndex = 3
              panzerPrefs.chkPreventDragging.Value = 0
-            panzerPrefs.cmbLandscape.ListIndex = 0
         End If
 
         PzGPreventDraggingBarometer = "0"
         If aspectRatio = "landscape" Then
-            PzGBarometerLandscape = "0"
-        Else
-            PzGBarometerPortrait = "0"
+            PzGBarometerLandscapeLocked = "0"
+            panzerPrefs.cmbLandscapeLocked.ListIndex = 0
+       Else
+            PzGBarometerPortraitLocked = "0"
+            panzerPrefs.cmbPortraitLocked.ListIndex = 0
         End If
             
         fBarometer.barometerGaugeForm.Widgets("housing/lockbutton").Widget.Alpha = Val(PzGOpacity) / 100

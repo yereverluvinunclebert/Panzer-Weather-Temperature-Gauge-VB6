@@ -45,6 +45,7 @@ fix the prefs operating with multiple gauges - done
 
 add the barometer gauge - done
 add the humidity gauge - done
+anemometer gauge knots/metres face switch
 
 TODO
 
@@ -57,11 +58,13 @@ refactor to use just one cwOverlay file
 add the pictorial gauge
 
 barometer - read the correct face at startup and select that, as per temperature gauge
+anemometer - read the correct face at startup and select that, as per temperature gauge
 tiny tooltips for other gauges?
-anmeometer gauge knots/metres face switch
+anemometer gauge knots/metres digital display switch
 barometer manual pointer
+barometer gauge mb/hpa digital display switch
 
-
+if windspeed is 0 and direction is north do not add wind characteristics to the tooltips
 
 add the clipboard clock hands functionality
 
