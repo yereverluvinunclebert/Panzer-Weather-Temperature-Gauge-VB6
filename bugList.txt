@@ -45,17 +45,24 @@ fix the prefs operating with multiple gauges - done
 
 add the barometer gauge - done
 add the humidity gauge - done
-anemometer gauge knots/metres face switch
+anemometer gauge knots/metres face switch - done
+barometer - read the correct face at startup and select that, as per temperature gauge - done
+anemometer - read the correct face at startup and select that, as per temperature gauge - done
+barometer gauge mb/hpa digital display switch - done
+anemometer gauge knots/metres digital display switch - done
 
 TODO
+barometer - create millibars 800+ face
+barometer - hectopascals face create 600+ face
+barometer - inches of mercury face create 800+ face
+barometer - millimetres of mercury face create 800+ face
 
-barometer - read the correct face at startup and select that, as per temperature gauge
-anemometer - read the correct face at startup and select that, as per temperature gauge
-barometer gauge mb/hpa digital display switch
-anemometer gauge knots/metres digital display switch
+barometer - switch face to 800+ face when pressure is above 800 millibars
+' cater for the other scale faces too
+
 if windspeed is 0 and direction is north do not add wind characteristics to the tooltips
 
-after prefs changes to scales &c the tooltip needs to be regenerated and the clipboard
+after prefs changes to scales &c the tooltip needs to be regenerated - and the clipboard
 
 move the weather code to a separate module.bas or a class
 add the clipboard clock hands functionality

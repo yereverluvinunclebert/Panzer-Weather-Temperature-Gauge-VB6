@@ -1886,8 +1886,10 @@ Private Sub loadBarometerExcludePathCollection()
 
         .Add Empty, "barometermmhgface"
         .Add Empty, "barometerinhgface"
-        .Add Empty, "barometerhpaface"
-        .Add Empty, "barometermbface"
+        .Add Empty, "barometerhpa600-800face"
+        .Add Empty, "barometerhpa800-1200face"
+        .Add Empty, "barometermb600-800face"
+        .Add Empty, "barometermb800-1200face"
         
         .Add Empty, "greenlamp"
         .Add Empty, "redlamp"

@@ -501,7 +501,8 @@ Private Sub W_Paint(CC As RC6.cCairoContext, ByVal xAbs As Single, ByVal yAbs As
     Dim someOpacity As Double: someOpacity = 0
     Dim boxLeft As Integer: boxLeft = 0
     Dim cream As String: cream = vbNullString
-       
+    Dim thisWindSpeed As Integer: thisWindSpeed = 0
+    
     On Error GoTo W_Paint_Error
     
     cream = RGB(235, 217, 179) ' cannot create a constant from an RGB value
@@ -527,7 +528,7 @@ Private Sub W_Paint(CC As RC6.cCairoContext, ByVal xAbs As Single, ByVal yAbs As
             ' for specific keys perform rotation actions, clock hands &c
              Select Case key
                  
-                 Case "anemometermetresface"
+                 Case "anemometerknotsface"
                     
                     If mThisFace = 0 Then
                         Set Pat.Matrix = Pat.Matrix.TranslateCoords(-arr(0), -arr(1))
@@ -535,7 +536,7 @@ Private Sub W_Paint(CC As RC6.cCairoContext, ByVal xAbs As Single, ByVal yAbs As
                     End If
                  
                  
-                 Case "anemometerknotsface"
+                 Case "anemometermetresface"
                     
                     If mThisFace = 1 Then
                         Set Pat.Matrix = Pat.Matrix.TranslateCoords(-arr(0), -arr(1))
@@ -568,7 +569,12 @@ Private Sub W_Paint(CC As RC6.cCairoContext, ByVal xAbs As Single, ByVal yAbs As
                     CC.Paint arr(2), Pat 'render the Pattern with the current PSD-LayerAlpha, present in Arr(2)
                   
                  Case "pointerShadow", "pointer"
-
+                 
+                    thisWindSpeed = mWindSpeed
+                    If mThisFace = 1 Then
+                        thisWindSpeed = thisWindSpeed * 0.514444
+                    End If
+                     
                     If Val(mWindSpeed) >= 100 Then
                         boxLeft = 415
                     Else
@@ -576,7 +582,7 @@ Private Sub W_Paint(CC As RC6.cCairoContext, ByVal xAbs As Single, ByVal yAbs As
                     End If
 
                      ' draw the date and day in the windows just once to retain opacity
-                    CC.DrawText boxLeft, 185, 180, 200, CStr(mWindSpeed), , , 2, True, , someOpacity
+                    CC.DrawText boxLeft, 185, 180, 200, CStr(thisWindSpeed), , , 2, True, , someOpacity
 
                     Set Pat.Matrix = Pat.Matrix.TranslateCoords(11, 246) 'shift to the "rotation-point" within the Pattern
                     CC.TranslateDrawings W.Width * cxPerc, W.Height * cyPerc 'shift to the center-point of the Overlay-Widget-area

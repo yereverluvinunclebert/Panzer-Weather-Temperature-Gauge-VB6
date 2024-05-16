@@ -1062,11 +1062,11 @@ Private Sub W_Paint(CC As RC6.cCairoContext, ByVal xAbs As Single, ByVal yAbs As
 
                  Case "secondshadow", "secondhand"
                     
-                     If mThisFace = "0" Then
+                     If mThisFace = 0 Then
                          scaleString = "C"
                          txtThisTemperature = CStr(thisTemperature)
                          
-                     ElseIf mThisFace = "1" Then
+                     ElseIf mThisFace = 1 Then
                     
                          scaleString = "F"
                          txtThisTemperature = CStr(convertToFahrenheit(thisTemperature))
@@ -1083,7 +1083,6 @@ Private Sub W_Paint(CC As RC6.cCairoContext, ByVal xAbs As Single, ByVal yAbs As
                         boxLeft = 265
                     End If
                     
-                     
                      ' draw the date and day in the windows just once to retain opacity
                     CC.DrawText boxLeft, 103, 200, 200, txtThisTemperature, , , 2, True, , someOpacity
                     CC.DrawText 459, 297, 200, 200, scaleString, , , 2, True, , someOpacity
