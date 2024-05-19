@@ -3321,8 +3321,6 @@ End Function
 Private Sub tmrSleepTester_Timer()
     Dim strTimeNow As Date: strTimeNow = #1/1/2000 12:00:00 PM#  'set a variable to compare for the NOW time
     Dim lngSecondsGap As Double: lngSecondsGap = 0  ' set a variable for the difference in time
-    'Dim answer As VbMsgBoxResult: answer = vbNo
-    'Dim answerMsg As String: answerMsg = vbNullString
     
     On Error GoTo tmrSleepTester_Timer_Error
     
@@ -3334,10 +3332,7 @@ Private Sub tmrSleepTester_Timer()
 
     If lngSecondsGap > 30 Then
         gblJustAwoken = True
-        'answer = vbYes
-        'answerMsg = "System has just woken up from a sleep "
-        'answer = msgBoxA(answerMsg, vbExclamation + vbYesNo, "Panzer Weather Gauges Information Message", True, "tmrSleepTesterTimer")
-        'answer = MsgBox(answerMsg, vbExclamation + vbYesNo)
+        Call getData
     End If
     
     tmrSleepTester.Enabled = True

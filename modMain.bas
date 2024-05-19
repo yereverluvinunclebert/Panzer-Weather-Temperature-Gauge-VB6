@@ -1884,8 +1884,9 @@ Private Sub loadBarometerExcludePathCollection()
 
     With fBarometer.collBarometerPSDNonUIElements ' the exclude list
 
-        .Add Empty, "barometermmhgface"
-        .Add Empty, "barometerinhgface"
+        .Add Empty, "barometermmhg450-600face"
+        .Add Empty, "barometerinhg600-800face"
+        .Add Empty, "barometerinhg800-1200face"
         .Add Empty, "barometerhpa600-800face"
         .Add Empty, "barometerhpa800-1200face"
         .Add Empty, "barometermb600-800face"

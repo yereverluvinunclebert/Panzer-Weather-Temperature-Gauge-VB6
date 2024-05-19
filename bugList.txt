@@ -50,15 +50,18 @@ barometer - read the correct face at startup and select that, as per temperature
 anemometer - read the correct face at startup and select that, as per temperature gauge - done
 barometer gauge mb/hpa digital display switch - done
 anemometer gauge knots/metres digital display switch - done
+barometer - create millibars 800+ face - done
+barometer - hectopascals face create 600+ face - done
+barometer - inches of mercury face create 800-1200 face - done
 
 TODO
-barometer - create millibars 800+ face
-barometer - hectopascals face create 600+ face
-barometer - inches of mercury face create 800+ face
-barometer - millimetres of mercury face create 800+ face
 
-barometer - switch face to 800+ face when pressure is above 800 millibars
+barometer - millimetres of mercury face create 800-1200 face
+
+barometer - switch face to 800+ face when pressure is above 800 millibars - wip
 ' cater for the other scale faces too
+
+when the device wakes from sleep then poll
 
 if windspeed is 0 and direction is north do not add wind characteristics to the tooltips
 
