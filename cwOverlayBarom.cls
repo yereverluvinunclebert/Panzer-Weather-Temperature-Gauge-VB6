@@ -487,41 +487,48 @@ Private Sub W_Paint(CC As RC6.cCairoContext, ByVal xAbs As Single, ByVal yAbs As
             ' for specific keys perform rotation actions, clock hands &c
              Select Case key
     
-                 Case "barometermb600-800face"
+                Case "barometermb600-800face"
                     
                     If mThisFace = 0 And myPressure <= 1200 Then
                         Set Pat.Matrix = Pat.Matrix.TranslateCoords(-arr(0), -arr(1))
                         CC.Paint arr(2), Pat ' render the Pattern
                     End If
                     
-                Case "barometermb800-1200face"
+                Case "barometermb800-1066face"
                     
                     If mThisFace = 0 And myPressure > 1200 Then
                         Set Pat.Matrix = Pat.Matrix.TranslateCoords(-arr(0), -arr(1))
                         CC.Paint arr(2), Pat ' render the Pattern
                     End If
-                 
-                 Case "barometerinhg600-800face"
+                    
+                 Case "barometerinhg18-21face"
                     
                     If mThisFace = 1 And myPressure <= 1200 Then
                         Set Pat.Matrix = Pat.Matrix.TranslateCoords(-arr(0), -arr(1))
                         CC.Paint arr(2), Pat ' render the Pattern
                     End If
                     
-                 Case "barometerinhg800-1200face"
+                 Case "barometerinhg23-31face"
                     
                     If mThisFace = 1 And myPressure > 1200 Then
                         Set Pat.Matrix = Pat.Matrix.TranslateCoords(-arr(0), -arr(1))
                         CC.Paint arr(2), Pat ' render the Pattern
                     End If
-                
+                     
                   Case "barometermmhg450-600face"
-                    
-                    'If mThisFace = 2 Then
+
+                    If mThisFace = 2 And myPressure <= 1200 Then
                         Set Pat.Matrix = Pat.Matrix.TranslateCoords(-arr(0), -arr(1)) 'shift the Pattern via the original X,Y PSD-Offsets (stored in Arr(0) and Arr(1))
                         CC.Paint arr(2), Pat 'render the Pattern
-                    'End If
-                                            
+                    End If
+                  
+                  Case "barometermmhg600-800face"
+
+                    If mThisFace = 2 And myPressure > 1200 Then
+                        Set Pat.Matrix = Pat.Matrix.TranslateCoords(-arr(0), -arr(1)) 'shift the Pattern via the original X,Y PSD-Offsets (stored in Arr(0) and Arr(1))
+                        CC.Paint arr(2), Pat 'render the Pattern
+                    End If
+               
                  Case "barometerhpa600-800face"
 
                     If mThisFace = 3 And myPressure <= 1200 Then
@@ -529,13 +536,13 @@ Private Sub W_Paint(CC As RC6.cCairoContext, ByVal xAbs As Single, ByVal yAbs As
                         CC.Paint arr(2), Pat 'render the Pattern
                     End If
                                             
-                 Case "barometerhpa800-1200face"
+                 Case "barometerhpa800-1066face"
 
                     If mThisFace = 3 And myPressure > 1200 Then
                         Set Pat.Matrix = Pat.Matrix.TranslateCoords(-arr(0), -arr(1)) 'shift the Pattern via the original X,Y PSD-Offsets (stored in Arr(0) and Arr(1))
                         CC.Paint arr(2), Pat 'render the Pattern
                     End If
-                    
+                 
                  Case "redlamp"
                     
                     If mThisPressure >= 80 Then
