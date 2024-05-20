@@ -5285,7 +5285,6 @@ Private Sub Form_MouseDown(ByRef Button As Integer, ByRef Shift As Integer, ByRe
     If Button = 2 Then
         gblOriginatingForm = "panzerPrefsForm"
         Me.PopupMenu prefsMnuPopmenu, vbPopupMenuRightButton
-        
     End If
     
 

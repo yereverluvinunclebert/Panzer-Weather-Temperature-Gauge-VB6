@@ -198,7 +198,7 @@ Private Sub ClipBForm_MouseDown(ByRef Button As Integer, ByRef Shift As Integer,
    On Error GoTo W_MouseDown_Error
 
     If Button = vbRightButton Then
-        gblOriginatingForm = "ClipBForm"
+        gblOriginatingForm = "clipboardForm"
         
         menuForm.mnuCloseSelector.Visible = False
         menuForm.mnuCloseWidget.Visible = True

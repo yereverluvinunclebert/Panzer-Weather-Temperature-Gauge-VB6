@@ -640,7 +640,7 @@ End Sub
 Private Sub humidityGaugeForm_MouseDown(ByRef Button As Integer, ByRef Shift As Integer, ByRef X As Single, ByRef Y As Single)
    On Error GoTo W_MouseDown_Error
 
-    gblOriginatingForm = "HumidityForm"
+    gblOriginatingForm = "humidityForm"
     If Button = vbRightButton Then
 
         menuForm.mnuLockTemperatureGauge.Visible = False
