@@ -121,7 +121,6 @@ Private strTimeThen As Date
 
 'Private pressureValue As Double
 
-
 '---------------------------------------------------------------------------------------
 ' Procedure : Class_Initialize
 ' Author    : Dean Beedell (yereverluvinunclebert)
@@ -1297,6 +1296,9 @@ Private Sub tmrSampler_Timer()
     
     On Error GoTo tmrSampler_Timer_Error
     
+    ' any abnormal, triggered (non integer) interval will be reset, this is 2.5 secs.
+    If tmrSampler.Interval = 2500 Then tmrSampler.Interval = Val(mSamplingInterval) * 1000
+    
     Call getData
 
    On Error GoTo 0
@@ -1886,15 +1888,15 @@ Private Function fGetPressure(ByVal altim_in_hg As String) As Integer
     
     debugFlg = 0
 
-    Dim pressureValue As Double: pressureValue = 0
+    Dim thisPressureValue As Double: thisPressureValue = 0
     Dim strPressureValue As String: strPressureValue = vbNullString
     
-    pressureValue = Round(CDbl(altim_in_hg) * 25.3999)
-    strPressureValue = Str$(pressureValue) & "(" & CStr(Round(1.3333 * pressureValue)) & ")"
+    thisPressureValue = Round(CDbl(altim_in_hg) * 25.3999)
+    strPressureValue = Str$(thisPressureValue) & "(" & CStr(Round(1.3333 * thisPressureValue)) & ")"
     
     If debugFlg = 1 Then Debug.Print ("fGetPressure - Pressure = " & strPressureValue)
 
-    fGetPressure = pressureValue ' return
+    fGetPressure = thisPressureValue ' return
     
     On Error GoTo 0
     Exit Function
@@ -2288,13 +2290,18 @@ Private Function setHoverTooltip(ByVal precipitationDepth As String, ByVal visib
     tooltipString = tooltipString & "Clouds : " & skyClarityString & " " & vbCrLf
     tooltipString = tooltipString & "Visibility : " & visibilityDistance & vbCrLf
     
-    If PzGWindSpeedScale = "0" Then  ' knots
-        tooltipString = tooltipString & "Wind speed is" & " " & wind_speed_kt & " knots, "
+    ' when zero wind and direction North then do not display wind details at all.
+    If wind_speed_kt = 0 And compassDirection = "N" Then
+        tooltipString = tooltipString
     Else
-        tooltipString = tooltipString & "Wind speed is" & " " & Int(wind_speed_kt * 0.51444) & " m/sec, "
+        If PzGWindSpeedScale = "0" Then  ' knots
+            tooltipString = tooltipString & "Wind speed is" & " " & wind_speed_kt & " knots, "
+        Else
+            tooltipString = tooltipString & "Wind speed is" & " " & Int(wind_speed_kt * 0.51444) & " m/sec, "
+        End If
+        tooltipString = tooltipString & "strength force" & force & ", " & vbCrLf & "direction" & " " & compassDirection & vbCrLf
     End If
-    tooltipString = tooltipString & "strength force" & force & ", " & vbCrLf & "direction" & " " & compassDirection & vbCrLf
-
+    
     If (wx_string <> vbNullString) Then
       wx_str = getMetarDescription(wx_string)    ' get the interpreted wx string data
       wx_str = UCase$(Left$(wx_str, 1)) & Mid$(wx_str, 2, Len(wx_str))
@@ -3322,6 +3329,9 @@ Private Sub tmrSleepTester_Timer()
     Dim strTimeNow As Date: strTimeNow = #1/1/2000 12:00:00 PM#  'set a variable to compare for the NOW time
     Dim lngSecondsGap As Double: lngSecondsGap = 0  ' set a variable for the difference in time
     
+    Dim answer As VbMsgBoxResult: answer = vbNo
+    Dim answerMsg As String: answerMsg = vbNullString
+    
     On Error GoTo tmrSleepTester_Timer_Error
     
     tmrSleepTester.Enabled = False
@@ -3332,7 +3342,12 @@ Private Sub tmrSleepTester_Timer()
 
     If lngSecondsGap > 30 Then
         gblJustAwoken = True
-        Call getData
+        
+        ' trigger a poll 2.5 seconds after the system has awoken to give it time to wake up!
+        tmrSampler.Interval = 2500 ' this abnormal interval will be reset to the sampling interval by the timer itself
+        
+        answerMsg = "Weather widget has awoken from sleep after " & lngSecondsGap & " seconds"
+        answer = msgBoxA(answerMsg, vbExclamation + vbYesNo, "Awoken from sleep", False)
     End If
     
     tmrSleepTester.Enabled = True

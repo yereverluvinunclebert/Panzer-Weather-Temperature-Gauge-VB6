@@ -525,6 +525,8 @@ Public gblOriginatingForm As String
 
 Public gblJustAwoken As Boolean
 
+
+
 '---------------------------------------------------------------------------------------
 ' Procedure : fFExists
 ' Author    : RobDog888 https://www.vbforums.com/member.php?17511-RobDog888

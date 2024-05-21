@@ -54,30 +54,32 @@ barometer - create millibars 800+ face - done
 barometer - hectopascals face create 600+ face - done
 barometer - inches of mercury face create 800-1200 face - done
 
+barometer - millimetres of mercury face create 800-1200 face - done
+barometer manual pointer correct - done
+barometer - switch face to 800+ face when pressure is above 800 millibars - done
+if windspeed is 0 and direction is north do not add wind characteristics to the tooltips - done
+
 TODO
 
-barometer - millimetres of mercury face create 800-1200 face
+test barometer percentage when above 800 - wip
 
-barometer - switch face to 800+ face when pressure is above 800 millibars - wip
-' cater for the other scale faces too
+when the device wakes from sleep, then poll need to test - wip
 
-when the device wakes from sleep then poll
+after prefs changes to scales &c the tooltip needs to be regenerated - and the clipboard text
+barometer - red lamp when pressure drops
 
-if windspeed is 0 and direction is north do not add wind characteristics to the tooltips
-
-after prefs changes to scales &c the tooltip needs to be regenerated - and the clipboard
-
-move the weather code to a separate module.bas or a class
-add the clipboard clock hands functionality
+move the weather code to a separate module.bas or a class - remove the temperature stuff to another class?
 refactor to use just one cwOverlay file
 
-barometer manual pointer
+think about removing some global vars and changing them to properties in the new overlay
 
-add a rainfall alarm
+add the clipboard clock hands functionality
 
 add the pictorial gauge
 
 fix population of the RC6 combobox - wip
+
+add a rainfall alarm
 
 tiny tooltips for other gauges?
 

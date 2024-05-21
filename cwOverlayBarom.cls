@@ -122,7 +122,7 @@ End Property
 ' Purpose   :
 '---------------------------------------------------------------------------------------
 '
-Public Property Get thisPressure() As Integer
+Public Property Get thisPressure() As Long
    On Error GoTo thisPressureGet_Error
 
    thisPressure = mThisPressure
@@ -141,7 +141,7 @@ End Property
 ' Purpose   :
 '---------------------------------------------------------------------------------------
 '
-Public Property Let thisPressure(ByVal newValue As Integer)
+Public Property Let thisPressure(ByVal newValue As Long)
    On Error GoTo thisPressureLet_Error
 
    If mThisPressure <> newValue Then mThisPressure = newValue Else Exit Property
@@ -198,44 +198,44 @@ thisOpacityLet_Error:
 End Property
 
 
-'---------------------------------------------------------------------------------------
-' Property : pointerAnimate
-' Author    : Dean Beedell (yereverluvinunclebert)
-' Date      : 17/05/2023
-' Purpose   :
-'---------------------------------------------------------------------------------------
+''---------------------------------------------------------------------------------------
+'' Property : pointerAnimate
+'' Author    : Dean Beedell (yereverluvinunclebert)
+'' Date      : 17/05/2023
+'' Purpose   :
+''---------------------------------------------------------------------------------------
+''
+'Public Property Get pointerAnimate() As Boolean
+'   On Error GoTo pointerAnimateGet_Error
 '
-Public Property Get pointerAnimate() As Boolean
-   On Error GoTo pointerAnimateGet_Error
-
-    pointerAnimate = mPointerAnimate
-
-   On Error GoTo 0
-   Exit Property
-
-pointerAnimateGet_Error:
-
-    MsgBox "Error " & Err.Number & " (" & Err.Description & ") in Property pointerAnimate of Class Module cwOverlayBarom"
-End Property
-'---------------------------------------------------------------------------------------
-' Property  : pointerAnimate
-' Author    :
-' Date      : 09/05/2023
-' Purpose   :
-'---------------------------------------------------------------------------------------
+'    pointerAnimate = mPointerAnimate
 '
-Public Property Let pointerAnimate(ByVal newValue As Boolean)
-    On Error GoTo pointerAnimateLet_Error
-
-    If mPointerAnimate <> newValue Then mPointerAnimate = newValue Else Exit Property
-    
-   On Error GoTo 0
-   Exit Property
-
-pointerAnimateLet_Error:
-
-    MsgBox "Error " & Err.Number & " (" & Err.Description & ") in Property pointerAnimate of Class Module cwOverlayBarom"
-End Property
+'   On Error GoTo 0
+'   Exit Property
+'
+'pointerAnimateGet_Error:
+'
+'    MsgBox "Error " & Err.Number & " (" & Err.Description & ") in Property pointerAnimate of Class Module cwOverlayBarom"
+'End Property
+''---------------------------------------------------------------------------------------
+'' Property  : pointerAnimate
+'' Author    :
+'' Date      : 09/05/2023
+'' Purpose   :
+''---------------------------------------------------------------------------------------
+''
+'Public Property Let pointerAnimate(ByVal newValue As Boolean)
+'    On Error GoTo pointerAnimateLet_Error
+'
+'    If mPointerAnimate <> newValue Then mPointerAnimate = newValue Else Exit Property
+'
+'   On Error GoTo 0
+'   Exit Property
+'
+'pointerAnimateLet_Error:
+'
+'    MsgBox "Error " & Err.Number & " (" & Err.Description & ") in Property pointerAnimate of Class Module cwOverlayBarom"
+'End Property
 
 '---------------------------------------------------------------------------------------
 ' Property : Locked
@@ -489,56 +489,56 @@ Private Sub W_Paint(CC As RC6.cCairoContext, ByVal xAbs As Single, ByVal yAbs As
     
                 Case "barometermb600-800face"
                     
-                    If mThisFace = 0 And myPressure <= 1200 Then
+                    If mThisFace = 0 And mThisPressure <= 800 Then
                         Set Pat.Matrix = Pat.Matrix.TranslateCoords(-arr(0), -arr(1))
                         CC.Paint arr(2), Pat ' render the Pattern
                     End If
                     
                 Case "barometermb800-1066face"
                     
-                    If mThisFace = 0 And myPressure > 1200 Then
+                    If mThisFace = 0 And mThisPressure > 800 Then
                         Set Pat.Matrix = Pat.Matrix.TranslateCoords(-arr(0), -arr(1))
                         CC.Paint arr(2), Pat ' render the Pattern
                     End If
                     
                  Case "barometerinhg18-21face"
                     
-                    If mThisFace = 1 And myPressure <= 1200 Then
+                    If mThisFace = 1 And mThisPressure <= 800 Then
                         Set Pat.Matrix = Pat.Matrix.TranslateCoords(-arr(0), -arr(1))
                         CC.Paint arr(2), Pat ' render the Pattern
                     End If
                     
                  Case "barometerinhg23-31face"
                     
-                    If mThisFace = 1 And myPressure > 1200 Then
+                    If mThisFace = 1 And mThisPressure > 800 Then
                         Set Pat.Matrix = Pat.Matrix.TranslateCoords(-arr(0), -arr(1))
                         CC.Paint arr(2), Pat ' render the Pattern
                     End If
                      
                   Case "barometermmhg450-600face"
 
-                    If mThisFace = 2 And myPressure <= 1200 Then
+                    If mThisFace = 2 And mThisPressure <= 800 Then
                         Set Pat.Matrix = Pat.Matrix.TranslateCoords(-arr(0), -arr(1)) 'shift the Pattern via the original X,Y PSD-Offsets (stored in Arr(0) and Arr(1))
                         CC.Paint arr(2), Pat 'render the Pattern
                     End If
                   
                   Case "barometermmhg600-800face"
 
-                    If mThisFace = 2 And myPressure > 1200 Then
+                    If mThisFace = 2 And mThisPressure > 800 Then
                         Set Pat.Matrix = Pat.Matrix.TranslateCoords(-arr(0), -arr(1)) 'shift the Pattern via the original X,Y PSD-Offsets (stored in Arr(0) and Arr(1))
                         CC.Paint arr(2), Pat 'render the Pattern
                     End If
                
                  Case "barometerhpa600-800face"
 
-                    If mThisFace = 3 And myPressure <= 1200 Then
+                    If mThisFace = 3 And mThisPressure <= 800 Then
                         Set Pat.Matrix = Pat.Matrix.TranslateCoords(-arr(0), -arr(1)) 'shift the Pattern via the original X,Y PSD-Offsets (stored in Arr(0) and Arr(1))
                         CC.Paint arr(2), Pat 'render the Pattern
                     End If
                                             
                  Case "barometerhpa800-1066face"
 
-                    If mThisFace = 3 And myPressure > 1200 Then
+                    If mThisFace = 3 And myPressure > 800 Then
                         Set Pat.Matrix = Pat.Matrix.TranslateCoords(-arr(0), -arr(1)) 'shift the Pattern via the original X,Y PSD-Offsets (stored in Arr(0) and Arr(1))
                         CC.Paint arr(2), Pat 'render the Pattern
                     End If
@@ -565,6 +565,7 @@ Private Sub W_Paint(CC As RC6.cCairoContext, ByVal xAbs As Single, ByVal yAbs As
                  Case "pointerShadow", "pointer"
                  
                     myPressure = mThisPressure
+                    ' convert for the digital indicators
                     If mThisFace = 1 Then
                         myPressure = myPressure * 0.0295 ' inches of mercury
                     ElseIf mThisFace = 2 Then
@@ -618,13 +619,29 @@ End Sub
 ' ----------------------------------------------------------------
 Private Sub obtainPressure()
 
+    Dim pressurePercent As Double: pressurePercent = 0
+    Dim a As Double: a = 0
+
     On Error GoTo obtainPressure_Error
     
+    'mThisPressure = 810  ' debug
+    
+    ' obtain the new pressure as a percentage
+    If mThisPressure <= 800 Then
+        a = mThisPressure - 600
+        a = a / 2
+        pressurePercent = a
+    Else
+        a = mThisPressure - 600
+        a = a / 2
+        pressurePercent = a
+    End If
+        
     ' calculate the new cpu amount in degrees
     If mThisPressure = 0 Then
         pressureSDeg = 30
     Else
-        pressureSDeg = (mThisPressure * 3) + 30
+        pressureSDeg = (pressurePercent * 3) + 30
     End If
 
     W.Parent.Refresh
