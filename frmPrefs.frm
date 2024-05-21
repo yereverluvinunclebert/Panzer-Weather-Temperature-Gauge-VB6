@@ -4054,6 +4054,8 @@ Private Sub btnSave_Click()
     If PzGWindowLevelWasChanged = True Then
         PzGWindowLevelWasChanged = False
         Call reloadWidget
+    Else
+        overlayTemperatureWidget.GetMetar = True
     End If
     
    On Error GoTo 0

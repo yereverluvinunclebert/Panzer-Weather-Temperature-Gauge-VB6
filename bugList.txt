@@ -58,15 +58,24 @@ barometer - millimetres of mercury face create 800-1200 face - done
 barometer manual pointer correct - done
 barometer - switch face to 800+ face when pressure is above 800 millibars - done
 if windspeed is 0 and direction is north do not add wind characteristics to the tooltips - done
+barometer - red lamp when pressure drops, otherwise green - done
+after prefs changes to scales &c the tooltip needs to be regenerated - and the clipboard text - done
 
 TODO
 
-test barometer percentage when above 800 - wip
+change barometer percentage code when above 800 - wip
 
 when the device wakes from sleep, then poll need to test - wip
 
-after prefs changes to scales &c the tooltip needs to be regenerated - and the clipboard text
-barometer - red lamp when pressure drops
+barometer - tooltip modified when pressure drops
+anemometer - red lamp when wind pressure high, otherwise green 
+
+Purple lamp - Extreme sustained speeds greater than 58 mph, or frequent wind gusts greater than 58 mph. Damaging wind conditions are consistent with a high wind warning.
+Red lamp - High sustained speeds of 40 to 57 mph. Wind conditions consistent with a high wind warning.
+Amber lamp - sustained speeds of 26 to 39 mph, or frequent wind gusts of 35 to 57 mph. Wind conditions consistent with a wind advisory.
+anemometer gauge face red and green areas as above
+
+barometer gauge face red and green areas, remove altogether
 
 move the weather code to a separate module.bas or a class - remove the temperature stuff to another class?
 refactor to use just one cwOverlay file

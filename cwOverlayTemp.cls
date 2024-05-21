@@ -98,7 +98,7 @@ Private mWeatherDetails As String ' property
 
 Private mHidden As Boolean ' property Hidden
 Private mThisOpacity As String ' property ThisOpacity
-Private mSamplingInterval As String ' property SamplingInterval
+Private mSamplingInterval As Long ' property SamplingInterval
 Private mThisFace As Integer             ' property mThisFace
 Private mValidICAO As Boolean             ' property
 Private mIcaoToTest As String             ' property
@@ -420,7 +420,7 @@ End Property
 ' Purpose   :
 '---------------------------------------------------------------------------------------
 '
-Public Property Get samplingInterval() As String
+Public Property Get samplingInterval() As Long
    On Error GoTo samplingIntervalGet_Error
 
     samplingInterval = mSamplingInterval
@@ -439,12 +439,12 @@ End Property
 ' Purpose   :
 '---------------------------------------------------------------------------------------
 '
-Public Property Let samplingInterval(ByVal newValue As String)
+Public Property Let samplingInterval(ByVal newValue As Long)
     On Error GoTo samplingIntervalLet_Error
 
     If mSamplingInterval <> newValue Then mSamplingInterval = newValue Else Exit Property
     
-    If tmrSampler.Interval = 100 Then Call getData ' allows first early run
+    If tmrSampler.Interval = 100 Then Call getData ' allows first early run, interval is then reset
     
     tmrSampler.Interval = Val(mSamplingInterval) * 1000
     
@@ -1172,16 +1172,23 @@ Sub TestPressureDrop()
 
             Debug.Print ("pressure reading is a recent one, certainly within the last 60 mins")
             Debug.Print ("The lamp is lit as the pressure is dropping fast enough for a serious storm. The old pressure value was " & oldPressureStorage & " the new pressure value is " & currentPressureValue)
+            
+            overlayBaromWidget.pressureDrop = True
             ' barometerDangerLampGreen.alpha = 0
             ' barometerDangerLampRed.alpha = 1
+            'fBarometer.barometerGaugeForm.Widgets("redlamp").Widget.Alpha = 0
             ' barometerDangerLamp.ToolTip = "The lamp is lit as the pressure is dropping fast enough for a serious storm. The old pressure value was " & oldPressureStorage & " the new pressure value is " & currentPressureValue
         Else
             Debug.Print ("Note: The pressure reading was taken more than 60 mins ago so it can be ignored")
+            
+            overlayBaromWidget.pressureDrop = False
+
             ' barometerDangerLamp.ToolTip = "The pressure has dropped but is NOT dropping at the level that would indicate a storm"
             'barometerDangerLampGreen.alpha = 1
             'barometerDangerLampRed.alpha = 0
         End If
     Else
+        overlayBaromWidget.pressureDrop = False
         'barometerDangerLamp.ToolTip = "If the lamp is ever lit bright red then the pressure is dropping fast enough for a storm, green indicates normal pressure changes."
         'barometerDangerLampGreen.alpha = 1
         'barometerDangerLampRed.alpha = 0
@@ -1297,7 +1304,7 @@ Private Sub tmrSampler_Timer()
     On Error GoTo tmrSampler_Timer_Error
     
     ' any abnormal, triggered (non integer) interval will be reset, this is 2.5 secs.
-    If tmrSampler.Interval = 2500 Then tmrSampler.Interval = Val(mSamplingInterval) * 1000
+    If tmrSampler.Interval = 2500 Then tmrSampler.Interval = mSamplingInterval * 1000
     
     Call getData
 
@@ -3329,8 +3336,8 @@ Private Sub tmrSleepTester_Timer()
     Dim strTimeNow As Date: strTimeNow = #1/1/2000 12:00:00 PM#  'set a variable to compare for the NOW time
     Dim lngSecondsGap As Double: lngSecondsGap = 0  ' set a variable for the difference in time
     
-    Dim answer As VbMsgBoxResult: answer = vbNo
-    Dim answerMsg As String: answerMsg = vbNullString
+'    Dim answer As VbMsgBoxResult: answer = vbNo
+'    Dim answerMsg As String: answerMsg = vbNullString
     
     On Error GoTo tmrSleepTester_Timer_Error
     
@@ -3343,11 +3350,11 @@ Private Sub tmrSleepTester_Timer()
     If lngSecondsGap > 30 Then
         gblJustAwoken = True
         
-        ' trigger a poll 2.5 seconds after the system has awoken to give it time to wake up!
+        ' trigger a poll 2.5 seconds after the system has awoken to give it time to wake up and re-poll!
         tmrSampler.Interval = 2500 ' this abnormal interval will be reset to the sampling interval by the timer itself
         
-        answerMsg = "Weather widget has awoken from sleep after " & lngSecondsGap & " seconds"
-        answer = msgBoxA(answerMsg, vbExclamation + vbYesNo, "Awoken from sleep", False)
+'        answerMsg = "Weather widget has awoken from sleep after " & lngSecondsGap & " seconds"
+'        answer = msgBoxA(answerMsg, vbExclamation + vbYesNo, "Awoken from sleep", False)
     End If
     
     tmrSleepTester.Enabled = True

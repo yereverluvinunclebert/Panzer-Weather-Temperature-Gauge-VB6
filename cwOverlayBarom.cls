@@ -34,6 +34,7 @@ Attribute W.VB_VarHelpID = -1
 
 
 Private mThisPressure  As Long
+Private mPressureDrop  As Boolean
 
 Private pressureSDeg As Single
 Private oldPressureSDeg As Double
@@ -116,6 +117,46 @@ Widgets_Error:
     MsgBox "Error " & Err.Number & " (" & Err.Description & ") in procedure Widgets of Class Module cwOverlayBarom"
 End Property
 '---------------------------------------------------------------------------------------
+' Property : pressureDrop
+' Author    : Dean Beedell (yereverluvinunclebert)
+' Date      : 17/05/2023
+' Purpose   :
+'---------------------------------------------------------------------------------------
+'
+Public Property Get pressureDrop() As Boolean
+   On Error GoTo pressureDropGet_Error
+
+   pressureDrop = mPressureDrop
+
+   On Error GoTo 0
+   Exit Property
+
+pressureDropGet_Error:
+
+    MsgBox "Error " & Err.Number & " (" & Err.Description & ") in Property pressureDrop of Class Module cwOverlayBarom"
+End Property
+'---------------------------------------------------------------------------------------
+' Property  : pressureDrop
+' Author    : Dean Beedell (yereverluvinunclebert)
+' Date      : 17/05/2023
+' Purpose   :
+'---------------------------------------------------------------------------------------
+'
+Public Property Let pressureDrop(ByVal newValue As Boolean)
+   On Error GoTo pressureDropLet_Error
+
+   If mPressureDrop <> newValue Then mPressureDrop = newValue Else Exit Property
+   
+
+   On Error GoTo 0
+   Exit Property
+
+pressureDropLet_Error:
+
+    MsgBox "Error " & Err.Number & " (" & Err.Description & ") in Property pressureDrop of Class Module cwOverlayBarom"
+End Property
+
+'---------------------------------------------------------------------------------------
 ' Property : thisPressure
 ' Author    : Dean Beedell (yereverluvinunclebert)
 ' Date      : 17/05/2023
@@ -155,8 +196,6 @@ thisPressureLet_Error:
 
     MsgBox "Error " & Err.Number & " (" & Err.Description & ") in Property thisPressure of Class Module cwOverlayBarom"
 End Property
-
-
 
 '---------------------------------------------------------------------------------------
 ' Property : thisOpacity
@@ -538,21 +577,21 @@ Private Sub W_Paint(CC As RC6.cCairoContext, ByVal xAbs As Single, ByVal yAbs As
                                             
                  Case "barometerhpa800-1066face"
 
-                    If mThisFace = 3 And myPressure > 800 Then
+                    If mThisFace = 3 And mThisPressure > 800 Then
                         Set Pat.Matrix = Pat.Matrix.TranslateCoords(-arr(0), -arr(1)) 'shift the Pattern via the original X,Y PSD-Offsets (stored in Arr(0) and Arr(1))
                         CC.Paint arr(2), Pat 'render the Pattern
                     End If
                  
                  Case "redlamp"
                     
-                    If mThisPressure >= 80 Then
+                    If mPressureDrop = True Then
                         Set Pat.Matrix = Pat.Matrix.TranslateCoords(-arr(0), -arr(1)) 'shift the Pattern via the original X,Y PSD-Offsets (stored in Arr(0) and Arr(1))
                         CC.Paint arr(2), Pat 'render the Pattern
                     End If
                     
                  Case "greenlamp"
                     
-                    If mThisPressure < 80 Then
+                    If mPressureDrop = False Then
                         Set Pat.Matrix = Pat.Matrix.TranslateCoords(-arr(0), -arr(1))
                         CC.Paint arr(2), Pat ' render the Pattern
                     End If
