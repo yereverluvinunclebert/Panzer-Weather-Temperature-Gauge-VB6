@@ -67,15 +67,17 @@ change barometer percentage code when above 800 - wip
 
 when the device wakes from sleep, then poll need to test - wip
 
-barometer - tooltip modified when pressure drops
-anemometer - red lamp when wind pressure high, otherwise green 
+barometer - tooltip to be modified when pressure drops
+barometer gauge face red and green areas, remove altogether
+
+anemometer - red lamp when wind pressure high, otherwise green
 
 Purple lamp - Extreme sustained speeds greater than 58 mph, or frequent wind gusts greater than 58 mph. Damaging wind conditions are consistent with a high wind warning.
 Red lamp - High sustained speeds of 40 to 57 mph. Wind conditions consistent with a high wind warning.
 Amber lamp - sustained speeds of 26 to 39 mph, or frequent wind gusts of 35 to 57 mph. Wind conditions consistent with a wind advisory.
 anemometer gauge face red and green areas as above
 
-barometer gauge face red and green areas, remove altogether
+
 
 move the weather code to a separate module.bas or a class - remove the temperature stuff to another class?
 refactor to use just one cwOverlay file

@@ -2315,9 +2315,14 @@ Private Function setHoverTooltip(ByVal precipitationDepth As String, ByVal visib
       tooltipString = tooltipString & "Rainfall: " & wx_str & "  "
     End If
     If (precip_in <> vbNullString) Then
-       tooltipString = tooltipString & " measured in " & precipitationDepth & vbCrLf
+        tooltipString = tooltipString & " measured in " & precipitationDepth & vbCrLf
     Else
         If (wx_string <> vbNullString) Then tooltipString = tooltipString & vbCrLf
+    End If
+    
+    ' one milibar drop < 1 hour - a storm is brewing
+    If overlayBaromWidget.pressureDrop = True Then
+        tooltipString = tooltipString & "WARNING: The red lamp is lit as the pressure is dropping fast enough for a serious storm. " & vbCrLf
     End If
      
     setHoverTooltip = tooltipString ' return
