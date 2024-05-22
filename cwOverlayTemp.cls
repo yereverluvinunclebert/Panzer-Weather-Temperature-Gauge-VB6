@@ -1174,24 +1174,13 @@ Sub TestPressureDrop()
             Debug.Print ("The lamp is lit as the pressure is dropping fast enough for a serious storm. The old pressure value was " & oldPressureStorage & " the new pressure value is " & currentPressureValue)
             
             overlayBaromWidget.pressureDrop = True
-            ' barometerDangerLampGreen.alpha = 0
-            ' barometerDangerLampRed.alpha = 1
-            'fBarometer.barometerGaugeForm.Widgets("redlamp").Widget.Alpha = 0
-            ' barometerDangerLamp.ToolTip = "The lamp is lit as the pressure is dropping fast enough for a serious storm. The old pressure value was " & oldPressureStorage & " the new pressure value is " & currentPressureValue
         Else
             Debug.Print ("Note: The pressure reading was taken more than 60 mins ago so it can be ignored")
             
             overlayBaromWidget.pressureDrop = False
-
-            ' barometerDangerLamp.ToolTip = "The pressure has dropped but is NOT dropping at the level that would indicate a storm"
-            'barometerDangerLampGreen.alpha = 1
-            'barometerDangerLampRed.alpha = 0
         End If
     Else
         overlayBaromWidget.pressureDrop = False
-        'barometerDangerLamp.ToolTip = "If the lamp is ever lit bright red then the pressure is dropping fast enough for a storm, green indicates normal pressure changes."
-        'barometerDangerLampGreen.alpha = 1
-        'barometerDangerLampRed.alpha = 0
     End If
     PzGOldPressureStorage = currentPressureValue
     PzGPressureStorageDate = Now    ' time in seconds
@@ -2320,7 +2309,7 @@ Private Function setHoverTooltip(ByVal precipitationDepth As String, ByVal visib
         If (wx_string <> vbNullString) Then tooltipString = tooltipString & vbCrLf
     End If
     
-    ' one milibar drop < 1 hour - a storm is brewing
+    ' one millibar drop < 1 hour - a storm is brewing
     If overlayBaromWidget.pressureDrop = True Then
         tooltipString = tooltipString & "WARNING: The red lamp is lit as the pressure is dropping fast enough for a serious storm. " & vbCrLf
     End If
