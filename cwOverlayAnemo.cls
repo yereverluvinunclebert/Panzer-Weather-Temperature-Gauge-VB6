@@ -543,16 +543,30 @@ Private Sub W_Paint(CC As RC6.cCairoContext, ByVal xAbs As Single, ByVal yAbs As
                         CC.Paint arr(2), Pat ' render the Pattern
                     End If
                  
+                Case "amberlamp"
+                    
+                    If mWindSpeed >= 26 And mWindSpeed < 40 Then
+                        Set Pat.Matrix = Pat.Matrix.TranslateCoords(-arr(0), -arr(1)) 'shift the Pattern via the original X,Y PSD-Offsets (stored in Arr(0) and Arr(1))
+                        CC.Paint arr(2), Pat 'render the Pattern
+                    End If
+                 
+                Case "purplelamp"
+                    
+                    If mWindSpeed >= 58 Then
+                        Set Pat.Matrix = Pat.Matrix.TranslateCoords(-arr(0), -arr(1)) 'shift the Pattern via the original X,Y PSD-Offsets (stored in Arr(0) and Arr(1))
+                        CC.Paint arr(2), Pat 'render the Pattern
+                    End If
+                 
                 Case "redlamptrue"
                     
-                    If mWindSpeed >= 34 Then
+                    If mWindSpeed >= 40 And mWindSpeed < 58 Then
                         Set Pat.Matrix = Pat.Matrix.TranslateCoords(-arr(0), -arr(1)) 'shift the Pattern via the original X,Y PSD-Offsets (stored in Arr(0) and Arr(1))
                         CC.Paint arr(2), Pat 'render the Pattern
                     End If
                     
                  Case "redlampfalse"
                     
-                    If mWindSpeed < 34 Then
+                    If mWindSpeed < 26 Then
                         Set Pat.Matrix = Pat.Matrix.TranslateCoords(-arr(0), -arr(1))
                         CC.Paint arr(2), Pat ' render the Pattern
                     End If

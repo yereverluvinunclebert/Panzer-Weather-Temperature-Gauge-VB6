@@ -1812,6 +1812,8 @@ Private Sub loadAnemometerExcludePathCollection()
         .Add Empty, "bigreflection"     'all reflections
         .Add Empty, "windowreflection"
 
+        .Add Empty, "amberlamp"
+        .Add Empty, "purplelamp"
         .Add Empty, "redlamptrue"
         .Add Empty, "redlampfalse"
         

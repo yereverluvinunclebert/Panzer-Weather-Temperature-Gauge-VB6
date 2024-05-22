@@ -60,6 +60,11 @@ barometer - switch face to 800+ face when pressure is above 800 millibars - done
 if windspeed is 0 and direction is north do not add wind characteristics to the tooltips - done
 barometer - red lamp when pressure drops, otherwise green - done
 after prefs changes to scales &c the tooltip needs to be regenerated - and the clipboard text - done
+barometer - tooltip to be modified when pressure drops
+Purple lamp - Extreme sustained speeds greater than 58 mph, or frequent wind gusts greater than 58 mph. Damaging wind conditions are consistent with a high wind warning.
+Red lamp - High sustained speeds of 40 to 57 mph. Wind conditions consistent with a high wind warning.
+Amber lamp - sustained speeds of 26 to 39 mph, or frequent wind gusts of 35 to 57 mph. Wind conditions consistent with a wind advisory.
+
 
 TODO
 
@@ -67,14 +72,9 @@ change barometer percentage code when above 800 - wip
 
 when the device wakes from sleep, then poll need to test - wip
 
-barometer - tooltip to be modified when pressure drops
-barometer gauge face red and green areas, remove altogether
 
-anemometer - red lamp when wind pressure high, otherwise green
+barometer gauge face red and green areas, remove altogether - wip
 
-Purple lamp - Extreme sustained speeds greater than 58 mph, or frequent wind gusts greater than 58 mph. Damaging wind conditions are consistent with a high wind warning.
-Red lamp - High sustained speeds of 40 to 57 mph. Wind conditions consistent with a high wind warning.
-Amber lamp - sustained speeds of 26 to 39 mph, or frequent wind gusts of 35 to 57 mph. Wind conditions consistent with a wind advisory.
 anemometer gauge face red and green areas as above
 
 
