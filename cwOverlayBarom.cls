@@ -500,6 +500,7 @@ Private Sub W_Paint(CC As RC6.cCairoContext, ByVal xAbs As Single, ByVal yAbs As
     Dim boxLeft As Integer: boxLeft = 0
     Dim cream As String: cream = vbNullString
     Dim myPressure As Integer: myPressure = 0
+    Dim scaleString As String: scaleString = vbNullString
        
     On Error GoTo W_Paint_Error
     
@@ -508,7 +509,7 @@ Private Sub W_Paint(CC As RC6.cCairoContext, ByVal xAbs As Single, ByVal yAbs As
     'set some Font- and ForeColor-Properties and draw some Text on the Widget
     W.FontName = "arial"
     W.ForeColor = cream
-    W.FontSize = 16
+    W.FontSize = 15
     W.FontBold = True
     W.SelectFontSettingsInto CC
     W.Refresh
@@ -618,7 +619,13 @@ Private Sub W_Paint(CC As RC6.cCairoContext, ByVal xAbs As Single, ByVal yAbs As
                     End If
 
                      ' draw the date and day in the windows just once to retain opacity
-                    CC.DrawText boxLeft, 110, 170, 200, CStr(myPressure), , , 2, True, , someOpacity
+                    CC.DrawText boxLeft, 108, 170, 200, CStr(myPressure), , , 2, True, , someOpacity
+                    
+                    If mThisFace = 0 Then scaleString = "mb"
+                    If mThisFace = 1 Then scaleString = "inH"
+                    If mThisFace = 2 Then scaleString = "mHg"
+                    If mThisFace = 3 Then scaleString = "hpa"
+                    CC.DrawText 442, 303, 200, 200, scaleString, , , 2, True, , someOpacity
 
                     Set Pat.Matrix = Pat.Matrix.TranslateCoords(11, 246) 'shift to the "rotation-point" within the Pattern
                     CC.TranslateDrawings W.Width * cxPerc, W.Height * cyPerc 'shift to the center-point of the Overlay-Widget-area

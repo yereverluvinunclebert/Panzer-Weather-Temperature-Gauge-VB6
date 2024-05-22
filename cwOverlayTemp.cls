@@ -1488,6 +1488,12 @@ Private Sub myStatusProc()
         weHaveData = False
         Exit Sub ' Return
     End If
+    
+    If gblJustAwoken = True Then
+        gblJustAwoken = False
+        answerMsg = "Weather widget has awoken from sleep "
+        answer = msgBoxA(answerMsg, vbExclamation + vbYesNo, "Awoken from sleep", False)
+    End If
 
     If Not nodeList Is Nothing Then
          For Each node In nodeList
@@ -3330,8 +3336,8 @@ Private Sub tmrSleepTester_Timer()
     Dim strTimeNow As Date: strTimeNow = #1/1/2000 12:00:00 PM#  'set a variable to compare for the NOW time
     Dim lngSecondsGap As Double: lngSecondsGap = 0  ' set a variable for the difference in time
     
-    Dim answer As VbMsgBoxResult: answer = vbNo
-    Dim answerMsg As String: answerMsg = vbNullString
+'    Dim answer As VbMsgBoxResult: answer = vbNo
+'    Dim answerMsg As String: answerMsg = vbNullString
     
     On Error GoTo tmrSleepTester_Timer_Error
     
@@ -3348,10 +3354,9 @@ Private Sub tmrSleepTester_Timer()
         
         ' trigger another poll 2.5 seconds after the system has awoken to give it time to wake up and re-poll!
         tmrSampler.Interval = 2500 ' this abnormal interval will be reset to the sampling interval by the timer itself
-        tmrSleepTester.Enabled = True
-        
-        answerMsg = "Weather widget has awoken from sleep after " & lngSecondsGap & " seconds"
-        answer = msgBoxA(answerMsg, vbExclamation + vbYesNo, "Awoken from sleep", False)
+          
+'        answerMsg = "Weather widget has awoken from sleep after " & lngSecondsGap & " seconds"
+'        answer = msgBoxA(answerMsg, vbExclamation + vbYesNo, "Awoken from sleep", False)
     End If
     
     tmrSleepTester.Enabled = True

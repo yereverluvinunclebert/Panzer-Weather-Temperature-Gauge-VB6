@@ -351,7 +351,7 @@ Begin VB.Form panzerPrefs
          End
          Begin VB.TextBox txtAirportsURL 
             Height          =   315
-            Left            =   2055
+            Left            =   2010
             Locked          =   -1  'True
             TabIndex        =   144
             Text            =   "https://raw.githubusercontent.com/jpatokal/openflights/master/data/airports.dat"

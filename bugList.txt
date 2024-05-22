@@ -66,12 +66,14 @@ anemometer gauge add Red lamp for High sustained speeds of 40 to 57 mph - done
 anemometer gauge add Amber lamp - sustained speeds of 26 to 39 mph - done
 barometer gauge face red and green areas, remove altogether - done
 anemometer gauge face red and green areas replaced - done
+add shadow to anemometer wind driection pointer - done
+when the device wakes from sleep, then poll - done
 
 TODO
 
-when the device wakes from sleep, then poll need to test - wip
 change barometer percentage code when above 800 - wip
 add the clipboard clock hands functionality
+add scale to the right hand black box
 
 default app to run when dblClicked
 
