@@ -65,13 +65,11 @@ Purple lamp - Extreme sustained speeds greater than 58 mph, or frequent wind gus
 Red lamp - High sustained speeds of 40 to 57 mph. Wind conditions consistent with a high wind warning.
 Amber lamp - sustained speeds of 26 to 39 mph, or frequent wind gusts of 35 to 57 mph. Wind conditions consistent with a wind advisory.
 
-
 TODO
 
 change barometer percentage code when above 800 - wip
 
 when the device wakes from sleep, then poll need to test - wip
-
 
 barometer gauge face red and green areas, remove altogether - wip
 
