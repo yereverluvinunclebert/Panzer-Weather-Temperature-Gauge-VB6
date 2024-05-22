@@ -1818,8 +1818,9 @@ Private Sub loadAnemometerExcludePathCollection()
         .Add Empty, "redlampfalse"
         
         .Add Empty, "directionpointer"
-        
-        .Add Empty, "pointerShadow"
+        .Add Empty, "directionshadow"
+
+        .Add Empty, "pointershadow"
         .Add Empty, "pointer"
        
         

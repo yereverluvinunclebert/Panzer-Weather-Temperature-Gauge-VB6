@@ -65,19 +65,15 @@ anemometer gauge add Purple lamp for extreme sustained speeds greater than 58 mp
 anemometer gauge add Red lamp for High sustained speeds of 40 to 57 mph - done
 anemometer gauge add Amber lamp - sustained speeds of 26 to 39 mph - done
 barometer gauge face red and green areas, remove altogether - done
+anemometer gauge face red and green areas replaced - done
 
 TODO
 
-change barometer percentage code when above 800 - wip
-
 when the device wakes from sleep, then poll need to test - wip
-
+change barometer percentage code when above 800 - wip
 add the clipboard clock hands functionality
 
-anemometer gauge face red and green areas replaced
-anemometer gauge add Purple lamp - Extreme sustained speeds greater than 58 mph, or frequent wind gusts greater than 58 mph. Damaging wind conditions are consistent with a high wind warning.
-Red lamp - High sustained speeds of 40 to 57 mph. Wind conditions consistent with a high wind warning.
-Amber lamp - sustained speeds of 26 to 39 mph, or frequent wind gusts of 35 to 57 mph. Wind conditions consistent with a wind advisory.
+default app to run when dblClicked
 
 move the weather code to a separate module.bas or a class - remove the temperature stuff to another class?
 refactor to use just one cwOverlay file

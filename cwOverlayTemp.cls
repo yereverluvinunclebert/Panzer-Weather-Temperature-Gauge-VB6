@@ -139,9 +139,8 @@ Private Sub Class_Initialize()
 
     strTimeThen = Now()
     
-    'Dim sunriseSunset As cwSunriseSunset 'unitialised declaration
-    
-    Set sunriseSunset = New cwSunriseSunset
+    'Dim sunriseSunset As cwSunriseSunset   'uninitialised declaration X
+    Set sunriseSunset = New cwSunriseSunset 'initialised declaration
 
     Set W = Cairo.WidgetBase
         W.BackColor = -1  'we don't use any BackColor here, transparent
@@ -163,7 +162,10 @@ Private Sub Class_Initialize()
     Set tmrPressureDrop = New_c.Timer(Val(PzGStormTestInterval) * 1000, False) ' one hour
     
     Set tmrSleepTester = Nothing
-    Set tmrSleepTester = New_c.Timer(2000, True)  ' two seconds
+    Set tmrSleepTester = New_c.Timer(5000, True)  ' two seconds, should start automatically but it doesn't
+    
+    tmrPressureDrop.Enabled = True  '
+    tmrSleepTester.Enabled = True   ' for some reason I have to explicitly manually start the sleep timer
 
     icaoLocation1 = vbNullString
     icaoLocation2 = vbNullString
@@ -235,10 +237,9 @@ Public Property Let GetMetar(ByVal newValue As Boolean)
 
     On Error GoTo GetMetarLet_Error
 
-    If mGetMetar <> newValue Then mGetMetar = newValue Else Exit Property
+    'If mGetMetar <> newValue Then mGetMetar = newValue Else Exit Property
     
     Call getData
-    
 
     mGetMetar = False
     
@@ -526,7 +527,6 @@ Public Property Let Locked(ByVal newValue As Boolean)
    If mLocked <> newValue Then mLocked = newValue Else Exit Property
    
     Dim fileToPlay As String: fileToPlay = vbNullString
-
 
     fileToPlay = "lock.wav"
 
@@ -3348,6 +3348,7 @@ Private Sub tmrSleepTester_Timer()
         
         ' trigger another poll 2.5 seconds after the system has awoken to give it time to wake up and re-poll!
         tmrSampler.Interval = 2500 ' this abnormal interval will be reset to the sampling interval by the timer itself
+        tmrSleepTester.Enabled = True
         
         answerMsg = "Weather widget has awoken from sleep after " & lngSecondsGap & " seconds"
         answer = msgBoxA(answerMsg, vbExclamation + vbYesNo, "Awoken from sleep", False)

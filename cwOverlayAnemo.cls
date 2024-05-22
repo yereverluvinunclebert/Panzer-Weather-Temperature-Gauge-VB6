@@ -570,19 +570,16 @@ Private Sub W_Paint(CC As RC6.cCairoContext, ByVal xAbs As Single, ByVal yAbs As
                         Set Pat.Matrix = Pat.Matrix.TranslateCoords(-arr(0), -arr(1))
                         CC.Paint arr(2), Pat ' render the Pattern
                     End If
-                                    
                     
-                 Case "directionpointer"
+                 Case "directionshadow", "directionpointer"
                                          
                     Set Pat.Matrix = Pat.Matrix.TranslateCoords(4, 180) 'shift to the "rotation-point" within the Pattern
                     CC.TranslateDrawings W.Width * cxPerc, W.Height * cyPerc 'shift to the center-point of the Overlay-Widget-area
-                    
-                    ' windDirectionSDeg = 180 ' debug
-                    
+                                        
                     CC.RotateDrawingsDeg windDirectionSDeg
                     CC.Paint arr(2), Pat 'render the Pattern with the current PSD-LayerAlpha, present in Arr(2)
                   
-                 Case "pointerShadow", "pointer"
+                 Case "pointershadow", "pointer"
                  
                     thisWindSpeed = mWindSpeed
                     If mThisFace = 1 Then
