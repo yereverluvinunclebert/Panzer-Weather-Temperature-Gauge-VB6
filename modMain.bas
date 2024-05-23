@@ -1437,7 +1437,7 @@ Public Sub validateInputs()
             
     ' development
     If PzGDebug = vbNullString Then PzGDebug = "0"
-    If PzGDblClickCommand = vbNullString Then PzGDblClickCommand = "%systemroot%\system32\timedate.cpl"
+    If PzGDblClickCommand = vbNullString Then PzGDblClickCommand = vbNullString
     If PzGOpenFile = vbNullString Then PzGOpenFile = vbNullString
     If PzGDefaultEditor = vbNullString Then PzGDefaultEditor = vbNullString
     

@@ -68,19 +68,19 @@ barometer gauge face red and green areas, remove altogether - done
 anemometer gauge face red and green areas replaced - done
 add shadow to anemometer wind driection pointer - done
 when the device wakes from sleep, then poll - done
+add scale to the right hand black box - done
+change barometer percentage code when above 800 - done
 
 TODO
 
-change barometer percentage code when above 800 - wip
 add the clipboard clock hands functionality
-add scale to the right hand black box
 
 default app to run when dblClicked
 
 move the weather code to a separate module.bas or a class - remove the temperature stuff to another class?
 refactor to use just one cwOverlay file
 
-think about removing some global vars and changing them to properties in the new overlay
+think about removing some global vars and changing them to properties in the new overlay, should be possible to incorporate with the above
 
 add the pictorial gauge
 
@@ -90,7 +90,7 @@ add a rainfall alarm
 
 tiny tooltips for other gauges?
 
-update html code documentation using MZTools documenter
+update html code documentation using MZTools code documenter
 
 ' add second monitor - wip find cable!
 

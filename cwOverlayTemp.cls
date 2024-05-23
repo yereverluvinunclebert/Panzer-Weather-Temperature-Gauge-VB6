@@ -162,7 +162,7 @@ Private Sub Class_Initialize()
     Set tmrPressureDrop = New_c.Timer(Val(PzGStormTestInterval) * 1000, False) ' one hour
     
     Set tmrSleepTester = Nothing
-    Set tmrSleepTester = New_c.Timer(5000, True)  ' two seconds, should start automatically but it doesn't
+    Set tmrSleepTester = New_c.Timer(2500, True)  ' two seconds, should start automatically but it doesn't
     
     tmrPressureDrop.Enabled = True  '
     tmrSleepTester.Enabled = True   ' for some reason I have to explicitly manually start the sleep timer
@@ -1477,10 +1477,11 @@ Private Sub myStatusProc()
             secsDif = Int(DateDiff("s", CDate(PzGLastUpdated), TheDate))
             If secsDif >= (Val(PzGErrorInterval) * 3600) And firstPoll = False Then
                 'if has just awoken from sleep then suppress the no data error message
+                Call tmrSleepTester_TimerCode
                 If gblJustAwoken = True Then
                     gblJustAwoken = False
                 Else
-                    answerMsg = "The source weather feed has been producing no valid data for " & secsDif & " secs."
+                    answerMsg = "1. The source weather feed has been producing no valid data for " & secsDif & " secs."
                     answer = msgBoxA(answerMsg, vbOKOnly + vbExclamation, "Poll Warning", True, "myStatusProcPollingWarning")
                 End If
             End If
@@ -1489,11 +1490,12 @@ Private Sub myStatusProc()
         Exit Sub ' Return
     End If
     
-    If gblJustAwoken = True Then
-        gblJustAwoken = False
-        answerMsg = "Weather widget has awoken from sleep "
-        answer = msgBoxA(answerMsg, vbExclamation + vbYesNo, "Awoken from sleep", False)
-    End If
+'    ' debug testing where the results are good
+'    If gblJustAwoken = True Then
+'        gblJustAwoken = False
+'        answerMsg = "3. Weather widget has awoken from sleep "
+'        answer = msgBoxA(answerMsg, vbExclamation + vbYesNo, "Awoken from sleep", False)
+'    End If
 
     If Not nodeList Is Nothing Then
          For Each node In nodeList
@@ -3333,13 +3335,37 @@ End Function
 '---------------------------------------------------------------------------------------
 '
 Private Sub tmrSleepTester_Timer()
+
+    On Error GoTo tmrSleepTester_Timer_Error
+
+    Call tmrSleepTester_TimerCode
+    
+    On Error GoTo 0
+    Exit Sub
+
+tmrSleepTester_Timer_Error:
+
+    MsgBox "Error " & Err.Number & " (" & Err.Description & ") in procedure tmrSleepTester_Timer of Form dock"
+
+End Sub
+
+'---------------------------------------------------------------------------------------
+' Procedure : tmrSleepTester_TimerCode
+' Author    : beededea
+' Date      : 21/04/2021
+' Purpose   : timer that stores the last time to see if the system has just emerged from sleep
+' if the current time is greater than the last time stored by more than 30 seconds we can assume the system
+' has been sent to sleep, if the two are significantly different then we reorganise the dock
+'---------------------------------------------------------------------------------------
+'
+Private Sub tmrSleepTester_TimerCode()
     Dim strTimeNow As Date: strTimeNow = #1/1/2000 12:00:00 PM#  'set a variable to compare for the NOW time
     Dim lngSecondsGap As Double: lngSecondsGap = 0  ' set a variable for the difference in time
     
 '    Dim answer As VbMsgBoxResult: answer = vbNo
 '    Dim answerMsg As String: answerMsg = vbNullString
     
-    On Error GoTo tmrSleepTester_Timer_Error
+    On Error GoTo tmrSleepTester_TimerCode_Error
     
     tmrSleepTester.Enabled = False
     strTimeNow = Now()
@@ -3350,13 +3376,18 @@ Private Sub tmrSleepTester_Timer()
     If lngSecondsGap > 30 Then
         gblJustAwoken = True
         
+'        answerMsg = "2. Weather widget has awoken from sleep after " & lngSecondsGap & " seconds"
+'        answer = msgBoxA(answerMsg, vbExclamation + vbYesNo, "Awoken from sleep", False)
+        
         overlayTemperatureWidget.GetMetar = True
+        
+        fAnemometer.anemometerGaugeForm.Widgets("housing/startbutton").Widget.Alpha = 0
         
         ' trigger another poll 2.5 seconds after the system has awoken to give it time to wake up and re-poll!
         tmrSampler.Interval = 2500 ' this abnormal interval will be reset to the sampling interval by the timer itself
           
-'        answerMsg = "Weather widget has awoken from sleep after " & lngSecondsGap & " seconds"
-'        answer = msgBoxA(answerMsg, vbExclamation + vbYesNo, "Awoken from sleep", False)
+        tmrSleepTester.Enabled = True
+        
     End If
     
     tmrSleepTester.Enabled = True
@@ -3364,8 +3395,8 @@ Private Sub tmrSleepTester_Timer()
     On Error GoTo 0
     Exit Sub
 
-tmrSleepTester_Timer_Error:
+tmrSleepTester_TimerCode_Error:
 
-    MsgBox "Error " & Err.Number & " (" & Err.Description & ") in procedure tmrSleepTester_Timer of Form dock"
+    MsgBox "Error " & Err.Number & " (" & Err.Description & ") in procedure tmrSleepTester_TimerCode of Form dock"
 
 End Sub

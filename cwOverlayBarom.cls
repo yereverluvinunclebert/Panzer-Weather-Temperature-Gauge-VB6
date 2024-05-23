@@ -670,7 +670,7 @@ Private Sub obtainPressure()
 
     On Error GoTo obtainPressure_Error
     
-    'mThisPressure = 810  ' debug
+    'mThisPressure = 850  ' debug
     
     ' obtain the new pressure as a percentage
     If mThisPressure <= 800 Then
@@ -678,7 +678,7 @@ Private Sub obtainPressure()
         a = a / 2
         pressurePercent = a
     Else
-        a = mThisPressure - 600
+        a = mThisPressure - 800
         a = a / 2
         pressurePercent = a
     End If
