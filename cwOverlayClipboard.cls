@@ -270,27 +270,11 @@ Private Sub W_Paint(CC As RC6.cCairoContext, ByVal xAbs As Single, ByVal yAbs As
     Dim arr As Variant
     Dim key As String: key = vbNullString
     Dim Pat As cCairoPattern
-        
-    Dim someOpacity As Double: someOpacity = 0
-    Dim boxLeft As Integer: boxLeft = 0
-    
-    Dim cream As String: cream = vbNullString
-    
-    Dim scaleString As String: scaleString = vbNullString
+    Dim clipBSDeg As Integer: clipBSDeg = 90
        
     On Error GoTo W_Paint_Error
-    
-    cream = RGB(235, 217, 179) ' cannot create a constant from an RGB value
-    
-    'set some Font- and ForeColor-Properties and draw some Text on the Widget
-    W.FontName = "arial"
-    W.ForeColor = cream
-    W.FontSize = 16
-    W.FontBold = True
-    W.SelectFontSettingsInto CC
+   
     W.Refresh
-    someOpacity = (val(mThisOpacity) / 100) * 0.75
-    someOpacity = 1
     
     For i = 0 To cCollOverlayClipBImages.Count - 1 ' this is the ExcludedPaths collection populated in cfTemperature by duplicating collTemperaturePSDNonUIElements.
       arr = cCollOverlayClipBImages.ItemByIndex(i)
@@ -305,33 +289,27 @@ Private Sub W_Paint(CC As RC6.cCairoContext, ByVal xAbs As Single, ByVal yAbs As
              Select Case key
                  
                  Case "minhand"
-
-                    Set Pat.Matrix = Pat.Matrix.TranslateCoords(-arr(0), -arr(1))
-                    CC.Paint arr(2), Pat ' render the Pattern
+                 
+                         Set Pat.Matrix = Pat.Matrix.TranslateCoords(7, 69) 'shift to the "rotation-point" within the Pattern
+                         CC.TranslateDrawings 105, 115  'shift to the rotation-point
+                         CC.RotateDrawingsDeg 90
 
                  Case "hourhand"
-
-                    Set Pat.Matrix = Pat.Matrix.TranslateCoords(-arr(0), -arr(1))
-                    CC.Paint arr(2), Pat ' render the Pattern
+                 ' 95 , 67
+                         Set Pat.Matrix = Pat.Matrix.TranslateCoords(9, 50) 'shift to the "rotation-point" within the Pattern
+                         CC.TranslateDrawings 105, 115  'shift to the rotation-point
+                         CC.RotateDrawingsDeg 45
 
                  Case "clock"
 
                     Set Pat.Matrix = Pat.Matrix.TranslateCoords(-arr(0), -arr(1))
-                    CC.Paint arr(2), Pat ' render the Pattern
 
-'                 Case "clipboard"
-'
-'                    Set Pat.Matrix = Pat.Matrix.TranslateCoords(-arr(0), -arr(1))
-'                    CC.Paint arr(2), Pat ' render the Pattern
-'
-                    
                  Case Else 'plain output for everything else ... this includes the reflection-layers,
                      
                     Set Pat.Matrix = Pat.Matrix.TranslateCoords(-arr(0), -arr(1))
-                    CC.Paint arr(2), Pat 'render the Pattern
                    
              End Select
-             
+             CC.Paint arr(2), Pat 'render the Pattern
              CC.Restore
       End If
      Next
