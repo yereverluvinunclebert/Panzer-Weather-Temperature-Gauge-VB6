@@ -41,6 +41,7 @@ Private SDeg As Double
 Private mLocked As Boolean ' property Locked
 Private mHidden As Boolean ' property Hidden
 Private mThisOpacity As String ' property ThisOpacity
+Private mThisTime As Date ' property ThisTime
 
 
 '---------------------------------------------------------------------------------------
@@ -197,6 +198,44 @@ HiddenLet_Error:
 End Property
 
 '---------------------------------------------------------------------------------------
+' Property : thisTime
+' Author    : Dean Beedell (yereverluvinunclebert)
+' Date      : 17/05/2023
+' Purpose   :
+'---------------------------------------------------------------------------------------
+'
+Public Property Get thisTime() As Date
+   On Error GoTo thisTimeGet_Error
+
+    thisTime = mThisTime
+
+   On Error GoTo 0
+   Exit Property
+
+thisTimeGet_Error:
+
+    MsgBox "Error " & Err.Number & " (" & Err.Description & ") in Property thisTime of Class Module cwOverlayTempTemperature"
+End Property
+'---------------------------------------------------------------------------------------
+' Property  : thisTime
+' Author    :
+' Date      : 09/05/2023
+' Purpose   :
+'---------------------------------------------------------------------------------------
+'
+Public Property Let thisTime(ByVal newValue As Date)
+    On Error GoTo thisTimeLet_Error
+
+    If mThisTime <> newValue Then mThisTime = newValue Else Exit Property
+        
+    On Error GoTo 0
+    Exit Property
+
+thisTimeLet_Error:
+
+    MsgBox "Error " & Err.Number & " (" & Err.Description & ") in Property thisTime of Class Module cwOverlayTempTemperature"
+End Property
+'---------------------------------------------------------------------------------------
 ' Property : thisOpacity
 ' Author    : Dean Beedell (yereverluvinunclebert)
 ' Date      : 17/05/2023
@@ -270,11 +309,13 @@ Private Sub W_Paint(CC As RC6.cCairoContext, ByVal xAbs As Single, ByVal yAbs As
     Dim arr As Variant
     Dim key As String: key = vbNullString
     Dim Pat As cCairoPattern
-    Dim clipBSDeg As Integer: clipBSDeg = 90
-       
+    Dim clipbHrsSDeg As Integer: clipbHrsSDeg = 0
+    Dim clipbMinsSDeg As Integer: clipbMinsSDeg = 0
+     
     On Error GoTo W_Paint_Error
-   
-    W.Refresh
+
+    clipbHrsSDeg = Hour(mThisTime) * 30
+    clipbMinsSDeg = Minute(mThisTime) * 6
     
     For i = 0 To cCollOverlayClipBImages.Count - 1 ' this is the ExcludedPaths collection populated in cfTemperature by duplicating collTemperaturePSDNonUIElements.
       arr = cCollOverlayClipBImages.ItemByIndex(i)
@@ -292,13 +333,13 @@ Private Sub W_Paint(CC As RC6.cCairoContext, ByVal xAbs As Single, ByVal yAbs As
                  
                          Set Pat.Matrix = Pat.Matrix.TranslateCoords(7, 69) 'shift to the "rotation-point" within the Pattern
                          CC.TranslateDrawings 105, 115  'shift to the rotation-point
-                         CC.RotateDrawingsDeg 90
+                         CC.RotateDrawingsDeg clipbMinsSDeg
 
                  Case "hourhand"
                  ' 95 , 67
                          Set Pat.Matrix = Pat.Matrix.TranslateCoords(9, 50) 'shift to the "rotation-point" within the Pattern
                          CC.TranslateDrawings 105, 115  'shift to the rotation-point
-                         CC.RotateDrawingsDeg 45
+                         CC.RotateDrawingsDeg clipbHrsSDeg
 
                  Case "clock"
 
@@ -313,6 +354,9 @@ Private Sub W_Paint(CC As RC6.cCairoContext, ByVal xAbs As Single, ByVal yAbs As
              CC.Restore
       End If
      Next
+             
+    W.Refresh
+
 
    On Error GoTo 0
    Exit Sub

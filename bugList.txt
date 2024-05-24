@@ -69,13 +69,13 @@ anemometer gauge face red and green areas replaced - done
 add shadow to anemometer wind driection pointer - done
 when the device wakes from sleep, then poll - done
 add scale to the right hand black box - done
-change barometer percentage code when above 800 - done
+change barometer percentage code when above 800mb - done
+default app to run when dblClicked - done
 
 TODO
 
-add the clipboard clock hands functionality
-
-default app to run when dblClicked
+add the clipboard clock hands functionality - wip
+test the sleep and repoll functionality
 
 move the weather code to a separate module.bas or a class - remove the temperature stuff to another class?
 refactor to use just one cwOverlay file

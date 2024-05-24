@@ -119,7 +119,6 @@ Private icaoLocation5 As String
 
 Private strTimeThen As Date
 
-'Private pressureValue As Double
 
 '---------------------------------------------------------------------------------------
 ' Procedure : Class_Initialize
@@ -1477,11 +1476,12 @@ Private Sub myStatusProc()
             secsDif = Int(DateDiff("s", CDate(PzGLastUpdated), TheDate))
             If secsDif >= (Val(PzGErrorInterval) * 3600) And firstPoll = False Then
                 'if has just awoken from sleep then suppress the no data error message
+                tmrSleepTester.Enabled = False
                 Call tmrSleepTester_TimerCode
                 If gblJustAwoken = True Then
                     gblJustAwoken = False
                 Else
-                    answerMsg = "1. The source weather feed has been producing no valid data for " & secsDif & " secs."
+                    answerMsg = "1. The source weather feed has been producing no valid data for " & secsDif & " secs. gblJustAwoken = " & gblJustAwoken
                     answer = msgBoxA(answerMsg, vbOKOnly + vbExclamation, "Poll Warning", True, "myStatusProcPollingWarning")
                 End If
             End If
@@ -1489,13 +1489,6 @@ Private Sub myStatusProc()
         weHaveData = False
         Exit Sub ' Return
     End If
-    
-'    ' debug testing where the results are good
-'    If gblJustAwoken = True Then
-'        gblJustAwoken = False
-'        answerMsg = "3. Weather widget has awoken from sleep "
-'        answer = msgBoxA(answerMsg, vbExclamation + vbYesNo, "Awoken from sleep", False)
-'    End If
 
     If Not nodeList Is Nothing Then
          For Each node In nodeList
@@ -1650,8 +1643,9 @@ Private Sub myStatusProc()
     ' make a pretty date for the balloon tooltip
     weekDayDate = humanFriendlyDate(usableObsTime)
 
-'    'set the mini clock to show the observation time
-'    theClock.displayTime(usableObsTime) ' we don't yet have a mini clock
+    'set the mini clock to show the observation time
+    overlayClipbWidget.thisTime = usableObsTime
+    fClipB.clipBForm.Refresh
 
     ' get the current time string and compare
     TheDate = Now
@@ -3362,8 +3356,8 @@ Private Sub tmrSleepTester_TimerCode()
     Dim strTimeNow As Date: strTimeNow = #1/1/2000 12:00:00 PM#  'set a variable to compare for the NOW time
     Dim lngSecondsGap As Double: lngSecondsGap = 0  ' set a variable for the difference in time
     
-'    Dim answer As VbMsgBoxResult: answer = vbNo
-'    Dim answerMsg As String: answerMsg = vbNullString
+    Dim answer As VbMsgBoxResult: answer = vbNo
+    Dim answerMsg As String: answerMsg = vbNullString
     
     On Error GoTo tmrSleepTester_TimerCode_Error
     
@@ -3371,25 +3365,24 @@ Private Sub tmrSleepTester_TimerCode()
     strTimeNow = Now()
     
     lngSecondsGap = DateDiff("s", strTimeThen, strTimeNow)
-    strTimeThen = Now()
-
-    If lngSecondsGap > 30 Then
+            
+    If lngSecondsGap > 60 Then
         gblJustAwoken = True
         
-'        answerMsg = "2. Weather widget has awoken from sleep after " & lngSecondsGap & " seconds"
+'        answerMsg = "2. Weather widget has awoken from sleep after " & lngSecondsGap & " seconds. gblJustAwoken = " & gblJustAwoken
 '        answer = msgBoxA(answerMsg, vbExclamation + vbYesNo, "Awoken from sleep", False)
         
         overlayTemperatureWidget.GetMetar = True
         
         fAnemometer.anemometerGaugeForm.Widgets("housing/startbutton").Widget.Alpha = 0
+        fAnemometer.anemometerGaugeForm.Refresh
         
         ' trigger another poll 2.5 seconds after the system has awoken to give it time to wake up and re-poll!
         tmrSampler.Interval = 2500 ' this abnormal interval will be reset to the sampling interval by the timer itself
-          
         tmrSleepTester.Enabled = True
-        
     End If
     
+    strTimeThen = Now()
     tmrSleepTester.Enabled = True
     
     On Error GoTo 0
@@ -3400,3 +3393,4 @@ tmrSleepTester_TimerCode_Error:
     MsgBox "Error " & Err.Number & " (" & Err.Description & ") in procedure tmrSleepTester_TimerCode of Form dock"
 
 End Sub
+
