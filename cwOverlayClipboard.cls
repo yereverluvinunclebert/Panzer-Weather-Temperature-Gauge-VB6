@@ -309,13 +309,23 @@ Private Sub W_Paint(CC As RC6.cCairoContext, ByVal xAbs As Single, ByVal yAbs As
     Dim arr As Variant
     Dim key As String: key = vbNullString
     Dim Pat As cCairoPattern
-    Dim clipbHrsSDeg As Integer: clipbHrsSDeg = 0
+    Dim hrs As Integer: hrs = 0
+    Dim mins As Single: mins = 0
+    Dim clipbHrsSDeg As Single: clipbHrsSDeg = 0
     Dim clipbMinsSDeg As Integer: clipbMinsSDeg = 0
      
     On Error GoTo W_Paint_Error
+    
+    'mThisTime = "12:15:00" ' debug
 
-    clipbHrsSDeg = Hour(mThisTime) * 30
     clipbMinsSDeg = Minute(mThisTime) * 6
+    hrs = Hour(mThisTime)
+    If hrs >= 12 Then hrs = hrs - 12
+    
+    If Not mThisTime = "00:00:00" Then
+        mins = Minute(mThisTime) / 60
+        clipbHrsSDeg = (hrs * 30 + (mins * 30))
+    End If
     
     For i = 0 To cCollOverlayClipBImages.Count - 1 ' this is the ExcludedPaths collection populated in cfTemperature by duplicating collTemperaturePSDNonUIElements.
       arr = cCollOverlayClipBImages.ItemByIndex(i)
