@@ -3083,7 +3083,7 @@ Private Sub chkGaugeFunctions_Click()
     btnSave.Enabled = True ' enable the save button
     
     ' disable polling
-    overlayTemperatureWidget.Ticking = chkGaugeFunctions.Value
+    WeatherMeteo.Ticking = chkGaugeFunctions.Value
 
     On Error GoTo 0
     Exit Sub
@@ -4055,7 +4055,7 @@ Private Sub btnSave_Click()
         PzGWindowLevelWasChanged = False
         Call reloadWidget
     Else
-        overlayTemperatureWidget.GetMetar = True
+        WeatherMeteo.GetMetar = True
     End If
     
    On Error GoTo 0
@@ -5017,7 +5017,7 @@ Private Sub sliSamplingInterval_Click()
  
     If prefsStartupFlg = False Then
         PzGSamplingInterval = LTrim$(Str$(sliSamplingInterval.Value))
-        overlayTemperatureWidget.samplingInterval = sliSamplingInterval.Value
+        WeatherMeteo.samplingInterval = sliSamplingInterval.Value
         sPutINISetting "Software\PzTemperatureGauge", "samplingInterval", PzGSamplingInterval, PzGSettingsFile
         
     End If
@@ -6881,13 +6881,13 @@ Public Sub setPrefsFormZordering()
 
    On Error GoTo setPrefsFormZordering_Error
 
-    If Val(PzGWindowLevel) = 0 Then
-        Call SetWindowPos(Me.hwnd, HWND_BOTTOM, 0&, 0&, 0&, 0&, OnTopFlags)
-    ElseIf Val(PzGWindowLevel) = 1 Then
-        Call SetWindowPos(Me.hwnd, HWND_TOP, 0&, 0&, 0&, 0&, OnTopFlags)
-    ElseIf Val(PzGWindowLevel) = 2 Then
-        Call SetWindowPos(Me.hwnd, HWND_TOPMOST, 0&, 0&, 0&, 0&, OnTopFlags)
-    End If
+'    If Val(PzGWindowLevel) = 0 Then
+'        Call SetWindowPos(Me.hwnd, HWND_BOTTOM, 0&, 0&, 0&, 0&, OnTopFlags)
+'    ElseIf Val(PzGWindowLevel) = 1 Then
+'        Call SetWindowPos(Me.hwnd, HWND_TOP, 0&, 0&, 0&, 0&, OnTopFlags)
+'    ElseIf Val(PzGWindowLevel) = 2 Then
+'        Call SetWindowPos(Me.hwnd, HWND_TOPMOST, 0&, 0&, 0&, 0&, OnTopFlags)
+'    End If
 
    On Error GoTo 0
    Exit Sub

@@ -283,7 +283,7 @@ End Sub
 
 Private Sub mnuClipboardCopyWeather_Click()
     Clipboard.Clear
-    Clipboard.SetText (overlayTemperatureWidget.WeatherDetails)
+    Clipboard.SetText (WeatherMeteo.WeatherDetails)
 End Sub
 
 ' ----------------------------------------------------------------
@@ -324,7 +324,7 @@ Private Sub mnuCopyWeather_Click()
     On Error GoTo mnuCopyWeather_Click_Error
     
     Clipboard.Clear
-    Clipboard.SetText (overlayTemperatureWidget.WeatherDetails)
+    Clipboard.SetText (WeatherMeteo.WeatherDetails)
 
     On Error GoTo 0
     Exit Sub
@@ -336,7 +336,7 @@ mnuCopyWeather_Click_Error:
 End Sub
 
 Private Sub mnuDownloadICAO_Click()
-    Call overlayTemperatureWidget.getNewIcaoLocations
+    Call WeatherMeteo.getNewIcaoLocations
 End Sub
 
 '---------------------------------------------------------------------------------------
@@ -695,8 +695,8 @@ Private Sub mnuRefreshMetar_Click()
     Dim answer As VbMsgBoxResult
     Dim answerMsg  As String: answerMsg = vbNullString
     
-    If overlayTemperatureWidget.Ticking = True Then
-        overlayTemperatureWidget.GetMetar = True ' trigger METAR get with new ICAO code
+    If WeatherMeteo.Ticking = True Then
+        WeatherMeteo.GetMetar = True ' trigger METAR get with new ICAO code
         answerMsg = "Done. METAR request issued."
         answer = msgBoxA(answerMsg, vbOKOnly + vbExclamation, "Refresh METAR Information", True, "mnuRefreshMetarClick")
     Else

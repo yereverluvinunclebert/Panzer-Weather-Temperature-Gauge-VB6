@@ -25,5 +25,6 @@ cwOverlayAnemo = 457, 16, 1499, 684,
 cfHumidity = 0, 0, 980, 668, 
 cwOverlayHumid = 104, 104, 888, 772, 
 cfBarometer = 130, 130, 1037, 884, 
-cwOverlayBarom = 156, 156, 1063, 910, 
+cwOverlayBarom = 156, 156, 1063, 910, Z
 cwOverlay = 260, 260, 1167, 1015, 
+cwWeatherMeteo = 0, 0, 1136, 731, 

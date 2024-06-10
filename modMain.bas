@@ -55,6 +55,8 @@ Public fBarometer As New cfBarometer
 Public overlayBaromWidget As cwOverlayBarom
 
 Public sunriseSunset As cwSunriseSunset
+Public WeatherMeteo As cwWeatherMeteo
+
 Public widgetName1 As String
 Public widgetName2 As String
 Public widgetName3 As String
@@ -274,6 +276,8 @@ Public Sub mainRoutine(ByVal restart As Boolean)
     ' configure any global timers here
     Call configureTimers
     
+    'WeatherMeteo.TestPressureDrop = True
+
     'startupFlg = False
         
     ' RC message pump will auto-exit when Cairo Forms > 0 so we run it only when 0, this prevents message interruption
@@ -655,7 +659,6 @@ Private Sub adjustSelectorMainControls()
         .MousePointer = IDC_SIZEALL
         .Alpha = Val(PzGOpacity) / 100
     End With
-    
             
     With fSelector.SelectorForm.Widgets("glassblock").Widget
         .HoverColor = 0 ' set the hover colour to grey - this may change later with new RC6
@@ -663,6 +666,7 @@ Private Sub adjustSelectorMainControls()
         .Alpha = Val(PzGOpacity) / 100
     End With
     
+    fSelector.SelectorForm.Refresh
     
     On Error GoTo 0
     Exit Sub
@@ -742,9 +746,9 @@ Public Sub adjustTempMainControls()
     fTemperature.tempAdjustZoom Val(PzGTemperatureGaugeSize) / 100
     
     If PzGGaugeFunctions = "1" Then
-        overlayTemperatureWidget.Ticking = True
+        WeatherMeteo.Ticking = True
     Else
-        overlayTemperatureWidget.Ticking = False
+        WeatherMeteo.Ticking = False
     End If
     
     ' set the characteristics of the interactive areas
@@ -816,7 +820,7 @@ Public Sub adjustTempMainControls()
     End If
 
     overlayTemperatureWidget.thisOpacity = Val(PzGOpacity)
-    overlayTemperatureWidget.samplingInterval = Val(PzGSamplingInterval)
+    WeatherMeteo.samplingInterval = Val(PzGSamplingInterval)
     overlayTemperatureWidget.thisFace = Val(PzGTemperatureScale)
 
     

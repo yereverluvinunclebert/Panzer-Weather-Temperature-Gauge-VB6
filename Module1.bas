@@ -2182,6 +2182,8 @@ Public Sub thisForm_Unload() ' name follows VB6 standard naming convention
     
     Call saveTemperatureGaugePosition
     Call saveAnemometerGaugePosition
+    Call saveBarometerGaugePosition
+    Call saveHumidityGaugePosition
     
     Call unloadAllForms(True)
 
@@ -2222,10 +2224,10 @@ Public Sub unloadAllForms(ByVal endItAll As Boolean)
     
     ' unload the native VB6 forms
     
+    Unload frmMessage
     Unload panzerPrefs
     Unload frmTimer
     Unload menuForm
-    'Unload frmLocation
     
     ' unload the RC6 forms
 
@@ -2241,7 +2243,6 @@ Public Sub unloadAllForms(ByVal endItAll As Boolean)
     
     ' remove all variable references to each RC6 form in turn
     
-    Set panzerPrefs = Nothing
     Set fMain.aboutForm = Nothing
     Set fMain.helpForm = Nothing
     Set fTemperature.temperatureGaugeForm = Nothing
@@ -2253,9 +2254,10 @@ Public Sub unloadAllForms(ByVal endItAll As Boolean)
     
     ' remove all variable references to each VB6 form in turn
     
+    Set panzerPrefs = Nothing
     Set frmTimer = Nothing
     Set menuForm = Nothing
-    'Set frmLocation = Nothing
+    Set frmMessage = Nothing
     
     If endItAll = True Then End
 
@@ -2766,7 +2768,7 @@ Public Sub SwitchOff()
 
    On Error GoTo SwitchOff_Error
 
-    overlayTemperatureWidget.Ticking = False
+    WeatherMeteo.Ticking = False
 '    menuForm.mnuSwitchOff.Checked = True
 '    menuForm.mnuTurnFunctionsOn.Checked = False
 '
@@ -2802,7 +2804,7 @@ Public Sub TurnFunctionsOn() ' deanieboy
         PlaySound App.path & "\resources\sounds\" & fileToPlay, ByVal 0&, SND_FILENAME Or SND_ASYNC
     End If
 
-    overlayTemperatureWidget.Ticking = True
+    WeatherMeteo.Ticking = True
     menuForm.mnuSwitchOff.Checked = False
     menuForm.mnuTurnFunctionsOn.Checked = True
     

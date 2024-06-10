@@ -75,8 +75,7 @@ add the clipboard clock hands functionality - done
 
 TODO
 
-
-test the sleep and repoll functionality
+test the sleep and repoll functionality - wip
 
 move the weather code to a separate module.bas or a class - remove the temperature stuff to another class?
 refactor to use just one cwOverlay file

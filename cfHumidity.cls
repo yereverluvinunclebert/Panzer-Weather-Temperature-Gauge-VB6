@@ -165,7 +165,7 @@ Private Sub humidityGaugeForm_BubblingEvent(ByRef sender As Object, ByRef EventN
                 If PzGEnableBalloonTooltips = "1" Then CreateToolTip humidityGaugeForm.hwnd, "This button opens the one-page help file for this widget. There is a further detailed CHM help file available from the right-click menu that contains all the information that you need to run this widget.", _
                      TTIconInfo, widgetName5 & " Help Button Help", , , , True
             Case Else
-                If PzGEnableBalloonTooltips = "1" Then CreateToolTip humidityGaugeForm.hwnd, " " & overlayTemperatureWidget.WeatherDetails _
+                If PzGEnableBalloonTooltips = "1" Then CreateToolTip humidityGaugeForm.hwnd, " " & WeatherMeteo.WeatherDetails _
                     & vbCrLf & "" _
                     & vbCrLf & "Right Click to open the menu and the preferences. CTRL+ Mouse scrollwheel UP/DOWN to resize." _
                     , TTIconInfo, widgetName5 & " METAR summary Information.", , , , True

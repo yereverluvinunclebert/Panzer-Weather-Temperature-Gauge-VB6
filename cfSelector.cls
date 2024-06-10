@@ -207,7 +207,7 @@ Private Sub sCmbMatchingLocations_Click()
             SelectorForm.Widgets("sbtnsearch").Widget.Enabled = True
 '        End If
         
-        overlayTemperatureWidget.IcaoToTest = icaoLocation5 ' load the icao to test
+        WeatherMeteo.IcaoToTest = icaoLocation5 ' load the icao to test
       
     End With
     
@@ -334,12 +334,12 @@ Private Sub sbtnselect_mouseDown(ByRef sender As Object)
     SelectorForm.Widgets("sbtnselect").Widget.Enabled = False
     SelectorForm.Widgets("sbtnsearch").Widget.Enabled = True
 
-    PzGIcao = overlayTemperatureWidget.IcaoToTest
+    PzGIcao = WeatherMeteo.IcaoToTest
     sPutINISetting "Software\PzTemperatureGauge", "icao", PzGIcao, PzGSettingsFile
     
     If optLocationSelected = True Then
         ' call routine to search all the ICAO codes in airport.dat
-        If overlayTemperatureWidget.ValidICAO = True Then
+        If WeatherMeteo.ValidICAO = True Then
             sPutINISetting "Software\PzTemperatureGauge", "icao", PzGIcao, PzGSettingsFile
         End If
     End If
@@ -349,7 +349,7 @@ Private Sub sbtnselect_mouseDown(ByRef sender As Object)
     End If
     
     ' trigger METAR get with new ICAO code
-    overlayTemperatureWidget.GetMetar = True
+    WeatherMeteo.GetMetar = True
     
     SelectorForm.Hide
     
@@ -847,9 +847,9 @@ Private Function testICAO(ByVal icao As String) As String
         Next i
         If allLetters = True Then
 
-            overlayTemperatureWidget.IcaoToTest = icao ' load the icao to test
+            WeatherMeteo.IcaoToTest = icao ' load the icao to test
             ' call routine to search
-            If overlayTemperatureWidget.ValidICAO = True Then ' call routine to search all the ICAO codes in airport.dat
+            If WeatherMeteo.ValidICAO = True Then ' call routine to search all the ICAO codes in airport.dat
                 testICAO = icao  ' return
             End If
         Else
@@ -908,11 +908,11 @@ Private Function testLocation(ByVal location As String) As String
 
         ' note: it is possible that a named search location could contain a number
         ' call routine to search
-        overlayTemperatureWidget.StringToTest = location ' load the string to test
-        cnt = overlayTemperatureWidget.ValidLocationCount
+        WeatherMeteo.StringToTest = location ' load the string to test
+        cnt = WeatherMeteo.ValidLocationCount
         If cnt = 1 Then
-            If overlayTemperatureWidget.ValidICAO = True Then ' call routine to search all the ICAO codes in airport.dat
-                overlayTemperatureWidget.IcaoToTest = location
+            If WeatherMeteo.ValidICAO = True Then ' call routine to search all the ICAO codes in airport.dat
+                WeatherMeteo.IcaoToTest = location
                 SelectorForm.Widgets("sbtnselect").Widget.Enabled = True
                 testLocation = location ' return
                 Exit Function

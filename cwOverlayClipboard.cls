@@ -214,7 +214,7 @@ Public Property Get thisTime() As Date
 
 thisTimeGet_Error:
 
-    MsgBox "Error " & Err.Number & " (" & Err.Description & ") in Property thisTime of Class Module cwOverlayTempTemperature"
+    MsgBox "Error " & Err.Number & " (" & Err.Description & ") in Property thisTime of Class Module cwoverlaytemp"
 End Property
 '---------------------------------------------------------------------------------------
 ' Property  : thisTime
@@ -233,7 +233,7 @@ Public Property Let thisTime(ByVal newValue As Date)
 
 thisTimeLet_Error:
 
-    MsgBox "Error " & Err.Number & " (" & Err.Description & ") in Property thisTime of Class Module cwOverlayTempTemperature"
+    MsgBox "Error " & Err.Number & " (" & Err.Description & ") in Property thisTime of Class Module cwoverlaytemp"
 End Property
 '---------------------------------------------------------------------------------------
 ' Property : thisOpacity
@@ -252,7 +252,7 @@ Public Property Get thisOpacity() As String
 
 thisOpacityGet_Error:
 
-    MsgBox "Error " & Err.Number & " (" & Err.Description & ") in Property thisOpacity of Class Module cwOverlayTempTemperature"
+    MsgBox "Error " & Err.Number & " (" & Err.Description & ") in Property thisOpacity of Class Module cwoverlaytemp"
 End Property
 '---------------------------------------------------------------------------------------
 ' Property  : thisOpacity
@@ -271,7 +271,7 @@ Public Property Let thisOpacity(ByVal newValue As String)
 
 thisOpacityLet_Error:
 
-    MsgBox "Error " & Err.Number & " (" & Err.Description & ") in Property thisOpacity of Class Module cwOverlayTempTemperature"
+    MsgBox "Error " & Err.Number & " (" & Err.Description & ") in Property thisOpacity of Class Module cwoverlaytemp"
 End Property
 
 '

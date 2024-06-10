@@ -379,7 +379,7 @@ Public Property Get thisFace() As Integer
 
 thisFaceGet_Error:
 
-    MsgBox "Error " & Err.Number & " (" & Err.Description & ") in Property thisFace of Class Module cwOverlayTempTemperature"
+    MsgBox "Error " & Err.Number & " (" & Err.Description & ") in Property thisFace of Class Module cwoverlaytemp"
 End Property
 '---------------------------------------------------------------------------------------
 ' Property  : thisFace
@@ -407,7 +407,7 @@ Public Property Let thisFace(ByVal newValue As Integer)
 
 thisFaceLet_Error:
 
-    MsgBox "Error " & Err.Number & " (" & Err.Description & ") in Property thisFace of Class Module cwOverlayTempTemperature"
+    MsgBox "Error " & Err.Number & " (" & Err.Description & ") in Property thisFace of Class Module cwoverlaytemp"
 End Property
 
 
