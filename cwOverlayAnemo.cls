@@ -50,7 +50,6 @@ Private animateCCW As Boolean
 
 Private mPointerAnimate As Boolean ' property PointerAnimate
 Private mLocked As Boolean ' property Locked
-Private mAnemometerDetails As String ' property
 Private mHidden As Boolean ' property Hidden
 Private mThisOpacity As String ' property ThisOpacity
 
@@ -583,7 +582,7 @@ Private Sub W_Paint(CC As RC6.cCairoContext, ByVal xAbs As Single, ByVal yAbs As
                  
                     thisWindSpeed = mWindSpeed
                     If mThisFace = 1 Then
-                        thisWindSpeed = thisWindSpeed * 0.514444
+                        thisWindSpeed = thisWindSpeed * 0.514444 ' convert from knots to metric
                     End If
                      
                     If Val(mWindSpeed) >= 100 Then

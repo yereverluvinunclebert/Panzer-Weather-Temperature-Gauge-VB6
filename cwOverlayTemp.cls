@@ -39,7 +39,7 @@ Attribute W.VB_VarHelpID = -1
 Private WithEvents tmrAnimator As cTimer
 Attribute tmrAnimator.VB_VarHelpID = -1
 
-Private SDeg As Double
+Private temperatureSDeg As Double
 'Private thisTemperature As Long
 
 Private oldSDeg As Double
@@ -284,48 +284,6 @@ thisFaceLet_Error:
     MsgBox "Error " & Err.Number & " (" & Err.Description & ") in Property thisFace of Class Module cwoverlaytemp"
 End Property
 
-''---------------------------------------------------------------------------------------
-'' Property : samplingInterval
-'' Author    : Dean Beedell (yereverluvinunclebert)
-'' Date      : 17/05/2023
-'' Purpose   :
-''---------------------------------------------------------------------------------------
-''
-'Public Property Get samplingInterval() As Long
-'   On Error GoTo samplingIntervalGet_Error
-'
-'    samplingInterval = mSamplingInterval
-'
-'   On Error GoTo 0
-'   Exit Property
-'
-'samplingIntervalGet_Error:
-'
-'    MsgBox "Error " & Err.Number & " (" & Err.Description & ") in Property samplingInterval of Class Module cwoverlaytemp"
-'End Property
-''---------------------------------------------------------------------------------------
-'' Property  : samplingInterval
-'' Author    :
-'' Date      : 09/05/2023
-'' Purpose   :
-''---------------------------------------------------------------------------------------
-''
-'Public Property Let samplingInterval(ByVal newValue As Long)
-'    On Error GoTo samplingIntervalLet_Error
-'
-'    If mSamplingInterval <> newValue Then mSamplingInterval = newValue Else Exit Property
-'
-'    If tmrSampler.Interval = 100 Then WeatherMeteo.GetMetar = True ' allows first early run, interval is then reset
-'
-'    tmrSampler.Interval = Val(mSamplingInterval) * 1000
-'
-'    On Error GoTo 0
-'    Exit Property
-'
-'samplingIntervalLet_Error:
-'
-'    MsgBox "Error " & Err.Number & " (" & Err.Description & ") in Property samplingInterval of Class Module cwoverlaytemp"
-'End Property
 '---------------------------------------------------------------------------------------
 '' Property : pointerAnimate
 '' Author    : Dean Beedell (yereverluvinunclebert)
@@ -956,7 +914,7 @@ Private Sub W_Paint(CC As RC6.cCairoContext, ByVal xAbs As Single, ByVal yAbs As
                     Set Pat.Matrix = Pat.Matrix.TranslateCoords(11, 246) 'shift to the "rotation-point" within the Pattern
                     CC.TranslateDrawings W.Width * cxPerc, W.Height * cyPerc 'shift to the center-point of the Overlay-Widget-area
                     
-                    CC.RotateDrawingsDeg SDeg
+                    CC.RotateDrawingsDeg temperatureSDeg
                     CC.Paint arr(2), Pat 'render the Pattern with the current PSD-LayerAlpha, present in Arr(2)
                     
                     
@@ -995,21 +953,21 @@ Private Sub tmrAnimator_Timer()
     
     On Error GoTo tmrAnimator_Timer_Error
     '
-    ' move the pointer using SDeg
+    ' move the pointer using temperatureSDeg
     '
     animationAmount = animationAmount + animationQuanta
 
     If animateCCW = True Then
-        If SDeg > newSDeg Then
-            SDeg = oldSDeg - animationAmount
+        If temperatureSDeg > newSDeg Then
+            temperatureSDeg = oldSDeg - animationAmount
         Else
             tmrAnimator.Enabled = False ' when the animation is complete then stop the animator
             animationAmount = 0
             Exit Sub
         End If
     Else
-        If SDeg < newSDeg Then
-            SDeg = oldSDeg + animationAmount
+        If temperatureSDeg < newSDeg Then
+            temperatureSDeg = oldSDeg + animationAmount
         Else
             tmrAnimator.Enabled = False
             animationAmount = 0
@@ -1050,9 +1008,9 @@ Private Sub obtainTemperature()
     
     ' calculate the new cpu amount in degrees
     If WeatherMeteo.wehavedata = True Then
-        SDeg = (tempPercent * 3) + 30
+        temperatureSDeg = (tempPercent * 3) + 30
     Else
-        SDeg = 30
+        temperatureSDeg = 30
     End If
       
     W.Parent.Refresh

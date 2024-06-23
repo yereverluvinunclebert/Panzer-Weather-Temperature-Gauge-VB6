@@ -81,7 +81,7 @@ Private Sub Class_Initialize()
     Set sunriseSunset = New cwSunriseSunset 'initialised declaration
     
     Set tmrSampler = Nothing
-    Set tmrSampler = New_c.Timer(100, mTicking) ' first interval is 1/10th of a second, don't change it, triggers an immediate run. Correct sampling interval read later
+    Set tmrSampler = New_c.Timer(100, True) ' first interval is 1/10th of a second, don't change it, triggers an immediate run. Correct sampling interval read later
     tmrSampler.Enabled = True
    
     Set tmrPressureDrop = Nothing
@@ -557,7 +557,7 @@ Private Sub myStatusProc()
             End If
         End If
         mWeHaveData = False
-        SamplerEnabled = False
+        SamplerEnabled = True
         'tmrSampler.Enabled = True
         Exit Sub ' Return
     End If
@@ -2929,7 +2929,7 @@ End Property
 ' Purpose   :
 '---------------------------------------------------------------------------------------
 '
-Public Property Get TemperatureValue() As Boolean
+Public Property Get TemperatureValue() As Single
    
     On Error GoTo TemperatureValueGet_Error
 
@@ -2949,7 +2949,7 @@ End Property
 ' Purpose   :
 '---------------------------------------------------------------------------------------
 '
-Public Property Let TemperatureValue(ByVal newValue As Boolean)
+Public Property Let TemperatureValue(ByVal newValue As Single)
     
     On Error GoTo TemperatureValueLet_Error
 

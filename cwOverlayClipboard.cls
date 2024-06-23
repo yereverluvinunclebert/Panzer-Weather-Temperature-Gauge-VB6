@@ -35,7 +35,7 @@ Private WithEvents W As cWidgetBase
 Attribute W.VB_VarHelpID = -1
 
 
-Private SDeg As Double
+'Private SDeg As Double
 
 
 Private mLocked As Boolean ' property Locked

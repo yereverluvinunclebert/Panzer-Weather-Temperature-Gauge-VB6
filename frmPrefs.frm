@@ -4286,7 +4286,8 @@ Private Sub adjustPrefsControls()
     txtDblClickCommand.Text = PzGDblClickCommand
     txtOpenFile.Text = PzGOpenFile
     txtDefaultEditor.Text = PzGDefaultEditor
-    
+    lblGitHub.Caption = "You can find the code for the Panzer Weather Gauges on github, visit by double-clicking this link https://github.com/yereverluvinunclebert/Panzer-Weather-Temperature-Gauge-VB6"
+  
      ' fonts tab
     If PzGPrefsFont <> vbNullString Then
         txtPrefsFont.Text = PzGPrefsFont
@@ -4950,7 +4951,33 @@ Private Sub imgGeneral_MouseUp(Button As Integer, Shift As Integer, X As Single,
     
     Call picButtonMouseUpEvent("general", imgGeneral, imgGeneralClicked, fraGeneral, fraGeneralButton) ' was imgGeneralMouseUpEvent
 End Sub
+'---------------------------------------------------------------------------------------
+' Procedure : lblGitHub_dblClick
+' Author    : beededea
+' Date      : 14/08/2023
+' Purpose   :
+'---------------------------------------------------------------------------------------
+'
+Private Sub lblGitHub_dblClick()
+    Dim answer As VbMsgBoxResult: answer = vbNo
+    Dim answerMsg As String: answerMsg = vbNullString
+    
+    On Error GoTo lblGitHub_dblClick_Error
 
+    answer = vbYes
+    answerMsg = "This option opens a browser window and take you straight to Github. Proceed?"
+    answer = msgBoxA(answerMsg, vbExclamation + vbYesNo, "Proceed to Github? ", True, "lblGitHubDblClick")
+    If answer = vbYes Then
+       Call ShellExecute(Me.hwnd, "Open", "https://github.com/yereverluvinunclebert/Panzer-Weather-Temperature-Gauge-VB6", vbNullString, App.path, 1)
+    End If
+
+   On Error GoTo 0
+   Exit Sub
+
+lblGitHub_dblClick_Error:
+
+    MsgBox "Error " & Err.Number & " (" & Err.Description & ") in procedure lblGitHub_dblClick of Form panzerPrefs"
+End Sub
 
 
 Private Sub lblGitHub_MouseMove(Button As Integer, Shift As Integer, X As Single, Y As Single)

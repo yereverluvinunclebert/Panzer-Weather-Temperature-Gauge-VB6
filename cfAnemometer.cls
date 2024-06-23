@@ -619,10 +619,10 @@ End Sub
 Public Sub anemoAdjustZoom(ByVal NewZoom As Single)
    On Error GoTo anemoAdjustZoom_Error
 
-      FZ = NewZoom
-      If FZ < 0.05 Then FZ = 0.05 Else If FZ > 3 Then FZ = 3 'keep FZ within a sane ZoomInterval
-      anemometerGaugeForm.WidgetRoot.Zoom = FZ '* anemometerGaugeForm.WidgetRoot.CurrentMonitor.Zoom '<-- if the multiplicator is activated, we'd have DPI-awareness on high-res monitors
-      anemometerGaugeForm.Move anemometerGaugeForm.Left, anemometerGaugeForm.Top, PSDWidth * anemometerGaugeForm.WidgetRoot.Zoom, PSDHeight * anemometerGaugeForm.WidgetRoot.Zoom
+    FZ = NewZoom
+    If FZ < 0.05 Then FZ = 0.05 Else If FZ > 3 Then FZ = 3 'keep FZ within a sane ZoomInterval
+    anemometerGaugeForm.WidgetRoot.Zoom = FZ '* anemometerGaugeForm.WidgetRoot.CurrentMonitor.Zoom '<-- if the multiplicator is activated, we'd have DPI-awareness on high-res monitors
+    anemometerGaugeForm.Move anemometerGaugeForm.Left, anemometerGaugeForm.Top, PSDWidth * anemometerGaugeForm.WidgetRoot.Zoom, PSDHeight * anemometerGaugeForm.WidgetRoot.Zoom
       
     ' when resized from the gauge scroll up/down it needs to write it back so the size is correct when prefs opened.
     PzGAnemometerGaugeSize = LTrim$(Str$(NewZoom * 100))
