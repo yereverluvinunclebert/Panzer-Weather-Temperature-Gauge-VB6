@@ -285,8 +285,7 @@ COPY OLEGUIDS.TLB %SystemRoot%\System32\
 
 In the VB6 IDE - project - references - browse - select the OLEGuids.tlb
 
-![prefs-about](https://github.com/user-attachments/assets/199ba29a-1a64-46ac-8c79-a1e319ae909f)
-
+![prefs-about](https://github.com/user-attachments/assets/33f82d29-f894-418c-a0f6-20b4c931df53)
 
 - SETUP.EXE - The program is currently distributed using setup2go, a very useful
   and comprehensive installer program that builds a .exe installer. Youll have to
