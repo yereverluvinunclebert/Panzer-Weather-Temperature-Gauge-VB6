@@ -11,6 +11,12 @@ Begin VB.Form frmTimer
    ScaleWidth      =   4680
    StartUpPosition =   3  'Windows Default
    Visible         =   0   'False
+   Begin VB.Timer sleepTimer 
+      Interval        =   3000
+      Left            =   120
+      Tag             =   "stores and compares the last time to see if the PC has slept"
+      Top             =   1590
+   End
    Begin VB.Timer settingsTimer 
       Enabled         =   0   'False
       Interval        =   6000
@@ -177,4 +183,5 @@ settingsTimer_Timer_Error:
           End If
     End With
 End Sub
+
 

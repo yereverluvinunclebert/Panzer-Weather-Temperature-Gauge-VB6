@@ -837,8 +837,13 @@ Private Sub tmrSleepTester_TimerCode()
         
         WeatherMeteo.GetMetar = True
         
-        fAnemometer.anemometerGaugeForm.Widgets("housing/startbutton").Widget.Alpha = 0
+        fAnemometer.anemometerGaugeForm.Widgets("housing/startbutton").Widget.Alpha = 0 ' visual indicator that a sleep has been handled
+        
+        fTemperature.temperatureGaugeForm.Refresh
         fAnemometer.anemometerGaugeForm.Refresh
+        fHumidity.humidityGaugeForm.Refresh
+        fBarometer.barometerGaugeForm.Refresh
+        fClipB.clipBForm.Refresh
         
         ' trigger another poll 2.5 seconds after the system has awoken to give it time to wake up and re-poll!
         tmrSampler.Interval = 2500 ' this abnormal interval will be reset to the sampling interval by the timer itself
