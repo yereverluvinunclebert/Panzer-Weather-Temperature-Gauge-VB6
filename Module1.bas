@@ -1802,7 +1802,7 @@ Public Sub makeVisibleFormElements()
 
     monitorCount = fGetMonitorCount
 '    If monitorCount > 1 Then
-'        Call adjustFormPositionToCorrectMonitor(fTemperature.temperatureGaugeForm.hwnd, Val(PzGTemperatureFormHighDpiXPos), Val(PzGTemperatureFormHighDpiYPos))
+'        Call SetFormOnMonitor(fTemperature.temperatureGaugeForm.hwnd, Val(PzGTemperatureFormHighDpiXPos), Val(PzGTemperatureFormHighDpiYPos))
 '    Else
 
     'End If
