@@ -701,7 +701,8 @@ Private Sub mnuRefreshMetar_Click()
     Dim answerMsg  As String: answerMsg = vbNullString
     
     If WeatherMeteo.Ticking = True Then
-        WeatherMeteo.GetMetar = True ' trigger METAR get with new ICAO code
+         'WeatherMeteo.GetMetar = True
+        Call WeatherMeteo.getData ' trigger METAR get with new ICAO code
         answerMsg = "Done. METAR request issued."
         answer = msgBoxA(answerMsg, vbOKOnly + vbExclamation, "Refresh METAR Information", True, "mnuRefreshMetarClick")
     Else

@@ -46,7 +46,7 @@ Private mTemperatureValue As Single ' property Ticking
 Public Event OnChange(ByVal wehavedata As Boolean)
 
 
-Private myMSXML As MSXML2.XMLHTTP
+Private XMLHttpRequest As MSXML2.XMLHTTP
 'Private weHaveData As Boolean
 
 Private icaoLocation1 As String
@@ -66,7 +66,6 @@ Private strTimeThen As Date
 '
 Private Sub Class_Initialize()
     
-    
     Dim icaoToFind As String: icaoToFind = vbNullString
     Dim fullIcaoLocation As String: fullIcaoLocation = vbNullString
     Dim searchArray() As String
@@ -81,7 +80,7 @@ Private Sub Class_Initialize()
     Set sunriseSunset = New cwSunriseSunset 'initialised declaration
     
     Set tmrSampler = Nothing
-    Set tmrSampler = New_c.Timer(100, True) ' first interval is 1/10th of a second, don't change it, triggers an immediate run. Correct sampling interval read later
+    Set tmrSampler = New_c.Timer(5000, True) ' first interval is 1 second, don't change it, triggers an immediate run. Correct sampling interval read later
     tmrSampler.Enabled = True
    
     Set tmrPressureDrop = Nothing
@@ -89,7 +88,7 @@ Private Sub Class_Initialize()
     tmrPressureDrop.Enabled = True
     
     Set tmrAsyncResponse = Nothing
-    Set tmrAsyncResponse = New_c.Timer(100, False)
+    Set tmrAsyncResponse = New_c.Timer(1000, False)
     
     Set tmrSleepTester = Nothing
     Set tmrSleepTester = New_c.Timer(2500, True)  ' two seconds, should start automatically but it doesn't
@@ -144,8 +143,9 @@ Public Property Let samplingInterval(ByVal newValue As Long)
 
     If mSamplingInterval <> newValue Then mSamplingInterval = newValue Else Exit Property
     
-    If tmrSampler.Interval = 100 Then WeatherMeteo.GetMetar = True ' allows first early run, interval is then reset
-    
+   ' If tmrSampler.Interval = 5000 Then WeatherMeteo.GetMetar = True ' allows first early run, interval is then reset
+   
+   If mSamplingInterval = 0 Then mSamplingInterval = 5
     tmrSampler.Interval = Val(mSamplingInterval) * 1000
     
     On Error GoTo 0
@@ -245,51 +245,51 @@ TestPressureDropLet_Error:
 End Property
 
 
-'---------------------------------------------------------------------------------------
-' Property  : GetMetar
-' Author    :
-' Date      : 09/05/2023
-' Purpose   :
-'---------------------------------------------------------------------------------------
+''---------------------------------------------------------------------------------------
+'' Property  : GetMetar
+'' Author    :
+'' Date      : 09/05/2023
+'' Purpose   :
+''---------------------------------------------------------------------------------------
+''
+'Public Property Let GetMetar(ByVal newValue As Boolean)
 '
-Public Property Let GetMetar(ByVal newValue As Boolean)
-
-    On Error GoTo GetMetarLet_Error
-
-    'If mGetMetar <> newValue Then mGetMetar = newValue Else Exit Property
-    
-    Call getData
-
-    mGetMetar = False
-    
-   On Error GoTo 0
-   Exit Property
-
-GetMetarLet_Error:
-
-    MsgBox "Error " & Err.Number & " (" & Err.Description & ") in Property GetMetar of Class Module cwoverlaytemp"
-End Property
-
-
-'---------------------------------------------------------------------------------------
-' Property : GetMetar
-' Author    : Dean Beedell (yereverluvinunclebert)
-' Date      : 17/05/2023
-' Purpose   :
-'---------------------------------------------------------------------------------------
+'    On Error GoTo GetMetarLet_Error
 '
-Public Property Get GetMetar() As Boolean
-   On Error GoTo GetMetarGet_Error
-
-   GetMetar = mGetMetar
-
-   On Error GoTo 0
-   Exit Property
-
-GetMetarGet_Error:
-
-    MsgBox "Error " & Err.Number & " (" & Err.Description & ") in Property GetMetar of Class Module cwoverlaytemp"
-End Property
+'    If mGetMetar <> newValue Then mGetMetar = newValue Else Exit Property
+'
+'    call WeatherMeteo.getdata
+'
+'    mGetMetar = False
+'
+'   On Error GoTo 0
+'   Exit Property
+'
+'GetMetarLet_Error:
+'
+'    MsgBox "Error " & Err.Number & " (" & Err.Description & ") in Property GetMetar of Class Module cwoverlaytemp"
+'End Property
+'
+'
+''---------------------------------------------------------------------------------------
+'' Property : GetMetar
+'' Author    : Dean Beedell (yereverluvinunclebert)
+'' Date      : 17/05/2023
+'' Purpose   :
+''---------------------------------------------------------------------------------------
+''
+'Public Property Get GetMetar() As Boolean
+'   On Error GoTo GetMetarGet_Error
+'
+'   GetMetar = mGetMetar
+'
+'   On Error GoTo 0
+'   Exit Property
+'
+'GetMetarGet_Error:
+'
+'    MsgBox "Error " & Err.Number & " (" & Err.Description & ") in Property GetMetar of Class Module cwoverlaytemp"
+'End Property
 
 Private Sub tmrPressureDrop_Timer()
     Call TestPressureDropRoutine
@@ -386,25 +386,21 @@ End Sub
 ' Author: Dean Beedell (yereverluvinunclebert)
 ' Date: 26/01/2024
 ' ----------------------------------------------------------------
-Private Sub getData()
+Public Sub getData()
 
     Dim icaoToFind As String: icaoToFind = vbNullString
     Dim thisURL As String: thisURL = vbNullString
-    'Dim thisFile As String: thisFile = vbNullString
     
     On Error GoTo getData_Error
     
     icaoToFind = gblIcao ' eg. "EGSH"
     thisURL = "https://aviationweather.gov/api/data/dataserver?requestType=retrieve&dataSource=metars&stationString=" & icaoToFind & "&hoursBeforeNow=6&format=xml&mostRecent=true"
     
-    'thisFile = "E:\vb6\Panzer-Weather-Gauges-VB6\test.xml"
-    
-    Set myMSXML = CreateObject("Microsoft.XmlHttp")
-    myMSXML.open "POST", thisURL, True
-   ' myMSXML.open "POST", thisFile, True
-    myMSXML.setRequestHeader "Content-Type", "application/x-www-form-urlencoded"
-    myMSXML.setRequestHeader "User-Agent", "Firefox 3.6.4"
-    myMSXML.send "param1=value2&param2=value2"
+    Set XMLHttpRequest = CreateObject("Microsoft.XmlHttp")
+    XMLHttpRequest.open "POST", thisURL, True
+    XMLHttpRequest.setRequestHeader "Content-Type", "application/x-www-form-urlencoded"
+    XMLHttpRequest.setRequestHeader "User-Agent", "Firefox 3.6.4"
+    XMLHttpRequest.send "param1=value2&param2=value2"
     
     tmrAsyncResponse.Enabled = True
     
@@ -421,22 +417,27 @@ End Sub
 ' Procedure : tmrAsyncResponse_Timer
 ' Author    :
 ' Date      : 30/07/2023
-' Purpose   : to replicate VB6's missing asynch/wait functionality
+' Purpose   : to replicate VB6's missing asynch/wait functionality, this timer only runs subsequent to a data request being initiated.
+'             running on a one second interval
 '---------------------------------------------------------------------------------------
 '
 Private Sub tmrAsyncResponse_Timer()
     
     On Error GoTo tmrAsyncResponse_Timer_Error
     
-    debugFlg = 0
-    
-    Debug.Print myMSXML.readyState
+    Debug.Print XMLHttpRequest.readyState
 
-    If myMSXML.readyState = 4 Then ' asynchronous xml request complete
+    If XMLHttpRequest.readyState = 4 Then ' asynchronous xml request complete
+    
+        ' as soon as the the ready state is complete we stop the response timer
+        tmrAsyncResponse.Enabled = False
         
-        If debugFlg = 1 Then Debug.Print myMSXML.responseText
-        Call myStatusProc
+        ' now we process the found data
+        Call processMetarData
         
+        ' data processed, we remove the XML request and that will reset the readystate
+        If Not XMLHttpRequest Is Nothing Then Set XMLHttpRequest = Nothing
+
     End If
 
    On Error GoTo 0
@@ -448,14 +449,14 @@ tmrAsyncResponse_Timer_Error:
 End Sub
 
 ' ----------------------------------------------------------------
-' Procedure Name: myStatusProc
+' Procedure Name: processMetarData
 ' Purpose: Processes the XML METAR data and assigns to vars
 ' Procedure Kind: Sub
 ' Procedure Access: Private
 ' Author: Dean Beedell (yereverluvinunclebert)
 ' Date: 27/01/2024
 ' ----------------------------------------------------------------
-Private Sub myStatusProc()
+Private Sub processMetarData()
 
     Dim HumidityValue  As Long: HumidityValue = 0
     Dim pressureValue As Double: pressureValue = 0
@@ -512,7 +513,6 @@ Private Sub myStatusProc()
     Dim weekDayDate As String: weekDayDate = vbNullString
     Dim thisTooltip As String: thisTooltip = vbNullString
     
-    
 '    Dim HumidityBackgroundToolTip As String: HumidityBackgroundToolTip = vbNullString
 '    Dim thermometerBackgroundToolTip As String: HumidityBackgroundToolTip = vbNullString
 '    Dim anemometerBackgroundToolTip As String: HumidityBackgroundToolTip = vbNullString
@@ -521,17 +521,20 @@ Private Sub myStatusProc()
     
     Dim weatherIconToolTip As String: weatherIconToolTip = vbNullString
     
-    On Error GoTo myStatusProc_Error
+    On Error GoTo processMetarData_Error
     
     debugFlg = 0
     
+    ' pause both timers whilst the data is processed
     SamplerEnabled = False
-    tmrAsyncResponse.Enabled = False
+    'tmrAsyncResponse.Enabled = False
+    
+    'MsgBox "Obtained METAR data" & ", interval " & tmrAsyncResponse.Interval & " secs"
     
     pressureValue = 0
     
     objxmldoc.async = True
-    objxmldoc.LoadXML (myMSXML.responseText)
+    objxmldoc.LoadXML (XMLHttpRequest.responseText)
     
     ' get the values from the XML data response, the num results should be non-zero
     Set nodeList = objxmldoc.selectNodes("response/data/METAR")
@@ -539,6 +542,7 @@ Private Sub myStatusProc()
     
     Set MetarNode = objxmldoc.selectSingleNode("response/data/METAR") ' There's only the one METAR node
     
+    ' no results found, go on as normal using the sampling interval
     If num_results = 0 Then
         If Val(gblErrorInterval) <> 0 Then
             ' compare last gblLastUpdated to current date time and if that exceeds the error interval then raise an error.
@@ -552,13 +556,15 @@ Private Sub myStatusProc()
                     gblJustAwoken = False
                 Else
                     answerMsg = "1. The source weather feed has been producing no valid data for " & secsDif & " secs. gblJustAwoken = " & gblJustAwoken
-                    answer = msgBoxA(answerMsg, vbOKOnly + vbExclamation, "Poll Warning", True, "myStatusProcPollingWarning")
+                    answer = msgBoxA(answerMsg, vbOKOnly + vbExclamation, "Poll Warning", True, "processMetarDataPollingWarning")
                 End If
             End If
         End If
         mWeHaveData = False
+        
+        ' restart the sampling timer
         SamplerEnabled = True
-        'tmrSampler.Enabled = True
+
         Exit Sub ' Return
     End If
 
@@ -570,47 +576,47 @@ Private Sub myStatusProc()
            ' get the values from the XML data and return strings - the easy stuff first
             
             observation_time = node.selectSingleNode("observation_time").Text
-            If debugFlg = 1 Then Debug.Print ("%myStatusProc - observation_time " + observation_time)
+            If debugFlg = 1 Then Debug.Print ("%processMetarData - observation_time " + observation_time)
             
             raw_text = node.selectSingleNode("raw_text").Text
-            If debugFlg = 1 Then Debug.Print "%myStatusProc - raw_text " & raw_text
+            If debugFlg = 1 Then Debug.Print "%processMetarData - raw_text " & raw_text
             
             station_id = node.selectSingleNode("station_id").Text
-            If debugFlg = 1 Then Debug.Print "%myStatusProc - station_id " & station_id
+            If debugFlg = 1 Then Debug.Print "%processMetarData - station_id " & station_id
             
             temp_c = Int(node.selectSingleNode("temp_c").Text)
-            If debugFlg = 1 Then Debug.Print ("%myStatusProc - temp_c " + temp_c)
+            If debugFlg = 1 Then Debug.Print ("%processMetarData - temp_c " + temp_c)
         
             altim_in_hg = node.selectSingleNode("altim_in_hg").Text
-            If debugFlg = 1 Then Debug.Print ("%myStatusProc - altim_in_hg " + altim_in_hg)
+            If debugFlg = 1 Then Debug.Print ("%processMetarData - altim_in_hg " + altim_in_hg)
         
             dewpoint_c = Int(node.selectSingleNode("dewpoint_c").Text)
-            If debugFlg = 1 Then Debug.Print ("%myStatusProc - dewpoint_c " + dewpoint_c)
+            If debugFlg = 1 Then Debug.Print ("%processMetarData - dewpoint_c " + dewpoint_c)
         
             wind_dir_degrees = node.selectSingleNode("wind_dir_degrees").Text
             overlayAnemoWidget.windDirection = wind_dir_degrees
-            If debugFlg = 1 Then Debug.Print ("%myStatusProc - wind_dir_degrees " + wind_dir_degrees)
+            If debugFlg = 1 Then Debug.Print ("%processMetarData - wind_dir_degrees " + wind_dir_degrees)
         
             wind_speed_kt = node.selectSingleNode("wind_speed_kt").Text
             overlayAnemoWidget.windSpeed = wind_speed_kt
-            If debugFlg = 1 Then Debug.Print ("%myStatusProc - wind_speed_kt " + wind_speed_kt)
+            If debugFlg = 1 Then Debug.Print ("%processMetarData - wind_speed_kt " + wind_speed_kt)
         
             Latitude = node.selectSingleNode("latitude").Text
-            If debugFlg = 1 Then Debug.Print ("%myStatusProc - latitude " + Latitude)
+            If debugFlg = 1 Then Debug.Print ("%processMetarData - latitude " + Latitude)
         
             Longitude = node.selectSingleNode("longitude").Text
-            If debugFlg = 1 Then Debug.Print ("%myStatusProc - longitude " + Longitude)
+            If debugFlg = 1 Then Debug.Print ("%processMetarData - longitude " + Longitude)
             
             visibility_statute_mi = node.selectSingleNode("visibility_statute_mi").Text
-            If debugFlg = 1 Then Debug.Print ("%myStatusProc - visibility_statute_mi " + visibility_statute_mi)
+            If debugFlg = 1 Then Debug.Print ("%processMetarData - visibility_statute_mi " + visibility_statute_mi)
         
             ' the On Error Resume Next above is for the next two optional items that may/may not appear in the returned XML
             
             wx_string = node.selectSingleNode("wx_string").Text
-            If debugFlg = 1 Then Debug.Print ("%myStatusProc - wx_string " + wx_string)
+            If debugFlg = 1 Then Debug.Print ("%processMetarData - wx_string " + wx_string)
         
             precip_in = node.selectSingleNode("precip_in").Text
-            If debugFlg = 1 Then Debug.Print ("%myStatusProc - precip_in " + precip_in)
+            If debugFlg = 1 Then Debug.Print ("%processMetarData - precip_in " + precip_in)
             
             'the first and lowest height cloudbase is the one that really counts but there could be as many as three sky cover reading
             'the highest and lowest need to be reported.
@@ -640,15 +646,15 @@ Private Sub myStatusProc()
                         cloud_base_ft_agl(SkyConditionCounter) = cloudNodeValue
                             
                     End If
-                    If debugFlg = 1 Then Debug.Print ("%myStatusProc - sky_condition, sky_cover " + sky_condition_items(SkyConditionCounter))
-                    If debugFlg = 1 Then Debug.Print ("%myStatusProc - sky_condition, cloud_base_ft_agl " + cloud_base_ft_agl(SkyConditionCounter))
+                    If debugFlg = 1 Then Debug.Print ("%processMetarData - sky_condition, sky_cover " + sky_condition_items(SkyConditionCounter))
+                    If debugFlg = 1 Then Debug.Print ("%processMetarData - sky_condition, cloud_base_ft_agl " + cloud_base_ft_agl(SkyConditionCounter))
                     SkyConditionCounter = SkyConditionCounter + 1
                 Next
             End If
           Next node
    End If
    
-   On Error GoTo myStatusProc_Error ' restart error trapping
+   On Error GoTo processMetarData_Error ' restart error trapping
    
    'Cleanup
    Set nodeList = Nothing
@@ -656,12 +662,12 @@ Private Sub myStatusProc()
        
     'if the station id returned is null then assume the weather information is missing for an unknown reason.
     If (station_id = vbNullString) Then
-        If debugFlg = 1 Then Debug.Print ("%myStatusProc - station_id does not seem to providing any valid data, please select another.")
+        If debugFlg = 1 Then Debug.Print ("%processMetarData - station_id does not seem to providing any valid data, please select another.")
         
         If answer = vbNo Then
             answer = vbYes ' deanieboy prefs
             answerMsg = "Rather weird - The supplied ICAO code " & panzerPrefs.txtIcao.Text & " does not seem to providing any valid data, please select another."""
-            answer = msgBoxA(answerMsg, vbOKOnly, "Polling Warning", True, "myStatusProcStation_id")
+            answer = msgBoxA(answerMsg, vbOKOnly, "Polling Warning", True, "processMetarDataStation_id")
             mWeHaveData = False
             Exit Sub ' return
         End If
@@ -679,6 +685,7 @@ Private Sub myStatusProc()
     ' set temperature
     mTemperatureValue = Val(temp_c)
     
+    ' testing value
     'mTemperatureValue = 40
 
     ' calculate Humidity
@@ -698,7 +705,7 @@ Private Sub myStatusProc()
     sunriseSunset.Longitude = Longitude
     sunriseSunset.Latitude = Latitude
     isday = sunriseSunset.isDayLight
-    If debugFlg = 1 Then Debug.Print ("%myStatusProc - daylight " & isday)
+    If debugFlg = 1 Then Debug.Print ("%processMetarData - daylight " & isday)
         
     ' determine the visibility distance
     visibilityDistance = fGetDistance(visibility_statute_mi, isday)
@@ -730,7 +737,7 @@ Private Sub myStatusProc()
     gblLastUpdated = usableObsTime
     sPutINISetting "Software\PzTemperatureGauge", "lastUpdated", gblLastUpdated, gblSettingsFile
 
-    If (debugFlg = 1) Then Debug.Print ("%myStatusProc - difString " & difString)
+    If (debugFlg = 1) Then Debug.Print ("%processMetarData - difString " & difString)
 
     ' set the hover over tooltips on the gauges
     thisTooltip = setHoverTooltip(precipitationDepth, visibilityDistance, skyClarityString, HumidityValue, mTemperatureValue, pressureValue, weekDayDate, wind_dir_degrees, wind_speed_kt, precip_in, wx_string)
@@ -771,13 +778,15 @@ Private Sub myStatusProc()
     overlayTemperatureWidget.thisTemperature = TemperatureValue
     wehavedata = True
     
+    ' restart the sampling timer now the data has been processed
+    SamplerEnabled = True
     
     On Error GoTo 0
     Exit Sub
 
-myStatusProc_Error:
+processMetarData_Error:
 
-    MsgBox "Error " & Err.Number & " (" & Err.Description & ") in procedure myStatusProc, line " & Erl & "."
+    MsgBox "Error " & Err.Number & " (" & Err.Description & ") in procedure processMetarData, line " & Erl & "."
 
 End Sub
 
@@ -835,7 +844,8 @@ Private Sub tmrSleepTester_TimerCode()
 '        answerMsg = "2. Weather widget has awoken from sleep after " & lngSecondsGap & " seconds. gblJustAwoken = " & gblJustAwoken
 '        answer = msgBoxA(answerMsg, vbExclamation + vbYesNo, "Awoken from sleep", False)
         
-        WeatherMeteo.GetMetar = True
+        'WeatherMeteo.GetMetar = True
+        Call WeatherMeteo.getData
         
         fAnemometer.anemometerGaugeForm.Widgets("housing/startbutton").Widget.Alpha = 0 ' visual indicator that a sleep has been handled
         
@@ -2482,9 +2492,14 @@ Private Sub tmrSampler_Timer()
     On Error GoTo tmrSampler_Timer_Error
     
     ' any abnormal, triggered (non integer) interval will be reset, this is 2.5 secs.
-    If tmrSampler.Interval = 2500 Then tmrSampler.Interval = mSamplingInterval * 1000
     
-    WeatherMeteo.GetMetar = True
+    If mSamplingInterval = 0 Then mSamplingInterval = 5
+    If tmrSampler.Interval = 5000 Then tmrSampler.Interval = mSamplingInterval * 5000
+    
+    'MsgBox " sampling the METAR data, interval " & mSamplingInterval & " secs"
+    
+     'WeatherMeteo.GetMetar = True
+        Call WeatherMeteo.getData
 
    On Error GoTo 0
    Exit Sub

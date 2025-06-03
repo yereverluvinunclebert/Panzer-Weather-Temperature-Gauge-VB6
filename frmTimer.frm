@@ -12,7 +12,7 @@ Begin VB.Form frmTimer
    StartUpPosition =   3  'Windows Default
    Visible         =   0   'False
    Begin VB.Timer sleepTimer 
-      Interval        =   3000
+      Enabled         =   0   'False
       Left            =   120
       Tag             =   "stores and compares the last time to see if the PC has slept"
       Top             =   1590
@@ -35,6 +35,14 @@ Begin VB.Form frmTimer
       Interval        =   5000
       Left            =   90
       Top             =   135
+   End
+   Begin VB.Label Label4 
+      Caption         =   "sleeptimer is NOT used"
+      Height          =   195
+      Left            =   705
+      TabIndex        =   4
+      Top             =   1635
+      Width           =   3645
    End
    Begin VB.Label Label3 
       Caption         =   "Note: this invisible form is also the container for the large 128x128px project icon"
@@ -185,3 +193,23 @@ settingsTimer_Timer_Error:
 End Sub
 
 
+
+'---------------------------------------------------------------------------------------
+' Procedure : sleepTimer_Timer
+' Author    : beededea
+' Date      : 21/04/2021
+' Purpose   : sleepTimer is NOT used. Instead tmrSleepTester_Timer in cwWeatherMeteo.cls controls a multi-gauge refresh
+'---------------------------------------------------------------------------------------
+'
+Private Sub sleepTimer_Timer()
+
+    ' sleepTimer is not used. Instead tmrSleepTester_Timer in cwWeatherMeteo.cls controls a multi-gauge refresh
+
+    On Error GoTo 0
+    Exit Sub
+
+sleepTimer_Timer_Error:
+
+    MsgBox "Error " & Err.Number & " (" & Err.Description & ") in procedure sleepTimer_Timer of Form dock"
+
+End Sub

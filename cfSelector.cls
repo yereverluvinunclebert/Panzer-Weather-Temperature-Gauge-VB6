@@ -349,7 +349,8 @@ Private Sub sbtnselect_mouseDown(ByRef sender As Object)
     End If
     
     ' trigger METAR get with new ICAO code
-    WeatherMeteo.GetMetar = True
+     'WeatherMeteo.GetMetar = True
+        Call WeatherMeteo.getData
     
     SelectorForm.Hide
     

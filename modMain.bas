@@ -213,10 +213,10 @@ Public Sub mainRoutine(ByVal restart As Boolean)
     
     ' run the functions that are ALSO called at reload time elsewhere.
     
-    ' set menu items
+    ' set menu items for all the gauges
     Call setMenuItems
     
-    ' set taskbar entry
+    ' set taskbar entry for all the gauges
     Call setTaskbarEntry
         
     ' set characteristics of widgets on the temperature gauge form
@@ -275,7 +275,8 @@ Public Sub mainRoutine(ByVal restart As Boolean)
     ' configure any global timers here
     Call configureTimers
     
-    'WeatherMeteo.TestPressureDrop = True
+    ' for the first run we are going to call gate data directly, this will attempt to connect and read the METAR data
+    Call WeatherMeteo.getData
 
     'startupFlg = False
         
@@ -1359,6 +1360,7 @@ Public Sub validateInputs()
     If gblStartup = vbNullString Then gblStartup = "1"
 '    If gblPointerAnimate = vbNullString Then gblPointerAnimate = "0"
     If gblSamplingInterval = vbNullString Then gblSamplingInterval = "60"
+    If gblSamplingInterval = "0" Then gblSamplingInterval = "60"
     If gblStormTestInterval = vbNullString Then gblStormTestInterval = "3600"
     If gblErrorInterval = vbNullString Then gblErrorInterval = "3"
     
