@@ -89,13 +89,13 @@ Public Sub InitTemperatureFromPSD(ByRef PSD_FileNameOrByteArray As Variant)
                         
                         'we add layer info. (used in cwOverlayTemp) to the "excluded paths" previously defined in Sub Main,
                         
-                        collTemperaturePSDNonUIElements(.LayerPath(i)) = Array(.LayerX(i), .LayerY(i), Val(PzGOpacity) / 100)  'here we update the so far empty slots with the PSD-offsets
+                        collTemperaturePSDNonUIElements(.LayerPath(i)) = Array(.LayerX(i), .LayerY(i), Val(gblOpacity) / 100)  'here we update the so far empty slots with the PSD-offsets
                 
                     Else 'everything not in the exclude-list will get its own Widget-instance
                         Set W = temperatureGaugeForm.Widgets.Add(New cwAlphaImg, LCase$(.LayerPath(i)), .LayerX(i), .LayerY(i), .LayerWidth(i), .LayerHeight(i)).Widget
                             W.ImageKey = W.key 'W.Key equals ImageList-Key, set above - and LayerPath(i) at this point ... set it also as the ImageKey of our new created Widget
-                        If PzGOpacity < 1 Then
-                            W.Alpha = Val(PzGOpacity) / 100
+                        If gblOpacity < 1 Then
+                            W.Alpha = Val(gblOpacity) / 100
                         Else
                             W.Alpha = 1
                         End If
@@ -107,7 +107,7 @@ Public Sub InitTemperatureFromPSD(ByRef PSD_FileNameOrByteArray As Variant)
                         
                         ' all non-clickable Layer-Widgets will be -1 or "non-hoverable" and "fully click-through"
                         W.HoverColor = -1 ' task: might change this later when new ver or RC6 arrives
-                        If PzGEnableTooltips = "1" Then W.ToolTip = "Ctrl + mouse scrollwheel up/down to resize, you can also drag me to a new position."
+                        If gblEnableTooltips = "1" Then W.ToolTip = "Ctrl + mouse scrollwheel up/down to resize, you can also drag me to a new position."
                         W.MousePointer = IDC_SIZEALL
 
                     End If
@@ -139,33 +139,33 @@ End Sub
 Private Sub temperatureGaugeForm_BubblingEvent(ByRef sender As Object, ByRef EventName As String, ByRef P1 As Variant, ByRef P2 As Variant, ByRef P3 As Variant, ByRef P4 As Variant, ByRef P5 As Variant, ByRef P6 As Variant, ByRef P7 As Variant)
    On Error GoTo temperatureGaugeForm_BubblingEvent_Error
 
-    If PzGIgnoreMouse = "1" Then Exit Sub
+    If gblIgnoreMouse = "1" Then Exit Sub
     
     If EventName = "W_MouseMove" Then
         Select Case LCase$(sender.Widget.key)
             Case "housing/lockbutton"
-                If PzGEnableBalloonTooltips = "1" Then CreateToolTip temperatureGaugeForm.hwnd, "Click me to lock the widget in place. This lock can be released by clicking again on the lock button, or in the preferences. A locking sound will denote the button's operation.", _
+                If gblEnableBalloonTooltips = "1" Then CreateToolTip temperatureGaugeForm.hwnd, "Click me to lock the widget in place. This lock can be released by clicking again on the lock button, or in the preferences. A locking sound will denote the button's operation.", _
                      TTIconInfo, widgetName1 & " Lock Button Help", , , , True
             Case "housing/prefsbutton"
-                If PzGEnableBalloonTooltips = "1" Then CreateToolTip temperatureGaugeForm.hwnd, "Click me to open the preferences utility. All advanced configuration of the widget is performed using the preference utility.", _
+                If gblEnableBalloonTooltips = "1" Then CreateToolTip temperatureGaugeForm.hwnd, "Click me to open the preferences utility. All advanced configuration of the widget is performed using the preference utility.", _
                      TTIconInfo, widgetName1 & " Prefs Button Help", , , , True
             Case "housing/tickbutton"
-                If PzGEnableBalloonTooltips = "1" Then CreateToolTip temperatureGaugeForm.hwnd, "This button is non-functional in this gauge.", _
+                If gblEnableBalloonTooltips = "1" Then CreateToolTip temperatureGaugeForm.hwnd, "This button is non-functional in this gauge.", _
                      TTIconInfo, widgetName1 & " Tick Button Help", , , , True
             Case "housing/switchfacesbutton"
-                If PzGEnableBalloonTooltips = "1" Then CreateToolTip temperatureGaugeForm.hwnd, "Click here to select between different faces showing alternative temperature scales, celsius/fahrenheit or kelvin.", _
+                If gblEnableBalloonTooltips = "1" Then CreateToolTip temperatureGaugeForm.hwnd, "Click here to select between different faces showing alternative temperature scales, celsius/fahrenheit or kelvin.", _
                      TTIconInfo, widgetName1 & " Switch Faces Button Help", , , , True
             Case "housing/stopbutton"
-                If PzGEnableBalloonTooltips = "1" Then CreateToolTip temperatureGaugeForm.hwnd, "This button stops all animated gauge functions for this widget, pointer movement, digital displays &c .", _
+                If gblEnableBalloonTooltips = "1" Then CreateToolTip temperatureGaugeForm.hwnd, "This button stops all animated gauge functions for this widget, pointer movement, digital displays &c .", _
                      TTIconInfo, widgetName1 & " Stop Button Help", , , , True
             Case "housing/startbutton"
-                If PzGEnableBalloonTooltips = "1" Then CreateToolTip temperatureGaugeForm.hwnd, "This button restarts all stopped animated gauge functions for this widget, pointer movement &c .", _
+                If gblEnableBalloonTooltips = "1" Then CreateToolTip temperatureGaugeForm.hwnd, "This button restarts all stopped animated gauge functions for this widget, pointer movement &c .", _
                      TTIconInfo, widgetName1 & " Start Button Help", , , , True
             Case "housing/helpbutton"
-                If PzGEnableBalloonTooltips = "1" Then CreateToolTip temperatureGaugeForm.hwnd, "This button opens the one-page help file for this widget. There is a further detailed CHM help file available from the right-click menu that contains all the information that you need to run this widget.", _
+                If gblEnableBalloonTooltips = "1" Then CreateToolTip temperatureGaugeForm.hwnd, "This button opens the one-page help file for this widget. There is a further detailed CHM help file available from the right-click menu that contains all the information that you need to run this widget.", _
                      TTIconInfo, widgetName1 & " Help Button Help", , , , True
             Case Else
-                If PzGEnableBalloonTooltips = "1" Then CreateToolTip temperatureGaugeForm.hwnd, " " & WeatherMeteo.WeatherDetails _
+                If gblEnableBalloonTooltips = "1" Then CreateToolTip temperatureGaugeForm.hwnd, " " & WeatherMeteo.WeatherDetails _
                     & vbCrLf & "" _
                     & vbCrLf & "Right Click to open the menu and the preferences. CTRL+ Mouse scrollwheel UP/DOWN to resize." _
                     , TTIconInfo, widgetName1 & " METAR summary Information.", , , , True
@@ -192,7 +192,7 @@ Private Sub temperatureGaugeForm_BubblingEvent(ByRef sender As Object, ByRef Eve
     If EventName = "W_MouseUp" Then
         Select Case LCase$(sender.Widget.key)
             Case "housing/prefsbutton"
-                sender.Widget.Alpha = Val(PzGOpacity) / 100
+                sender.Widget.Alpha = Val(gblOpacity) / 100
                 sender.Widget.Refresh
             Case "housing/switchfacesbutton"
                 Call switchfacesbutton_mouseUp(sender)
@@ -259,7 +259,7 @@ Private Sub startbutton_click()
     Call TurnFunctionsOn
 
     fileToPlay = "ting.wav"
-    If PzGEnableSounds = "1" And fFExists(App.path & "\resources\sounds\" & fileToPlay) Then
+    If gblEnableSounds = "1" And fFExists(App.path & "\resources\sounds\" & fileToPlay) Then
         PlaySound App.path & "\resources\sounds\" & fileToPlay, ByVal 0&, SND_FILENAME Or SND_ASYNC
     End If
 
@@ -285,13 +285,13 @@ Private Sub stopbutton_mouseUp(ByRef sender As Object)
    
     On Error GoTo stopbutton_mouseUp_Error
 
-    sender.Widget.Alpha = Val(PzGOpacity) / 100
+    sender.Widget.Alpha = Val(gblOpacity) / 100
     sender.Widget.Refresh
            
     Call SwitchOff
     
     fileToPlay = "stop.wav"
-    If PzGEnableSounds = "1" And fFExists(App.path & "\resources\sounds\" & fileToPlay) Then
+    If gblEnableSounds = "1" And fFExists(App.path & "\resources\sounds\" & fileToPlay) Then
         PlaySound App.path & "\resources\sounds\" & fileToPlay, ByVal 0&, SND_FILENAME Or SND_ASYNC
     End If
 
@@ -361,19 +361,19 @@ Private Sub switchfacesbutton_mouseUp(ByRef sender As Object)
     
     On Error GoTo switchfacesbutton_mouseUp_Error
 
-    sender.Widget.Alpha = Val(PzGOpacity) / 100
+    sender.Widget.Alpha = Val(gblOpacity) / 100
     sender.Widget.Refresh
         
     fileToPlay = "clunk.wav"
     
-    currFace = Val(PzGTemperatureScale)
+    currFace = Val(gblTemperatureScale)
     currFace = currFace + 1
     If currFace > 2 Then currFace = 0
-    PzGTemperatureScale = LTrim$(Str$(currFace))
+    gblTemperatureScale = LTrim$(Str$(currFace))
     
-    overlayTemperatureWidget.thisFace = Val(PzGTemperatureScale)
+    overlayTemperatureWidget.thisFace = Val(gblTemperatureScale)
     
-    If PzGEnableSounds = "1" And fFExists(App.path & "\resources\sounds\" & fileToPlay) Then
+    If gblEnableSounds = "1" And fFExists(App.path & "\resources\sounds\" & fileToPlay) Then
         PlaySound App.path & "\resources\sounds\" & fileToPlay, ByVal 0&, SND_FILENAME Or SND_ASYNC
     End If
    On Error GoTo 0
@@ -397,10 +397,10 @@ Private Sub lockbutton_mouseDown(ByRef sender As Object)
     If overlayTemperatureWidget.Locked = False Then
         sender.Widget.Alpha = 0
     Else
-        sender.Widget.Alpha = Val(PzGOpacity) / 100
+        sender.Widget.Alpha = Val(gblOpacity) / 100
     End If
     sender.Widget.Refresh ' this removes the delay in the lockButton depressing
-    If PzGPreventDraggingTemperature = "1" Then
+    If gblPreventDraggingTemperature = "1" Then
         overlayTemperatureWidget.Locked = False
     Else
         overlayTemperatureWidget.Locked = True
@@ -431,7 +431,7 @@ Private Sub prefsbutton_mouseDown(ByRef sender As Object)
     'Sender.Widget.Visible = False
     sender.Widget.Refresh ' this removes the delay in the Button depressing
     fileToPlay = "winding.wav"
-    If PzGEnableSounds = "1" And fFExists(App.path & "\resources\sounds\" & fileToPlay) Then
+    If gblEnableSounds = "1" And fFExists(App.path & "\resources\sounds\" & fileToPlay) Then
         PlaySound App.path & "\resources\sounds\" & fileToPlay, ByVal 0&, SND_FILENAME Or SND_ASYNC
     End If
    'MsgBox "prefsbutton_mouseDown"
@@ -460,23 +460,23 @@ End Sub
 '
 '    If overlayTemperatureWidget.pointerAnimate = True Then
 '        overlayTemperatureWidget.pointerAnimate = False
-'        sender.Widget.Alpha = Val(PzGOpacity) / 100
-'        PzGPointerAnimate = "0"
+'        sender.Widget.Alpha = Val(gblOpacity) / 100
+'        gblPointerAnimate = "0"
 '    Else
 '        overlayTemperatureWidget.pointerAnimate = True
 '        sender.Widget.Alpha = 0 ' sender is the referring control
-'        PzGPointerAnimate = "1"
+'        gblPointerAnimate = "1"
 '
 '    End If
 '    sender.Widget.Refresh ' this removes the delay in the Button depressing
 '
 '    fileToPlay = "lock.wav"
-'    If PzGEnableSounds = "1" And fFExists(App.path & "\resources\sounds\" & fileToPlay) Then
+'    If gblEnableSounds = "1" And fFExists(App.path & "\resources\sounds\" & fileToPlay) Then
 '        PlaySound App.path & "\resources\sounds\" & fileToPlay, ByVal 0&, SND_FILENAME Or SND_ASYNC
 '    End If
 '
-'    sPutINISetting "Software\PzTemperatureGauge", "pointerAnimate", PzGPointerAnimate, PzGSettingsFile
-'    If panzerPrefs.IsVisible = True Then panzerPrefs.cmbTickSwitchPref.ListIndex = Val(PzGPointerAnimate)
+'    sPutINISetting "Software\PzTemperatureGauge", "pointerAnimate", gblPointerAnimate, gblSettingsFile
+'    If panzerPrefs.IsVisible = True Then panzerPrefs.cmbTickSwitchPref.ListIndex = Val(gblPointerAnimate)
 '
 '   On Error GoTo 0
 '   Exit Sub
@@ -505,11 +505,11 @@ Private Sub temperatureGaugeForm_DblClick()
     
     On Error GoTo temperatureGaugeForm_DblClick_Error
 
-    '    If PzGIgnoreMouse = "1" Then Exit Sub
+    '    If gblIgnoreMouse = "1" Then Exit Sub
 
-    If LTrim$(PzGDblClickCommand) = vbNullString Then Exit Sub
+    If LTrim$(gblDblClickCommand) = vbNullString Then Exit Sub
     
-    thisCommand = PzGDblClickCommand
+    thisCommand = gblDblClickCommand
         
     If InStr(thisCommand, "%userprofile%") Then
         userprof = Environ$("USERPROFILE")
@@ -524,7 +524,7 @@ Private Sub temperatureGaugeForm_DblClick()
     
     If SHIFT_1 = True Then
         SHIFT_1 = False
-        Call ShellExecute(fTemperature.temperatureGaugeForm.hwnd, "Open", PzGOpenFile, vbNullString, App.path, 1)
+        Call ShellExecute(fTemperature.temperatureGaugeForm.hwnd, "Open", gblOpenFile, vbNullString, App.path, 1)
     Else
         Call ShellExecute(fTemperature.temperatureGaugeForm.hwnd, "runas", thisCommand, vbNullString, App.path, 1)
     End If
@@ -601,7 +601,7 @@ Private Sub temperatureGaugeForm_MouseMove(ByRef Button As Integer, ByRef Shift 
    On Error GoTo temperatureGaugeForm_MouseMove_Error
     
     If overlayTemperatureWidget.Locked = True Then Exit Sub
-    If PzGIgnoreMouse = "1" Then Exit Sub
+    If gblIgnoreMouse = "1" Then Exit Sub
 
     If Button = vbLeftButton And Not temperatureGaugeForm.ActiveWidget Is Nothing Then 'Form-Dragging (under certain conditions)
 
@@ -631,7 +631,7 @@ Private Sub temperatureGaugeForm_MouseWheel(ByVal MouseKeys As Long, ByVal Rotat
    
    On Error GoTo temperatureGaugeForm_MouseWheel_Error
 
-    If PzGScrollWheelDirection = "1" Then
+    If gblScrollWheelDirection = "1" Then
         If Rotation > 0 Then
             RotationDirection = 0 - Abs(Rotation)
         Else
@@ -688,16 +688,16 @@ Public Sub tempAdjustZoom(ByVal NewZoom As Single)
     temperatureGaugeForm.Move temperatureGaugeForm.Left, temperatureGaugeForm.Top, PSDWidth * temperatureGaugeForm.WidgetRoot.Zoom, PSDHeight * temperatureGaugeForm.WidgetRoot.Zoom
   
     ' when resized from the gauge scroll up/down it needs to write it back so the size is correct when prefs opened.
-    PzGTemperatureGaugeSize = LTrim$(Str$(NewZoom * 100))
+    gblTemperatureGaugeSize = LTrim$(Str$(NewZoom * 100))
     If panzerPrefs.IsVisible = True Then
         
 '        If panzerPrefs.cmbGaugeType.ListIndex = 0 Then
-            panzerPrefs.sliGaugeSize.Value = Val(PzGTemperatureGaugeSize)
-            sPutINISetting "Software\PzTemperatureGauge", "temperatureGaugeSize", PzGTemperatureGaugeSize, PzGSettingsFile
+            panzerPrefs.sliGaugeSize.Value = Val(gblTemperatureGaugeSize)
+            sPutINISetting "Software\PzTemperatureGauge", "temperatureGaugeSize", gblTemperatureGaugeSize, gblSettingsFile
 '        End If
 '        If panzerPrefs.cmbGaugeType.ListIndex = 1 Then
-'            panzerPrefs.sliGaugeSize.Value = Val(PzGAnemometerGaugeSize)
-'            sPutINISetting "Software\PzAnemometerGauge", "anemometerGaugeSize", PzGAnemometerGaugeSize, PzGSettingsFile
+'            panzerPrefs.sliGaugeSize.Value = Val(gblAnemometerGaugeSize)
+'            sPutINISetting "Software\PzAnemometerGauge", "anemometerGaugeSize", gblAnemometerGaugeSize, gblSettingsFile
 '        End If
     End If
 
@@ -733,7 +733,7 @@ Private Sub temperatureGaugeForm_MouseDown(ByRef Button As Integer, ByRef Shift 
         If panzerPrefs.IsVisible = True Then panzerPrefs.SetFocus
         If fTemperature.temperatureGaugeForm.Visible = True Then fTemperature.temperatureGaugeForm.SetFocus
         
-        If PzGIgnoreMouse = "1" Then Exit Sub
+        If gblIgnoreMouse = "1" Then Exit Sub
         ' do whatever you want with a mouseDown here, not doing anything at the moment but we will...
     End If
 

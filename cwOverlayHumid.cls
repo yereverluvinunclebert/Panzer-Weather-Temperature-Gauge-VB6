@@ -277,12 +277,12 @@ Public Property Let Locked(ByVal newValue As Boolean)
              panzerPrefs.chkPreventDragging.Value = 1
         End If
 
-        PzGPreventDraggingHumidity = "1"
+        gblPreventDraggingHumidity = "1"
         If aspectRatio = "landscape" Then
-            PzGHumidityLandscapeLocked = "1"
+            gblHumidityLandscapeLocked = "1"
             panzerPrefs.cmbLandscapeLocked.ListIndex = 1
         Else
-            PzGHumidityPortraitLocked = "1"
+            gblHumidityPortraitLocked = "1"
             panzerPrefs.cmbPortraitLocked.ListIndex = 1
         End If
             
@@ -294,23 +294,23 @@ Public Property Let Locked(ByVal newValue As Boolean)
              panzerPrefs.chkPreventDragging.Value = 0
         End If
 
-        PzGPreventDraggingHumidity = "0"
+        gblPreventDraggingHumidity = "0"
         If aspectRatio = "landscape" Then
-            PzGHumidityLandscapeLocked = "0"
+            gblHumidityLandscapeLocked = "0"
              panzerPrefs.cmbLandscapeLocked.ListIndex = 0
        Else
-            PzGHumidityPortraitLocked = "0"
+            gblHumidityPortraitLocked = "0"
              panzerPrefs.cmbPortraitLocked.ListIndex = 0
        End If
             
-        fHumidity.humidityGaugeForm.Widgets("housing/lockbutton").Widget.Alpha = Val(PzGOpacity) / 100
+        fHumidity.humidityGaugeForm.Widgets("housing/lockbutton").Widget.Alpha = Val(gblOpacity) / 100
     End If
 
     fHumidity.humidityGaugeForm.Refresh
 
-    sPutINISetting "Software\PzHumidityGauge", "preventDraggingHumidity", PzGPreventDraggingHumidity, PzGSettingsFile
+    sPutINISetting "Software\PzHumidityGauge", "preventDraggingHumidity", gblPreventDraggingHumidity, gblSettingsFile
 
-    If PzGEnableSounds = "1" And fFExists(App.path & "\resources\sounds\" & fileToPlay) Then
+    If gblEnableSounds = "1" And fFExists(App.path & "\resources\sounds\" & fileToPlay) Then
         PlaySound App.path & "\resources\sounds\" & fileToPlay, ByVal 0&, SND_FILENAME Or SND_ASYNC
     End If
 

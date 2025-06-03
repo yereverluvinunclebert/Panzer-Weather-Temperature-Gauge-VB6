@@ -287,168 +287,170 @@ Private Const VER_PLATFORM_WIN32_NT As Long = 2
 ' stored vars read from settings.ini
 '
 ' general
-Public PzGStartup As String
-Public PzGGaugeFunctions As String
-'Public PzGAnimationInterval As String
-'Public PzGPointerAnimate As String
-Public PzGSamplingInterval As String
-Public PzGStormTestInterval As String
-Public PzGErrorInterval As String
-Public PzGAirportsURL As String
+Public gblStartup As String
+Public gblGaugeFunctions As String
+'Public gblAnimationInterval As String
+'Public gblPointerAnimate As String
+Public gblSamplingInterval As String
+Public gblStormTestInterval As String
+Public gblErrorInterval As String
+Public gblAirportsURL As String
 
-Public PzGTemperatureScale As String
-Public PzGPressureScale As String
-Public PzGWindSpeedScale As String
-Public PzGMetricImperial As String
+Public gblTemperatureScale As String
+Public gblPressureScale As String
+Public gblWindSpeedScale As String
+Public gblMetricImperial As String
 
-Public PzGIcao As String
+Public gblIcao As String
 
 
 ' config
-Public PzGEnableTooltips As String
-Public PzGEnablePrefsTooltips As String
-Public PzGEnableBalloonTooltips As String
+Public gblEnableTooltips As String
+Public gblEnablePrefsTooltips As String
+Public gblEnableBalloonTooltips As String
 
-Public PzGShowTaskbar As String
-Public PzGDpiAwareness As String
+Public gblShowTaskbar As String
+Public gblDpiAwareness As String
 
 
-Public PzGClipBSize As String
-Public PzGSelectorSize As String
+Public gblClipBSize As String
+Public gblSelectorSize As String
 
-Public PzGScrollWheelDirection As String
+Public gblScrollWheelDirection As String
 
 ' position
-Public PzGAspectHidden As String
-Public PzGGaugeType As String
+Public gblAspectHidden As String
+Public gblGaugeType As String
 
-Public PzGWidgetPosition As String
+Public gblWidgetPosition As String
 
-Public PzGTemperatureGaugeSize As String
-Public PzGTemperatureLandscapeLocked As String
-Public PzGTemperaturePortraitLocked As String
-Public PzGTemperatureLandscapeLockedHoffset As String
-Public PzGTemperatureLandscapeLockedVoffset As String
-Public PzGTemperaturePortraitLockedHoffset As String
-Public PzGTemperaturePortraitLockedVoffset As String
-Public PzGTemperatureVLocationPerc As String
-Public PzGTemperatureHLocationPerc As String
-Public PzGPreventDraggingTemperature As String
-Public PzGTemperatureFormHighDpiXPos As String
-Public PzGTemperatureFormHighDpiYPos As String
-Public PzGTemperatureFormLowDpiXPos As String
-Public PzGTemperatureFormLowDpiYPos As String
+Public gblTemperatureGaugeSize As String
+Public gblTemperatureLandscapeLocked As String
+Public gblTemperaturePortraitLocked As String
+Public gblTemperatureLandscapeLockedHoffset As String
+Public gblTemperatureLandscapeLockedVoffset As String
+Public gblTemperaturePortraitLockedHoffset As String
+Public gblTemperaturePortraitLockedVoffset As String
+Public gblTemperatureVLocationPerc As String
+Public gblTemperatureHLocationPerc As String
+Public gblPreventDraggingTemperature As String
+Public gblTemperatureFormHighDpiXPos As String
+Public gblTemperatureFormHighDpiYPos As String
+Public gblTemperatureFormLowDpiXPos As String
+Public gblTemperatureFormLowDpiYPos As String
 
-Public PzGAnemometerGaugeSize As String
-Public PzGAnemometerLandscapeLocked As String
-Public PzGAnemometerPortraitLocked As String
-Public PzGAnemometerLandscapeLockedHoffset As String
-Public PzGAnemometerLandscapeLockedVoffset As String
-Public PzGAnemometerPortraitLockedHoffset As String
-Public PzGAnemometerPortraitLockedVoffset As String
-Public PzGAnemometerVLocationPerc As String
-Public PzGAnemometerHLocationPerc As String
-Public PzGPreventDraggingAnemometer As String
-Public PzGAnemometerFormHighDpiXPos As String
-Public PzGAnemometerFormHighDpiYPos As String
-Public PzGAnemometerFormLowDpiXPos As String
-Public PzGAnemometerFormLowDpiYPos As String
+Public gblAnemometerGaugeSize As String
+Public gblAnemometerLandscapeLocked As String
+Public gblAnemometerPortraitLocked As String
+Public gblAnemometerLandscapeLockedHoffset As String
+Public gblAnemometerLandscapeLockedVoffset As String
+Public gblAnemometerPortraitLockedHoffset As String
+Public gblAnemometerPortraitLockedVoffset As String
+Public gblAnemometerVLocationPerc As String
+Public gblAnemometerHLocationPerc As String
+Public gblPreventDraggingAnemometer As String
+Public gblAnemometerFormHighDpiXPos As String
+Public gblAnemometerFormHighDpiYPos As String
+Public gblAnemometerFormLowDpiXPos As String
+Public gblAnemometerFormLowDpiYPos As String
 
-Public PzGHumidityGaugeSize As String
-Public PzGHumidityLandscapeLocked As String
-Public PzGHumidityPortraitLocked As String
-Public PzGHumidityLandscapeLockedHoffset As String
-Public PzGHumidityLandscapeLockedVoffset As String
-Public PzGHumidityPortraitLockedHoffset As String
-Public PzGHumidityPortraitLockedVoffset As String
-Public PzGHumidityVLocationPerc As String
-Public PzGHumidityHLocationPerc As String
-Public PzGPreventDraggingHumidity As String
-Public PzGHumidityFormHighDpiXPos As String
-Public PzGHumidityFormHighDpiYPos As String
-Public PzGHumidityFormLowDpiXPos As String
-Public PzGHumidityFormLowDpiYPos As String
+Public gblHumidityGaugeSize As String
+Public gblHumidityLandscapeLocked As String
+Public gblHumidityPortraitLocked As String
+Public gblHumidityLandscapeLockedHoffset As String
+Public gblHumidityLandscapeLockedVoffset As String
+Public gblHumidityPortraitLockedHoffset As String
+Public gblHumidityPortraitLockedVoffset As String
+Public gblHumidityVLocationPerc As String
+Public gblHumidityHLocationPerc As String
+Public gblPreventDraggingHumidity As String
+Public gblHumidityFormHighDpiXPos As String
+Public gblHumidityFormHighDpiYPos As String
+Public gblHumidityFormLowDpiXPos As String
+Public gblHumidityFormLowDpiYPos As String
 
 
-Public PzGBarometerGaugeSize As String
-Public PzGBarometerLandscapeLocked As String
-Public PzGBarometerPortraitLocked As String
-Public PzGBarometerLandscapeLockedHoffset As String
-Public PzGBarometerLandscapeLockedVoffset As String
-Public PzGBarometerPortraitLockedHoffset As String
-Public PzGBarometerPortraitLockedVoffset As String
-Public PzGBarometerVLocationPerc As String
-Public PzGBarometerHLocationPerc As String
-Public PzGPreventDraggingBarometer As String
-Public PzGBarometerFormHighDpiXPos As String
-Public PzGBarometerFormHighDpiYPos As String
-Public PzGBarometerFormLowDpiXPos As String
-Public PzGBarometerFormLowDpiYPos As String
+Public gblBarometerGaugeSize As String
+Public gblBarometerLandscapeLocked As String
+Public gblBarometerPortraitLocked As String
+Public gblBarometerLandscapeLockedHoffset As String
+Public gblBarometerLandscapeLockedVoffset As String
+Public gblBarometerPortraitLockedHoffset As String
+Public gblBarometerPortraitLockedVoffset As String
+Public gblBarometerVLocationPerc As String
+Public gblBarometerHLocationPerc As String
+Public gblPreventDraggingBarometer As String
+Public gblBarometerFormHighDpiXPos As String
+Public gblBarometerFormHighDpiYPos As String
+Public gblBarometerFormLowDpiXPos As String
+Public gblBarometerFormLowDpiYPos As String
 
 ' sounds
-Public PzGEnableSounds  As String
+Public gblEnableSounds  As String
 
 ' development
-Public PzGDebug As String
-Public PzGDblClickCommand As String
-Public PzGOpenFile As String
-Public PzGDefaultEditor As String
+Public gblDebug As String
+Public gblDblClickCommand As String
+Public gblOpenFile As String
+Public gblDefaultEditor As String
+Public gblDefaultVB6Editor As String
+Public gblDefaultTBEditor As String
        
 ' font
-Public PzGTempFormFont As String
-Public PzGPrefsFont As String
-Public PzGPrefsFontSizeHighDPI As String
-Public PzGPrefsFontSizeLowDPI As String
-Public PzGPrefsFontItalics  As String
-Public PzGPrefsFontColour  As String
+Public gblTempFormFont As String
+Public gblPrefsFont As String
+Public gblPrefsFontSizeHighDPI As String
+Public gblPrefsFontSizeLowDPI As String
+Public gblPrefsFontItalics  As String
+Public gblPrefsFontColour  As String
 
 ' window
-Public PzGWindowLevel As String
+Public gblWindowLevel As String
 
-Public PzGOpacity  As String
-Public PzGWidgetHidden  As String
-Public PzGHidingTime  As String
-Public PzGIgnoreMouse  As String
-Public PzGFirstTimeRun  As String
+Public gblOpacity  As String
+Public gblWidgetHidden  As String
+Public gblHidingTime  As String
+Public gblIgnoreMouse  As String
+Public gblFirstTimeRun  As String
 
 
 
 ' General storage variables declared
-Public PzGSettingsDir As String
-Public PzGSettingsFile As String
+Public gblSettingsDir As String
+Public gblSettingsFile As String
 
-Public PzGTrinketsDir      As String
-Public PzGTrinketsFile      As String
-
-
-Public PzGClipBFormHighDpiXPos As String
-Public PzGClipBFormHighDpiYPos As String
-Public PzGClipBFormLowDpiXPos As String
-Public PzGClipBFormLowDpiYPos As String
-
-Public PzGSelectorFormHighDpiXPos As String
-Public PzGSelectorFormHighDpiYPos As String
-Public PzGSelectorFormLowDpiXPos As String
-Public PzGSelectorFormLowDpiYPos As String
+Public gblTrinketsDir      As String
+Public gblTrinketsFile      As String
 
 
-Public PzGLastSelectedTab As String
-Public PzGSkinTheme As String
-Public PzGUnhide As String
+Public gblClipBFormHighDpiXPos As String
+Public gblClipBFormHighDpiYPos As String
+Public gblClipBFormLowDpiXPos As String
+Public gblClipBFormLowDpiYPos As String
+
+Public gblSelectorFormHighDpiXPos As String
+Public gblSelectorFormHighDpiYPos As String
+Public gblSelectorFormLowDpiXPos As String
+Public gblSelectorFormLowDpiYPos As String
+
+
+Public gblLastSelectedTab As String
+Public gblSkinTheme As String
+Public gblUnhide As String
 
 ' vars stored for positioning the prefs form
-Public PzGPrefsFormHighDpiXPosTwips As String
-Public PzGPrefsFormHighDpiYPosTwips As String
+Public gblPrefsFormHighDpiXPosTwips As String
+Public gblPrefsFormHighDpiYPosTwips As String
 
-Public PzGPrefsFormLowDpiXPosTwips As String
-Public PzGPrefsFormLowDpiYPosTwips As String
+Public gblPrefsFormLowDpiXPosTwips As String
+Public gblPrefsFormLowDpiYPosTwips As String
 
-Public PzGLastUpdated As String
-Public PzGMetarPref As String
+Public gblLastUpdated As String
+Public gblMetarPref As String
 
-Public PzGOldPressureStorage As String
-Public PzGPressureStorageDate As String
-Public PzGCurrentPressureValue As String
+Public gblOldPressureStorage As String
+Public gblPressureStorageDate As String
+Public gblCurrentPressureValue As String
 
 
 
@@ -479,7 +481,7 @@ Public debugFlg As Integer
 Public minutesToHide As Integer
 Public aspectRatio As String
   
-Public oldPzGSettingsModificationTime  As Date
+Public oldgblSettingsModificationTime  As Date
 '------------------------------------------------------ ENDS
 
 '------------------------------------------------------ STARTS
@@ -501,7 +503,7 @@ Private Declare Function OpenFile Lib "kernel32" (ByVal lpFileName As String, _
 Private Declare Function PathFileExists Lib "shlwapi" Alias "PathFileExistsA" (ByVal pszPath As String) As Long
 Private Declare Function PathIsDirectory Lib "shlwapi" Alias "PathIsDirectoryA" (ByVal pszPath As String) As Long
 
-Public PzGWindowLevelWasChanged As Boolean
+Public gblWindowLevelWasChanged As Boolean
 
 '------------------------------------------------------ ENDS
                             
@@ -522,7 +524,7 @@ Public collValidLocations As cCollection
 'Public validLocationStringObj As Variant
 
 Public gblOriginatingForm As String
-
+Public gblCodingEnvironment As String
 Public gblJustAwoken As Boolean
 
 
@@ -592,8 +594,8 @@ Public Function fLicenceState() As Integer
     
     fLicenceState = 0
     ' read the tool's own settings file
-    If fFExists(PzGSettingsFile) Then ' does the tool's own settings.ini exist?
-        slicence = fGetINISetting("Software\PzTemperatureGauge", "licence", PzGSettingsFile)
+    If fFExists(gblSettingsFile) Then ' does the tool's own settings.ini exist?
+        slicence = fGetINISetting("Software\PzTemperatureGauge", "licence", gblSettingsFile)
         ' if the licence state is not already accepted then display the licence form
         If slicence = "1" Then fLicenceState = 1
     End If
@@ -650,7 +652,7 @@ Public Sub setDPIaware()
 '    Cairo.SetDPIAwareness ' for debugging
 '    msgBoxADynamicSizingFlg = True
     
-    If PzGDpiAwareness = "1" Then
+    If gblDpiAwareness = "1" Then
         If Not InIDE Then
             Cairo.SetDPIAwareness ' this way avoids the VB6 IDE shrinking (sadly, VB6 has a high DPI unaware IDE)
             msgBoxADynamicSizingFlg = True
@@ -678,7 +680,7 @@ Public Sub testDPIAndSetInitialAwareness()
     On Error GoTo testDPIAndSetInitialAwareness_Error
 
     If fPixelsPerInchX() > 96 Then ' only DPI aware by default when greater than 'standard'
-        PzGDpiAwareness = "1"
+        gblDpiAwareness = "1"
         Call setDPIaware
     End If
 
@@ -885,6 +887,8 @@ Public Sub addTargetFile(ByVal fieldValue As String, ByRef retFileName As String
         Else
             dialogInitDir = App.path 'start dir, might be "C:\" or so also
         End If
+    Else
+         dialogInitDir = App.path
     End If
     
   With x_OpenFilename
@@ -1504,7 +1508,7 @@ Public Sub aboutClickEvent()
     On Error GoTo aboutClickEvent_Error
     
     fileToPlay = "till.wav"
-    If PzGEnableSounds = "1" And fFExists(App.path & "\resources\sounds\" & fileToPlay) Then
+    If gblEnableSounds = "1" And fFExists(App.path & "\resources\sounds\" & fileToPlay) Then
         PlaySound App.path & "\resources\sounds\" & fileToPlay, ByVal 0&, SND_FILENAME Or SND_ASYNC
     End If
     
@@ -1548,7 +1552,7 @@ Public Sub helpSplash()
     On Error GoTo helpSplash_Error
 
     fileToPlay = "till.wav"
-    If PzGEnableSounds = "1" And fFExists(App.path & "\resources\sounds\" & fileToPlay) Then
+    If gblEnableSounds = "1" And fFExists(App.path & "\resources\sounds\" & fileToPlay) Then
         PlaySound App.path & "\resources\sounds\" & fileToPlay, ByVal 0&, SND_FILENAME Or SND_ASYNC
     End If
 
@@ -1588,7 +1592,7 @@ Public Sub licenceSplash()
     On Error GoTo licenceSplash_Error
 
     fileToPlay = "till.wav"
-    If PzGEnableSounds = "1" And fFExists(App.path & "\resources\sounds\" & fileToPlay) Then
+    If gblEnableSounds = "1" And fFExists(App.path & "\resources\sounds\" & fileToPlay) Then
         PlaySound App.path & "\resources\sounds\" & fileToPlay, ByVal 0&, SND_FILENAME Or SND_ASYNC
     End If
     
@@ -1660,20 +1664,17 @@ End Sub
 '
 Public Sub mnuSupport_ClickEvent()
 
-    
     Dim answer As VbMsgBoxResult: answer = vbNo
-    
     Dim answerMsg As String: answerMsg = vbNullString
 
     On Error GoTo mnuSupport_ClickEvent_Error
-    
     
     answer = vbYes
     answerMsg = "Visiting the support page - this button opens a browser window and connects to our Github issues page where you can send us a support query. Proceed?"
     answer = msgBoxA(answerMsg, vbExclamation + vbYesNo, "Request to Contact Support", True, "mnuSupportClickEvent")
 
     If answer = vbYes Then
-        Call ShellExecute(menuForm.hwnd, "Open", "https://github.com/yereverluvinunclebert/Panzer-Temperature-Gauge-VB6/issues", vbNullString, App.path, 1)
+        Call ShellExecute(menuForm.hwnd, "Open", "https://github.com/yereverluvinunclebert/Panzer-Temperature-Gauge-" & gblCodingEnvironment & "/issues", vbNullString, App.path, 1)
     End If
 
    On Error GoTo 0
@@ -1717,7 +1718,7 @@ End Sub
 Public Sub setMainTooltips()
    On Error GoTo setMainTooltips_Error
 
-    If PzGEnableTooltips = "1" Then
+    If gblEnableTooltips = "1" Then
 
         overlayTemperatureWidget.Widget.ToolTip = vbNullString & vbCrLf & "Use CTRL+mouse scrollwheel up/down to resize."
         helpWidget.Widget.ToolTip = "Click on me to make me go away."
@@ -1770,8 +1771,8 @@ Public Sub ChangeToolTipWidgetDefaultSettings(ByRef My_Widget As cWidgetBase)
 
     With My_Widget
     
-        .FontName = PzGTempFormFont
-        .FontSize = Val(PzGPrefsFontSizeLowDPI)
+        .FontName = gblTempFormFont
+        .FontSize = Val(gblPrefsFontSizeLowDPI)
     
     End With
 
@@ -1802,34 +1803,34 @@ Public Sub makeVisibleFormElements()
 
     monitorCount = fGetMonitorCount
 '    If monitorCount > 1 Then
-'        Call SetFormOnMonitor(fTemperature.temperatureGaugeForm.hwnd, Val(PzGTemperatureFormHighDpiXPos), Val(PzGTemperatureFormHighDpiYPos))
+'        Call SetFormOnMonitor(fTemperature.temperatureGaugeForm.hwnd, Val(gblTemperatureFormHighDpiXPos), Val(gblTemperatureFormHighDpiYPos))
 '    Else
 
     'End If
 
     ' position the temp gauge explicitly using a pixel position or by percentage, we store high and low DPI positions for the explicit positioning.
-    If PzGWidgetPosition = "0" Then
-        If PzGDpiAwareness = "1" Then
-            fTemperature.temperatureGaugeForm.Left = Val(PzGTemperatureFormHighDpiXPos)
-            fTemperature.temperatureGaugeForm.Top = Val(PzGTemperatureFormHighDpiYPos)
+    If gblWidgetPosition = "0" Then
+        If gblDpiAwareness = "1" Then
+            fTemperature.temperatureGaugeForm.Left = Val(gblTemperatureFormHighDpiXPos)
+            fTemperature.temperatureGaugeForm.Top = Val(gblTemperatureFormHighDpiYPos)
         Else
-            fTemperature.temperatureGaugeForm.Left = Val(PzGTemperatureFormLowDpiXPos)
-            fTemperature.temperatureGaugeForm.Top = Val(PzGTemperatureFormLowDpiYPos)
+            fTemperature.temperatureGaugeForm.Left = Val(gblTemperatureFormLowDpiXPos)
+            fTemperature.temperatureGaugeForm.Top = Val(gblTemperatureFormLowDpiYPos)
         End If
     Else ' by percentage (tablet)
-        fTemperature.temperatureGaugeForm.Left = screenWidthPixels * (PzGTemperatureHLocationPerc / 100)
-        fTemperature.temperatureGaugeForm.Top = screenHeightPixels * (PzGTemperatureVLocationPerc / 100)
+        fTemperature.temperatureGaugeForm.Left = screenWidthPixels * (gblTemperatureHLocationPerc / 100)
+        fTemperature.temperatureGaugeForm.Top = screenHeightPixels * (gblTemperatureVLocationPerc / 100)
     End If
     fTemperature.temperatureGaugeForm.Show
     
 
     ' position the clipboard
-    If PzGDpiAwareness = "1" Then
-        fClipB.clipBForm.Left = Val(PzGClipBFormHighDpiXPos)
-        fClipB.clipBForm.Top = Val(PzGClipBFormHighDpiYPos)
+    If gblDpiAwareness = "1" Then
+        fClipB.clipBForm.Left = Val(gblClipBFormHighDpiXPos)
+        fClipB.clipBForm.Top = Val(gblClipBFormHighDpiYPos)
     Else
-        fClipB.clipBForm.Left = Val(PzGClipBFormLowDpiXPos)
-        fClipB.clipBForm.Top = Val(PzGClipBFormLowDpiYPos)
+        fClipB.clipBForm.Left = Val(gblClipBFormLowDpiXPos)
+        fClipB.clipBForm.Top = Val(gblClipBFormLowDpiYPos)
     End If
     fClipB.clipBForm.Show
     
@@ -1837,58 +1838,58 @@ Public Sub makeVisibleFormElements()
     fSelector.SelectorForm.Width = 1000
     fSelector.SelectorForm.Height = 800
     
-    If PzGDpiAwareness = "1" Then
-        fSelector.SelectorForm.Left = Val(PzGSelectorFormHighDpiXPos)
-        fSelector.SelectorForm.Top = Val(PzGSelectorFormHighDpiYPos)
+    If gblDpiAwareness = "1" Then
+        fSelector.SelectorForm.Left = Val(gblSelectorFormHighDpiXPos)
+        fSelector.SelectorForm.Top = Val(gblSelectorFormHighDpiYPos)
     Else
-        fSelector.SelectorForm.Left = Val(PzGSelectorFormLowDpiXPos)
-        fSelector.SelectorForm.Top = Val(PzGSelectorFormLowDpiYPos)
+        fSelector.SelectorForm.Left = Val(gblSelectorFormLowDpiXPos)
+        fSelector.SelectorForm.Top = Val(gblSelectorFormLowDpiYPos)
     End If
 
     ' position the anemometer gauge explicitly by px position
-    If PzGWidgetPosition = "0" Then
-        If PzGDpiAwareness = "1" Then
-            fAnemometer.anemometerGaugeForm.Left = Val(PzGAnemometerFormHighDpiXPos)
-            fAnemometer.anemometerGaugeForm.Top = Val(PzGAnemometerFormHighDpiYPos)
+    If gblWidgetPosition = "0" Then
+        If gblDpiAwareness = "1" Then
+            fAnemometer.anemometerGaugeForm.Left = Val(gblAnemometerFormHighDpiXPos)
+            fAnemometer.anemometerGaugeForm.Top = Val(gblAnemometerFormHighDpiYPos)
         Else
-            fAnemometer.anemometerGaugeForm.Left = Val(PzGAnemometerFormLowDpiXPos)
-            fAnemometer.anemometerGaugeForm.Top = Val(PzGAnemometerFormLowDpiYPos)
+            fAnemometer.anemometerGaugeForm.Left = Val(gblAnemometerFormLowDpiXPos)
+            fAnemometer.anemometerGaugeForm.Top = Val(gblAnemometerFormLowDpiYPos)
         End If
     Else ' by percentage (tablet)
-        fAnemometer.anemometerGaugeForm.Left = screenWidthPixels * (PzGAnemometerHLocationPerc / 100)
-        fAnemometer.anemometerGaugeForm.Top = screenHeightPixels * (PzGAnemometerVLocationPerc / 100)
+        fAnemometer.anemometerGaugeForm.Left = screenWidthPixels * (gblAnemometerHLocationPerc / 100)
+        fAnemometer.anemometerGaugeForm.Top = screenHeightPixels * (gblAnemometerVLocationPerc / 100)
     End If
     fAnemometer.anemometerGaugeForm.Show
 
 
     ' position the Humidity gauge explicitly by px position
-    If PzGWidgetPosition = "0" Then
-        If PzGDpiAwareness = "1" Then
-            fHumidity.humidityGaugeForm.Left = Val(PzGHumidityFormHighDpiXPos)
-            fHumidity.humidityGaugeForm.Top = Val(PzGHumidityFormHighDpiYPos)
+    If gblWidgetPosition = "0" Then
+        If gblDpiAwareness = "1" Then
+            fHumidity.humidityGaugeForm.Left = Val(gblHumidityFormHighDpiXPos)
+            fHumidity.humidityGaugeForm.Top = Val(gblHumidityFormHighDpiYPos)
         Else
-            fHumidity.humidityGaugeForm.Left = Val(PzGHumidityFormLowDpiXPos)
-            fHumidity.humidityGaugeForm.Top = Val(PzGHumidityFormLowDpiYPos)
+            fHumidity.humidityGaugeForm.Left = Val(gblHumidityFormLowDpiXPos)
+            fHumidity.humidityGaugeForm.Top = Val(gblHumidityFormLowDpiYPos)
         End If
     Else ' by percentage (tablet)
-        fHumidity.humidityGaugeForm.Left = screenWidthPixels * (PzGHumidityHLocationPerc / 100)
-        fHumidity.humidityGaugeForm.Top = screenHeightPixels * (PzGHumidityVLocationPerc / 100)
+        fHumidity.humidityGaugeForm.Left = screenWidthPixels * (gblHumidityHLocationPerc / 100)
+        fHumidity.humidityGaugeForm.Top = screenHeightPixels * (gblHumidityVLocationPerc / 100)
     End If
     fHumidity.humidityGaugeForm.Show
     
     
     ' position the Barometer gauge explicitly by px position
-    If PzGWidgetPosition = "0" Then
-        If PzGDpiAwareness = "1" Then
-            fBarometer.barometerGaugeForm.Left = Val(PzGBarometerFormHighDpiXPos)
-            fBarometer.barometerGaugeForm.Top = Val(PzGBarometerFormHighDpiYPos)
+    If gblWidgetPosition = "0" Then
+        If gblDpiAwareness = "1" Then
+            fBarometer.barometerGaugeForm.Left = Val(gblBarometerFormHighDpiXPos)
+            fBarometer.barometerGaugeForm.Top = Val(gblBarometerFormHighDpiYPos)
         Else
-            fBarometer.barometerGaugeForm.Left = Val(PzGBarometerFormLowDpiXPos)
-            fBarometer.barometerGaugeForm.Top = Val(PzGBarometerFormLowDpiYPos)
+            fBarometer.barometerGaugeForm.Left = Val(gblBarometerFormLowDpiXPos)
+            fBarometer.barometerGaugeForm.Top = Val(gblBarometerFormLowDpiYPos)
         End If
     Else ' by percentage (tablet)
-        fBarometer.barometerGaugeForm.Left = screenWidthPixels * (PzGBarometerHLocationPerc / 100)
-        fBarometer.barometerGaugeForm.Top = screenHeightPixels * (PzGBarometerVLocationPerc / 100)
+        fBarometer.barometerGaugeForm.Left = screenWidthPixels * (gblBarometerHLocationPerc / 100)
+        fBarometer.barometerGaugeForm.Top = screenHeightPixels * (gblBarometerVLocationPerc / 100)
     End If
     fBarometer.barometerGaugeForm.Show
 
@@ -2088,7 +2089,7 @@ Public Sub mainScreen()
     
     ' check if the widget has a lock for the screen type.
     If aspectRatio = "landscape" Then
-        If PzGAspectHidden = "2" Then
+        If gblAspectHidden = "2" Then
             Debug.Print "Hiding the widget for landscape mode"
             fTemperature.temperatureGaugeForm.Visible = False
         End If
@@ -2096,7 +2097,7 @@ Public Sub mainScreen()
     
     ' check if the widget has a lock for the screen type.
     If aspectRatio = "portrait" Then
-        If PzGAspectHidden = "1" Then
+        If gblAspectHidden = "1" Then
             Debug.Print "Hiding the widget for portrait mode"
             fTemperature.temperatureGaugeForm.Visible = False
         End If
@@ -2134,30 +2135,30 @@ Public Sub mainScreen()
 
     ' calculate the current hlocation in % of the screen
     ' store the current hlocation in % of the screen
-    If PzGWidgetPosition = "1" Then
-        PzGTemperatureHLocationPerc = CStr(fTemperature.temperatureGaugeForm.Left / screenWidthPixels * 100)
-        PzGTemperatureVLocationPerc = CStr(fTemperature.temperatureGaugeForm.Top / screenHeightPixels * 100)
+    If gblWidgetPosition = "1" Then
+        gblTemperatureHLocationPerc = CStr(fTemperature.temperatureGaugeForm.Left / screenWidthPixels * 100)
+        gblTemperatureVLocationPerc = CStr(fTemperature.temperatureGaugeForm.Top / screenHeightPixels * 100)
     End If
     
      ' calculate the current hlocation in % of the screen
     ' store the current hlocation in % of the screen
-    If PzGWidgetPosition = "1" Then
-        PzGAnemometerHLocationPerc = CStr(fAnemometer.anemometerGaugeForm.Left / screenWidthPixels * 100)
-        PzGAnemometerVLocationPerc = CStr(fAnemometer.anemometerGaugeForm.Top / screenHeightPixels * 100)
+    If gblWidgetPosition = "1" Then
+        gblAnemometerHLocationPerc = CStr(fAnemometer.anemometerGaugeForm.Left / screenWidthPixels * 100)
+        gblAnemometerVLocationPerc = CStr(fAnemometer.anemometerGaugeForm.Top / screenHeightPixels * 100)
     End If
     
      ' calculate the current hlocation in % of the screen
     ' store the current hlocation in % of the screen
-    If PzGWidgetPosition = "1" Then
-        PzGHumidityHLocationPerc = CStr(fHumidity.humidityGaugeForm.Left / screenWidthPixels * 100)
-        PzGHumidityVLocationPerc = CStr(fHumidity.humidityGaugeForm.Top / screenHeightPixels * 100)
+    If gblWidgetPosition = "1" Then
+        gblHumidityHLocationPerc = CStr(fHumidity.humidityGaugeForm.Left / screenWidthPixels * 100)
+        gblHumidityVLocationPerc = CStr(fHumidity.humidityGaugeForm.Top / screenHeightPixels * 100)
     End If
      
      ' calculate the current hlocation in % of the screen
     ' store the current hlocation in % of the screen
-    If PzGWidgetPosition = "1" Then
-        PzGBarometerHLocationPerc = CStr(fBarometer.barometerGaugeForm.Left / screenWidthPixels * 100)
-        PzGBarometerVLocationPerc = CStr(fBarometer.barometerGaugeForm.Top / screenHeightPixels * 100)
+    If gblWidgetPosition = "1" Then
+        gblBarometerHLocationPerc = CStr(fBarometer.barometerGaugeForm.Left / screenWidthPixels * 100)
+        gblBarometerVLocationPerc = CStr(fBarometer.barometerGaugeForm.Top / screenHeightPixels * 100)
     End If
    
    On Error GoTo 0
@@ -2210,9 +2211,38 @@ End Sub
 Public Sub unloadAllForms(ByVal endItAll As Boolean)
     
    On Error GoTo unloadAllForms_Error
+   
+    ' stop all VB6 timers in the timer form
+    frmTimer.revealWidgetTimer.Enabled = False
+    frmTimer.rotationTimer.Enabled = False
+    frmTimer.settingsTimer.Enabled = False
+    frmTimer.sleepTimer.Enabled = False
+    
+    ' stop all VB6 timers in the prefs form
+    
+    panzerPrefs.themeTimer.Enabled = False
+    panzerPrefs.positionTimer.Enabled = False
+    
+    ' stop RC timers for playing sounds with delay
+    ' these really need to be set to private and properties created to set them enabled or not - later
+    
+    WeatherMeteo.tmrPressureDrop.Enabled = False
+    WeatherMeteo.tmrAsyncResponse.Enabled = False
+    WeatherMeteo.tmrSleepTester.Enabled = False
+    WeatherMeteo.tmrSampler.Enabled = False
+
+    ' the following timers exist but don't need to be stopped as they are only for fading
+
+'    aboutForm.tmrAboutFadeIn.Enabled = False
+    'Private WithEvents tmrAboutFadeOut As cTimer
+    'Private WithEvents tmrHelpFadeIn As cTimer
+    'Private WithEvents tmrHelpFadeOut As cTimer
+    'Private WithEvents tmrLicenceFadeIn As cTimer
+    'Private WithEvents tmrLicenceFadeOut As cTimer
+    'overlayTemperatureWidget.tmrAnimator.Enabled = False
 
     'unload the RC6 widgets on the RC6 forms first
-    
+
     aboutWidget.Widgets.RemoveAll
     helpWidget.Widgets.RemoveAll
     fTemperature.temperatureGaugeForm.Widgets.RemoveAll
@@ -2229,9 +2259,9 @@ Public Sub unloadAllForms(ByVal endItAll As Boolean)
     Unload frmTimer
     Unload menuForm
     
-    ' unload the RC6 forms
+    ' unload the RC6 forms using RC6's own method for killing forms
 
-    fMain.aboutForm.Unload  ' RC6's own method for killing forms
+    fMain.aboutForm.Unload
     fMain.helpForm.Unload
     fTemperature.temperatureGaugeForm.Unload
     fAnemometer.anemometerGaugeForm.Unload
@@ -2314,29 +2344,29 @@ Public Sub saveTemperatureGaugePosition()
 
    On Error GoTo saveTemperatureGaugePosition_Error
 
-    If PzGDpiAwareness = "1" Then
-        PzGTemperatureFormHighDpiXPos = CStr(fTemperature.temperatureGaugeForm.Left) ' saving in pixels
-        PzGTemperatureFormHighDpiYPos = CStr(fTemperature.temperatureGaugeForm.Top)
-        sPutINISetting "Software\PzTemperatureGauge", "temperatureFormHighDpiXPos", PzGTemperatureFormHighDpiXPos, PzGSettingsFile
-        sPutINISetting "Software\PzTemperatureGauge", "temperatureFormHighDpiYPos", PzGTemperatureFormHighDpiYPos, PzGSettingsFile
+    If gblDpiAwareness = "1" Then
+        gblTemperatureFormHighDpiXPos = CStr(fTemperature.temperatureGaugeForm.Left) ' saving in pixels
+        gblTemperatureFormHighDpiYPos = CStr(fTemperature.temperatureGaugeForm.Top)
+        sPutINISetting "Software\PzTemperatureGauge", "temperatureFormHighDpiXPos", gblTemperatureFormHighDpiXPos, gblSettingsFile
+        sPutINISetting "Software\PzTemperatureGauge", "temperatureFormHighDpiYPos", gblTemperatureFormHighDpiYPos, gblSettingsFile
     Else
-        PzGTemperatureFormLowDpiXPos = CStr(fTemperature.temperatureGaugeForm.Left) ' saving in pixels
-        PzGTemperatureFormLowDpiYPos = CStr(fTemperature.temperatureGaugeForm.Top)
-        sPutINISetting "Software\PzTemperatureGauge", "temperatureFormLowDpiXPos", PzGTemperatureFormLowDpiXPos, PzGSettingsFile
-        sPutINISetting "Software\PzTemperatureGauge", "temperatureFormLowDpiYPos", PzGTemperatureFormLowDpiYPos, PzGSettingsFile
+        gblTemperatureFormLowDpiXPos = CStr(fTemperature.temperatureGaugeForm.Left) ' saving in pixels
+        gblTemperatureFormLowDpiYPos = CStr(fTemperature.temperatureGaugeForm.Top)
+        sPutINISetting "Software\PzTemperatureGauge", "temperatureFormLowDpiXPos", gblTemperatureFormLowDpiXPos, gblSettingsFile
+        sPutINISetting "Software\PzTemperatureGauge", "temperatureFormLowDpiYPos", gblTemperatureFormLowDpiYPos, gblSettingsFile
     End If
     
     ' calculate the current hlocation in % of the screen
     ' store the current hlocation in % of the screen
-    If PzGWidgetPosition = "1" Then
-        PzGTemperatureHLocationPerc = CStr(fTemperature.temperatureGaugeForm.Left / screenWidthPixels * 100)
-        PzGTemperatureVLocationPerc = CStr(fTemperature.temperatureGaugeForm.Top / screenHeightPixels * 100)
+    If gblWidgetPosition = "1" Then
+        gblTemperatureHLocationPerc = CStr(fTemperature.temperatureGaugeForm.Left / screenWidthPixels * 100)
+        gblTemperatureVLocationPerc = CStr(fTemperature.temperatureGaugeForm.Top / screenHeightPixels * 100)
     End If
 
     Debug.Print "saveTemperatureGaugePosition"
     ' now save the size
-    PzGTemperatureGaugeSize = CStr(fTemperature.temperatureGaugeForm.WidgetRoot.Zoom * 100)
-    sPutINISetting "Software\PzTemperatureGauge", "temperatureGaugeSize", PzGTemperatureGaugeSize, PzGSettingsFile
+    gblTemperatureGaugeSize = CStr(fTemperature.temperatureGaugeForm.WidgetRoot.Zoom * 100)
+    sPutINISetting "Software\PzTemperatureGauge", "temperatureGaugeSize", gblTemperatureGaugeSize, gblSettingsFile
 
    On Error GoTo 0
    Exit Sub
@@ -2358,28 +2388,28 @@ Public Sub saveAnemometerGaugePosition()
 
    On Error GoTo saveAnemometerGaugePosition_Error
 
-    If PzGDpiAwareness = "1" Then
-        PzGAnemometerFormHighDpiXPos = CStr(fAnemometer.anemometerGaugeForm.Left) ' saving in pixels
-        PzGAnemometerFormHighDpiYPos = CStr(fAnemometer.anemometerGaugeForm.Top)
-        sPutINISetting "Software\PzAnemometerGauge", "anemometerFormHighDpiXPos", PzGAnemometerFormHighDpiXPos, PzGSettingsFile
-        sPutINISetting "Software\PzAnemometerGauge", "anemometerFormHighDpiYPos", PzGAnemometerFormHighDpiYPos, PzGSettingsFile
+    If gblDpiAwareness = "1" Then
+        gblAnemometerFormHighDpiXPos = CStr(fAnemometer.anemometerGaugeForm.Left) ' saving in pixels
+        gblAnemometerFormHighDpiYPos = CStr(fAnemometer.anemometerGaugeForm.Top)
+        sPutINISetting "Software\PzAnemometerGauge", "anemometerFormHighDpiXPos", gblAnemometerFormHighDpiXPos, gblSettingsFile
+        sPutINISetting "Software\PzAnemometerGauge", "anemometerFormHighDpiYPos", gblAnemometerFormHighDpiYPos, gblSettingsFile
     Else
-        PzGAnemometerFormLowDpiXPos = CStr(fAnemometer.anemometerGaugeForm.Left) ' saving in pixels
-        PzGAnemometerFormLowDpiYPos = CStr(fAnemometer.anemometerGaugeForm.Top)
-        sPutINISetting "Software\PzAnemometerGauge", "anemometerFormLowDpiXPos", PzGAnemometerFormLowDpiXPos, PzGSettingsFile
-        sPutINISetting "Software\PzAnemometerGauge", "anemometerFormLowDpiYPos", PzGAnemometerFormLowDpiYPos, PzGSettingsFile
+        gblAnemometerFormLowDpiXPos = CStr(fAnemometer.anemometerGaugeForm.Left) ' saving in pixels
+        gblAnemometerFormLowDpiYPos = CStr(fAnemometer.anemometerGaugeForm.Top)
+        sPutINISetting "Software\PzAnemometerGauge", "anemometerFormLowDpiXPos", gblAnemometerFormLowDpiXPos, gblSettingsFile
+        sPutINISetting "Software\PzAnemometerGauge", "anemometerFormLowDpiYPos", gblAnemometerFormLowDpiYPos, gblSettingsFile
     End If
     
     ' calculate the current hlocation in % of the screen
     ' store the current hlocation in % of the screen
-    If PzGWidgetPosition = "1" Then
-        PzGAnemometerHLocationPerc = CStr(fAnemometer.anemometerGaugeForm.Left / screenWidthPixels * 100)
-        PzGAnemometerVLocationPerc = CStr(fAnemometer.anemometerGaugeForm.Top / screenHeightPixels * 100)
+    If gblWidgetPosition = "1" Then
+        gblAnemometerHLocationPerc = CStr(fAnemometer.anemometerGaugeForm.Left / screenWidthPixels * 100)
+        gblAnemometerVLocationPerc = CStr(fAnemometer.anemometerGaugeForm.Top / screenHeightPixels * 100)
     End If
 
     
-    PzGAnemometerGaugeSize = CStr(fAnemometer.anemometerGaugeForm.WidgetRoot.Zoom * 100)
-    sPutINISetting "Software\PzAnemometerGauge", "anemometerGaugeSize", PzGAnemometerGaugeSize, PzGSettingsFile
+    gblAnemometerGaugeSize = CStr(fAnemometer.anemometerGaugeForm.WidgetRoot.Zoom * 100)
+    sPutINISetting "Software\PzAnemometerGauge", "anemometerGaugeSize", gblAnemometerGaugeSize, gblSettingsFile
 
    On Error GoTo 0
    Exit Sub
@@ -2401,28 +2431,28 @@ Public Sub saveHumidityGaugePosition()
 
    On Error GoTo saveHumidityGaugePosition_Error
 
-    If PzGDpiAwareness = "1" Then
-        PzGHumidityFormHighDpiXPos = CStr(fHumidity.humidityGaugeForm.Left) ' saving in pixels
-        PzGHumidityFormHighDpiYPos = CStr(fHumidity.humidityGaugeForm.Top)
-        sPutINISetting "Software\PzHumidityGauge", "humidityFormHighDpiXPos", PzGHumidityFormHighDpiXPos, PzGSettingsFile
-        sPutINISetting "Software\PzHumidityGauge", "humidityFormHighDpiYPos", PzGHumidityFormHighDpiYPos, PzGSettingsFile
+    If gblDpiAwareness = "1" Then
+        gblHumidityFormHighDpiXPos = CStr(fHumidity.humidityGaugeForm.Left) ' saving in pixels
+        gblHumidityFormHighDpiYPos = CStr(fHumidity.humidityGaugeForm.Top)
+        sPutINISetting "Software\PzHumidityGauge", "humidityFormHighDpiXPos", gblHumidityFormHighDpiXPos, gblSettingsFile
+        sPutINISetting "Software\PzHumidityGauge", "humidityFormHighDpiYPos", gblHumidityFormHighDpiYPos, gblSettingsFile
     Else
-        PzGHumidityFormLowDpiXPos = CStr(fHumidity.humidityGaugeForm.Left) ' saving in pixels
-        PzGHumidityFormLowDpiYPos = CStr(fHumidity.humidityGaugeForm.Top)
-        sPutINISetting "Software\PzHumidityGauge", "humidityFormLowDpiXPos", PzGHumidityFormLowDpiXPos, PzGSettingsFile
-        sPutINISetting "Software\PzHumidityGauge", "humidityFormLowDpiYPos", PzGHumidityFormLowDpiYPos, PzGSettingsFile
+        gblHumidityFormLowDpiXPos = CStr(fHumidity.humidityGaugeForm.Left) ' saving in pixels
+        gblHumidityFormLowDpiYPos = CStr(fHumidity.humidityGaugeForm.Top)
+        sPutINISetting "Software\PzHumidityGauge", "humidityFormLowDpiXPos", gblHumidityFormLowDpiXPos, gblSettingsFile
+        sPutINISetting "Software\PzHumidityGauge", "humidityFormLowDpiYPos", gblHumidityFormLowDpiYPos, gblSettingsFile
     End If
     
     ' calculate the current hlocation in % of the screen
     ' store the current hlocation in % of the screen
-    If PzGWidgetPosition = "1" Then
-        PzGHumidityHLocationPerc = CStr(fHumidity.humidityGaugeForm.Left / screenWidthPixels * 100)
-        PzGHumidityVLocationPerc = CStr(fHumidity.humidityGaugeForm.Top / screenHeightPixels * 100)
+    If gblWidgetPosition = "1" Then
+        gblHumidityHLocationPerc = CStr(fHumidity.humidityGaugeForm.Left / screenWidthPixels * 100)
+        gblHumidityVLocationPerc = CStr(fHumidity.humidityGaugeForm.Top / screenHeightPixels * 100)
     End If
 
     
-    PzGHumidityGaugeSize = CStr(fHumidity.humidityGaugeForm.WidgetRoot.Zoom * 100)
-    sPutINISetting "Software\PzHumidityGauge", "humidityGaugeSize", PzGHumidityGaugeSize, PzGSettingsFile
+    gblHumidityGaugeSize = CStr(fHumidity.humidityGaugeForm.WidgetRoot.Zoom * 100)
+    sPutINISetting "Software\PzHumidityGauge", "humidityGaugeSize", gblHumidityGaugeSize, gblSettingsFile
 
    On Error GoTo 0
    Exit Sub
@@ -2445,28 +2475,28 @@ Public Sub saveBarometerGaugePosition()
 
    On Error GoTo saveBarometerGaugePosition_Error
 
-    If PzGDpiAwareness = "1" Then
-        PzGBarometerFormHighDpiXPos = CStr(fBarometer.barometerGaugeForm.Left) ' saving in pixels
-        PzGBarometerFormHighDpiYPos = CStr(fBarometer.barometerGaugeForm.Top)
-        sPutINISetting "Software\PzBarometerGauge", "barometerFormHighDpiXPos", PzGBarometerFormHighDpiXPos, PzGSettingsFile
-        sPutINISetting "Software\PzBarometerGauge", "barometerFormHighDpiYPos", PzGBarometerFormHighDpiYPos, PzGSettingsFile
+    If gblDpiAwareness = "1" Then
+        gblBarometerFormHighDpiXPos = CStr(fBarometer.barometerGaugeForm.Left) ' saving in pixels
+        gblBarometerFormHighDpiYPos = CStr(fBarometer.barometerGaugeForm.Top)
+        sPutINISetting "Software\PzBarometerGauge", "barometerFormHighDpiXPos", gblBarometerFormHighDpiXPos, gblSettingsFile
+        sPutINISetting "Software\PzBarometerGauge", "barometerFormHighDpiYPos", gblBarometerFormHighDpiYPos, gblSettingsFile
     Else
-        PzGBarometerFormLowDpiXPos = CStr(fBarometer.barometerGaugeForm.Left) ' saving in pixels
-        PzGBarometerFormLowDpiYPos = CStr(fBarometer.barometerGaugeForm.Top)
-        sPutINISetting "Software\PzBarometerGauge", "barometerFormLowDpiXPos", PzGBarometerFormLowDpiXPos, PzGSettingsFile
-        sPutINISetting "Software\PzBarometerGauge", "barometerFormLowDpiYPos", PzGBarometerFormLowDpiYPos, PzGSettingsFile
+        gblBarometerFormLowDpiXPos = CStr(fBarometer.barometerGaugeForm.Left) ' saving in pixels
+        gblBarometerFormLowDpiYPos = CStr(fBarometer.barometerGaugeForm.Top)
+        sPutINISetting "Software\PzBarometerGauge", "barometerFormLowDpiXPos", gblBarometerFormLowDpiXPos, gblSettingsFile
+        sPutINISetting "Software\PzBarometerGauge", "barometerFormLowDpiYPos", gblBarometerFormLowDpiYPos, gblSettingsFile
     End If
     
     ' calculate the current hlocation in % of the screen
     ' store the current hlocation in % of the screen
-    If PzGWidgetPosition = "1" Then
-        PzGBarometerHLocationPerc = CStr(fBarometer.barometerGaugeForm.Left / screenWidthPixels * 100)
-        PzGBarometerVLocationPerc = CStr(fBarometer.barometerGaugeForm.Top / screenHeightPixels * 100)
+    If gblWidgetPosition = "1" Then
+        gblBarometerHLocationPerc = CStr(fBarometer.barometerGaugeForm.Left / screenWidthPixels * 100)
+        gblBarometerVLocationPerc = CStr(fBarometer.barometerGaugeForm.Top / screenHeightPixels * 100)
     End If
 
     
-    PzGBarometerGaugeSize = CStr(fBarometer.barometerGaugeForm.WidgetRoot.Zoom * 100)
-    sPutINISetting "Software\PzBarometerGauge", "barometerGaugeSize", PzGBarometerGaugeSize, PzGSettingsFile
+    gblBarometerGaugeSize = CStr(fBarometer.barometerGaugeForm.WidgetRoot.Zoom * 100)
+    sPutINISetting "Software\PzBarometerGauge", "barometerGaugeSize", gblBarometerGaugeSize, gblSettingsFile
 
    On Error GoTo 0
    Exit Sub
@@ -2487,20 +2517,20 @@ Public Sub saveClipboardGaugePosition()
 
    On Error GoTo saveClipboardGaugePosition_Error
 
-    If PzGDpiAwareness = "1" Then
-        PzGClipBFormHighDpiXPos = CStr(fClipB.clipBForm.Left) ' saving in pixels
-        PzGClipBFormHighDpiYPos = CStr(fClipB.clipBForm.Top)
-        sPutINISetting "Software\PzClipB", "clipBFormHighDpiXPos", PzGClipBFormHighDpiXPos, PzGSettingsFile
-        sPutINISetting "Software\PzClipB", "clipBFormHighDpiYPos", PzGClipBFormHighDpiYPos, PzGSettingsFile
+    If gblDpiAwareness = "1" Then
+        gblClipBFormHighDpiXPos = CStr(fClipB.clipBForm.Left) ' saving in pixels
+        gblClipBFormHighDpiYPos = CStr(fClipB.clipBForm.Top)
+        sPutINISetting "Software\PzClipB", "clipBFormHighDpiXPos", gblClipBFormHighDpiXPos, gblSettingsFile
+        sPutINISetting "Software\PzClipB", "clipBFormHighDpiYPos", gblClipBFormHighDpiYPos, gblSettingsFile
     Else
-        PzGClipBFormLowDpiXPos = CStr(fClipB.clipBForm.Left) ' saving in pixels
-        PzGClipBFormLowDpiYPos = CStr(fClipB.clipBForm.Top)
-        sPutINISetting "Software\PzClipB", "clipBFormLowDpiXPos", PzGClipBFormLowDpiXPos, PzGSettingsFile
-        sPutINISetting "Software\PzClipB", "clipBFormLowDpiYPos", PzGClipBFormLowDpiYPos, PzGSettingsFile
+        gblClipBFormLowDpiXPos = CStr(fClipB.clipBForm.Left) ' saving in pixels
+        gblClipBFormLowDpiYPos = CStr(fClipB.clipBForm.Top)
+        sPutINISetting "Software\PzClipB", "clipBFormLowDpiXPos", gblClipBFormLowDpiXPos, gblSettingsFile
+        sPutINISetting "Software\PzClipB", "clipBFormLowDpiYPos", gblClipBFormLowDpiYPos, gblSettingsFile
     End If
     
-    PzGClipBSize = CStr(fClipB.clipBForm.WidgetRoot.Zoom * 100)
-    sPutINISetting "Software\PzClipB", "clipBSize", PzGClipBSize, PzGSettingsFile
+    gblClipBSize = CStr(fClipB.clipBForm.WidgetRoot.Zoom * 100)
+    sPutINISetting "Software\PzClipB", "clipBSize", gblClipBSize, gblSettingsFile
 
    On Error GoTo 0
    Exit Sub
@@ -2523,20 +2553,20 @@ Public Sub saveSelectorGaugePosition()
 
    On Error GoTo saveSelectorGaugePosition_Error
 
-    If PzGDpiAwareness = "1" Then
-        PzGSelectorFormHighDpiXPos = CStr(fSelector.SelectorForm.Left) ' saving in pixels
-        PzGSelectorFormHighDpiYPos = CStr(fSelector.SelectorForm.Top)
-        sPutINISetting "Software\PzSelector", "selectorFormHighDpiXPos", PzGSelectorFormHighDpiXPos, PzGSettingsFile
-        sPutINISetting "Software\PzSelector", "selectorFormHighDpiYPos", PzGSelectorFormHighDpiYPos, PzGSettingsFile
+    If gblDpiAwareness = "1" Then
+        gblSelectorFormHighDpiXPos = CStr(fSelector.SelectorForm.Left) ' saving in pixels
+        gblSelectorFormHighDpiYPos = CStr(fSelector.SelectorForm.Top)
+        sPutINISetting "Software\PzSelector", "selectorFormHighDpiXPos", gblSelectorFormHighDpiXPos, gblSettingsFile
+        sPutINISetting "Software\PzSelector", "selectorFormHighDpiYPos", gblSelectorFormHighDpiYPos, gblSettingsFile
     Else
-        PzGSelectorFormLowDpiXPos = CStr(fSelector.SelectorForm.Left) ' saving in pixels
-        PzGSelectorFormLowDpiYPos = CStr(fSelector.SelectorForm.Top)
-        sPutINISetting "Software\PzSelector", "selectorFormLowDpiXPos", PzGSelectorFormLowDpiXPos, PzGSettingsFile
-        sPutINISetting "Software\PzSelector", "selectorFormLowDpiYPos", PzGSelectorFormLowDpiYPos, PzGSettingsFile
+        gblSelectorFormLowDpiXPos = CStr(fSelector.SelectorForm.Left) ' saving in pixels
+        gblSelectorFormLowDpiYPos = CStr(fSelector.SelectorForm.Top)
+        sPutINISetting "Software\PzSelector", "selectorFormLowDpiXPos", gblSelectorFormLowDpiXPos, gblSettingsFile
+        sPutINISetting "Software\PzSelector", "selectorFormLowDpiYPos", gblSelectorFormLowDpiYPos, gblSettingsFile
     End If
     
-    PzGSelectorSize = CStr(fSelector.SelectorForm.WidgetRoot.Zoom * 100)
-    sPutINISetting "Software\PzSelector", "SelectorSize", PzGSelectorSize, PzGSettingsFile
+    gblSelectorSize = CStr(fSelector.SelectorForm.WidgetRoot.Zoom * 100)
+    sPutINISetting "Software\PzSelector", "SelectorSize", gblSelectorSize, gblSettingsFile
 
    On Error GoTo 0
    Exit Sub
@@ -2594,35 +2624,35 @@ Public Sub readPrefsPosition()
             
    On Error GoTo readPrefsPosition_Error
 
-    If PzGDpiAwareness = "1" Then
-        PzGPrefsFormHighDpiXPosTwips = fGetINISetting("Software\PzTemperatureGauge", "prefsFormHighDpiXPosTwips", PzGSettingsFile)
-        PzGPrefsFormHighDpiYPosTwips = fGetINISetting("Software\PzTemperatureGauge", "prefsFormHighDpiYPosTwips", PzGSettingsFile)
+    If gblDpiAwareness = "1" Then
+        gblPrefsFormHighDpiXPosTwips = fGetINISetting("Software\PzTemperatureGauge", "prefsFormHighDpiXPosTwips", gblSettingsFile)
+        gblPrefsFormHighDpiYPosTwips = fGetINISetting("Software\PzTemperatureGauge", "prefsFormHighDpiYPosTwips", gblSettingsFile)
         
 '        ' if a current location not stored then position to the middle of the screen
-'        If PzGPrefsFormHighDpiXPosTwips <> vbNullString Then
-'            panzerPrefs.Left = Val(PzGPrefsFormHighDpiXPosTwips)
+'        If gblPrefsFormHighDpiXPosTwips <> vbNullString Then
+'            panzerPrefs.Left = Val(gblPrefsFormHighDpiXPosTwips)
 '        Else
 '            panzerPrefs.Left = screenWidthTwips / 2 - panzerPrefs.Width / 2
 '        End If
 '
-'        If PzGPrefsFormHighDpiYPosTwips <> vbNullString Then
-'            panzerPrefs.Top = Val(PzGPrefsFormHighDpiYPosTwips)
+'        If gblPrefsFormHighDpiYPosTwips <> vbNullString Then
+'            panzerPrefs.Top = Val(gblPrefsFormHighDpiYPosTwips)
 '        Else
 '            panzerPrefs.Top = Screen.Height / 2 - panzerPrefs.Height / 2
 '        End If
     Else
-        PzGPrefsFormLowDpiXPosTwips = fGetINISetting("Software\PzTemperatureGauge", "prefsFormLowDpiXPosTwips", PzGSettingsFile)
-        PzGPrefsFormLowDpiYPosTwips = fGetINISetting("Software\PzTemperatureGauge", "prefsFormLowDpiYPosTwips", PzGSettingsFile)
+        gblPrefsFormLowDpiXPosTwips = fGetINISetting("Software\PzTemperatureGauge", "prefsFormLowDpiXPosTwips", gblSettingsFile)
+        gblPrefsFormLowDpiYPosTwips = fGetINISetting("Software\PzTemperatureGauge", "prefsFormLowDpiYPosTwips", gblSettingsFile)
         
 '        ' if a current location not stored then position to the middle of the screen
-'        If PzGPrefsFormLowDpiXPosTwips <> vbNullString Then
-'            panzerPrefs.Left = Val(PzGPrefsFormLowDpiXPosTwips)
+'        If gblPrefsFormLowDpiXPosTwips <> vbNullString Then
+'            panzerPrefs.Left = Val(gblPrefsFormLowDpiXPosTwips)
 '        Else
 '            panzerPrefs.Left = screenWidthTwips / 2 - panzerPrefs.Width / 2
 '        End If
 '
-'        If PzGPrefsFormLowDpiYPosTwips <> vbNullString Then
-'            panzerPrefs.Top = Val(PzGPrefsFormLowDpiYPosTwips)
+'        If gblPrefsFormLowDpiYPosTwips <> vbNullString Then
+'            panzerPrefs.Top = Val(gblPrefsFormLowDpiYPosTwips)
 '        Else
 '            panzerPrefs.Top = Screen.Height / 2 - panzerPrefs.Height / 2
 '        End If
@@ -2647,20 +2677,20 @@ Public Sub writePrefsPosition()
    On Error GoTo writePrefsPosition_Error
 
     If panzerPrefs.WindowState = vbNormal Then ' when vbMinimised the value = -48000  !
-        If PzGDpiAwareness = "1" Then
-            PzGPrefsFormHighDpiXPosTwips = CStr(panzerPrefs.Left)
-            PzGPrefsFormHighDpiYPosTwips = CStr(panzerPrefs.Top)
+        If gblDpiAwareness = "1" Then
+            gblPrefsFormHighDpiXPosTwips = CStr(panzerPrefs.Left)
+            gblPrefsFormHighDpiYPosTwips = CStr(panzerPrefs.Top)
             
             ' now write those params to the toolSettings.ini
-            sPutINISetting "Software\PzTemperatureGauge", "prefsFormHighDpiXPosTwips", PzGPrefsFormHighDpiXPosTwips, PzGSettingsFile
-            sPutINISetting "Software\PzTemperatureGauge", "prefsFormHighDpiYPosTwips", PzGPrefsFormHighDpiYPosTwips, PzGSettingsFile
+            sPutINISetting "Software\PzTemperatureGauge", "prefsFormHighDpiXPosTwips", gblPrefsFormHighDpiXPosTwips, gblSettingsFile
+            sPutINISetting "Software\PzTemperatureGauge", "prefsFormHighDpiYPosTwips", gblPrefsFormHighDpiYPosTwips, gblSettingsFile
         Else
-            PzGPrefsFormLowDpiXPosTwips = CStr(panzerPrefs.Left)
-            PzGPrefsFormLowDpiYPosTwips = CStr(panzerPrefs.Top)
+            gblPrefsFormLowDpiXPosTwips = CStr(panzerPrefs.Left)
+            gblPrefsFormLowDpiYPosTwips = CStr(panzerPrefs.Top)
             
             ' now write those params to the toolSettings.ini
-            sPutINISetting "Software\PzTemperatureGauge", "prefsFormLowDpiXPosTwips", PzGPrefsFormLowDpiXPosTwips, PzGSettingsFile
-            sPutINISetting "Software\PzTemperatureGauge", "prefsFormLowDpiYPosTwips", PzGPrefsFormLowDpiYPosTwips, PzGSettingsFile
+            sPutINISetting "Software\PzTemperatureGauge", "prefsFormLowDpiXPosTwips", gblPrefsFormLowDpiXPosTwips, gblSettingsFile
+            sPutINISetting "Software\PzTemperatureGauge", "prefsFormLowDpiYPosTwips", gblPrefsFormLowDpiYPosTwips, gblSettingsFile
             
         End If
         
@@ -2694,19 +2724,19 @@ Private Sub settingsTimer_Timer()
     
     On Error GoTo settingsTimer_Timer_Error
 
-    If Not fFExists(PzGSettingsFile) Then
-        MsgBox ("%Err-I-ErrorNumber 13 - FCW was unable to access the dock settings ini file. " & vbCrLf & PzGSettingsFile)
+    If Not fFExists(gblSettingsFile) Then
+        MsgBox ("%Err-I-ErrorNumber 13 - FCW was unable to access the dock settings ini file. " & vbCrLf & gblSettingsFile)
         Exit Sub
     End If
     
     ' check the settings.ini file date/time
-    settingsModificationTime = FileDateTime(PzGSettingsFile)
-    timeDifferenceInSecs = Int(DateDiff("s", oldPzGSettingsModificationTime, settingsModificationTime))
+    settingsModificationTime = FileDateTime(gblSettingsFile)
+    timeDifferenceInSecs = Int(DateDiff("s", oldgblSettingsModificationTime, settingsModificationTime))
 
     ' if the settings.ini has been modified then reload the map
     If timeDifferenceInSecs > 1 Then
 
-        oldPzGSettingsModificationTime = settingsModificationTime
+        oldgblSettingsModificationTime = settingsModificationTime
         
     End If
     
@@ -2739,7 +2769,7 @@ End Sub
 '
 '    On Error GoTo lockTemperatureWidget_Error
 '
-'    If PzGPreventDraggingTemperature = "1" Then
+'    If gblPreventDraggingTemperature = "1" Then
 '        overlayTemperatureWidget.Locked = False
 '    Else
 '        overlayTemperatureWidget.Locked = True
@@ -2772,8 +2802,8 @@ Public Sub SwitchOff()
 '    menuForm.mnuSwitchOff.Checked = True
 '    menuForm.mnuTurnFunctionsOn.Checked = False
 '
-'    PzGGaugeFunctions = "0"
-'    sPutINISetting "Software\PzTemperatureGauge", "gaugeFunctions", PzGGaugeFunctions, PzGSettingsFile
+'    gblGaugeFunctions = "0"
+'    sPutINISetting "Software\PzTemperatureGauge", "gaugeFunctions", gblGaugeFunctions, gblSettingsFile
 
    On Error GoTo 0
    Exit Sub
@@ -2800,7 +2830,7 @@ Public Sub TurnFunctionsOn() ' deanieboy
    On Error GoTo TurnFunctionsOn_Error
 
     fileToPlay = "ting.wav"
-    If PzGEnableSounds = "1" And fFExists(App.path & "\resources\sounds\" & fileToPlay) Then
+    If gblEnableSounds = "1" And fFExists(App.path & "\resources\sounds\" & fileToPlay) Then
         PlaySound App.path & "\resources\sounds\" & fileToPlay, ByVal 0&, SND_FILENAME Or SND_ASYNC
     End If
 
@@ -2808,8 +2838,8 @@ Public Sub TurnFunctionsOn() ' deanieboy
     menuForm.mnuSwitchOff.Checked = False
     menuForm.mnuTurnFunctionsOn.Checked = True
     
-    PzGGaugeFunctions = "1"
-    sPutINISetting "Software\PzTemperatureGauge", "gaugeFunctions", PzGGaugeFunctions, PzGSettingsFile
+    gblGaugeFunctions = "1"
+    sPutINISetting "Software\PzTemperatureGauge", "gaugeFunctions", gblGaugeFunctions, gblSettingsFile
 
    On Error GoTo 0
    Exit Sub

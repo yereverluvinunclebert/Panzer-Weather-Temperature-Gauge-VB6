@@ -320,12 +320,12 @@ Public Property Let Locked(ByVal newValue As Boolean)
             panzerPrefs.chkPreventDragging.Value = 1
         End If
 
-        PzGPreventDraggingAnemometer = "1"
+        gblPreventDraggingAnemometer = "1"
         If aspectRatio = "landscape" Then
-            PzGAnemometerLandscapeLocked = "1"
+            gblAnemometerLandscapeLocked = "1"
             panzerPrefs.cmbLandscapeLocked.ListIndex = 1
         Else
-            PzGAnemometerPortraitLocked = "1"
+            gblAnemometerPortraitLocked = "1"
             panzerPrefs.cmbPortraitLocked.ListIndex = 1
         End If
             
@@ -337,23 +337,23 @@ Public Property Let Locked(ByVal newValue As Boolean)
             panzerPrefs.chkPreventDragging.Value = 0
         End If
 
-        PzGPreventDraggingAnemometer = "0"
+        gblPreventDraggingAnemometer = "0"
         If aspectRatio = "landscape" Then
-            PzGAnemometerLandscapeLocked = "0"
+            gblAnemometerLandscapeLocked = "0"
             panzerPrefs.cmbLandscapeLocked.ListIndex = 0
         Else
-            PzGAnemometerPortraitLocked = "0"
+            gblAnemometerPortraitLocked = "0"
             panzerPrefs.cmbPortraitLocked.ListIndex = 0
         End If
             
-        fAnemometer.anemometerGaugeForm.Widgets("housing/lockbutton").Widget.Alpha = Val(PzGOpacity) / 100
+        fAnemometer.anemometerGaugeForm.Widgets("housing/lockbutton").Widget.Alpha = Val(gblOpacity) / 100
     End If
 
     fAnemometer.anemometerGaugeForm.Refresh
 
-    sPutINISetting "Software\PzAnemometerGauge", "preventDraggingAnemometer", PzGPreventDraggingAnemometer, PzGSettingsFile
+    sPutINISetting "Software\PzAnemometerGauge", "preventDraggingAnemometer", gblPreventDraggingAnemometer, gblSettingsFile
 
-    If PzGEnableSounds = "1" And fFExists(App.path & "\resources\sounds\" & fileToPlay) Then
+    If gblEnableSounds = "1" And fFExists(App.path & "\resources\sounds\" & fileToPlay) Then
         PlaySound App.path & "\resources\sounds\" & fileToPlay, ByVal 0&, SND_FILENAME Or SND_ASYNC
     End If
 
@@ -400,8 +400,8 @@ Public Property Let thisFace(ByVal newValue As Integer)
         panzerPrefs.cmbWindSpeedScale.ListIndex = newValue
     End If
     
-    PzGWindSpeedScale = mThisFace
-    sPutINISetting "Software\PzTemperatureGauge", "windSpeedScale", PzGWindSpeedScale, PzGSettingsFile
+    gblWindSpeedScale = mThisFace
+    sPutINISetting "Software\PzTemperatureGauge", "windSpeedScale", gblWindSpeedScale, gblSettingsFile
 
     Call obtainWindSpeed
     

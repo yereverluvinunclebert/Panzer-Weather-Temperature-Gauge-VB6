@@ -88,7 +88,7 @@ Private Sub Class_Initialize()
 '    Set tmrAsyncResponse = New_c.Timer(100, False)
     
 '    Set tmrPressureDrop = Nothing
-'    Set tmrPressureDrop = New_c.Timer(Val(PzGStormTestInterval) * 1000, False) ' one hour
+'    Set tmrPressureDrop = New_c.Timer(Val(gblStormTestInterval) * 1000, False) ' one hour
     
 '    Set tmrSleepTester = Nothing
 '    Set tmrSleepTester = New_c.Timer(2500, True)  ' two seconds, should start automatically but it doesn't
@@ -103,7 +103,7 @@ Private Sub Class_Initialize()
 '    icaoLocation4 = vbNullString
 '    icaoLocation5 = vbNullString
 '
-'    icaoToFind = PzGIcao ' eg. "EGSH"
+'    icaoToFind = gblIcao ' eg. "EGSH"
 '
 '    fullIcaoLocation = searchIcaoFile(icaoToFind, "ICAO", icaoLocation1, icaoLocation2, icaoLocation3, icaoLocation4, icaoLocation5, searchCount)
 '    mIcaoLocation = icaoLocation1
@@ -271,8 +271,8 @@ Public Property Let thisFace(ByVal newValue As Integer)
         panzerPrefs.cmbTemperatureScale.ListIndex = newValue
     End If
     
-    PzGTemperatureScale = mThisFace
-    sPutINISetting "Software\PzTemperatureGauge", "temperatureScale", PzGTemperatureScale, PzGSettingsFile
+    gblTemperatureScale = mThisFace
+    sPutINISetting "Software\PzTemperatureGauge", "temperatureScale", gblTemperatureScale, gblSettingsFile
     
     Call obtainTemperature
     
@@ -365,12 +365,12 @@ Public Property Let Locked(ByVal newValue As Boolean)
             panzerPrefs.chkPreventDragging.Value = 1
         End If
         
-        PzGPreventDraggingTemperature = "1"
+        gblPreventDraggingTemperature = "1"
         If aspectRatio = "landscape" Then
-            PzGTemperatureLandscapeLocked = "1"
+            gblTemperatureLandscapeLocked = "1"
             panzerPrefs.cmbLandscapeLocked.ListIndex = 1
         Else
-            PzGTemperaturePortraitLocked = "1"
+            gblTemperaturePortraitLocked = "1"
             panzerPrefs.cmbPortraitLocked.ListIndex = 1
        End If
         
@@ -382,23 +382,23 @@ Public Property Let Locked(ByVal newValue As Boolean)
             panzerPrefs.chkPreventDragging.Value = 0
         End If
         
-        PzGPreventDraggingTemperature = "0"
+        gblPreventDraggingTemperature = "0"
         If aspectRatio = "landscape" Then
-            PzGTemperatureLandscapeLocked = "0"
+            gblTemperatureLandscapeLocked = "0"
             panzerPrefs.cmbLandscapeLocked.ListIndex = 0
         Else
-            PzGTemperaturePortraitLocked = "0"
+            gblTemperaturePortraitLocked = "0"
             panzerPrefs.cmbPortraitLocked.ListIndex = 0
         End If
         
-        fTemperature.temperatureGaugeForm.Widgets("housing/lockbutton").Widget.Alpha = Val(PzGOpacity) / 100
+        fTemperature.temperatureGaugeForm.Widgets("housing/lockbutton").Widget.Alpha = Val(gblOpacity) / 100
     End If
 
     fTemperature.temperatureGaugeForm.Refresh
 
-    sPutINISetting "Software\PzTemperatureGauge", "preventDraggingTemperature", PzGPreventDraggingTemperature, PzGSettingsFile
+    sPutINISetting "Software\PzTemperatureGauge", "preventDraggingTemperature", gblPreventDraggingTemperature, gblSettingsFile
 
-    If PzGEnableSounds = "1" And fFExists(App.path & "\resources\sounds\" & fileToPlay) Then
+    If gblEnableSounds = "1" And fFExists(App.path & "\resources\sounds\" & fileToPlay) Then
         PlaySound App.path & "\resources\sounds\" & fileToPlay, ByVal 0&, SND_FILENAME Or SND_ASYNC
     End If
 

@@ -145,7 +145,7 @@ Private Sub Form_Load()
     msgBoxACurrentWidth = cMsgBoxAFormWidth
     msgBoxACurrentHeight = cMsgBoxAFormHeight
     
-    'If PzGDpiAwareness = "1" Then
+    'If gblDpiAwareness = "1" Then
         ' save the initial positions of ALL the controls on the msgbox form
         
         Call SaveSizes(Me, msgBoxAControlPositions(), msgBoxACurrentWidth, msgBoxACurrentHeight)
@@ -156,14 +156,14 @@ Private Sub Form_Load()
     For Each Ctrl In Me.Controls
          If (TypeOf Ctrl Is CommandButton) Or (TypeOf Ctrl Is TextBox) Or (TypeOf Ctrl Is FileListBox) Or (TypeOf Ctrl Is Label) Or (TypeOf Ctrl Is ComboBox) Or (TypeOf Ctrl Is CheckBox) Or (TypeOf Ctrl Is OptionButton) Or (TypeOf Ctrl Is Frame) Or (TypeOf Ctrl Is ListBox) Then
             '@Ignore MemberNotOnInterface
-            If PzGPrefsFont <> vbNullString Then Ctrl.Font.Name = PzGPrefsFont
+            If gblPrefsFont <> vbNullString Then Ctrl.Font.Name = gblPrefsFont
            
-            If PzGDpiAwareness = "1" Then
+            If gblDpiAwareness = "1" Then
                 '@Ignore MemberNotOnInterface
-                If Val(Abs(PzGPrefsFontSizeHighDPI)) > 0 Then Ctrl.Font.Size = Val(Abs(PzGPrefsFontSizeHighDPI))
+                If Val(Abs(gblPrefsFontSizeHighDPI)) > 0 Then Ctrl.Font.Size = Val(Abs(gblPrefsFontSizeHighDPI))
             Else
                 '@Ignore MemberNotOnInterface
-                If Val(Abs(PzGPrefsFontSizeLowDPI)) > 0 Then Ctrl.Font.Size = Val(Abs(PzGPrefsFontSizeLowDPI))
+                If Val(Abs(gblPrefsFontSizeLowDPI)) > 0 Then Ctrl.Font.Size = Val(Abs(gblPrefsFontSizeLowDPI))
             End If
             'Ctrl.Font.Italic = CBool(SDSuppliedFontItalics) TBD
            'If suppliedStyle <> vbNullString Then Ctrl.Font.Style = suppliedStyle
@@ -198,10 +198,10 @@ Private Sub Form_Resize()
     If Me.WindowState = vbMinimized Then Exit Sub
 
     ratio = cMsgBoxAFormHeight / cMsgBoxAFormWidth
-    If PzGDpiAwareness = "1" Then
-        currentFont = Val(PzGPrefsFontSizeHighDPI)
+    If gblDpiAwareness = "1" Then
+        currentFont = Val(gblPrefsFontSizeHighDPI)
     Else
-        currentFont = Val(PzGPrefsFontSizeLowDPI)
+        currentFont = Val(gblPrefsFontSizeLowDPI)
     End If
     
     If msgBoxADynamicSizingFlg = True Then

@@ -73,6 +73,16 @@ change barometer percentage code when above 800mb - done
 default app to run when dblClicked - done
 add the clipboard clock hands functionality - done
 
+All occurrences of PzG switched to gbl
+DPI switch moved to subroutine to tidy up
+preference load moved to subroutine to tidy up
+form resize event created for modification when subclassing in the future
+twinbasic message loop changes for TwinBasic
+glbcoding environment changes throughout for TwinBasic
+editor globals definition and usage throughout for TwinBasic
+addTargetFile source path empty then uses current app.path
+All TwinBasic changes implemented as per clock/calendar
+
 TODO
 
 test the sleep and repoll functionality - wip
@@ -92,7 +102,6 @@ tiny tooltips for other gauges?
 
 update html code documentation using MZTools code documenter
 
-' add second monitor - wip find cable!
 
 ' test usage of RC6 for monitor awareness - wip
 '      adjust Form Position on startup placing form onto Correct Monitor when placed off screen due to
@@ -107,6 +116,11 @@ update html code documentation using MZTools code documenter
 ' adjustFormPositionToCorrectMonitor - help form
 
 ' setup2go create setup.exe
+
+prefs balloon tooltips on all controls
+resizing using subclassing
+github home menu link
+
 
 ' -oOo-
 

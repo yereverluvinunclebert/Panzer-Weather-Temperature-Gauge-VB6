@@ -19,13 +19,13 @@ Private Declare Function URLDownloadToFile Lib "urlmon" _
     ByVal dwReserved As Long, ByVal lpfnCB As Long) As Long
 
 
-Private WithEvents tmrPressureDrop As cTimer
+Public WithEvents tmrPressureDrop As cTimer
 Attribute tmrPressureDrop.VB_VarHelpID = -1
-Private WithEvents tmrAsyncResponse As cTimer
+Public WithEvents tmrAsyncResponse As cTimer
 Attribute tmrAsyncResponse.VB_VarHelpID = -1
-Private WithEvents tmrSleepTester As cTimer
+Public WithEvents tmrSleepTester As cTimer
 Attribute tmrSleepTester.VB_VarHelpID = -1
-Private WithEvents tmrSampler As cTimer
+Public WithEvents tmrSampler As cTimer
 Attribute tmrSampler.VB_VarHelpID = -1
 
 Private mTestPressureDrop As Long       ' property
@@ -85,7 +85,7 @@ Private Sub Class_Initialize()
     tmrSampler.Enabled = True
    
     Set tmrPressureDrop = Nothing
-    Set tmrPressureDrop = New_c.Timer(Val(PzGStormTestInterval) * 1000, False) ' one hour
+    Set tmrPressureDrop = New_c.Timer(Val(gblStormTestInterval) * 1000, False) ' one hour
     tmrPressureDrop.Enabled = True
     
     Set tmrAsyncResponse = Nothing
@@ -100,7 +100,7 @@ Private Sub Class_Initialize()
     icaoLocation4 = vbNullString
     icaoLocation5 = vbNullString
     
-    icaoToFind = PzGIcao ' eg. "EGSH"
+    icaoToFind = gblIcao ' eg. "EGSH"
     
     fullIcaoLocation = searchIcaoFile(icaoToFind, "ICAO", icaoLocation1, icaoLocation2, icaoLocation3, icaoLocation4, icaoLocation5, searchCount)
     mIcaoLocation = icaoLocation1
@@ -322,9 +322,9 @@ Sub TestPressureDropRoutine()
     
     debugFlg = 0
 
-    oldPressureStorage = PzGOldPressureStorage
-    currentPressureValue = PzGCurrentPressureValue ' we read this from the prefs as it will be regularly written by the main getData timer
-    oldPressureStorageDate = PzGPressureStorageDate
+    oldPressureStorage = gblOldPressureStorage
+    currentPressureValue = gblCurrentPressureValue ' we read this from the prefs as it will be regularly written by the main getData timer
+    oldPressureStorageDate = gblPressureStorageDate
     
     currentDate = Now
     
@@ -341,8 +341,8 @@ Sub TestPressureDropRoutine()
     ' this caters for the computer waking up from a sleep or a restart
 
     If oldPressureStorage = 0 Then
-        PzGOldPressureStorage = currentPressureValue
-        PzGPressureStorageDate = Now    ' time in seconds
+        gblOldPressureStorage = currentPressureValue
+        gblPressureStorageDate = Now    ' time in seconds
         Exit Sub
     End If
     
@@ -361,8 +361,8 @@ Sub TestPressureDropRoutine()
     Else
         overlayBaromWidget.pressureDrop = False
     End If
-    PzGOldPressureStorage = currentPressureValue
-    PzGPressureStorageDate = Now    ' time in seconds
+    gblOldPressureStorage = currentPressureValue
+    gblPressureStorageDate = Now    ' time in seconds
     
     On Error GoTo 0
     Exit Sub
@@ -394,7 +394,7 @@ Private Sub getData()
     
     On Error GoTo getData_Error
     
-    icaoToFind = PzGIcao ' eg. "EGSH"
+    icaoToFind = gblIcao ' eg. "EGSH"
     thisURL = "https://aviationweather.gov/api/data/dataserver?requestType=retrieve&dataSource=metars&stationString=" & icaoToFind & "&hoursBeforeNow=6&format=xml&mostRecent=true"
     
     'thisFile = "E:\vb6\Panzer-Weather-Gauges-VB6\test.xml"
@@ -540,11 +540,11 @@ Private Sub myStatusProc()
     Set MetarNode = objxmldoc.selectSingleNode("response/data/METAR") ' There's only the one METAR node
     
     If num_results = 0 Then
-        If Val(PzGErrorInterval) <> 0 Then
-            ' compare last PzGLastUpdated to current date time and if that exceeds the error interval then raise an error.
+        If Val(gblErrorInterval) <> 0 Then
+            ' compare last gblLastUpdated to current date time and if that exceeds the error interval then raise an error.
             TheDate = Now
-            secsDif = Int(DateDiff("s", CDate(PzGLastUpdated), TheDate))
-            If secsDif >= (Val(PzGErrorInterval) * 3600) And firstPoll = False Then
+            secsDif = Int(DateDiff("s", CDate(gblLastUpdated), TheDate))
+            If secsDif >= (Val(gblErrorInterval) * 3600) And firstPoll = False Then
                 'if has just awoken from sleep then suppress the no data error message
                 tmrSleepTester.Enabled = False
                 Call tmrSleepTester_TimerCode
@@ -671,10 +671,10 @@ Private Sub myStatusProc()
     pressureValue = fGetPressure(altim_in_hg)
     
     'write the current pressure value so that it can be made available to the storm checker timer, straight away.
-    PzGCurrentPressureValue = pressureValue
+    gblCurrentPressureValue = pressureValue
     overlayBaromWidget.thisPressure = pressureValue
 
-    sPutINISetting "Software\PzTemperatureGauge", "currentPressureValue", PzGCurrentPressureValue, PzGSettingsFile
+    sPutINISetting "Software\PzTemperatureGauge", "currentPressureValue", gblCurrentPressureValue, gblSettingsFile
 
     ' set temperature
     mTemperatureValue = Val(temp_c)
@@ -727,8 +727,8 @@ Private Sub myStatusProc()
     difString = niceFormatInterval(secsDif, TheDate)
 
     ' store the last updated value in the settings
-    PzGLastUpdated = usableObsTime
-    sPutINISetting "Software\PzTemperatureGauge", "lastUpdated", PzGLastUpdated, PzGSettingsFile
+    gblLastUpdated = usableObsTime
+    sPutINISetting "Software\PzTemperatureGauge", "lastUpdated", gblLastUpdated, gblSettingsFile
 
     If (debugFlg = 1) Then Debug.Print ("%myStatusProc - difString " & difString)
 
@@ -741,7 +741,7 @@ Private Sub myStatusProc()
     thisTooltip = thisTooltip & vbCrLf & vbCrLf & difString
 
     ' save the tooltip value so it can be used during the regular timed 60 second tooltip updates.
-    'PzGLastTooltip = thisTooltip
+    'gblLastTooltip = thisTooltip
     
     ' set the tooltips to the various gauges
 '    HumidityBackgroundToolTip = thisTooltip
@@ -1125,7 +1125,7 @@ Private Function fAddBaseCloudToSkyClarity(ByVal baseCloud As Integer, ByVal sky
     If UBound(cloud_base_ft_agl()) >= 0 Then
         If (cloud_base_ft_agl(0) <> vbNullString) Then thisBaseCloud = Val(cloud_base_ft_agl(0))
         If (thisBaseCloud <> 0) Then
-            If PzGMetricImperial = "1" Then ' "metric"
+            If gblMetricImperial = "1" Then ' "metric"
                 ' change the value to metric measurements
                 thisBaseCloud = Int(thisBaseCloud * 0.3048)
             End If
@@ -1136,7 +1136,7 @@ Private Function fAddBaseCloudToSkyClarity(ByVal baseCloud As Integer, ByVal sky
    If UBound(cloud_base_ft_agl()) >= 1 Then
         If (cloud_base_ft_agl(1) <> vbNullString) Then thisBaseCloud = Val(cloud_base_ft_agl(UBound(cloud_base_ft_agl())))
         If (thisBaseCloud <> 0) Then
-            If PzGMetricImperial = "1" Then ' "metric"
+            If gblMetricImperial = "1" Then ' "metric"
                 ' change the value to metric measurements
                 thisBaseCloud = Int(thisBaseCloud * 0.3048)
             End If
@@ -1144,7 +1144,7 @@ Private Function fAddBaseCloudToSkyClarity(ByVal baseCloud As Integer, ByVal sky
         End If
     End If
     
-    If PzGMetricImperial = "1" Then ' "metric"
+    If gblMetricImperial = "1" Then ' "metric"
         If interimString = vbNullString Then
             skyClarityString = thisSkyClarity
         Else
@@ -1416,26 +1416,26 @@ Private Function setHoverTooltip(ByVal precipitationDepth As String, ByVal visib
     force = Str$(beaufortConversion(wind_speed_kt))
 
     tooltipString = CStr(weekDayDate) & vbCrLf
-    tooltipString = tooltipString & PzGIcao & " " & icaoLocation1 & ", " & vbCrLf & icaoLocation2 & ", " & icaoLocation3 & " " & vbCrLf
+    tooltipString = tooltipString & gblIcao & " " & icaoLocation1 & ", " & vbCrLf & icaoLocation2 & ", " & icaoLocation3 & " " & vbCrLf
 
-    If (PzGPressureScale = "0") Then ' "millibars") Then
+    If (gblPressureScale = "0") Then ' "millibars") Then
         tooltipString = tooltipString & "Pressure" & ": " & Int(pressureValue * 1.33322) & " mb " & vbCrLf
-     ElseIf (PzGPressureScale = "1") Then '"hg") Then
+     ElseIf (gblPressureScale = "1") Then '"hg") Then
         tooltipString = tooltipString & "Pressure" & ": " & Int(pressureValue / 25.399999704976) & " inHg " & vbCrLf
-     ElseIf (PzGPressureScale = "2") Then '"hpa") Then
+     ElseIf (gblPressureScale = "2") Then '"hpa") Then
         tooltipString = tooltipString & "Pressure" & ": " & Int(pressureValue * 1.33322) & " hpa " & vbCrLf
-     ElseIf (PzGPressureScale = "3") Then '"mmhg") Then
+     ElseIf (gblPressureScale = "3") Then '"mmhg") Then
         tooltipString = tooltipString & "Pressure" & ": " & pressureValue & " mmHg " & vbCrLf
     End If
 
-    If PzGTemperatureScale = "1" Then '"fahrenheit"
+    If gblTemperatureScale = "1" Then '"fahrenheit"
         tooltipString = tooltipString & "Temperature" & ": " & Round(thisTemperatureValue * 1.8 + 32, 2) & " F " & vbCrLf
     End If
-    If PzGTemperatureScale = "0" Then ' "celsius"
+    If gblTemperatureScale = "0" Then ' "celsius"
         tooltipString = tooltipString & "Temperature" & ": " & Round(thisTemperatureValue, 2) & " C " & vbCrLf
     End If
     
-    If PzGTemperatureScale = "2" Then '"kelvin"
+    If gblTemperatureScale = "2" Then '"kelvin"
         tooltipString = tooltipString & "Temperature" & ": " & Round(Int(thisTemperatureValue + 273.15), 2) & " K " & vbCrLf
     End If
     
@@ -1447,7 +1447,7 @@ Private Function setHoverTooltip(ByVal precipitationDepth As String, ByVal visib
     If wind_speed_kt = 0 And compassDirection = "N" Then
         tooltipString = tooltipString
     Else
-        If PzGWindSpeedScale = "0" Then  ' knots
+        If gblWindSpeedScale = "0" Then  ' knots
             tooltipString = tooltipString & "Wind speed is" & " " & wind_speed_kt & " knots, "
         Else
             tooltipString = tooltipString & "Wind speed is" & " " & Int(wind_speed_kt * 0.51444) & " m/sec, "
@@ -2133,10 +2133,10 @@ Public Sub getNewIcaoLocations()
 
     If answer = vbYes Then
         
-        If PzGAirportsURL = vbNullString Then
+        If gblAirportsURL = vbNullString Then
             webAddress = "https://raw.githubusercontent.com/jpatokal/openflights/master/data/airports.dat"
         Else
-            webAddress = PzGAirportsURL
+            webAddress = gblAirportsURL
         End If
 
         If Not fDirExists(App.path & "\dat") Then
@@ -2416,7 +2416,7 @@ Private Function fGetDistance(ByVal visibility_statute_mi As String, ByVal isday
         additionalText = ", visibility reduced"
     End If
     
-    If PzGMetricImperial = "1" Then ' "metric"
+    If gblMetricImperial = "1" Then ' "metric"
         ' change the value to metric measurements
         metricEquivalent = CStr(Int(Val(visibility_statute_mi) * 1.609))
         resultingString = startText & metricEquivalent & " km" & additionalText
@@ -2451,7 +2451,7 @@ Private Function fGetPrecipitation(ByVal precip_in As String) As String
     Dim metricEquivalent As String: metricEquivalent = vbNullString
     Dim resultingString As String: resultingString = vbNullString
     
-    If PzGMetricImperial = "1" Then ' "metric"
+    If gblMetricImperial = "1" Then ' "metric"
         ' change the value to metric measurements
         metricEquivalent = CStr(Int(Val(precip_in) * 2.54))
         resultingString = metricEquivalent & "cm"
@@ -2888,12 +2888,12 @@ Public Property Let Ticking(ByVal newValue As Boolean)
     menuForm.mnuTurnFunctionsOn.Checked = Not mTicking
     
     If mTicking = True Then
-        PzGGaugeFunctions = "1"
+        gblGaugeFunctions = "1"
     Else
-        PzGGaugeFunctions = "0"
+        gblGaugeFunctions = "0"
     End If
     
-    sPutINISetting "Software\PzTemperatureGauge", "gaugeFunctions", PzGGaugeFunctions, PzGSettingsFile
+    sPutINISetting "Software\PzTemperatureGauge", "gaugeFunctions", gblGaugeFunctions, gblSettingsFile
 
 
    On Error GoTo 0

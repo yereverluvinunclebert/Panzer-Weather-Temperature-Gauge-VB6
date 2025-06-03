@@ -95,14 +95,14 @@ Public Sub InitClipBFromPSD(ByRef PSD_FileNameOrByteArray As Variant)
                         
                         'we add layer info. (used in cwOverlay) to the "excluded paths" previously defined in Sub Main,
                         
-                        collClipBPSDNonUIElements(.LayerPath(i)) = Array(.LayerX(i), .LayerY(i), Val(PzGOpacity) / 100)  'here we update the so far empty slots with the PSD-offsets
+                        collClipBPSDNonUIElements(.LayerPath(i)) = Array(.LayerX(i), .LayerY(i), Val(gblOpacity) / 100)  'here we update the so far empty slots with the PSD-offsets
                 
                     Else 'everything not in the exclude-list will get its own Widget-instance
                     
                         Set W = clipBForm.Widgets.Add(New cwAlphaImg, LCase$(.LayerPath(i)), .LayerX(i), .LayerY(i), .LayerWidth(i), .LayerHeight(i)).Widget
                             W.ImageKey = W.key 'W.Key equals ImageList-Key, set above - and LayerPath(i) at this point ... set it also as the ImageKey of our new created Widget
-                        If PzGOpacity < 1 Then
-                            W.Alpha = Val(PzGOpacity) / 100
+                        If gblOpacity < 1 Then
+                            W.Alpha = Val(gblOpacity) / 100
                         Else
                             W.Alpha = 1
                         End If
@@ -114,7 +114,7 @@ Public Sub InitClipBFromPSD(ByRef PSD_FileNameOrByteArray As Variant)
                         
                         ' all non-clickable Layer-Widgets will be -1 or "non-hoverable" and "fully click-through"
                         W.HoverColor = -1 ' task: might change this later when new ver or RC6 arrives
-                        If PzGEnableTooltips = "1" Then W.ToolTip = "Ctrl + mouse scrollwheel up/down to resize, you can also drag me to a new position."
+                        If gblEnableTooltips = "1" Then W.ToolTip = "Ctrl + mouse scrollwheel up/down to resize, you can also drag me to a new position."
                         W.MousePointer = IDC_SIZEALL
 
                     End If
@@ -160,12 +160,12 @@ End Sub
 Private Sub ClipBForm_BubblingEvent(ByRef sender As Object, ByRef EventName As String, ByRef P1 As Variant, ByRef P2 As Variant, ByRef P3 As Variant, ByRef P4 As Variant, ByRef P5 As Variant, ByRef P6 As Variant, ByRef P7 As Variant)
    On Error GoTo ClipBForm_BubblingEvent_Error
 
-    If PzGIgnoreMouse = "1" Then Exit Sub
+    If gblIgnoreMouse = "1" Then Exit Sub
     
     If EventName = "W_MouseMove" Then
         Select Case LCase$(sender.Widget.key)
             Case "clipboard"
-                If PzGEnableBalloonTooltips = "1" Then CreateToolTip clipBForm.hwnd, _
+                If gblEnableBalloonTooltips = "1" Then CreateToolTip clipBForm.hwnd, _
                     "This is the Weather Clipboard. It displays the current weather in a text form " _
                     & "interpreted from your chosen METAR data feed. " & vbCrLf & vbCrLf _
                     & "You can copy the contents using the right click menu option, 'Copy Current Weather to Clipboard' - " _
@@ -210,7 +210,7 @@ Private Sub ClipBForm_MouseDown(ByRef Button As Integer, ByRef Shift As Integer,
         If panzerPrefs.IsVisible = True Then panzerPrefs.SetFocus
         If fClipB.clipBForm.Visible = True Then fClipB.clipBForm.SetFocus
         
-        If PzGIgnoreMouse = "1" Then Exit Sub
+        If gblIgnoreMouse = "1" Then Exit Sub
         ' do whatever you want with a mouseDown here, not doing anything at the moment but we will...
     End If
 
@@ -237,7 +237,7 @@ Private Sub ClipBForm_MouseMove(ByRef Button As Integer, ByRef Shift As Integer,
    On Error GoTo ClipBForm_MouseMove_Error
     
     'If overlayTemperatureWidget.Locked = True Then Exit Sub
-    If PzGIgnoreMouse = "1" Then Exit Sub
+    If gblIgnoreMouse = "1" Then Exit Sub
 
     If Button = vbLeftButton And Not clipBForm.ActiveWidget Is Nothing Then 'Form-Dragging (under certain conditions)
 
@@ -268,7 +268,7 @@ Private Sub ClipBForm_MouseWheel(ByVal MouseKeys As Long, ByVal Rotation As Long
    
    On Error GoTo ClipBForm_MouseWheel_Error
 
-    If PzGScrollWheelDirection = "1" Then
+    If gblScrollWheelDirection = "1" Then
         If Rotation > 0 Then
             RotationDirection = 0 - Abs(Rotation)
         Else
@@ -330,10 +330,10 @@ Public Sub ClipBAdjustZoom(ByVal NewZoom As Single)
     clipBForm.Move clipBForm.Left, clipBForm.Top, PSDWidth * clipBForm.WidgetRoot.Zoom, PSDHeight * clipBForm.WidgetRoot.Zoom
     
     ' when resized from the gauge scroll up/down it needs to write it back so the size is correct when prefs opened.
-    PzGClipBSize = LTrim$(Str$(NewZoom * 100))
-    'If panzerPrefs.IsVisible = True Then panzerPrefs.sliTemperatureGaugeSize.Value = val(PzGTemperatureGaugeSize)
+    gblClipBSize = LTrim$(Str$(NewZoom * 100))
+    'If panzerPrefs.IsVisible = True Then panzerPrefs.sliTemperatureGaugeSize.Value = val(gblTemperatureGaugeSize)
     
-    sPutINISetting "Software\PzClipB", "clipBSize", PzGClipBSize, PzGSettingsFile
+    sPutINISetting "Software\PzClipB", "clipBSize", gblClipBSize, gblSettingsFile
     
    On Error GoTo 0
    Exit Sub

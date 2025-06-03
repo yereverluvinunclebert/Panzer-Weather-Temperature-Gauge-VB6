@@ -103,14 +103,14 @@ Public Sub InitSelectorFromPSD(ByRef PSD_FileNameOrByteArray As Variant)
                         
                         'we add layer info. (used in cwOverlay) to the "excluded paths" previously defined in Sub Main,
                         
-                        collSelectorPSDNonUIElements(.LayerPath(i)) = Array(.LayerX(i), .LayerY(i), Val(PzGOpacity) / 100)  'here we update the so far empty slots with the PSD-offsets
+                        collSelectorPSDNonUIElements(.LayerPath(i)) = Array(.LayerX(i), .LayerY(i), Val(gblOpacity) / 100)  'here we update the so far empty slots with the PSD-offsets
                 
                     Else 'everything not in the exclude-list will get its own Widget-instance
                     
                         Set W = SelectorForm.Widgets.Add(New cwAlphaImg, LCase$(.LayerPath(i)), .LayerX(i), .LayerY(i), .LayerWidth(i), .LayerHeight(i)).Widget
                             W.ImageKey = W.key 'W.Key equals ImageList-Key, set above - and LayerPath(i) at this point ... set it also as the ImageKey of our new created Widget
-                        If PzGOpacity < 1 Then
-                            W.Alpha = Val(PzGOpacity) / 100
+                        If gblOpacity < 1 Then
+                            W.Alpha = Val(gblOpacity) / 100
                         Else
                             W.Alpha = 1
                         End If
@@ -122,7 +122,7 @@ Public Sub InitSelectorFromPSD(ByRef PSD_FileNameOrByteArray As Variant)
                         
                         ' all non-clickable Layer-Widgets will be -1 or "non-hoverable" and "fully click-through"
                         W.HoverColor = -1 ' task: might change this later when new ver or RC6 arrives
-                        If PzGEnableTooltips = "1" Then W.ToolTip = "Ctrl + mouse scrollwheel up/down to resize, you can also drag me to a new position."
+                        If gblEnableTooltips = "1" Then W.ToolTip = "Ctrl + mouse scrollwheel up/down to resize, you can also drag me to a new position."
                         W.MousePointer = IDC_SIZEALL
 
                     End If
@@ -230,33 +230,33 @@ End Sub
 Private Sub SelectorForm_BubblingEvent(ByRef sender As Object, ByRef EventName As String, ByRef P1 As Variant, ByRef P2 As Variant, ByRef P3 As Variant, ByRef P4 As Variant, ByRef P5 As Variant, ByRef P6 As Variant, ByRef P7 As Variant)
    On Error GoTo SelectorForm_BubblingEvent_Error
 
-    If PzGIgnoreMouse = "1" Then Exit Sub
+    If gblIgnoreMouse = "1" Then Exit Sub
     
     If EventName = "W_MouseMove" Then
         Select Case LCase$(sender.Widget.key)
             Case "sbtnselect"
-                If PzGEnableBalloonTooltips = "1" Then CreateToolTip SelectorForm.hwnd, "Click me to select the currently displayed ICAO location.", _
+                If gblEnableBalloonTooltips = "1" Then CreateToolTip SelectorForm.hwnd, "Click me to select the currently displayed ICAO location.", _
                      TTIconInfo, widgetName2 & " Select Button Help", , , , True
             Case "sbtnexit"
-                If PzGEnableBalloonTooltips = "1" Then CreateToolTip SelectorForm.hwnd, "Click me to close the ICAO selection utility.", _
+                If gblEnableBalloonTooltips = "1" Then CreateToolTip SelectorForm.hwnd, "Click me to close the ICAO selection utility.", _
                      TTIconInfo, widgetName2 & " Exit Button Help", , , , True
             Case "optlocationgreen"
-                If PzGEnableBalloonTooltips = "1" Then CreateToolTip SelectorForm.hwnd, "The selector utility is now searching by location name only.", _
+                If gblEnableBalloonTooltips = "1" Then CreateToolTip SelectorForm.hwnd, "The selector utility is now searching by location name only.", _
                      TTIconInfo, widgetName2 & " Location Button Help", , , , True
             Case "optlocationred"
-                If PzGEnableBalloonTooltips = "1" Then CreateToolTip SelectorForm.hwnd, "Click here to enable the option to search by location name (airport).", _
+                If gblEnableBalloonTooltips = "1" Then CreateToolTip SelectorForm.hwnd, "Click here to enable the option to search by location name (airport).", _
                      TTIconInfo, widgetName2 & " Location Button Help", , , , True
             Case "opticaored"
-                If PzGEnableBalloonTooltips = "1" Then CreateToolTip SelectorForm.hwnd, "Click here to enable the option to search by ICAO code.", _
+                If gblEnableBalloonTooltips = "1" Then CreateToolTip SelectorForm.hwnd, "Click here to enable the option to search by ICAO code.", _
                      TTIconInfo, widgetName2 & " ICAO Button Help", , , , True
             Case "sbtnsearch"
-                If PzGEnableBalloonTooltips = "1" Then CreateToolTip SelectorForm.hwnd, "Click here to search using your supplied airport name or ICAO code.", _
+                If gblEnableBalloonTooltips = "1" Then CreateToolTip SelectorForm.hwnd, "Click here to search using your supplied airport name or ICAO code.", _
                      TTIconInfo, widgetName2 & " Search Button Help", , , , True
             Case "opticaogreen"
-                If PzGEnableBalloonTooltips = "1" Then CreateToolTip SelectorForm.hwnd, "The selector utility is now searching by ICAO code only.", _
+                If gblEnableBalloonTooltips = "1" Then CreateToolTip SelectorForm.hwnd, "The selector utility is now searching by ICAO code only.", _
                      TTIconInfo, widgetName2 & " ICAO Button Help", , , , True
             Case "radiobody"
-                If PzGEnableBalloonTooltips = "1" Then CreateToolTip SelectorForm.hwnd, " " _
+                If gblEnableBalloonTooltips = "1" Then CreateToolTip SelectorForm.hwnd, " " _
                     & "This is the Airport Selector utility. Use this tool to select a nearby airport with a valid ICAO code. Any airport of this type will be able to supply " _
                     & "valid and up-to-date METAR weather data. Start by selecting the ICAO or Location option buttons below. This will allow you to search the supplied airports data " _
                     & "file for either an ICAO code or search for the airport by name, for example: HEATHROW." & vbCrLf & vbCrLf _
@@ -287,7 +287,7 @@ Private Sub SelectorForm_BubblingEvent(ByRef sender As Object, ByRef EventName A
 '    If EventName = "W_MouseUp" Then
 '        Select Case LCase$(sender.Widget.key)
 '            Case "housing/prefsbutton"
-'                sender.Widget.Alpha = val(PzGOpacity) / 100
+'                sender.Widget.Alpha = val(gblOpacity) / 100
 '                sender.Widget.Refresh
 '            Case "housing/switchfacesbutton"
 '               '  Call switchfacesbutton_mouseUp(sender)
@@ -334,18 +334,18 @@ Private Sub sbtnselect_mouseDown(ByRef sender As Object)
     SelectorForm.Widgets("sbtnselect").Widget.Enabled = False
     SelectorForm.Widgets("sbtnsearch").Widget.Enabled = True
 
-    PzGIcao = WeatherMeteo.IcaoToTest
-    sPutINISetting "Software\PzTemperatureGauge", "icao", PzGIcao, PzGSettingsFile
+    gblIcao = WeatherMeteo.IcaoToTest
+    sPutINISetting "Software\PzTemperatureGauge", "icao", gblIcao, gblSettingsFile
     
     If optLocationSelected = True Then
         ' call routine to search all the ICAO codes in airport.dat
         If WeatherMeteo.ValidICAO = True Then
-            sPutINISetting "Software\PzTemperatureGauge", "icao", PzGIcao, PzGSettingsFile
+            sPutINISetting "Software\PzTemperatureGauge", "icao", gblIcao, gblSettingsFile
         End If
     End If
             
     If panzerPrefs.IsVisible = True Then
-        panzerPrefs.txtIcao = PzGIcao
+        panzerPrefs.txtIcao = gblIcao
     End If
     
     ' trigger METAR get with new ICAO code
@@ -354,7 +354,7 @@ Private Sub sbtnselect_mouseDown(ByRef sender As Object)
     SelectorForm.Hide
     
     fileToPlay = "shutdown.wav"
-    If PzGEnableSounds = "1" And fFExists(App.path & "\resources\sounds\" & fileToPlay) Then
+    If gblEnableSounds = "1" And fFExists(App.path & "\resources\sounds\" & fileToPlay) Then
         PlaySound App.path & "\resources\sounds\" & fileToPlay, ByVal 0&, SND_FILENAME Or SND_ASYNC
     End If
     
@@ -386,11 +386,11 @@ Private Sub sbtnexit_mouseDown(ByRef sender As Object)
     SelectorForm.Widgets("sbtnselect").Widget.Enabled = False
     SelectorForm.Widgets("sbtnsearch").Widget.Enabled = True
     
-    PzGMetarPref = "Location"
-    sPutINISetting "Software\PzTemperatureGauge", "metarPref", PzGMetarPref, PzGSettingsFile
+    gblMetarPref = "Location"
+    sPutINISetting "Software\PzTemperatureGauge", "metarPref", gblMetarPref, gblSettingsFile
     
     fileToPlay = "shutdown.wav"
-    If PzGEnableSounds = "1" And fFExists(App.path & "\resources\sounds\" & fileToPlay) Then
+    If gblEnableSounds = "1" And fFExists(App.path & "\resources\sounds\" & fileToPlay) Then
         PlaySound App.path & "\resources\sounds\" & fileToPlay, ByVal 0&, SND_FILENAME Or SND_ASYNC
     End If
 
@@ -420,7 +420,7 @@ End Sub
 '    'SelectorForm.Hide
 '
 '    fileToPlay = "click.wav"
-'    If PzGEnableSounds = "1" And fFExists(App.path & "\resources\sounds\" & fileToPlay) Then
+'    If gblEnableSounds = "1" And fFExists(App.path & "\resources\sounds\" & fileToPlay) Then
 '        PlaySound App.path & "\resources\sounds\" & fileToPlay, ByVal 0&, SND_FILENAME Or SND_ASYNC
 '    End If
 '
@@ -459,7 +459,7 @@ Private Sub sbtnsearch_mouseDown(ByRef sender As Object)
     ee = UCase$(sTxtICAOInput.Text)
     
 '    fileToPlay = "thhhh.wav"
-'    If PzGEnableSounds = "1" And fFExists(App.path & "\resources\sounds\" & fileToPlay) Then
+'    If gblEnableSounds = "1" And fFExists(App.path & "\resources\sounds\" & fileToPlay) Then
 '        PlaySound App.path & "\resources\sounds\" & fileToPlay, ByVal 0&, SND_FILENAME Or SND_ASYNC
 '    End If
     
@@ -554,7 +554,7 @@ Private Sub optlocationred_mouseDown(ByRef sender As Object)
     End With
     
     fileToPlay = "click1.wav"
-    If PzGEnableSounds = "1" And fFExists(App.path & "\resources\sounds\" & fileToPlay) Then
+    If gblEnableSounds = "1" And fFExists(App.path & "\resources\sounds\" & fileToPlay) Then
         PlaySound App.path & "\resources\sounds\" & fileToPlay, ByVal 0&, SND_FILENAME Or SND_ASYNC
     End If
     
@@ -620,7 +620,7 @@ Private Sub opticaored_mouseDown(ByRef sender As Object)
     End With
     
     fileToPlay = "click1.wav"
-    If PzGEnableSounds = "1" And fFExists(App.path & "\resources\sounds\" & fileToPlay) Then
+    If gblEnableSounds = "1" And fFExists(App.path & "\resources\sounds\" & fileToPlay) Then
         PlaySound App.path & "\resources\sounds\" & fileToPlay, ByVal 0&, SND_FILENAME Or SND_ASYNC
     End If
     
@@ -628,8 +628,8 @@ Private Sub opticaored_mouseDown(ByRef sender As Object)
     SelectorForm.Widgets("sbtnsearch").Widget.Enabled = True
     fSelector.sCmbMatchingLocations.Widget.Visible = False
         
-    PzGMetarPref = "ICAO"
-    sPutINISetting "Software\PzTemperatureGauge", "metarPref", PzGMetarPref, PzGSettingsFile
+    gblMetarPref = "ICAO"
+    sPutINISetting "Software\PzTemperatureGauge", "metarPref", gblMetarPref, gblSettingsFile
     
        
     On Error GoTo 0
@@ -668,7 +668,7 @@ Private Sub SelectorForm_MouseDown(ByRef Button As Integer, ByRef Shift As Integ
         If panzerPrefs.IsVisible = True Then panzerPrefs.SetFocus
         If fSelector.SelectorForm.Visible = True Then fSelector.SelectorForm.SetFocus
         
-        If PzGIgnoreMouse = "1" Then Exit Sub
+        If gblIgnoreMouse = "1" Then Exit Sub
         ' do whatever you want with a mouseDown here, not doing anything at the moment but we will...
     End If
 
@@ -695,7 +695,7 @@ Private Sub SelectorForm_MouseMove(ByRef Button As Integer, ByRef Shift As Integ
    On Error GoTo SelectorForm_MouseMove_Error
     
     If overlaySelectorWidget.Locked = True Then Exit Sub
-    If PzGIgnoreMouse = "1" Then Exit Sub
+    If gblIgnoreMouse = "1" Then Exit Sub
 
     If Button = vbLeftButton And Not SelectorForm.ActiveWidget Is Nothing Then 'Form-Dragging (under certain conditions)
 
@@ -726,7 +726,7 @@ Private Sub SelectorForm_MouseWheel(ByVal MouseKeys As Long, ByVal Rotation As L
    
    On Error GoTo SelectorForm_MouseWheel_Error
 
-    If PzGScrollWheelDirection = "1" Then
+    If gblScrollWheelDirection = "1" Then
         If Rotation > 0 Then
             RotationDirection = 0 - Abs(Rotation)
         Else
@@ -787,10 +787,10 @@ Public Sub SelectorAdjustZoom(ByVal NewZoom As Single)
     SelectorForm.Move SelectorForm.Left, SelectorForm.Top, PSDWidth * SelectorForm.WidgetRoot.Zoom, PSDHeight * SelectorForm.WidgetRoot.Zoom
     
     ' when resized from the gauge scroll up/down it needs to write it back so the size is correct when prefs opened.
-    PzGSelectorSize = LTrim$(Str$(NewZoom * 100))
-    'If panzerPrefs.IsVisible = True Then panzerPrefs.sliSelectorSize.Value = val(PzGSelectorSize)
+    gblSelectorSize = LTrim$(Str$(NewZoom * 100))
+    'If panzerPrefs.IsVisible = True Then panzerPrefs.sliSelectorSize.Value = val(gblSelectorSize)
     
-    sPutINISetting "Software\PzSelector", "SelectorSize", PzGSelectorSize, PzGSettingsFile
+    sPutINISetting "Software\PzSelector", "SelectorSize", gblSelectorSize, gblSettingsFile
    
    On Error GoTo 0
    Exit Sub

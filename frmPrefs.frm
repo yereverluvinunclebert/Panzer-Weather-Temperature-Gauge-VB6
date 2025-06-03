@@ -14,6 +14,316 @@ Begin VB.Form panzerPrefs
    ScaleWidth      =   8880
    StartUpPosition =   3  'Windows Default
    Visible         =   0   'False
+   Begin VB.Frame fraDevelopmentButton 
+      BorderStyle     =   0  'None
+      Height          =   1140
+      Left            =   5490
+      TabIndex        =   42
+      Top             =   0
+      Width           =   1065
+      Begin VB.Label lblDevelopment 
+         Caption         =   "Development"
+         Height          =   240
+         Left            =   45
+         TabIndex        =   43
+         Top             =   855
+         Width           =   960
+      End
+      Begin VB.Image imgDevelopment 
+         Height          =   600
+         Left            =   150
+         Picture         =   "frmPrefs.frx":10CA
+         Stretch         =   -1  'True
+         Top             =   225
+         Width           =   600
+      End
+      Begin VB.Image imgDevelopmentClicked 
+         Height          =   600
+         Left            =   160
+         Picture         =   "frmPrefs.frx":1682
+         Stretch         =   -1  'True
+         Top             =   225
+         Width           =   600
+      End
+   End
+   Begin VB.Timer positionTimer 
+      Enabled         =   0   'False
+      Interval        =   5000
+      Left            =   1170
+      Top             =   9690
+   End
+   Begin VB.CheckBox chkEnableResizing 
+      Caption         =   "Enable Corner Resize"
+      Height          =   210
+      Left            =   3240
+      TabIndex        =   97
+      Top             =   10125
+      Visible         =   0   'False
+      Width           =   2250
+   End
+   Begin VB.Frame fraAboutButton 
+      BorderStyle     =   0  'None
+      Height          =   1140
+      Left            =   7695
+      TabIndex        =   67
+      Top             =   0
+      Width           =   975
+      Begin VB.Label lblAbout 
+         Caption         =   "About"
+         Height          =   240
+         Index           =   0
+         Left            =   255
+         TabIndex        =   68
+         Top             =   855
+         Width           =   615
+      End
+      Begin VB.Image imgAbout 
+         Height          =   600
+         Left            =   160
+         Picture         =   "frmPrefs.frx":1A08
+         Stretch         =   -1  'True
+         Top             =   225
+         Width           =   600
+      End
+      Begin VB.Image imgAboutClicked 
+         Height          =   600
+         Left            =   160
+         Picture         =   "frmPrefs.frx":1F90
+         Stretch         =   -1  'True
+         Top             =   225
+         Width           =   600
+      End
+   End
+   Begin VB.Frame fraConfigButton 
+      BorderStyle     =   0  'None
+      Height          =   1140
+      Left            =   1215
+      TabIndex        =   44
+      Top             =   -15
+      Width           =   930
+      Begin VB.Label lblConfig 
+         Caption         =   "Config."
+         Height          =   240
+         Index           =   0
+         Left            =   270
+         TabIndex        =   45
+         Top             =   855
+         Width           =   510
+      End
+      Begin VB.Image imgConfig 
+         Height          =   600
+         Left            =   165
+         Picture         =   "frmPrefs.frx":247B
+         Stretch         =   -1  'True
+         Top             =   225
+         Width           =   600
+      End
+      Begin VB.Image imgConfigClicked 
+         Height          =   600
+         Left            =   165
+         Picture         =   "frmPrefs.frx":2A5A
+         Stretch         =   -1  'True
+         Top             =   225
+         Width           =   600
+      End
+   End
+   Begin VB.Frame fraPositionButton 
+      BorderStyle     =   0  'None
+      Height          =   1140
+      Left            =   4410
+      TabIndex        =   40
+      Top             =   0
+      Width           =   930
+      Begin VB.Label lblPosition 
+         Caption         =   "Position"
+         Height          =   240
+         Index           =   0
+         Left            =   180
+         TabIndex        =   41
+         Top             =   855
+         Width           =   615
+      End
+      Begin VB.Image imgPosition 
+         Height          =   600
+         Left            =   160
+         Picture         =   "frmPrefs.frx":2F5F
+         Stretch         =   -1  'True
+         Top             =   225
+         Width           =   600
+      End
+      Begin VB.Image imgPositionClicked 
+         Height          =   600
+         Left            =   160
+         Picture         =   "frmPrefs.frx":3530
+         Stretch         =   -1  'True
+         Top             =   225
+         Width           =   600
+      End
+   End
+   Begin VB.CommandButton btnSave 
+      Caption         =   "&Save"
+      Enabled         =   0   'False
+      Height          =   360
+      Left            =   6075
+      Style           =   1  'Graphical
+      TabIndex        =   6
+      ToolTipText     =   "Save the changes you have made to the preferences"
+      Top             =   10020
+      Width           =   1320
+   End
+   Begin VB.CommandButton btnHelp 
+      Caption         =   "Help"
+      Height          =   360
+      Left            =   120
+      Style           =   1  'Graphical
+      TabIndex        =   38
+      ToolTipText     =   "Open the help utility"
+      Top             =   10035
+      Width           =   1320
+   End
+   Begin VB.Frame fraSoundsButton 
+      BorderStyle     =   0  'None
+      Height          =   1140
+      Left            =   3315
+      TabIndex        =   11
+      Top             =   -15
+      Width           =   930
+      Begin VB.Label lblSounds 
+         Caption         =   "Sounds"
+         Height          =   240
+         Left            =   210
+         TabIndex        =   12
+         Top             =   870
+         Width           =   615
+      End
+      Begin VB.Image imgSounds 
+         Height          =   600
+         Left            =   160
+         Picture         =   "frmPrefs.frx":38CE
+         Stretch         =   -1  'True
+         Top             =   225
+         Width           =   600
+      End
+      Begin VB.Image imgSoundsClicked 
+         Height          =   600
+         Left            =   160
+         Picture         =   "frmPrefs.frx":3E8D
+         Stretch         =   -1  'True
+         Top             =   225
+         Width           =   600
+      End
+   End
+   Begin VB.Timer themeTimer 
+      Enabled         =   0   'False
+      Interval        =   10000
+      Left            =   645
+      Top             =   9705
+   End
+   Begin VB.CommandButton btnClose 
+      Caption         =   "&Close"
+      Height          =   360
+      Left            =   7440
+      Style           =   1  'Graphical
+      TabIndex        =   7
+      ToolTipText     =   "Close the utility"
+      Top             =   10020
+      Width           =   1320
+   End
+   Begin VB.Frame fraWindowButton 
+      BorderStyle     =   0  'None
+      Height          =   1140
+      Left            =   6615
+      TabIndex        =   4
+      Top             =   0
+      Width           =   975
+      Begin VB.Label lblWindow 
+         Caption         =   "Window"
+         Height          =   240
+         Left            =   180
+         TabIndex        =   5
+         Top             =   855
+         Width           =   615
+      End
+      Begin VB.Image imgWindow 
+         Height          =   600
+         Left            =   160
+         Picture         =   "frmPrefs.frx":435D
+         Stretch         =   -1  'True
+         Top             =   225
+         Width           =   600
+      End
+      Begin VB.Image imgWindowClicked 
+         Height          =   600
+         Left            =   160
+         Picture         =   "frmPrefs.frx":4827
+         Stretch         =   -1  'True
+         Top             =   225
+         Width           =   600
+      End
+   End
+   Begin VB.Frame fraFontsButton 
+      BorderStyle     =   0  'None
+      Height          =   1140
+      Left            =   2280
+      TabIndex        =   2
+      Top             =   0
+      Width           =   930
+      Begin VB.Label lblFonts 
+         Caption         =   "Fonts"
+         Height          =   240
+         Left            =   270
+         TabIndex        =   3
+         Top             =   855
+         Width           =   510
+      End
+      Begin VB.Image imgFonts 
+         Height          =   600
+         Left            =   180
+         Picture         =   "frmPrefs.frx":4BD3
+         Stretch         =   -1  'True
+         Top             =   195
+         Width           =   600
+      End
+      Begin VB.Image imgFontsClicked 
+         Height          =   600
+         Left            =   180
+         Picture         =   "frmPrefs.frx":5129
+         Stretch         =   -1  'True
+         Top             =   195
+         Width           =   600
+      End
+   End
+   Begin VB.Frame fraGeneralButton 
+      Height          =   1140
+      Left            =   240
+      TabIndex        =   0
+      Top             =   -15
+      Width           =   930
+      Begin VB.Image imgGeneral 
+         Height          =   600
+         Left            =   180
+         Picture         =   "frmPrefs.frx":55C2
+         Stretch         =   -1  'True
+         Top             =   225
+         Width           =   600
+      End
+      Begin VB.Label lblGeneral 
+         Caption         =   "General"
+         Height          =   240
+         Index           =   0
+         Left            =   195
+         TabIndex        =   1
+         Top             =   855
+         Width           =   705
+      End
+      Begin VB.Image imgGeneralClicked 
+         Height          =   600
+         Left            =   165
+         Stretch         =   -1  'True
+         Top             =   240
+         Width           =   600
+      End
+   End
    Begin VB.Frame fraDevelopment 
       Caption         =   "Development"
       Height          =   6210
@@ -55,7 +365,7 @@ Begin VB.Form panzerPrefs
                Width           =   3660
             End
             Begin VB.Label lblGitHub 
-               Caption         =   $"frmPrefs.frx":10CA
+               Caption         =   $"frmPrefs.frx":5A2C
                ForeColor       =   &H8000000D&
                Height          =   915
                Left            =   1560
@@ -65,7 +375,7 @@ Begin VB.Form panzerPrefs
                Width           =   4935
             End
             Begin VB.Label lblDebug 
-               Caption         =   $"frmPrefs.frx":1163
+               Caption         =   $"frmPrefs.frx":5AC5
                Height          =   930
                Index           =   9
                Left            =   1545
@@ -112,9 +422,9 @@ Begin VB.Form panzerPrefs
          End
          Begin VB.ComboBox cmbDebug 
             Height          =   315
-            ItemData        =   "frmPrefs.frx":1207
+            ItemData        =   "frmPrefs.frx":5B69
             Left            =   1530
-            List            =   "frmPrefs.frx":1209
+            List            =   "frmPrefs.frx":5B6B
             Style           =   2  'Dropdown List
             TabIndex        =   52
             ToolTipText     =   "Choose to set debug mode."
@@ -180,316 +490,6 @@ Begin VB.Form panzerPrefs
             Top             =   45
             Width           =   1740
          End
-      End
-   End
-   Begin VB.Frame fraDevelopmentButton 
-      BorderStyle     =   0  'None
-      Height          =   1140
-      Left            =   5490
-      TabIndex        =   42
-      Top             =   0
-      Width           =   1065
-      Begin VB.Label lblDevelopment 
-         Caption         =   "Development"
-         Height          =   240
-         Left            =   45
-         TabIndex        =   43
-         Top             =   855
-         Width           =   960
-      End
-      Begin VB.Image imgDevelopment 
-         Height          =   600
-         Left            =   150
-         Picture         =   "frmPrefs.frx":120B
-         Stretch         =   -1  'True
-         Top             =   225
-         Width           =   600
-      End
-      Begin VB.Image imgDevelopmentClicked 
-         Height          =   600
-         Left            =   160
-         Picture         =   "frmPrefs.frx":17C3
-         Stretch         =   -1  'True
-         Top             =   225
-         Width           =   600
-      End
-   End
-   Begin VB.Timer positionTimer 
-      Enabled         =   0   'False
-      Interval        =   5000
-      Left            =   1170
-      Top             =   9690
-   End
-   Begin VB.CheckBox chkEnableResizing 
-      Caption         =   "Enable Corner Resize"
-      Height          =   210
-      Left            =   3240
-      TabIndex        =   97
-      Top             =   10125
-      Visible         =   0   'False
-      Width           =   2250
-   End
-   Begin VB.Frame fraAboutButton 
-      BorderStyle     =   0  'None
-      Height          =   1140
-      Left            =   7695
-      TabIndex        =   67
-      Top             =   0
-      Width           =   975
-      Begin VB.Label lblAbout 
-         Caption         =   "About"
-         Height          =   240
-         Index           =   0
-         Left            =   255
-         TabIndex        =   68
-         Top             =   855
-         Width           =   615
-      End
-      Begin VB.Image imgAbout 
-         Height          =   600
-         Left            =   160
-         Picture         =   "frmPrefs.frx":1B49
-         Stretch         =   -1  'True
-         Top             =   225
-         Width           =   600
-      End
-      Begin VB.Image imgAboutClicked 
-         Height          =   600
-         Left            =   160
-         Picture         =   "frmPrefs.frx":20D1
-         Stretch         =   -1  'True
-         Top             =   225
-         Width           =   600
-      End
-   End
-   Begin VB.Frame fraConfigButton 
-      BorderStyle     =   0  'None
-      Height          =   1140
-      Left            =   1215
-      TabIndex        =   44
-      Top             =   -15
-      Width           =   930
-      Begin VB.Label lblConfig 
-         Caption         =   "Config."
-         Height          =   240
-         Index           =   0
-         Left            =   270
-         TabIndex        =   45
-         Top             =   855
-         Width           =   510
-      End
-      Begin VB.Image imgConfig 
-         Height          =   600
-         Left            =   165
-         Picture         =   "frmPrefs.frx":25BC
-         Stretch         =   -1  'True
-         Top             =   225
-         Width           =   600
-      End
-      Begin VB.Image imgConfigClicked 
-         Height          =   600
-         Left            =   165
-         Picture         =   "frmPrefs.frx":2B9B
-         Stretch         =   -1  'True
-         Top             =   225
-         Width           =   600
-      End
-   End
-   Begin VB.Frame fraPositionButton 
-      BorderStyle     =   0  'None
-      Height          =   1140
-      Left            =   4410
-      TabIndex        =   40
-      Top             =   0
-      Width           =   930
-      Begin VB.Label lblPosition 
-         Caption         =   "Position"
-         Height          =   240
-         Index           =   0
-         Left            =   180
-         TabIndex        =   41
-         Top             =   855
-         Width           =   615
-      End
-      Begin VB.Image imgPosition 
-         Height          =   600
-         Left            =   160
-         Picture         =   "frmPrefs.frx":30A0
-         Stretch         =   -1  'True
-         Top             =   225
-         Width           =   600
-      End
-      Begin VB.Image imgPositionClicked 
-         Height          =   600
-         Left            =   160
-         Picture         =   "frmPrefs.frx":3671
-         Stretch         =   -1  'True
-         Top             =   225
-         Width           =   600
-      End
-   End
-   Begin VB.CommandButton btnSave 
-      Caption         =   "&Save"
-      Enabled         =   0   'False
-      Height          =   360
-      Left            =   6075
-      Style           =   1  'Graphical
-      TabIndex        =   6
-      ToolTipText     =   "Save the changes you have made to the preferences"
-      Top             =   10020
-      Width           =   1320
-   End
-   Begin VB.CommandButton btnHelp 
-      Caption         =   "Help"
-      Height          =   360
-      Left            =   120
-      Style           =   1  'Graphical
-      TabIndex        =   38
-      ToolTipText     =   "Open the help utility"
-      Top             =   10035
-      Width           =   1320
-   End
-   Begin VB.Frame fraSoundsButton 
-      BorderStyle     =   0  'None
-      Height          =   1140
-      Left            =   3315
-      TabIndex        =   11
-      Top             =   -15
-      Width           =   930
-      Begin VB.Label lblSounds 
-         Caption         =   "Sounds"
-         Height          =   240
-         Left            =   210
-         TabIndex        =   12
-         Top             =   870
-         Width           =   615
-      End
-      Begin VB.Image imgSounds 
-         Height          =   600
-         Left            =   160
-         Picture         =   "frmPrefs.frx":3A0F
-         Stretch         =   -1  'True
-         Top             =   225
-         Width           =   600
-      End
-      Begin VB.Image imgSoundsClicked 
-         Height          =   600
-         Left            =   160
-         Picture         =   "frmPrefs.frx":3FCE
-         Stretch         =   -1  'True
-         Top             =   225
-         Width           =   600
-      End
-   End
-   Begin VB.Timer themeTimer 
-      Enabled         =   0   'False
-      Interval        =   10000
-      Left            =   660
-      Top             =   9705
-   End
-   Begin VB.CommandButton btnClose 
-      Caption         =   "&Close"
-      Height          =   360
-      Left            =   7440
-      Style           =   1  'Graphical
-      TabIndex        =   7
-      ToolTipText     =   "Close the utility"
-      Top             =   10020
-      Width           =   1320
-   End
-   Begin VB.Frame fraWindowButton 
-      BorderStyle     =   0  'None
-      Height          =   1140
-      Left            =   6615
-      TabIndex        =   4
-      Top             =   0
-      Width           =   975
-      Begin VB.Label lblWindow 
-         Caption         =   "Window"
-         Height          =   240
-         Left            =   180
-         TabIndex        =   5
-         Top             =   855
-         Width           =   615
-      End
-      Begin VB.Image imgWindow 
-         Height          =   600
-         Left            =   160
-         Picture         =   "frmPrefs.frx":449E
-         Stretch         =   -1  'True
-         Top             =   225
-         Width           =   600
-      End
-      Begin VB.Image imgWindowClicked 
-         Height          =   600
-         Left            =   160
-         Picture         =   "frmPrefs.frx":4968
-         Stretch         =   -1  'True
-         Top             =   225
-         Width           =   600
-      End
-   End
-   Begin VB.Frame fraFontsButton 
-      BorderStyle     =   0  'None
-      Height          =   1140
-      Left            =   2280
-      TabIndex        =   2
-      Top             =   0
-      Width           =   930
-      Begin VB.Label lblFonts 
-         Caption         =   "Fonts"
-         Height          =   240
-         Left            =   270
-         TabIndex        =   3
-         Top             =   855
-         Width           =   510
-      End
-      Begin VB.Image imgFonts 
-         Height          =   600
-         Left            =   180
-         Picture         =   "frmPrefs.frx":4D14
-         Stretch         =   -1  'True
-         Top             =   195
-         Width           =   600
-      End
-      Begin VB.Image imgFontsClicked 
-         Height          =   600
-         Left            =   180
-         Picture         =   "frmPrefs.frx":526A
-         Stretch         =   -1  'True
-         Top             =   195
-         Width           =   600
-      End
-   End
-   Begin VB.Frame fraGeneralButton 
-      Height          =   1140
-      Left            =   240
-      TabIndex        =   0
-      Top             =   -15
-      Width           =   930
-      Begin VB.Image imgGeneral 
-         Height          =   600
-         Left            =   180
-         Picture         =   "frmPrefs.frx":5703
-         Stretch         =   -1  'True
-         Top             =   225
-         Width           =   600
-      End
-      Begin VB.Label lblGeneral 
-         Caption         =   "General"
-         Height          =   240
-         Index           =   0
-         Left            =   195
-         TabIndex        =   1
-         Top             =   855
-         Width           =   705
-      End
-      Begin VB.Image imgGeneralClicked 
-         Height          =   600
-         Left            =   165
-         Stretch         =   -1  'True
-         Top             =   240
-         Width           =   600
       End
    End
    Begin VB.Frame fraGeneral 
@@ -1952,7 +1952,7 @@ Begin VB.Form panzerPrefs
          Left            =   3900
          TabIndex        =   74
          Top             =   510
-         Width           =   1245
+         Width           =   2550
       End
    End
    Begin VB.Label lblDragCorner 
@@ -2227,7 +2227,7 @@ Private Declare Function IsThemeActive Lib "uxtheme" () As Boolean
 
 '------------------------------------------------------ STARTS
 ' Private Types for determining prefs sizing
-Private PzGPrefsLoadedFlg As Boolean
+Private gblPrefsLoadedFlg As Boolean
 Private prefsDynamicSizingFlg As Boolean
 Private lastFormHeight As Long
 Private Const cPrefsFormHeight As Long = 11055
@@ -2237,32 +2237,34 @@ Private Const cPrefsFormWidth  As Long = 9090
 Private prefsStartupFlg As Boolean
 Private gblAllowSizeChangeFlg As Boolean
 
+Private mIsLoaded As Boolean ' property
+
 
 Private Sub btnLocation_Click()
     fSelector.SelectorForm.Show
 End Sub
 
-Private Sub btnLocation_MouseMove(Button As Integer, Shift As Integer, X As Single, Y As Single)
-    If PzGEnableBalloonTooltips = "1" Then CreateToolTip btnLocation.hwnd, "Press to select the current ICAO code used to identify the weather feed source data.*", _
+Private Sub btnLocation_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
+    If gblEnableBalloonTooltips = "1" Then CreateToolTip btnLocation.hwnd, "Press to select the current ICAO code used to identify the weather feed source data.*", _
                   TTIconInfo, "Select the current ICAO code", , , , True
 
 End Sub
 
-Private Sub chkEnableBalloonTooltips_MouseMove(Button As Integer, Shift As Integer, X As Single, Y As Single)
+Private Sub chkEnableBalloonTooltips_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
 
-    If PzGEnableBalloonTooltips = "1" Then CreateToolTip chkEnableBalloonTooltips.hwnd, "Best to enable the balloon tooltips rather than the standard ones. Do that here. The balloon tooltips are much prettier, have more space for pertinent information so I can fill them up with useful text to assist you.", _
+    If gblEnableBalloonTooltips = "1" Then CreateToolTip chkEnableBalloonTooltips.hwnd, "Best to enable the balloon tooltips rather than the standard ones. Do that here. The balloon tooltips are much prettier, have more space for pertinent information so I can fill them up with useful text to assist you.", _
                   TTIconInfo, "Help on the Balloon Tooltips", , , , True
 End Sub
 
-Private Sub chkPreventDragging_MouseMove(Button As Integer, Shift As Integer, X As Single, Y As Single)
-    If PzGEnableBalloonTooltips = "1" Then CreateToolTip chkPreventDragging.hwnd, "" _
+Private Sub chkPreventDragging_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
+    If gblEnableBalloonTooltips = "1" Then CreateToolTip chkPreventDragging.hwnd, "" _
     & "Lock the gauges in a certain position in either landscape/portrait mode. This ensures that the widget always appears exactly where you want it to. Drag" _
     & "the gauge into position using the mouse and when the widget is locked in place (using the Widget lock button), this value is set automatically.", _
                   TTIconInfo, "Lock the gauges in position.", , , , True
 End Sub
 
-Private Sub chkShowTaskbar_MouseMove(Button As Integer, Shift As Integer, X As Single, Y As Single)
-    If PzGEnableBalloonTooltips = "1" Then CreateToolTip chkShowTaskbar.hwnd, "Checking this box causes" _
+Private Sub chkShowTaskbar_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
+    If gblEnableBalloonTooltips = "1" Then CreateToolTip chkShowTaskbar.hwnd, "Checking this box causes" _
         & " each gauge and form within the weather widget to appear in the taskbar. " _
         & " Disabling it allows for a much cleaner taskbar (recommended).", _
         TTIconInfo, "Help on taskbar visibility.", , , , True
@@ -2283,26 +2285,26 @@ Private Sub cmbGaugeType_Click()
     
     If cmbGaugeType.ListIndex = 0 Then ' fTemperature gauge
         If aspectRatio = "landscape" Then
-            If PzGDpiAwareness = "1" Then
-                txtLandscapeHoffset.Text = PzGTemperatureFormHighDpiXPos
-                txtLandscapeVoffset.Text = PzGTemperatureFormHighDpiYPos
-                txtLandscapeHoffset.ToolTipText = "Last Sampled Form X Horizontal Position : " & PzGTemperatureFormHighDpiXPos & "px"
-                txtLandscapeVoffset.ToolTipText = "Last Sampled Form Y Vertical Position : " & PzGTemperatureFormHighDpiYPos & "px"
+            If gblDpiAwareness = "1" Then
+                txtLandscapeHoffset.Text = gblTemperatureFormHighDpiXPos
+                txtLandscapeVoffset.Text = gblTemperatureFormHighDpiYPos
+                txtLandscapeHoffset.ToolTipText = "Last Sampled Form X Horizontal Position : " & gblTemperatureFormHighDpiXPos & "px"
+                txtLandscapeVoffset.ToolTipText = "Last Sampled Form Y Vertical Position : " & gblTemperatureFormHighDpiYPos & "px"
             Else
-                txtLandscapeHoffset.Text = PzGTemperatureFormLowDpiXPos
-                txtLandscapeVoffset.Text = PzGTemperatureFormLowDpiYPos
-                txtLandscapeHoffset.ToolTipText = "Last Sampled Form X Horizontal Position : " & PzGTemperatureFormLowDpiXPos & "px"
-                txtLandscapeVoffset.ToolTipText = "Last Sampled Form Y Vertical Position : " & PzGTemperatureFormLowDpiYPos & "px"
+                txtLandscapeHoffset.Text = gblTemperatureFormLowDpiXPos
+                txtLandscapeVoffset.Text = gblTemperatureFormLowDpiYPos
+                txtLandscapeHoffset.ToolTipText = "Last Sampled Form X Horizontal Position : " & gblTemperatureFormLowDpiXPos & "px"
+                txtLandscapeVoffset.ToolTipText = "Last Sampled Form Y Vertical Position : " & gblTemperatureFormLowDpiYPos & "px"
             End If
         Else
             txtPortraitHoffset.Text = fTemperature.temperatureGaugeForm.Left
             txtPortraitVoffset.Text = fTemperature.temperatureGaugeForm.Top
-            If PzGDpiAwareness = "1" Then
-                txtPortraitHoffset.ToolTipText = "Last Sampled Form X Horizontal Position : " & PzGTemperatureFormHighDpiXPos & "px"
-                txtPortraitVoffset.ToolTipText = "Last Sampled Form Y Vertical Position : " & PzGTemperatureFormHighDpiYPos & "px"
+            If gblDpiAwareness = "1" Then
+                txtPortraitHoffset.ToolTipText = "Last Sampled Form X Horizontal Position : " & gblTemperatureFormHighDpiXPos & "px"
+                txtPortraitVoffset.ToolTipText = "Last Sampled Form Y Vertical Position : " & gblTemperatureFormHighDpiYPos & "px"
             Else
-                txtPortraitHoffset.ToolTipText = "Last Sampled Form X Horizontal Position : " & PzGTemperatureFormLowDpiXPos & "px"
-                txtPortraitVoffset.ToolTipText = "Last Sampled Form Y Vertical Position : " & PzGTemperatureFormLowDpiYPos & "px"
+                txtPortraitHoffset.ToolTipText = "Last Sampled Form X Horizontal Position : " & gblTemperatureFormLowDpiXPos & "px"
+                txtPortraitVoffset.ToolTipText = "Last Sampled Form Y Vertical Position : " & gblTemperatureFormLowDpiYPos & "px"
             End If
         End If
                 
@@ -2311,33 +2313,33 @@ Private Sub cmbGaugeType_Click()
         Else
             chkPreventDragging.Value = 0
         End If
-        panzerPrefs.sliGaugeSize.Value = Val(PzGTemperatureGaugeSize)
+        panzerPrefs.sliGaugeSize.Value = Val(gblTemperatureGaugeSize)
     End If
 
     'Anemometer gauge
     
     If cmbGaugeType.ListIndex = 1 Then
         If aspectRatio = "landscape" Then
-            If PzGDpiAwareness = "1" Then
-                txtLandscapeHoffset.Text = PzGAnemometerFormHighDpiXPos
-                txtLandscapeVoffset.Text = PzGAnemometerFormHighDpiYPos
-                txtLandscapeHoffset.ToolTipText = "Last Sampled Form X Horizontal Position : " & PzGAnemometerFormHighDpiXPos & "px"
-                txtLandscapeVoffset.ToolTipText = "Last Sampled Form Y Vertical Position : " & PzGAnemometerFormHighDpiYPos & "px"
+            If gblDpiAwareness = "1" Then
+                txtLandscapeHoffset.Text = gblAnemometerFormHighDpiXPos
+                txtLandscapeVoffset.Text = gblAnemometerFormHighDpiYPos
+                txtLandscapeHoffset.ToolTipText = "Last Sampled Form X Horizontal Position : " & gblAnemometerFormHighDpiXPos & "px"
+                txtLandscapeVoffset.ToolTipText = "Last Sampled Form Y Vertical Position : " & gblAnemometerFormHighDpiYPos & "px"
             Else
-                txtLandscapeHoffset.Text = PzGAnemometerFormLowDpiXPos
-                txtLandscapeVoffset.Text = PzGAnemometerFormLowDpiYPos
-                txtLandscapeHoffset.ToolTipText = "Last Sampled Form X Horizontal Position : " & PzGAnemometerFormLowDpiXPos & "px"
-                txtLandscapeVoffset.ToolTipText = "Last Sampled Form Y Vertical Position : " & PzGAnemometerFormLowDpiYPos & "px"
+                txtLandscapeHoffset.Text = gblAnemometerFormLowDpiXPos
+                txtLandscapeVoffset.Text = gblAnemometerFormLowDpiYPos
+                txtLandscapeHoffset.ToolTipText = "Last Sampled Form X Horizontal Position : " & gblAnemometerFormLowDpiXPos & "px"
+                txtLandscapeVoffset.ToolTipText = "Last Sampled Form Y Vertical Position : " & gblAnemometerFormLowDpiYPos & "px"
             End If
         Else
             txtPortraitHoffset.Text = fAnemometer.anemometerGaugeForm.Left
             txtPortraitVoffset.Text = fAnemometer.anemometerGaugeForm.Top
-            If PzGDpiAwareness = "1" Then
-                txtPortraitHoffset.ToolTipText = "Last Sampled Form X Horizontal Position : " & PzGAnemometerFormHighDpiXPos & "px"
-                txtPortraitVoffset.ToolTipText = "Last Sampled Form Y Vertical Position : " & PzGAnemometerFormHighDpiYPos & "px"
+            If gblDpiAwareness = "1" Then
+                txtPortraitHoffset.ToolTipText = "Last Sampled Form X Horizontal Position : " & gblAnemometerFormHighDpiXPos & "px"
+                txtPortraitVoffset.ToolTipText = "Last Sampled Form Y Vertical Position : " & gblAnemometerFormHighDpiYPos & "px"
             Else
-                txtPortraitHoffset.ToolTipText = "Last Sampled Form X Horizontal Position : " & PzGAnemometerFormLowDpiXPos & "px"
-                txtPortraitVoffset.ToolTipText = "Last Sampled Form Y Vertical Position : " & PzGAnemometerFormLowDpiYPos & "px"
+                txtPortraitHoffset.ToolTipText = "Last Sampled Form X Horizontal Position : " & gblAnemometerFormLowDpiXPos & "px"
+                txtPortraitVoffset.ToolTipText = "Last Sampled Form Y Vertical Position : " & gblAnemometerFormLowDpiYPos & "px"
             End If
         End If
                 
@@ -2347,7 +2349,7 @@ Private Sub cmbGaugeType_Click()
             chkPreventDragging.Value = 0
         End If
         
-        panzerPrefs.sliGaugeSize.Value = Val(PzGAnemometerGaugeSize)
+        panzerPrefs.sliGaugeSize.Value = Val(gblAnemometerGaugeSize)
 
     End If
     
@@ -2355,26 +2357,26 @@ Private Sub cmbGaugeType_Click()
     
     If cmbGaugeType.ListIndex = 2 Then
         If aspectRatio = "landscape" Then
-            If PzGDpiAwareness = "1" Then
-                txtLandscapeHoffset.Text = PzGHumidityFormHighDpiXPos
-                txtLandscapeVoffset.Text = PzGHumidityFormHighDpiYPos
-                txtLandscapeHoffset.ToolTipText = "Last Sampled Form X Horizontal Position : " & PzGHumidityFormHighDpiXPos & "px"
-                txtLandscapeVoffset.ToolTipText = "Last Sampled Form Y Vertical Position : " & PzGHumidityFormHighDpiYPos & "px"
+            If gblDpiAwareness = "1" Then
+                txtLandscapeHoffset.Text = gblHumidityFormHighDpiXPos
+                txtLandscapeVoffset.Text = gblHumidityFormHighDpiYPos
+                txtLandscapeHoffset.ToolTipText = "Last Sampled Form X Horizontal Position : " & gblHumidityFormHighDpiXPos & "px"
+                txtLandscapeVoffset.ToolTipText = "Last Sampled Form Y Vertical Position : " & gblHumidityFormHighDpiYPos & "px"
             Else
-                txtLandscapeHoffset.Text = PzGHumidityFormLowDpiXPos
-                txtLandscapeVoffset.Text = PzGHumidityFormLowDpiYPos
-                txtLandscapeHoffset.ToolTipText = "Last Sampled Form X Horizontal Position : " & PzGHumidityFormLowDpiXPos & "px"
-                txtLandscapeVoffset.ToolTipText = "Last Sampled Form Y Vertical Position : " & PzGHumidityFormLowDpiYPos & "px"
+                txtLandscapeHoffset.Text = gblHumidityFormLowDpiXPos
+                txtLandscapeVoffset.Text = gblHumidityFormLowDpiYPos
+                txtLandscapeHoffset.ToolTipText = "Last Sampled Form X Horizontal Position : " & gblHumidityFormLowDpiXPos & "px"
+                txtLandscapeVoffset.ToolTipText = "Last Sampled Form Y Vertical Position : " & gblHumidityFormLowDpiYPos & "px"
             End If
         Else
             txtPortraitHoffset.Text = fHumidity.humidityGaugeForm.Left
             txtPortraitVoffset.Text = fHumidity.humidityGaugeForm.Top
-            If PzGDpiAwareness = "1" Then
-                txtPortraitHoffset.ToolTipText = "Last Sampled Form X Horizontal Position : " & PzGHumidityFormHighDpiXPos & "px"
-                txtPortraitVoffset.ToolTipText = "Last Sampled Form Y Vertical Position : " & PzGHumidityFormHighDpiYPos & "px"
+            If gblDpiAwareness = "1" Then
+                txtPortraitHoffset.ToolTipText = "Last Sampled Form X Horizontal Position : " & gblHumidityFormHighDpiXPos & "px"
+                txtPortraitVoffset.ToolTipText = "Last Sampled Form Y Vertical Position : " & gblHumidityFormHighDpiYPos & "px"
             Else
-                txtPortraitHoffset.ToolTipText = "Last Sampled Form X Horizontal Position : " & PzGHumidityFormLowDpiXPos & "px"
-                txtPortraitVoffset.ToolTipText = "Last Sampled Form Y Vertical Position : " & PzGHumidityFormLowDpiYPos & "px"
+                txtPortraitHoffset.ToolTipText = "Last Sampled Form X Horizontal Position : " & gblHumidityFormLowDpiXPos & "px"
+                txtPortraitVoffset.ToolTipText = "Last Sampled Form Y Vertical Position : " & gblHumidityFormLowDpiYPos & "px"
             End If
         End If
                 
@@ -2384,7 +2386,7 @@ Private Sub cmbGaugeType_Click()
             chkPreventDragging.Value = 0
         End If
         
-        panzerPrefs.sliGaugeSize.Value = Val(PzGHumidityGaugeSize)
+        panzerPrefs.sliGaugeSize.Value = Val(gblHumidityGaugeSize)
 
     End If
     
@@ -2392,26 +2394,26 @@ Private Sub cmbGaugeType_Click()
     
     If cmbGaugeType.ListIndex = 3 Then
         If aspectRatio = "landscape" Then
-            If PzGDpiAwareness = "1" Then
-                txtLandscapeHoffset.Text = PzGBarometerFormHighDpiXPos
-                txtLandscapeVoffset.Text = PzGBarometerFormHighDpiYPos
-                txtLandscapeHoffset.ToolTipText = "Last Sampled Form X Horizontal Position : " & PzGBarometerFormHighDpiXPos & "px"
-                txtLandscapeVoffset.ToolTipText = "Last Sampled Form Y Vertical Position : " & PzGBarometerFormHighDpiYPos & "px"
+            If gblDpiAwareness = "1" Then
+                txtLandscapeHoffset.Text = gblBarometerFormHighDpiXPos
+                txtLandscapeVoffset.Text = gblBarometerFormHighDpiYPos
+                txtLandscapeHoffset.ToolTipText = "Last Sampled Form X Horizontal Position : " & gblBarometerFormHighDpiXPos & "px"
+                txtLandscapeVoffset.ToolTipText = "Last Sampled Form Y Vertical Position : " & gblBarometerFormHighDpiYPos & "px"
             Else
-                txtLandscapeHoffset.Text = PzGBarometerFormLowDpiXPos
-                txtLandscapeVoffset.Text = PzGBarometerFormLowDpiYPos
-                txtLandscapeHoffset.ToolTipText = "Last Sampled Form X Horizontal Position : " & PzGBarometerFormLowDpiXPos & "px"
-                txtLandscapeVoffset.ToolTipText = "Last Sampled Form Y Vertical Position : " & PzGBarometerFormLowDpiYPos & "px"
+                txtLandscapeHoffset.Text = gblBarometerFormLowDpiXPos
+                txtLandscapeVoffset.Text = gblBarometerFormLowDpiYPos
+                txtLandscapeHoffset.ToolTipText = "Last Sampled Form X Horizontal Position : " & gblBarometerFormLowDpiXPos & "px"
+                txtLandscapeVoffset.ToolTipText = "Last Sampled Form Y Vertical Position : " & gblBarometerFormLowDpiYPos & "px"
             End If
         Else
             txtPortraitHoffset.Text = fBarometer.barometerGaugeForm.Left
             txtPortraitVoffset.Text = fBarometer.barometerGaugeForm.Top
-            If PzGDpiAwareness = "1" Then
-                txtPortraitHoffset.ToolTipText = "Last Sampled Form X Horizontal Position : " & PzGBarometerFormHighDpiXPos & "px"
-                txtPortraitVoffset.ToolTipText = "Last Sampled Form Y Vertical Position : " & PzGBarometerFormHighDpiYPos & "px"
+            If gblDpiAwareness = "1" Then
+                txtPortraitHoffset.ToolTipText = "Last Sampled Form X Horizontal Position : " & gblBarometerFormHighDpiXPos & "px"
+                txtPortraitVoffset.ToolTipText = "Last Sampled Form Y Vertical Position : " & gblBarometerFormHighDpiYPos & "px"
             Else
-                txtPortraitHoffset.ToolTipText = "Last Sampled Form X Horizontal Position : " & PzGBarometerFormLowDpiXPos & "px"
-                txtPortraitVoffset.ToolTipText = "Last Sampled Form Y Vertical Position : " & PzGBarometerFormLowDpiYPos & "px"
+                txtPortraitHoffset.ToolTipText = "Last Sampled Form X Horizontal Position : " & gblBarometerFormLowDpiXPos & "px"
+                txtPortraitVoffset.ToolTipText = "Last Sampled Form Y Vertical Position : " & gblBarometerFormLowDpiYPos & "px"
             End If
         End If
                 
@@ -2421,7 +2423,7 @@ Private Sub cmbGaugeType_Click()
             chkPreventDragging.Value = 0
         End If
         
-        panzerPrefs.sliGaugeSize.Value = Val(PzGBarometerGaugeSize)
+        panzerPrefs.sliGaugeSize.Value = Val(gblBarometerGaugeSize)
 
     End If
     
@@ -2445,8 +2447,8 @@ Private Sub cmbMetricImperial_Click()
     On Error GoTo cmbMetricImperial_Click_Error
     
     btnSave.Enabled = True ' enable the save button
-    PzGWindSpeedScale = LTrim$(Str$(cmbWindSpeedScale.ListIndex))
-    sPutINISetting "Software\PzTemperatureGauge", "metricImperial", PzGMetricImperial, PzGSettingsFile
+    gblWindSpeedScale = LTrim$(Str$(cmbWindSpeedScale.ListIndex))
+    sPutINISetting "Software\PzTemperatureGauge", "metricImperial", gblMetricImperial, gblSettingsFile
     
     On Error GoTo 0
     Exit Sub
@@ -2519,8 +2521,8 @@ Private Sub cmbWindSpeedScale_Click()
     
     On Error GoTo cmbWindSpeedScale_Click_Error
     btnSave.Enabled = True ' enable the save button
-'    PzGWindSpeedScale = LTrim$(Str$(cmbWindSpeedScale.ListIndex))
-'    sPutINISetting "Software\PzTemperatureGauge", "windSpeedScale", PzGWindSpeedScale, PzGSettingsFile
+'    gblWindSpeedScale = LTrim$(Str$(cmbWindSpeedScale.ListIndex))
+'    sPutINISetting "Software\PzTemperatureGauge", "windSpeedScale", gblWindSpeedScale, gblSettingsFile
         
     overlayAnemoWidget.thisFace = cmbWindSpeedScale.ListIndex
 
@@ -2545,7 +2547,7 @@ End Sub
 Private Sub Form_Initialize()
     On Error GoTo Form_Initialize_Error
     
-    PzGPrefsLoadedFlg = False
+    gblPrefsLoadedFlg = False
     prefsDynamicSizingFlg = False
     lastFormHeight = 0
 
@@ -2573,8 +2575,8 @@ Private Sub Form_Load()
         
     prefsStartupFlg = True ' this is used to prevent some control initialisations from running code at startup
     prefsDynamicSizingFlg = False
-    PzGPrefsLoadedFlg = True ' this is a variable tested by an added form property to indicate whether the form is loaded or not
-    PzGWindowLevelWasChanged = False
+    gblPrefsLoadedFlg = True ' this is a variable tested by an added form property to indicate whether the form is loaded or not
+    gblWindowLevelWasChanged = False
     prefsFormHeight = prefsCurrentHeight
     
     With lblDragCorner
@@ -2589,12 +2591,18 @@ Private Sub Form_Load()
     End With
      
     btnSave.Enabled = False ' disable the save button
-
-    If PzGDpiAwareness = "1" Then
+    Me.mnuAbout.Caption = "About Panzer Weather Gauge Cairo " & gblCodingEnvironment & " widget"
+    
+    If gblDpiAwareness = "1" Then
         prefsDynamicSizingFlg = True
         chkEnableResizing.Value = 1
         lblDragCorner.Visible = True
     End If
+    
+    ' reverts TwinBasic form themeing to that of the earlier classic look and feel
+    #If TWINBASIC Then
+       Call setVisualStyles
+    #End If
       
     ' read the last saved position from the settings.ini
     Call readPrefsPosition
@@ -2630,7 +2638,7 @@ Private Sub Form_Load()
     Call loadHigherResPrefsImages
     
     ' now cause a form_resize event and set the height of the whole form
-    If PzGDpiAwareness = "1" Then
+    If gblDpiAwareness = "1" Then
         If prefsFormHeight < screenHeightTwips Then
             Me.Height = prefsFormHeight
         Else
@@ -2676,12 +2684,12 @@ Public Sub positionPrefsMonitor()
     
     On Error GoTo positionPrefsMonitor_Error
     
-    If PzGDpiAwareness = "1" Then
-        formLeftTwips = Val(PzGPrefsFormHighDpiXPosTwips)
-        formTopTwips = Val(PzGPrefsFormHighDpiYPosTwips)
+    If gblDpiAwareness = "1" Then
+        formLeftTwips = Val(gblPrefsFormHighDpiXPosTwips)
+        formTopTwips = Val(gblPrefsFormHighDpiYPosTwips)
     Else
-        formLeftTwips = Val(PzGPrefsFormLowDpiXPosTwips)
-        formTopTwips = Val(PzGPrefsFormLowDpiYPosTwips)
+        formLeftTwips = Val(gblPrefsFormLowDpiXPosTwips)
+        formTopTwips = Val(gblPrefsFormLowDpiYPosTwips)
     End If
     
     If formLeftTwips = 0 Then
@@ -2735,10 +2743,10 @@ End Sub
 ' Purpose   :
 '---------------------------------------------------------------------------------------
 '
-Private Sub btnResetMessages_MouseMove(Button As Integer, Shift As Integer, X As Single, Y As Single)
+Private Sub btnResetMessages_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
     On Error GoTo btnResetMessages_MouseMove_Error
 
-    If PzGEnableBalloonTooltips = "1" Then CreateToolTip btnResetMessages.hwnd, "The various pop-up messages that this program generates can be manually hidden. This button restores them to their original visible state.", _
+    If gblEnableBalloonTooltips = "1" Then CreateToolTip btnResetMessages.hwnd, "The various pop-up messages that this program generates can be manually hidden. This button restores them to their original visible state.", _
                   TTIconInfo, "Help on the message reset button", , , , True
 
     On Error GoTo 0
@@ -2770,12 +2778,12 @@ Private Sub chkDpiAwareness_Click()
         answer = msgBoxA(answerMsg, vbYesNo, "DpiAwareness Confirmation", True, "chkDpiAwarenessRestart")
         
         If chkDpiAwareness.Value = 0 Then
-            PzGDpiAwareness = "0"
+            gblDpiAwareness = "0"
         Else
-            PzGDpiAwareness = "1"
+            gblDpiAwareness = "1"
         End If
 
-        sPutINISetting "Software\PzTemperatureGauge", "dpiAwareness", PzGDpiAwareness, PzGSettingsFile
+        sPutINISetting "Software\PzTemperatureGauge", "dpiAwareness", gblDpiAwareness, gblSettingsFile
         
         If answer = vbNo Then
             answer = vbYes
@@ -2785,7 +2793,7 @@ Private Sub chkDpiAwareness_Click()
             Exit Sub
         Else
 
-            sPutINISetting "Software\PzTemperatureGauge", "dpiAwareness", PzGDpiAwareness, PzGSettingsFile
+            sPutINISetting "Software\PzTemperatureGauge", "dpiAwareness", gblDpiAwareness, gblSettingsFile
             'Call reloadWidget ' this is insufficient, image controls still fail to resize and autoscale correctly
             Call hardRestart
         End If
@@ -2817,12 +2825,12 @@ Private Sub chkEnablePrefsTooltips_Click()
     
     If prefsStartupFlg = False Then
         If chkEnablePrefsTooltips.Value = 1 Then
-            PzGEnablePrefsTooltips = "1"
+            gblEnablePrefsTooltips = "1"
         Else
-            PzGEnablePrefsTooltips = "0"
+            gblEnablePrefsTooltips = "0"
         End If
         
-        sPutINISetting "Software\PzTemperatureGauge", "enablePrefsTooltips", PzGEnablePrefsTooltips, PzGSettingsFile
+        sPutINISetting "Software\PzTemperatureGauge", "enablePrefsTooltips", gblEnablePrefsTooltips, gblSettingsFile
 
     End If
     
@@ -2845,10 +2853,10 @@ End Sub
 ' Purpose   :
 '---------------------------------------------------------------------------------------
 '
-Private Sub chkEnableTooltips_MouseMove(Button As Integer, Shift As Integer, X As Single, Y As Single)
+Private Sub chkEnableTooltips_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
     On Error GoTo chkEnableTooltips_MouseMove_Error
 
-    If PzGEnableBalloonTooltips = "1" Then CreateToolTip chkEnableTooltips.hwnd, "There is a problem with the 'standard' tooltips on the gauge elements as they resize along with the program graphical elements, meaning that they cannot be seen, there is also a problem with tooltip handling different fonts, hoping to get Olaf to fix these soon. My suggestion is to turn them off for the moment.", _
+    If gblEnableBalloonTooltips = "1" Then CreateToolTip chkEnableTooltips.hwnd, "There is a problem with the 'standard' tooltips on the gauge elements as they resize along with the program graphical elements, meaning that they cannot be seen, there is also a problem with tooltip handling different fonts, hoping to get Olaf to fix these soon. My suggestion is to turn them off for the moment.", _
                   TTIconInfo, "Help on the Program tooltip problem", , , , True
 
     On Error GoTo 0
@@ -2872,9 +2880,9 @@ Private Sub chkShowTaskbar_Click()
 
     btnSave.Enabled = True ' enable the save button
     If chkShowTaskbar.Value = 1 Then
-        PzGShowTaskbar = "1"
+        gblShowTaskbar = "1"
     Else
-        PzGShowTaskbar = "0"
+        gblShowTaskbar = "0"
     End If
 
    On Error GoTo 0
@@ -2893,15 +2901,15 @@ End Sub
 '    If cmbTickSwitchPref.ListIndex = 0 Then
 '        overlayAnemoWidget.pointerAnimate = False
 '        overlayTemperatureWidget.pointerAnimate = False
-'        PzGPointerAnimate = "0"
+'        gblPointerAnimate = "0"
 '    Else
 '        overlayAnemoWidget.pointerAnimate = True
 '        overlayTemperatureWidget.pointerAnimate = True
-'        PzGPointerAnimate = "1"
+'        gblPointerAnimate = "1"
 '    End If
 '
-'    sPutINISetting "Software\PzAnemometerGauge", "pointerAnimate", PzGPointerAnimate, PzGSettingsFile
-'    panzerPrefs.cmbTickSwitchPref.ListIndex = Val(PzGPointerAnimate)
+'    sPutINISetting "Software\PzAnemometerGauge", "pointerAnimate", gblPointerAnimate, gblSettingsFile
+'    panzerPrefs.cmbTickSwitchPref.ListIndex = Val(gblPointerAnimate)
 'End Sub
 
 '---------------------------------------------------------------------------------------
@@ -3162,9 +3170,9 @@ Private Sub chkEnableBalloonTooltips_Click()
 
     btnSave.Enabled = True ' enable the save button
     If chkEnableBalloonTooltips.Value = 1 Then
-        PzGEnableBalloonTooltips = "1"
+        gblEnableBalloonTooltips = "1"
     Else
-        PzGEnableBalloonTooltips = "0"
+        gblEnableBalloonTooltips = "0"
     End If
 
    On Error GoTo 0
@@ -3187,9 +3195,9 @@ Private Sub chkIgnoreMouse_Click()
    On Error GoTo chkIgnoreMouse_Click_Error
 
     If chkIgnoreMouse.Value = 0 Then
-        PzGIgnoreMouse = "0"
+        gblIgnoreMouse = "0"
     Else
-        PzGIgnoreMouse = "1"
+        gblIgnoreMouse = "1"
     End If
 
     btnSave.Enabled = True ' enable the save button
@@ -3223,7 +3231,7 @@ Private Sub chkPreventDragging_Click()
         ' immediately make the widget locked in place
         If chkPreventDragging.Value = 0 Then
             overlayTemperatureWidget.Locked = False
-            PzGPreventDraggingTemperature = "0"
+            gblPreventDraggingTemperature = "0"
             menuForm.mnuLockTemperatureGauge.Checked = False
 
             If aspectRatio = "landscape" Then
@@ -3235,7 +3243,7 @@ Private Sub chkPreventDragging_Click()
             End If
         Else
             overlayTemperatureWidget.Locked = True
-            PzGPreventDraggingTemperature = "1"
+            gblPreventDraggingTemperature = "1"
             menuForm.mnuLockTemperatureGauge.Checked = True
 
             If aspectRatio = "landscape" Then
@@ -3253,7 +3261,7 @@ Private Sub chkPreventDragging_Click()
         ' immediately make the widget locked in place
         If chkPreventDragging.Value = 0 Then
             overlayAnemoWidget.Locked = False
-            PzGPreventDraggingAnemometer = "0"
+            gblPreventDraggingAnemometer = "0"
             menuForm.mnuLockAnemometerGauge.Checked = False
             If aspectRatio = "landscape" Then
                 txtLandscapeHoffset.Text = vbNullString
@@ -3264,7 +3272,7 @@ Private Sub chkPreventDragging_Click()
             End If
         Else
             overlayAnemoWidget.Locked = True
-            PzGPreventDraggingAnemometer = "1"
+            gblPreventDraggingAnemometer = "1"
             menuForm.mnuLockAnemometerGauge.Checked = True
             If aspectRatio = "landscape" Then
                 txtLandscapeHoffset.Text = fAnemometer.anemometerGaugeForm.Left
@@ -3281,7 +3289,7 @@ Private Sub chkPreventDragging_Click()
         ' immediately make the widget locked in place
         If chkPreventDragging.Value = 0 Then
             overlayHumidWidget.Locked = False
-            PzGPreventDraggingHumidity = "0"
+            gblPreventDraggingHumidity = "0"
             menuForm.mnuLockHumidityGauge.Checked = False
             If aspectRatio = "landscape" Then
                 txtLandscapeHoffset.Text = vbNullString
@@ -3292,7 +3300,7 @@ Private Sub chkPreventDragging_Click()
             End If
         Else
             overlayHumidWidget.Locked = True
-            PzGPreventDraggingHumidity = "1"
+            gblPreventDraggingHumidity = "1"
             menuForm.mnuLockHumidityGauge.Checked = True
             If aspectRatio = "landscape" Then
                 txtLandscapeHoffset.Text = fHumidity.humidityGaugeForm.Left
@@ -3308,7 +3316,7 @@ Private Sub chkPreventDragging_Click()
         ' immediately make the widget locked in place
         If chkPreventDragging.Value = 0 Then
             overlayBaromWidget.Locked = False
-            PzGPreventDraggingBarometer = "0"
+            gblPreventDraggingBarometer = "0"
             menuForm.mnuLockBarometerGauge.Checked = False
             If aspectRatio = "landscape" Then
                 txtLandscapeHoffset.Text = vbNullString
@@ -3319,7 +3327,7 @@ Private Sub chkPreventDragging_Click()
             End If
         Else
             overlayBaromWidget.Locked = True
-            PzGPreventDraggingBarometer = "1"
+            gblPreventDraggingBarometer = "1"
             menuForm.mnuLockBarometerGauge.Checked = True
             If aspectRatio = "landscape" Then
                 txtLandscapeHoffset.Text = fBarometer.barometerGaugeForm.Left
@@ -3362,17 +3370,17 @@ Private Sub chkWidgetHidden_Click()
         fTemperature.temperatureGaugeForm.Visible = True
 
         frmTimer.revealWidgetTimer.Enabled = False
-        PzGWidgetHidden = "0"
+        gblWidgetHidden = "0"
     Else
         'overlayTemperatureWidget.Hidden = True
         fTemperature.temperatureGaugeForm.Visible = False
 
 
         frmTimer.revealWidgetTimer.Enabled = True
-        PzGWidgetHidden = "1"
+        gblWidgetHidden = "1"
     End If
     
-    sPutINISetting "Software\PzTemperatureGauge", "widgetHidden", PzGWidgetHidden, PzGSettingsFile
+    sPutINISetting "Software\PzTemperatureGauge", "widgetHidden", gblWidgetHidden, gblSettingsFile
     
     btnSave.Enabled = True ' enable the save button
 
@@ -3437,7 +3445,11 @@ Private Sub cmbDebug_Click()
         
         lblDebug(9).Enabled = False
     Else
-        txtDefaultEditor.Text = PzGDefaultEditor
+        #If TWINBASIC Then
+            txtDefaultEditor.Text = gblDefaultTBEditor
+        #Else
+            txtDefaultEditor.Text = gblDefaultVB6Editor
+        #End If
         txtDefaultEditor.Enabled = True
         
         lblDebug(7).Enabled = True
@@ -3540,8 +3552,51 @@ cmbWidgetPosition_Click_Error:
     End With
 End Sub
 
+'---------------------------------------------------------------------------------------
+' Procedure : IsLoaded
+' Author    : beededea
+' Date      : 16/12/2024
+' Purpose   : property by val to manually determine whether the preference form is loaded. It does this without
+'             touching a VB6 intrinsic form property which would then load the form itself.
+'---------------------------------------------------------------------------------------
+'
+Public Property Get IsLoaded() As Boolean
+ 
+   On Error GoTo IsLoaded_Error
 
+    IsLoaded = mIsLoaded
 
+   On Error GoTo 0
+   Exit Property
+
+IsLoaded_Error:
+
+    MsgBox "Error " & Err.Number & " (" & Err.Description & ") in procedure IsLoaded of Form widgetPrefs"
+ 
+End Property
+
+'---------------------------------------------------------------------------------------
+' Procedure : IsLoaded
+' Author    : beededea
+' Date      : 16/12/2024
+' Purpose   : property by val to manually determine whether the preference form is loaded. It does this without
+'             touching a VB6 intrinsic form property which would then load the form itself.
+'---------------------------------------------------------------------------------------
+'
+Public Property Let IsLoaded(ByVal newValue As Boolean)
+ 
+   On Error GoTo IsLoaded_Error
+
+   If mIsLoaded <> newValue Then mIsLoaded = newValue Else Exit Property
+
+   On Error GoTo 0
+   Exit Property
+
+IsLoaded_Error:
+
+    MsgBox "Error " & Err.Number & " (" & Err.Description & ") in procedure IsLoaded of Form widgetPrefs"
+ 
+End Property
 
 '---------------------------------------------------------------------------------------
 ' Procedure : IsVisible
@@ -3554,7 +3609,7 @@ End Sub
 Public Property Get IsVisible() As Boolean
     On Error GoTo IsVisible_Error
 
-    If PzGPrefsLoadedFlg Then
+    If gblPrefsLoadedFlg Then
         If Me.WindowState = vbNormal Then
             IsVisible = Me.Visible
         Else
@@ -3589,14 +3644,14 @@ Private Sub showLastTab()
 
    On Error GoTo showLastTab_Error
     
-    If PzGLastSelectedTab = "general" Then Call picButtonMouseUpEvent("general", imgGeneral, imgGeneralClicked, fraGeneral, fraGeneralButton)  ' was imgGeneralMouseUpEvent
-    If PzGLastSelectedTab = "config" Then Call picButtonMouseUpEvent("config", imgConfig, imgConfigClicked, fraConfig, fraConfigButton)     ' was imgConfigMouseUpEvent
-    If PzGLastSelectedTab = "position" Then Call picButtonMouseUpEvent("position", imgPosition, imgPositionClicked, fraPosition, fraPositionButton)
-    If PzGLastSelectedTab = "development" Then Call picButtonMouseUpEvent("development", imgDevelopment, imgDevelopmentClicked, fraDevelopment, fraDevelopmentButton)
-    If PzGLastSelectedTab = "fonts" Then Call picButtonMouseUpEvent("fonts", imgFonts, imgFontsClicked, fraFonts, fraFontsButton)
-    If PzGLastSelectedTab = "sounds" Then Call picButtonMouseUpEvent("sounds", imgSounds, imgSoundsClicked, fraSounds, fraSoundsButton)
-    If PzGLastSelectedTab = "window" Then Call picButtonMouseUpEvent("window", imgWindow, imgWindowClicked, fraWindow, fraWindowButton)
-    If PzGLastSelectedTab = "about" Then Call picButtonMouseUpEvent("about", imgAbout, imgAboutClicked, fraAbout, fraAboutButton)
+    If gblLastSelectedTab = "general" Then Call picButtonMouseUpEvent("general", imgGeneral, imgGeneralClicked, fraGeneral, fraGeneralButton)  ' was imgGeneralMouseUpEvent
+    If gblLastSelectedTab = "config" Then Call picButtonMouseUpEvent("config", imgConfig, imgConfigClicked, fraConfig, fraConfigButton)     ' was imgConfigMouseUpEvent
+    If gblLastSelectedTab = "position" Then Call picButtonMouseUpEvent("position", imgPosition, imgPositionClicked, fraPosition, fraPositionButton)
+    If gblLastSelectedTab = "development" Then Call picButtonMouseUpEvent("development", imgDevelopment, imgDevelopmentClicked, fraDevelopment, fraDevelopmentButton)
+    If gblLastSelectedTab = "fonts" Then Call picButtonMouseUpEvent("fonts", imgFonts, imgFontsClicked, fraFonts, fraFontsButton)
+    If gblLastSelectedTab = "sounds" Then Call picButtonMouseUpEvent("sounds", imgSounds, imgSoundsClicked, fraSounds, fraSoundsButton)
+    If gblLastSelectedTab = "window" Then Call picButtonMouseUpEvent("window", imgWindow, imgWindowClicked, fraWindow, fraWindowButton)
+    If gblLastSelectedTab = "about" Then Call picButtonMouseUpEvent("about", imgAbout, imgAboutClicked, fraAbout, fraAboutButton)
 
    On Error GoTo 0
    Exit Sub
@@ -3706,6 +3761,10 @@ Private Sub positionPrefsFramesButtons()
     fraAbout.Visible = False
     
     fraGeneralButton.BorderStyle = 1
+    
+    #If TWINBASIC Then
+        fraGeneralButton.Refresh
+    #End If
 
     btnClose.Left = fraWindow.Left + fraWindow.Width - btnClose.Width
     btnSave.Left = btnClose.Left - btnSave.Width - 50
@@ -3789,251 +3848,251 @@ Private Sub btnSave_Click()
     On Error GoTo btnSave_Click_Error
 
     ' configuration
-    PzGEnableTooltips = LTrim$(Str$(chkEnableTooltips.Value))
-    PzGEnablePrefsTooltips = LTrim$(Str$(chkEnablePrefsTooltips.Value))
-    PzGEnableBalloonTooltips = LTrim$(Str$(chkEnableBalloonTooltips.Value))
-    PzGShowTaskbar = LTrim$(Str$(chkShowTaskbar.Value))
-    PzGDpiAwareness = LTrim$(Str$(chkDpiAwareness.Value))
+    gblEnableTooltips = LTrim$(Str$(chkEnableTooltips.Value))
+    gblEnablePrefsTooltips = LTrim$(Str$(chkEnablePrefsTooltips.Value))
+    gblEnableBalloonTooltips = LTrim$(Str$(chkEnableBalloonTooltips.Value))
+    gblShowTaskbar = LTrim$(Str$(chkShowTaskbar.Value))
+    gblDpiAwareness = LTrim$(Str$(chkDpiAwareness.Value))
     
-    'PzGTemperatureGaugeSize = LTrim$(Str$(sliGaugeSize.Value))
-    'PzGAnemometerGaugeSize = LTrim$(Str$(sliAnemometerGaugeSize.Value))
+    'gblTemperatureGaugeSize = LTrim$(Str$(sliGaugeSize.Value))
+    'gblAnemometerGaugeSize = LTrim$(Str$(sliAnemometerGaugeSize.Value))
     
-'    PzGClipbBSize = LTrim$(Str$(sliGaugeSize.Value))
-'    PzGSelectorSize = LTrim$(Str$(sliGaugeSize.Value))
+'    gblClipbBSize = LTrim$(Str$(sliGaugeSize.Value))
+'    gblSelectorSize = LTrim$(Str$(sliGaugeSize.Value))
     
-    PzGScrollWheelDirection = LTrim$(Str$(cmbScrollWheelDirection.ListIndex))
+    gblScrollWheelDirection = LTrim$(Str$(cmbScrollWheelDirection.ListIndex))
     
     ' general
-    PzGGaugeFunctions = LTrim$(Str$(chkGaugeFunctions.Value))
-    PzGStartup = LTrim$(Str$(chkGenStartup.Value))
+    gblGaugeFunctions = LTrim$(Str$(chkGaugeFunctions.Value))
+    gblStartup = LTrim$(Str$(chkGenStartup.Value))
     
-    PzGIcao = txtIcao.Text
+    gblIcao = txtIcao.Text
 
     
-    'PzGPointerAnimate = cmbTickSwitchPref.ListIndex
-    PzGSamplingInterval = LTrim$(Str$(sliSamplingInterval.Value))
-    PzGStormTestInterval = LTrim$(Str$(sliStormTestInterval.Value))
-    PzGErrorInterval = LTrim$(Str$(sliErrorInterval.Value))
+    'gblPointerAnimate = cmbTickSwitchPref.ListIndex
+    gblSamplingInterval = LTrim$(Str$(sliSamplingInterval.Value))
+    gblStormTestInterval = LTrim$(Str$(sliStormTestInterval.Value))
+    gblErrorInterval = LTrim$(Str$(sliErrorInterval.Value))
     
-    PzGAirportsURL = txtAirportsURL.Text
+    gblAirportsURL = txtAirportsURL.Text
     
-    PzGTemperatureScale = cmbTemperatureScale.ListIndex
-    PzGPressureScale = cmbPressureScale.ListIndex
-    PzGMetricImperial = cmbMetricImperial.ListIndex
-    PzGWindSpeedScale = cmbWindSpeedScale.ListIndex
+    gblTemperatureScale = cmbTemperatureScale.ListIndex
+    gblPressureScale = cmbPressureScale.ListIndex
+    gblMetricImperial = cmbMetricImperial.ListIndex
+    gblWindSpeedScale = cmbWindSpeedScale.ListIndex
     
     ' sounds
-    PzGEnableSounds = LTrim$(Str$(chkEnableSounds.Value))
+    gblEnableSounds = LTrim$(Str$(chkEnableSounds.Value))
     
     'development
-    PzGDebug = LTrim$(Str$(cmbDebug.ListIndex))
-    PzGDblClickCommand = txtDblClickCommand.Text
-    PzGOpenFile = txtOpenFile.Text
-    PzGDefaultEditor = txtDefaultEditor.Text
+    gblDebug = LTrim$(Str$(cmbDebug.ListIndex))
+    gblDblClickCommand = txtDblClickCommand.Text
+    gblOpenFile = txtOpenFile.Text
+    #If TWINBASIC Then
+        gblDefaultTBEditor = txtDefaultEditor.Text
+    #Else
+        gblDefaultVB6Editor = txtDefaultEditor.Text
+    #End If
+    
     
     ' position
-    PzGAspectHidden = LTrim$(Str$(cmbAspectHidden.ListIndex))
-    PzGGaugeType = LTrim$(Str$(cmbGaugeType.ListIndex))
+    gblAspectHidden = LTrim$(Str$(cmbAspectHidden.ListIndex))
+    gblGaugeType = LTrim$(Str$(cmbGaugeType.ListIndex))
     
-    PzGWidgetPosition = LTrim$(Str$(cmbWidgetPosition.ListIndex))
+    gblWidgetPosition = LTrim$(Str$(cmbWidgetPosition.ListIndex))
         
     If cmbGaugeType.ListIndex = 0 Then ' temperature
-        PzGTemperatureLandscapeLocked = LTrim$(Str$(cmbLandscapeLocked.ListIndex))
-        PzGTemperaturePortraitLocked = LTrim$(Str$(cmbPortraitLocked.ListIndex))
-        PzGTemperatureLandscapeLockedHoffset = txtLandscapeHoffset.Text
-        PzGTemperatureLandscapeLockedVoffset = txtLandscapeVoffset.Text
-        PzGTemperaturePortraitLockedHoffset = txtPortraitHoffset.Text
-        PzGTemperaturePortraitLockedVoffset = txtPortraitVoffset.Text
+        gblTemperatureLandscapeLocked = LTrim$(Str$(cmbLandscapeLocked.ListIndex))
+        gblTemperaturePortraitLocked = LTrim$(Str$(cmbPortraitLocked.ListIndex))
+        gblTemperatureLandscapeLockedHoffset = txtLandscapeHoffset.Text
+        gblTemperatureLandscapeLockedVoffset = txtLandscapeVoffset.Text
+        gblTemperaturePortraitLockedHoffset = txtPortraitHoffset.Text
+        gblTemperaturePortraitLockedVoffset = txtPortraitVoffset.Text
     End If
     
     If cmbGaugeType.ListIndex = 1 Then ' anemometer
-        PzGAnemometerLandscapeLocked = LTrim$(Str$(cmbLandscapeLocked.ListIndex))
-        PzGAnemometerPortraitLocked = LTrim$(Str$(cmbPortraitLocked.ListIndex))
-        PzGAnemometerLandscapeLockedHoffset = txtLandscapeHoffset.Text
-        PzGAnemometerLandscapeLockedVoffset = txtLandscapeVoffset.Text
-        PzGAnemometerPortraitLockedHoffset = txtPortraitHoffset.Text
-        PzGAnemometerPortraitLockedVoffset = txtPortraitVoffset.Text
+        gblAnemometerLandscapeLocked = LTrim$(Str$(cmbLandscapeLocked.ListIndex))
+        gblAnemometerPortraitLocked = LTrim$(Str$(cmbPortraitLocked.ListIndex))
+        gblAnemometerLandscapeLockedHoffset = txtLandscapeHoffset.Text
+        gblAnemometerLandscapeLockedVoffset = txtLandscapeVoffset.Text
+        gblAnemometerPortraitLockedHoffset = txtPortraitHoffset.Text
+        gblAnemometerPortraitLockedVoffset = txtPortraitVoffset.Text
     End If
     
     If cmbGaugeType.ListIndex = 2 Then ' humidity
-        PzGHumidityLandscapeLocked = LTrim$(Str$(cmbLandscapeLocked.ListIndex))
-        PzGHumidityPortraitLocked = LTrim$(Str$(cmbPortraitLocked.ListIndex))
-        PzGHumidityLandscapeLockedHoffset = txtLandscapeHoffset.Text
-        PzGHumidityLandscapeLockedVoffset = txtLandscapeVoffset.Text
-        PzGHumidityPortraitLockedHoffset = txtPortraitHoffset.Text
-        PzGHumidityPortraitLockedVoffset = txtPortraitVoffset.Text
+        gblHumidityLandscapeLocked = LTrim$(Str$(cmbLandscapeLocked.ListIndex))
+        gblHumidityPortraitLocked = LTrim$(Str$(cmbPortraitLocked.ListIndex))
+        gblHumidityLandscapeLockedHoffset = txtLandscapeHoffset.Text
+        gblHumidityLandscapeLockedVoffset = txtLandscapeVoffset.Text
+        gblHumidityPortraitLockedHoffset = txtPortraitHoffset.Text
+        gblHumidityPortraitLockedVoffset = txtPortraitVoffset.Text
     End If
     
     If cmbGaugeType.ListIndex = 3 Then ' Barometer
-        PzGBarometerLandscapeLocked = LTrim$(Str$(cmbLandscapeLocked.ListIndex))
-        PzGBarometerPortraitLocked = LTrim$(Str$(cmbPortraitLocked.ListIndex))
-        PzGBarometerLandscapeLockedHoffset = txtLandscapeHoffset.Text
-        PzGBarometerLandscapeLockedVoffset = txtLandscapeVoffset.Text
-        PzGBarometerPortraitLockedHoffset = txtPortraitHoffset.Text
-        PzGBarometerPortraitLockedVoffset = txtPortraitVoffset.Text
+        gblBarometerLandscapeLocked = LTrim$(Str$(cmbLandscapeLocked.ListIndex))
+        gblBarometerPortraitLocked = LTrim$(Str$(cmbPortraitLocked.ListIndex))
+        gblBarometerLandscapeLockedHoffset = txtLandscapeHoffset.Text
+        gblBarometerLandscapeLockedVoffset = txtLandscapeVoffset.Text
+        gblBarometerPortraitLockedHoffset = txtPortraitHoffset.Text
+        gblBarometerPortraitLockedVoffset = txtPortraitVoffset.Text
     End If
     
     'deanieboy
         
-'    PzGTemperatureVLocationPerc
-'    PzGTemperatureHLocationPerc
+'    gblTemperatureVLocationPerc
+'    gblTemperatureHLocationPerc
 
     ' fonts
-    PzGPrefsFont = txtPrefsFont.Text
-    PzGTempFormFont = PzGPrefsFont
+    gblPrefsFont = txtPrefsFont.Text
+    gblTempFormFont = gblPrefsFont
     
     ' the sizing is not saved here again as it saved during the setting phase.
     
-'    If PzGDpiAwareness = "1" Then
-'        PzGPrefsFontSizeHighDPI = txtPrefsFontSize.Text
+'    If gblDpiAwareness = "1" Then
+'        gblPrefsFontSizeHighDPI = txtPrefsFontSize.Text
 '    Else
-'        PzGPrefsFontSizeLowDPI = txtPrefsFontSize.Text
+'        gblPrefsFontSizeLowDPI = txtPrefsFontSize.Text
 '    End If
-    'PzGPrefsFontItalics = txtFontSize.Text
+    'gblPrefsFontItalics = txtFontSize.Text
 
     ' Windows
-    PzGWindowLevel = LTrim$(Str$(cmbWindowLevel.ListIndex))
-    PzGOpacity = LTrim$(Str$(sliOpacity.Value))
-    PzGWidgetHidden = LTrim$(Str$(chkWidgetHidden.Value))
-    PzGHidingTime = LTrim$(Str$(cmbHidingTime.ListIndex))
-    PzGIgnoreMouse = LTrim$(Str$(chkIgnoreMouse.Value))
+    gblWindowLevel = LTrim$(Str$(cmbWindowLevel.ListIndex))
+    gblOpacity = LTrim$(Str$(sliOpacity.Value))
+    gblWidgetHidden = LTrim$(Str$(chkWidgetHidden.Value))
+    gblHidingTime = LTrim$(Str$(cmbHidingTime.ListIndex))
+    gblIgnoreMouse = LTrim$(Str$(chkIgnoreMouse.Value))
             
-    'development
-    PzGDebug = LTrim$(Str$(cmbDebug.ListIndex))
-    PzGDblClickCommand = txtDblClickCommand.Text
-    PzGOpenFile = txtOpenFile.Text
-    PzGDefaultEditor = txtDefaultEditor.Text
+
             
-    If PzGStartup = "1" Then
+    If gblStartup = "1" Then
         Call savestring(HKEY_CURRENT_USER, "SOFTWARE\Microsoft\Windows\CurrentVersion\Run", "PzTemperatureGaugeWidget", """" & App.path & "\" & "Panzer Temperature Gauge.exe""")
     Else
         Call savestring(HKEY_CURRENT_USER, "SOFTWARE\Microsoft\Windows\CurrentVersion\Run", "PzTemperatureGaugeWidget", vbNullString)
     End If
 
     ' save the values from the general tab
-    If fFExists(PzGSettingsFile) Then
-        sPutINISetting "Software\PzTemperatureGauge", "enableTooltips", PzGEnableTooltips, PzGSettingsFile
-        sPutINISetting "Software\PzTemperatureGauge", "enablePrefsTooltips", PzGEnablePrefsTooltips, PzGSettingsFile
-        sPutINISetting "Software\PzTemperatureGauge", "enableBalloonTooltips", PzGEnableBalloonTooltips, PzGSettingsFile
-        sPutINISetting "Software\PzTemperatureGauge", "showTaskbar", PzGShowTaskbar, PzGSettingsFile
-        sPutINISetting "Software\PzTemperatureGauge", "dpiAwareness", PzGDpiAwareness, PzGSettingsFile
+    If fFExists(gblSettingsFile) Then
+        sPutINISetting "Software\PzTemperatureGauge", "enableTooltips", gblEnableTooltips, gblSettingsFile
+        sPutINISetting "Software\PzTemperatureGauge", "enablePrefsTooltips", gblEnablePrefsTooltips, gblSettingsFile
+        sPutINISetting "Software\PzTemperatureGauge", "enableBalloonTooltips", gblEnableBalloonTooltips, gblSettingsFile
+        sPutINISetting "Software\PzTemperatureGauge", "showTaskbar", gblShowTaskbar, gblSettingsFile
+        sPutINISetting "Software\PzTemperatureGauge", "dpiAwareness", gblDpiAwareness, gblSettingsFile
         
-        sPutINISetting "Software\PzTemperatureGauge", "temperatureGaugeSize", PzGTemperatureGaugeSize, PzGSettingsFile
-        sPutINISetting "Software\PzTemperatureGauge", "temperatureLandscapeLocked", PzGTemperatureLandscapeLocked, PzGSettingsFile
-        sPutINISetting "Software\PzTemperatureGauge", "temperaturePortraitLocked", PzGTemperaturePortraitLocked, PzGSettingsFile
-        sPutINISetting "Software\PzTemperatureGauge", "temperatureVLocationPerc", PzGTemperatureVLocationPerc, PzGSettingsFile
-        sPutINISetting "Software\PzTemperatureGauge", "temperatureHLocationPerc", PzGTemperatureHLocationPerc, PzGSettingsFile
-        sPutINISetting "Software\PzTemperatureGauge", "temperatureFormHighDpiXPos", PzGTemperatureFormHighDpiXPos, PzGSettingsFile
-        sPutINISetting "Software\PzTemperatureGauge", "temperatureFormHighDpiYPos", PzGTemperatureFormHighDpiYPos, PzGSettingsFile
-        sPutINISetting "Software\PzTemperatureGauge", "temperatureFormLowDpiXPos", PzGTemperatureFormLowDpiXPos, PzGSettingsFile
-        sPutINISetting "Software\PzTemperatureGauge", "temperatureFormLowDpiYPos", PzGTemperatureFormLowDpiYPos, PzGSettingsFile
-        sPutINISetting "Software\PzTemperatureGauge", "preventDraggingTemperature", PzGPreventDraggingTemperature, PzGSettingsFile
+        sPutINISetting "Software\PzTemperatureGauge", "temperatureGaugeSize", gblTemperatureGaugeSize, gblSettingsFile
+        sPutINISetting "Software\PzTemperatureGauge", "temperatureLandscapeLocked", gblTemperatureLandscapeLocked, gblSettingsFile
+        sPutINISetting "Software\PzTemperatureGauge", "temperaturePortraitLocked", gblTemperaturePortraitLocked, gblSettingsFile
+        sPutINISetting "Software\PzTemperatureGauge", "temperatureVLocationPerc", gblTemperatureVLocationPerc, gblSettingsFile
+        sPutINISetting "Software\PzTemperatureGauge", "temperatureHLocationPerc", gblTemperatureHLocationPerc, gblSettingsFile
+        sPutINISetting "Software\PzTemperatureGauge", "temperatureFormHighDpiXPos", gblTemperatureFormHighDpiXPos, gblSettingsFile
+        sPutINISetting "Software\PzTemperatureGauge", "temperatureFormHighDpiYPos", gblTemperatureFormHighDpiYPos, gblSettingsFile
+        sPutINISetting "Software\PzTemperatureGauge", "temperatureFormLowDpiXPos", gblTemperatureFormLowDpiXPos, gblSettingsFile
+        sPutINISetting "Software\PzTemperatureGauge", "temperatureFormLowDpiYPos", gblTemperatureFormLowDpiYPos, gblSettingsFile
+        sPutINISetting "Software\PzTemperatureGauge", "preventDraggingTemperature", gblPreventDraggingTemperature, gblSettingsFile
         
-        sPutINISetting "Software\PzAnemometerGauge", "anemometerGaugeSize", PzGAnemometerGaugeSize, PzGSettingsFile
-        sPutINISetting "Software\PzAnemometerGauge", "anemometerLandscapeLocked", PzGAnemometerLandscapeLocked, PzGSettingsFile
-        sPutINISetting "Software\PzAnemometerGauge", "anemometerPortraitLocked", PzGAnemometerPortraitLocked, PzGSettingsFile
-        sPutINISetting "Software\PzAnemometerGauge", "anemometerVLocationPerc", PzGAnemometerVLocationPerc, PzGSettingsFile
-        sPutINISetting "Software\PzAnemometerGauge", "anemometerHLocationPerc", PzGAnemometerHLocationPerc, PzGSettingsFile
-        sPutINISetting "Software\PzAnemometerGauge", "anemometerFormHighDpiXPos", PzGAnemometerFormHighDpiXPos, PzGSettingsFile
-        sPutINISetting "Software\PzAnemometerGauge", "anemometerFormHighDpiYPos", PzGAnemometerFormHighDpiYPos, PzGSettingsFile
-        sPutINISetting "Software\PzAnemometerGauge", "anemometerFormLowDpiXPos", PzGAnemometerFormLowDpiXPos, PzGSettingsFile
-        sPutINISetting "Software\PzAnemometerGauge", "anemometerFormLowDpiYPos", PzGAnemometerFormLowDpiYPos, PzGSettingsFile
-        sPutINISetting "Software\PzAnemometerGauge", "preventDraggingAnemometer", PzGPreventDraggingAnemometer, PzGSettingsFile
+        sPutINISetting "Software\PzAnemometerGauge", "anemometerGaugeSize", gblAnemometerGaugeSize, gblSettingsFile
+        sPutINISetting "Software\PzAnemometerGauge", "anemometerLandscapeLocked", gblAnemometerLandscapeLocked, gblSettingsFile
+        sPutINISetting "Software\PzAnemometerGauge", "anemometerPortraitLocked", gblAnemometerPortraitLocked, gblSettingsFile
+        sPutINISetting "Software\PzAnemometerGauge", "anemometerVLocationPerc", gblAnemometerVLocationPerc, gblSettingsFile
+        sPutINISetting "Software\PzAnemometerGauge", "anemometerHLocationPerc", gblAnemometerHLocationPerc, gblSettingsFile
+        sPutINISetting "Software\PzAnemometerGauge", "anemometerFormHighDpiXPos", gblAnemometerFormHighDpiXPos, gblSettingsFile
+        sPutINISetting "Software\PzAnemometerGauge", "anemometerFormHighDpiYPos", gblAnemometerFormHighDpiYPos, gblSettingsFile
+        sPutINISetting "Software\PzAnemometerGauge", "anemometerFormLowDpiXPos", gblAnemometerFormLowDpiXPos, gblSettingsFile
+        sPutINISetting "Software\PzAnemometerGauge", "anemometerFormLowDpiYPos", gblAnemometerFormLowDpiYPos, gblSettingsFile
+        sPutINISetting "Software\PzAnemometerGauge", "preventDraggingAnemometer", gblPreventDraggingAnemometer, gblSettingsFile
                
-        sPutINISetting "Software\PzHumidityGauge", "humidityGaugeSize", PzGHumidityGaugeSize, PzGSettingsFile
-        sPutINISetting "Software\PzHumidityGauge", "humidityLandscapeLocked", PzGHumidityLandscapeLocked, PzGSettingsFile
-        sPutINISetting "Software\PzHumidityGauge", "humidityPortraitLocked", PzGHumidityPortraitLocked, PzGSettingsFile
-        sPutINISetting "Software\PzHumidityGauge", "humidityVLocationPerc", PzGHumidityVLocationPerc, PzGSettingsFile
-        sPutINISetting "Software\PzHumidityGauge", "humidityHLocationPerc", PzGHumidityHLocationPerc, PzGSettingsFile
-        sPutINISetting "Software\PzHumidityGauge", "humidityFormHighDpiXPos", PzGHumidityFormHighDpiXPos, PzGSettingsFile
-        sPutINISetting "Software\PzHumidityGauge", "humidityFormHighDpiYPos", PzGHumidityFormHighDpiYPos, PzGSettingsFile
-        sPutINISetting "Software\PzHumidityGauge", "humidityFormLowDpiXPos", PzGHumidityFormLowDpiXPos, PzGSettingsFile
-        sPutINISetting "Software\PzHumidityGauge", "humidityFormLowDpiYPos", PzGHumidityFormLowDpiYPos, PzGSettingsFile
-        sPutINISetting "Software\PzHumidityGauge", "preventDraggingHumidity", PzGPreventDraggingHumidity, PzGSettingsFile
+        sPutINISetting "Software\PzHumidityGauge", "humidityGaugeSize", gblHumidityGaugeSize, gblSettingsFile
+        sPutINISetting "Software\PzHumidityGauge", "humidityLandscapeLocked", gblHumidityLandscapeLocked, gblSettingsFile
+        sPutINISetting "Software\PzHumidityGauge", "humidityPortraitLocked", gblHumidityPortraitLocked, gblSettingsFile
+        sPutINISetting "Software\PzHumidityGauge", "humidityVLocationPerc", gblHumidityVLocationPerc, gblSettingsFile
+        sPutINISetting "Software\PzHumidityGauge", "humidityHLocationPerc", gblHumidityHLocationPerc, gblSettingsFile
+        sPutINISetting "Software\PzHumidityGauge", "humidityFormHighDpiXPos", gblHumidityFormHighDpiXPos, gblSettingsFile
+        sPutINISetting "Software\PzHumidityGauge", "humidityFormHighDpiYPos", gblHumidityFormHighDpiYPos, gblSettingsFile
+        sPutINISetting "Software\PzHumidityGauge", "humidityFormLowDpiXPos", gblHumidityFormLowDpiXPos, gblSettingsFile
+        sPutINISetting "Software\PzHumidityGauge", "humidityFormLowDpiYPos", gblHumidityFormLowDpiYPos, gblSettingsFile
+        sPutINISetting "Software\PzHumidityGauge", "preventDraggingHumidity", gblPreventDraggingHumidity, gblSettingsFile
                
-        sPutINISetting "Software\PzBarometerGauge", "barometerGaugeSize", PzGBarometerGaugeSize, PzGSettingsFile
-        sPutINISetting "Software\PzBarometerGauge", "barometerLandscapeLocked", PzGBarometerLandscapeLocked, PzGSettingsFile
-        sPutINISetting "Software\PzBarometerGauge", "barometerPortraitLocked", PzGBarometerPortraitLocked, PzGSettingsFile
-        sPutINISetting "Software\PzBarometerGauge", "barometerVLocationPerc", PzGBarometerVLocationPerc, PzGSettingsFile
-        sPutINISetting "Software\PzBarometerGauge", "barometerHLocationPerc", PzGBarometerHLocationPerc, PzGSettingsFile
-        sPutINISetting "Software\PzBarometerGauge", "barometerFormHighDpiXPos", PzGBarometerFormHighDpiXPos, PzGSettingsFile
-        sPutINISetting "Software\PzBarometerGauge", "barometerFormHighDpiYPos", PzGBarometerFormHighDpiYPos, PzGSettingsFile
-        sPutINISetting "Software\PzBarometerGauge", "barometerFormLowDpiXPos", PzGBarometerFormLowDpiXPos, PzGSettingsFile
-        sPutINISetting "Software\PzBarometerGauge", "barometerFormLowDpiYPos", PzGBarometerFormLowDpiYPos, PzGSettingsFile
-        sPutINISetting "Software\PzBarometerGauge", "preventDraggingBarometer", PzGPreventDraggingBarometer, PzGSettingsFile
+        sPutINISetting "Software\PzBarometerGauge", "barometerGaugeSize", gblBarometerGaugeSize, gblSettingsFile
+        sPutINISetting "Software\PzBarometerGauge", "barometerLandscapeLocked", gblBarometerLandscapeLocked, gblSettingsFile
+        sPutINISetting "Software\PzBarometerGauge", "barometerPortraitLocked", gblBarometerPortraitLocked, gblSettingsFile
+        sPutINISetting "Software\PzBarometerGauge", "barometerVLocationPerc", gblBarometerVLocationPerc, gblSettingsFile
+        sPutINISetting "Software\PzBarometerGauge", "barometerHLocationPerc", gblBarometerHLocationPerc, gblSettingsFile
+        sPutINISetting "Software\PzBarometerGauge", "barometerFormHighDpiXPos", gblBarometerFormHighDpiXPos, gblSettingsFile
+        sPutINISetting "Software\PzBarometerGauge", "barometerFormHighDpiYPos", gblBarometerFormHighDpiYPos, gblSettingsFile
+        sPutINISetting "Software\PzBarometerGauge", "barometerFormLowDpiXPos", gblBarometerFormLowDpiXPos, gblSettingsFile
+        sPutINISetting "Software\PzBarometerGauge", "barometerFormLowDpiYPos", gblBarometerFormLowDpiYPos, gblSettingsFile
+        sPutINISetting "Software\PzBarometerGauge", "preventDraggingBarometer", gblPreventDraggingBarometer, gblSettingsFile
 
 
-        sPutINISetting "Software\PzClipB", "clipBSize", PzGClipBSize, PzGSettingsFile
-        sPutINISetting "Software\PzSelector", "selectorSize", PzGSelectorSize, PzGSettingsFile
+        sPutINISetting "Software\PzClipB", "clipBSize", gblClipBSize, gblSettingsFile
+        sPutINISetting "Software\PzSelector", "selectorSize", gblSelectorSize, gblSettingsFile
         
-        sPutINISetting "Software\PzTemperatureGauge", "scrollWheelDirection", PzGScrollWheelDirection, PzGSettingsFile
-        sPutINISetting "Software\PzTemperatureGauge", "gaugeFunctions", PzGGaugeFunctions, PzGSettingsFile
-'        sPutINISetting "Software\PzTemperatureGauge", "pointerAnimate", PzGPointerAnimate, PzGSettingsFile
-        sPutINISetting "Software\PzTemperatureGauge", "samplingInterval", PzGSamplingInterval, PzGSettingsFile
-        sPutINISetting "Software\PzTemperatureGauge", "stormTestInterval", PzGStormTestInterval, PzGSettingsFile
-        sPutINISetting "Software\PzTemperatureGauge", "errorInterval", PzGErrorInterval, PzGSettingsFile
+        sPutINISetting "Software\PzTemperatureGauge", "scrollWheelDirection", gblScrollWheelDirection, gblSettingsFile
+        sPutINISetting "Software\PzTemperatureGauge", "gaugeFunctions", gblGaugeFunctions, gblSettingsFile
+'        sPutINISetting "Software\PzTemperatureGauge", "pointerAnimate", gblPointerAnimate, gblSettingsFile
+        sPutINISetting "Software\PzTemperatureGauge", "samplingInterval", gblSamplingInterval, gblSettingsFile
+        sPutINISetting "Software\PzTemperatureGauge", "stormTestInterval", gblStormTestInterval, gblSettingsFile
+        sPutINISetting "Software\PzTemperatureGauge", "errorInterval", gblErrorInterval, gblSettingsFile
         
-        sPutINISetting "Software\PzTemperatureGauge", "airportsURL", PzGAirportsURL, PzGSettingsFile
+        sPutINISetting "Software\PzTemperatureGauge", "airportsURL", gblAirportsURL, gblSettingsFile
         
-        sPutINISetting "Software\PzTemperatureGauge", "temperatureScale", PzGTemperatureScale, PzGSettingsFile
-        sPutINISetting "Software\PzTemperatureGauge", "pressureScale", PzGPressureScale, PzGSettingsFile
-        sPutINISetting "Software\PzTemperatureGauge", "windSpeedScale", PzGWindSpeedScale, PzGSettingsFile
-        sPutINISetting "Software\PzTemperatureGauge", "metricImperial", PzGMetricImperial, PzGSettingsFile
+        sPutINISetting "Software\PzTemperatureGauge", "temperatureScale", gblTemperatureScale, gblSettingsFile
+        sPutINISetting "Software\PzTemperatureGauge", "pressureScale", gblPressureScale, gblSettingsFile
+        sPutINISetting "Software\PzTemperatureGauge", "windSpeedScale", gblWindSpeedScale, gblSettingsFile
+        sPutINISetting "Software\PzTemperatureGauge", "metricImperial", gblMetricImperial, gblSettingsFile
         
-        sPutINISetting "Software\PzTemperatureGauge", "icao", PzGIcao, PzGSettingsFile
+        sPutINISetting "Software\PzTemperatureGauge", "icao", gblIcao, gblSettingsFile
 
         
-        sPutINISetting "Software\PzTemperatureGauge", "aspectHidden", PzGAspectHidden, PzGSettingsFile
-        sPutINISetting "Software\PzTemperatureGauge", "gaugeType", PzGGaugeType, PzGSettingsFile
+        sPutINISetting "Software\PzTemperatureGauge", "aspectHidden", gblAspectHidden, gblSettingsFile
+        sPutINISetting "Software\PzTemperatureGauge", "gaugeType", gblGaugeType, gblSettingsFile
         
-        sPutINISetting "Software\PzTemperatureGauge", "widgetPosition", PzGWidgetPosition, PzGSettingsFile
+        sPutINISetting "Software\PzTemperatureGauge", "widgetPosition", gblWidgetPosition, gblSettingsFile
         
 
-        sPutINISetting "Software\PzTemperatureGauge", "prefsFont", PzGPrefsFont, PzGSettingsFile
-        sPutINISetting "Software\PzTemperatureGauge", "tempFormFont", PzGTempFormFont, PzGSettingsFile
+        sPutINISetting "Software\PzTemperatureGauge", "prefsFont", gblPrefsFont, gblSettingsFile
+        sPutINISetting "Software\PzTemperatureGauge", "tempFormFont", gblTempFormFont, gblSettingsFile
         
-        sPutINISetting "Software\PzTemperatureGauge", "prefsFontSizeHighDPI", PzGPrefsFontSizeHighDPI, PzGSettingsFile
-        sPutINISetting "Software\PzTemperatureGauge", "prefsFontSizeLowDPI", PzGPrefsFontSizeLowDPI, PzGSettingsFile
-        sPutINISetting "Software\PzTemperatureGauge", "prefsFontItalics", PzGPrefsFontItalics, PzGSettingsFile
-        sPutINISetting "Software\PzTemperatureGauge", "prefsFontColour", PzGPrefsFontColour, PzGSettingsFile
+        sPutINISetting "Software\PzTemperatureGauge", "prefsFontSizeHighDPI", gblPrefsFontSizeHighDPI, gblSettingsFile
+        sPutINISetting "Software\PzTemperatureGauge", "prefsFontSizeLowDPI", gblPrefsFontSizeLowDPI, gblSettingsFile
+        sPutINISetting "Software\PzTemperatureGauge", "prefsFontItalics", gblPrefsFontItalics, gblSettingsFile
+        sPutINISetting "Software\PzTemperatureGauge", "prefsFontColour", gblPrefsFontColour, gblSettingsFile
 
         'save the values from the Windows Config Items
-        sPutINISetting "Software\PzTemperatureGauge", "windowLevel", PzGWindowLevel, PzGSettingsFile
+        sPutINISetting "Software\PzTemperatureGauge", "windowLevel", gblWindowLevel, gblSettingsFile
         
         
-        sPutINISetting "Software\PzTemperatureGauge", "opacity", PzGOpacity, PzGSettingsFile
-        sPutINISetting "Software\PzTemperatureGauge", "widgetHidden", PzGWidgetHidden, PzGSettingsFile
-        sPutINISetting "Software\PzTemperatureGauge", "hidingTime", PzGHidingTime, PzGSettingsFile
-        sPutINISetting "Software\PzTemperatureGauge", "ignoreMouse", PzGIgnoreMouse, PzGSettingsFile
+        sPutINISetting "Software\PzTemperatureGauge", "opacity", gblOpacity, gblSettingsFile
+        sPutINISetting "Software\PzTemperatureGauge", "widgetHidden", gblWidgetHidden, gblSettingsFile
+        sPutINISetting "Software\PzTemperatureGauge", "hidingTime", gblHidingTime, gblSettingsFile
+        sPutINISetting "Software\PzTemperatureGauge", "ignoreMouse", gblIgnoreMouse, gblSettingsFile
         
-        sPutINISetting "Software\PzTemperatureGauge", "startup", PzGStartup, PzGSettingsFile
+        sPutINISetting "Software\PzTemperatureGauge", "startup", gblStartup, gblSettingsFile
 
-        sPutINISetting "Software\PzTemperatureGauge", "enableSounds", PzGEnableSounds, PzGSettingsFile
-        sPutINISetting "Software\PzTemperatureGauge", "lastSelectedTab", PzGLastSelectedTab, PzGSettingsFile
+        sPutINISetting "Software\PzTemperatureGauge", "enableSounds", gblEnableSounds, gblSettingsFile
+        sPutINISetting "Software\PzTemperatureGauge", "lastSelectedTab", gblLastSelectedTab, gblSettingsFile
         
-        sPutINISetting "Software\PzTemperatureGauge", "debug", PzGDebug, PzGSettingsFile
-        sPutINISetting "Software\PzTemperatureGauge", "dblClickCommand", PzGDblClickCommand, PzGSettingsFile
-        sPutINISetting "Software\PzTemperatureGauge", "openFile", PzGOpenFile, PzGSettingsFile
-        sPutINISetting "Software\PzTemperatureGauge", "defaultEditor", PzGDefaultEditor, PzGSettingsFile
+        sPutINISetting "Software\PzTemperatureGauge", "debug", gblDebug, gblSettingsFile
+        sPutINISetting "Software\PzTemperatureGauge", "dblClickCommand", gblDblClickCommand, gblSettingsFile
+        sPutINISetting "Software\PzTemperatureGauge", "openFile", gblOpenFile, gblSettingsFile
+        sPutINISetting "Software\PzTemperatureGauge", "defaultVB6Editor", gblDefaultVB6Editor, gblSettingsFile
+        sPutINISetting "Software\PzTemperatureGauge", "defaultTBEditor", gblDefaultTBEditor, gblSettingsFile
         
-
-      
-        sPutINISetting "Software\PzClipB", "clipBFormHighDpiXPos", PzGClipBFormHighDpiXPos, PzGSettingsFile
-        sPutINISetting "Software\PzClipB", "clipBFormHighDpiYPos", PzGClipBFormHighDpiYPos, PzGSettingsFile
-        sPutINISetting "Software\PzClipB", "clipBFormLowDpiXPos", PzGClipBFormLowDpiXPos, PzGSettingsFile
-        sPutINISetting "Software\PzClipB", "clipBFormLowDpiYPos", PzGClipBFormLowDpiYPos, PzGSettingsFile
+        sPutINISetting "Software\PzClipB", "clipBFormHighDpiXPos", gblClipBFormHighDpiXPos, gblSettingsFile
+        sPutINISetting "Software\PzClipB", "clipBFormHighDpiYPos", gblClipBFormHighDpiYPos, gblSettingsFile
+        sPutINISetting "Software\PzClipB", "clipBFormLowDpiXPos", gblClipBFormLowDpiXPos, gblSettingsFile
+        sPutINISetting "Software\PzClipB", "clipBFormLowDpiYPos", gblClipBFormLowDpiYPos, gblSettingsFile
         
-        sPutINISetting "Software\PzTemperatureGauge", "selectorFormHighDpiXPos", PzGSelectorFormHighDpiXPos, PzGSettingsFile
-        sPutINISetting "Software\PzTemperatureGauge", "selectorFormHighDpiYPos", PzGSelectorFormHighDpiYPos, PzGSettingsFile
-        sPutINISetting "Software\PzTemperatureGauge", "selectorFormLowDpiXPos", PzGSelectorFormLowDpiXPos, PzGSettingsFile
-        sPutINISetting "Software\PzTemperatureGauge", "selectorFormLowDpiYPos", PzGSelectorFormLowDpiYPos, PzGSettingsFile
+        sPutINISetting "Software\PzTemperatureGauge", "selectorFormHighDpiXPos", gblSelectorFormHighDpiXPos, gblSettingsFile
+        sPutINISetting "Software\PzTemperatureGauge", "selectorFormHighDpiYPos", gblSelectorFormHighDpiYPos, gblSettingsFile
+        sPutINISetting "Software\PzTemperatureGauge", "selectorFormLowDpiXPos", gblSelectorFormLowDpiXPos, gblSettingsFile
+        sPutINISetting "Software\PzTemperatureGauge", "selectorFormLowDpiYPos", gblSelectorFormLowDpiYPos, gblSettingsFile
         
-        sPutINISetting "Software\PzTemperatureGauge", "lastUpdated", PzGLastUpdated, PzGSettingsFile
-        sPutINISetting "Software\PzTemperatureGauge", "metarPref", PzGMetarPref, PzGSettingsFile
+        sPutINISetting "Software\PzTemperatureGauge", "lastUpdated", gblLastUpdated, gblSettingsFile
+        sPutINISetting "Software\PzTemperatureGauge", "metarPref", gblMetarPref, gblSettingsFile
         
-        sPutINISetting "Software\PzTemperatureGauge", "oldPressureStorage", PzGOldPressureStorage, PzGSettingsFile
-        sPutINISetting "Software\PzTemperatureGauge", "pressureStorageDate", PzGPressureStorageDate, PzGSettingsFile
-        sPutINISetting "Software\PzTemperatureGauge", "currentPressureValue", PzGCurrentPressureValue, PzGSettingsFile
+        sPutINISetting "Software\PzTemperatureGauge", "oldPressureStorage", gblOldPressureStorage, gblSettingsFile
+        sPutINISetting "Software\PzTemperatureGauge", "pressureStorageDate", gblPressureStorageDate, gblSettingsFile
+        sPutINISetting "Software\PzTemperatureGauge", "currentPressureValue", gblCurrentPressureValue, gblSettingsFile
         
         'save the values from the Text Items
 
@@ -4050,9 +4109,9 @@ Private Sub btnSave_Click()
     Me.SetFocus
     btnSave.Enabled = False ' disable the save button showing it has successfully saved
     
-    ' reload here if the PzGWindowLevel Was Changed
-    If PzGWindowLevelWasChanged = True Then
-        PzGWindowLevelWasChanged = False
+    ' reload here if the gblWindowLevel Was Changed
+    If gblWindowLevelWasChanged = True Then
+        gblWindowLevelWasChanged = False
         Call reloadWidget
     Else
         WeatherMeteo.GetMetar = True
@@ -4084,12 +4143,12 @@ Private Sub chkEnableTooltips_Click()
     
     If prefsStartupFlg = False Then
         If chkEnableTooltips.Value = 1 Then
-            PzGEnableTooltips = "1"
+            gblEnableTooltips = "1"
         Else
-            PzGEnableTooltips = "0"
+            gblEnableTooltips = "0"
         End If
         
-        sPutINISetting "Software\PzTemperatureGauge", "enableTooltips", PzGEnableTooltips, PzGSettingsFile
+        sPutINISetting "Software\PzTemperatureGauge", "enableTooltips", gblEnableTooltips, gblSettingsFile
 
         answer = vbYes
         answerMsg = "You must soft reload this widget, in order to change the tooltip setting, do you want me to reload this widget? I can do it now for you."
@@ -4121,7 +4180,7 @@ End Sub
 
 Private Sub cmbWindowLevel_Click()
     btnSave.Enabled = True ' enable the save button
-    If prefsStartupFlg = False Then PzGWindowLevelWasChanged = True
+    If prefsStartupFlg = False Then gblWindowLevelWasChanged = True
 End Sub
 '---------------------------------------------------------------------------------------
 ' Procedure : btnPrefsFont_Click
@@ -4149,42 +4208,42 @@ Private Sub btnPrefsFont_Click()
     btnSave.Enabled = True ' enable the save button
     
     ' set the preliminary vars to feed and populate the changefont routine
-    fntFont = PzGPrefsFont
-    ' PzGTempFormFont
+    fntFont = gblPrefsFont
+    ' gblTempFormFont
     
-    If PzGDpiAwareness = "1" Then
-        fntSize = Val(PzGPrefsFontSizeHighDPI)
+    If gblDpiAwareness = "1" Then
+        fntSize = Val(gblPrefsFontSizeHighDPI)
     Else
-        fntSize = Val(PzGPrefsFontSizeLowDPI)
+        fntSize = Val(gblPrefsFontSizeLowDPI)
     End If
     
     If fntSize = 0 Then fntSize = 8
-    fntItalics = CBool(PzGPrefsFontItalics)
-    fntColour = CLng(PzGPrefsFontColour)
+    fntItalics = CBool(gblPrefsFontItalics)
+    fntColour = CLng(gblPrefsFontColour)
         
     
     Call changeFont(panzerPrefs, True, fntFont, fntSize, fntWeight, fntStyle, fntColour, fntItalics, fntUnderline, fntFontResult)
     
-    PzGPrefsFont = CStr(fntFont)
-    PzGTempFormFont = PzGPrefsFont
+    gblPrefsFont = CStr(fntFont)
+    gblTempFormFont = gblPrefsFont
     
-    If PzGDpiAwareness = "1" Then
-        PzGPrefsFontSizeHighDPI = CStr(fntSize)
+    If gblDpiAwareness = "1" Then
+        gblPrefsFontSizeHighDPI = CStr(fntSize)
         Call Form_Resize
     Else
-        PzGPrefsFontSizeLowDPI = CStr(fntSize)
+        gblPrefsFontSizeLowDPI = CStr(fntSize)
     End If
     
-    PzGPrefsFontItalics = CStr(fntItalics)
-    PzGPrefsFontColour = CStr(fntColour)
+    gblPrefsFontItalics = CStr(fntItalics)
+    gblPrefsFontColour = CStr(fntColour)
 
-    If fFExists(PzGSettingsFile) Then ' does the tool's own settings.ini exist?
-        sPutINISetting "Software\PzTemperatureGauge", "prefsFont", PzGPrefsFont, PzGSettingsFile
-        sPutINISetting "Software\PzTemperatureGauge", "tempFormFont", PzGTempFormFont, PzGSettingsFile
-        sPutINISetting "Software\PzTemperatureGauge", "prefsFontSizeHighDPI", PzGPrefsFontSizeHighDPI, PzGSettingsFile
-        sPutINISetting "Software\PzTemperatureGauge", "prefsFontSizeLowDPI", PzGPrefsFontSizeLowDPI, PzGSettingsFile
-        sPutINISetting "Software\PzTemperatureGauge", "prefsFontItalics", PzGPrefsFontItalics, PzGSettingsFile
-        sPutINISetting "Software\PzTemperatureGauge", "PrefsFontColour", PzGPrefsFontColour, PzGSettingsFile
+    If fFExists(gblSettingsFile) Then ' does the tool's own settings.ini exist?
+        sPutINISetting "Software\PzTemperatureGauge", "prefsFont", gblPrefsFont, gblSettingsFile
+        sPutINISetting "Software\PzTemperatureGauge", "tempFormFont", gblTempFormFont, gblSettingsFile
+        sPutINISetting "Software\PzTemperatureGauge", "prefsFontSizeHighDPI", gblPrefsFontSizeHighDPI, gblSettingsFile
+        sPutINISetting "Software\PzTemperatureGauge", "prefsFontSizeLowDPI", gblPrefsFontSizeLowDPI, gblSettingsFile
+        sPutINISetting "Software\PzTemperatureGauge", "prefsFontItalics", gblPrefsFontItalics, gblSettingsFile
+        sPutINISetting "Software\PzTemperatureGauge", "PrefsFontColour", gblPrefsFontColour, gblSettingsFile
     End If
     
     If fntFont = vbNullString Then fntFont = "arial"
@@ -4227,8 +4286,8 @@ Private Sub adjustPrefsControls()
     On Error GoTo adjustPrefsControls_Error
             
     ' general tab
-    chkGaugeFunctions.Value = Val(PzGGaugeFunctions)
-    chkGenStartup.Value = Val(PzGStartup)
+    chkGaugeFunctions.Value = Val(gblGaugeFunctions)
+    chkGenStartup.Value = Val(gblStartup)
 '
 '    txtBias.Visible = False
 '    lblGeneral(1).Visible = False
@@ -4236,97 +4295,101 @@ Private Sub adjustPrefsControls()
     'If testDST = True Then cmbMainDaylightSaving.ListIndex = 1
     
     'set the choice for four timezone comboboxes that were populated from file.
-'    cmbMainGaugeTimeZone.ListIndex = Val(PzGMainGaugeTimeZone)
-'    cmbMainDaylightSaving.ListIndex = Val(PzGMainDaylightSaving)
+'    cmbMainGaugeTimeZone.ListIndex = Val(gblMainGaugeTimeZone)
+'    cmbMainDaylightSaving.ListIndex = Val(gblMainDaylightSaving)
         
     'txtBias.Text = tzDelta
 
-'    cmbTickSwitchPref.ListIndex = Val(PzGPointerAnimate)
+'    cmbTickSwitchPref.ListIndex = Val(gblPointerAnimate)
     
-    cmbTemperatureScale.ListIndex = Val(PzGTemperatureScale)
-    cmbPressureScale.ListIndex = Val(PzGPressureScale)
-    cmbWindSpeedScale.ListIndex = Val(PzGWindSpeedScale)
-    cmbMetricImperial.ListIndex = Val(PzGMetricImperial)
+    cmbTemperatureScale.ListIndex = Val(gblTemperatureScale)
+    cmbPressureScale.ListIndex = Val(gblPressureScale)
+    cmbWindSpeedScale.ListIndex = Val(gblWindSpeedScale)
+    cmbMetricImperial.ListIndex = Val(gblMetricImperial)
  
-    sliSamplingInterval.Value = Val(PzGSamplingInterval)
-    sliStormTestInterval.Value = Val(PzGStormTestInterval)
-    sliErrorInterval.Value = Val(PzGErrorInterval)
+    sliSamplingInterval.Value = Val(gblSamplingInterval)
+    sliStormTestInterval.Value = Val(gblStormTestInterval)
+    sliErrorInterval.Value = Val(gblErrorInterval)
      
-    txtAirportsURL.Text = PzGAirportsURL
+    txtAirportsURL.Text = gblAirportsURL
     
-    txtIcao.Text = PzGIcao
+    txtIcao.Text = gblIcao
     
     ' configuration tab
    
     ' check whether the size has been previously altered via ctrl+mousewheel on the widget
     sliTemperatureGaugeSizeOldValue = sliGaugeSize.Value
-    'sliGaugeSize.Value = Val(PzGTemperatureGaugeSize) 'deaniebabe
-    'sliAnemometerGaugeSize.Value = val(PzGAnemometerGaugeSize)
+    'sliGaugeSize.Value = Val(gblTemperatureGaugeSize) 'deaniebabe
+    'sliAnemometerGaugeSize.Value = val(gblAnemometerGaugeSize)
     
-'    sliClipBSize.Value = val(PzGClipBSize)
-'    sliSelectorSize.Value = val(PzGSelectorSize)
+'    sliClipBSize.Value = val(gblClipBSize)
+'    sliSelectorSize.Value = val(gblSelectorSize)
 
     If sliGaugeSize.Value <> sliTemperatureGaugeSizeOldValue Then
         btnSave.Visible = True
     End If
     
-    cmbScrollWheelDirection.ListIndex = Val(PzGScrollWheelDirection)
-    chkEnableTooltips.Value = Val(PzGEnableTooltips)
-    chkEnableBalloonTooltips.Value = Val(PzGEnableBalloonTooltips)
-    chkShowTaskbar.Value = Val(PzGShowTaskbar)
-    chkDpiAwareness.Value = Val(PzGDpiAwareness)
+    cmbScrollWheelDirection.ListIndex = Val(gblScrollWheelDirection)
+    chkEnableTooltips.Value = Val(gblEnableTooltips)
+    chkEnableBalloonTooltips.Value = Val(gblEnableBalloonTooltips)
+    chkShowTaskbar.Value = Val(gblShowTaskbar)
+    chkDpiAwareness.Value = Val(gblDpiAwareness)
     
-    chkEnablePrefsTooltips.Value = Val(PzGEnablePrefsTooltips)
+    chkEnablePrefsTooltips.Value = Val(gblEnablePrefsTooltips)
     
     ' sounds tab
-    chkEnableSounds.Value = Val(PzGEnableSounds)
+    chkEnableSounds.Value = Val(gblEnableSounds)
     
     ' development
-    cmbDebug.ListIndex = Val(PzGDebug)
-    txtDblClickCommand.Text = PzGDblClickCommand
-    txtOpenFile.Text = PzGOpenFile
-    txtDefaultEditor.Text = PzGDefaultEditor
+    cmbDebug.ListIndex = Val(gblDebug)
+    txtDblClickCommand.Text = gblDblClickCommand
+    txtOpenFile.Text = gblOpenFile
+    #If TWINBASIC Then
+        txtDefaultEditor.Text = gblDefaultTBEditor
+    #Else
+        txtDefaultEditor.Text = gblDefaultVB6Editor
+    #End If
     lblGitHub.Caption = "You can find the code for the Panzer Weather Gauges on github, visit by double-clicking this link https://github.com/yereverluvinunclebert/Panzer-Weather-Temperature-Gauge-VB6"
   
      ' fonts tab
-    If PzGPrefsFont <> vbNullString Then
-        txtPrefsFont.Text = PzGPrefsFont
-        If PzGDpiAwareness = "1" Then
-            Call changeFormFont(panzerPrefs, PzGPrefsFont, Val(PzGPrefsFontSizeHighDPI), fntWeight, fntStyle, PzGPrefsFontItalics, PzGPrefsFontColour)
-            txtPrefsFontSize.Text = PzGPrefsFontSizeHighDPI
+    If gblPrefsFont <> vbNullString Then
+        txtPrefsFont.Text = gblPrefsFont
+        If gblDpiAwareness = "1" Then
+            Call changeFormFont(panzerPrefs, gblPrefsFont, Val(gblPrefsFontSizeHighDPI), fntWeight, fntStyle, gblPrefsFontItalics, gblPrefsFontColour)
+            txtPrefsFontSize.Text = gblPrefsFontSizeHighDPI
         Else
-            Call changeFormFont(panzerPrefs, PzGPrefsFont, Val(PzGPrefsFontSizeLowDPI), fntWeight, fntStyle, PzGPrefsFontItalics, PzGPrefsFontColour)
-            txtPrefsFontSize.Text = PzGPrefsFontSizeLowDPI
+            Call changeFormFont(panzerPrefs, gblPrefsFont, Val(gblPrefsFontSizeLowDPI), fntWeight, fntStyle, gblPrefsFontItalics, gblPrefsFontColour)
+            txtPrefsFontSize.Text = gblPrefsFontSizeLowDPI
         End If
     End If
     
     
     ' position tab
-    cmbAspectHidden.ListIndex = Val(PzGAspectHidden)
-    cmbGaugeType.ListIndex = Val(PzGGaugeType)
+    cmbAspectHidden.ListIndex = Val(gblAspectHidden)
+    cmbGaugeType.ListIndex = Val(gblGaugeType)
     
-    cmbWidgetPosition.ListIndex = Val(PzGWidgetPosition)
+    cmbWidgetPosition.ListIndex = Val(gblWidgetPosition)
         
-    If PzGPreventDraggingTemperature = "1" Then
+    If gblPreventDraggingTemperature = "1" Then
         If aspectRatio = "landscape" Then
             txtLandscapeHoffset.Text = fTemperature.temperatureGaugeForm.Left
             txtLandscapeVoffset.Text = fTemperature.temperatureGaugeForm.Top
-            If PzGDpiAwareness = "1" Then
-                txtLandscapeHoffset.ToolTipText = "Last Sampled Form X Horizontal Position : " & PzGTemperatureFormHighDpiXPos & "px"
-                txtLandscapeVoffset.ToolTipText = "Last Sampled Form Y Vertical Position : " & PzGTemperatureFormHighDpiYPos & "px"
+            If gblDpiAwareness = "1" Then
+                txtLandscapeHoffset.ToolTipText = "Last Sampled Form X Horizontal Position : " & gblTemperatureFormHighDpiXPos & "px"
+                txtLandscapeVoffset.ToolTipText = "Last Sampled Form Y Vertical Position : " & gblTemperatureFormHighDpiYPos & "px"
             Else
-                txtLandscapeHoffset.ToolTipText = "Last Sampled Form X Horizontal Position : " & PzGTemperatureFormLowDpiXPos & "px"
-                txtLandscapeVoffset.ToolTipText = "Last Sampled Form Y Vertical Position : " & PzGTemperatureFormLowDpiYPos & "px"
+                txtLandscapeHoffset.ToolTipText = "Last Sampled Form X Horizontal Position : " & gblTemperatureFormLowDpiXPos & "px"
+                txtLandscapeVoffset.ToolTipText = "Last Sampled Form Y Vertical Position : " & gblTemperatureFormLowDpiYPos & "px"
             End If
         Else
             txtPortraitHoffset.Text = fTemperature.temperatureGaugeForm.Left
             txtPortraitVoffset.Text = fTemperature.temperatureGaugeForm.Top
-            If PzGDpiAwareness = "1" Then
-                txtPortraitHoffset.ToolTipText = "Last Sampled Form X Horizontal Position : " & PzGTemperatureFormHighDpiXPos & "px"
-                txtPortraitVoffset.ToolTipText = "Last Sampled Form Y Vertical Position : " & PzGTemperatureFormHighDpiYPos & "px"
+            If gblDpiAwareness = "1" Then
+                txtPortraitHoffset.ToolTipText = "Last Sampled Form X Horizontal Position : " & gblTemperatureFormHighDpiXPos & "px"
+                txtPortraitVoffset.ToolTipText = "Last Sampled Form Y Vertical Position : " & gblTemperatureFormHighDpiYPos & "px"
             Else
-                txtPortraitHoffset.ToolTipText = "Last Sampled Form X Horizontal Position : " & PzGTemperatureFormLowDpiXPos & "px"
-                txtPortraitVoffset.ToolTipText = "Last Sampled Form Y Vertical Position : " & PzGTemperatureFormLowDpiYPos & "px"
+                txtPortraitHoffset.ToolTipText = "Last Sampled Form X Horizontal Position : " & gblTemperatureFormLowDpiXPos & "px"
+                txtPortraitVoffset.ToolTipText = "Last Sampled Form Y Vertical Position : " & gblTemperatureFormLowDpiYPos & "px"
             End If
         End If
     End If
@@ -4334,54 +4397,54 @@ Private Sub adjustPrefsControls()
     'cmbLandscapeLocked
     
     If cmbGaugeType.ListIndex = 0 Then ' temperature
-        cmbLandscapeLocked.ListIndex = Val(PzGTemperatureLandscapeLocked)
-        cmbPortraitLocked.ListIndex = Val(PzGTemperaturePortraitLocked)
-        txtLandscapeHoffset.Text = PzGTemperatureLandscapeLockedHoffset
-        txtLandscapeVoffset.Text = PzGTemperatureLandscapeLockedVoffset
-        txtPortraitHoffset.Text = PzGTemperaturePortraitLockedHoffset
-        txtPortraitVoffset.Text = PzGTemperaturePortraitLockedVoffset
+        cmbLandscapeLocked.ListIndex = Val(gblTemperatureLandscapeLocked)
+        cmbPortraitLocked.ListIndex = Val(gblTemperaturePortraitLocked)
+        txtLandscapeHoffset.Text = gblTemperatureLandscapeLockedHoffset
+        txtLandscapeVoffset.Text = gblTemperatureLandscapeLockedVoffset
+        txtPortraitHoffset.Text = gblTemperaturePortraitLockedHoffset
+        txtPortraitVoffset.Text = gblTemperaturePortraitLockedVoffset
     End If
     
     If cmbGaugeType.ListIndex = 1 Then ' Anemometer
-        cmbLandscapeLocked.ListIndex = Val(PzGAnemometerLandscapeLocked)
-        cmbPortraitLocked.ListIndex = Val(PzGAnemometerPortraitLocked)
-        txtLandscapeHoffset.Text = PzGAnemometerLandscapeLockedHoffset
-        txtLandscapeVoffset.Text = PzGAnemometerLandscapeLockedVoffset
-        txtPortraitHoffset.Text = PzGAnemometerPortraitLockedHoffset
-        txtPortraitVoffset.Text = PzGAnemometerPortraitLockedVoffset
+        cmbLandscapeLocked.ListIndex = Val(gblAnemometerLandscapeLocked)
+        cmbPortraitLocked.ListIndex = Val(gblAnemometerPortraitLocked)
+        txtLandscapeHoffset.Text = gblAnemometerLandscapeLockedHoffset
+        txtLandscapeVoffset.Text = gblAnemometerLandscapeLockedVoffset
+        txtPortraitHoffset.Text = gblAnemometerPortraitLockedHoffset
+        txtPortraitVoffset.Text = gblAnemometerPortraitLockedVoffset
     End If
       
     If cmbGaugeType.ListIndex = 3 Then ' Barometer
-        cmbLandscapeLocked.ListIndex = Val(PzGBarometerLandscapeLocked)
-        cmbPortraitLocked.ListIndex = Val(PzGBarometerPortraitLocked)
-        txtLandscapeHoffset.Text = PzGBarometerLandscapeLockedHoffset
-        txtLandscapeVoffset.Text = PzGBarometerLandscapeLockedVoffset
-        txtPortraitHoffset.Text = PzGBarometerPortraitLockedHoffset
-        txtPortraitVoffset.Text = PzGBarometerPortraitLockedVoffset
+        cmbLandscapeLocked.ListIndex = Val(gblBarometerLandscapeLocked)
+        cmbPortraitLocked.ListIndex = Val(gblBarometerPortraitLocked)
+        txtLandscapeHoffset.Text = gblBarometerLandscapeLockedHoffset
+        txtLandscapeVoffset.Text = gblBarometerLandscapeLockedVoffset
+        txtPortraitHoffset.Text = gblBarometerPortraitLockedHoffset
+        txtPortraitVoffset.Text = gblBarometerPortraitLockedVoffset
     End If
       
     If cmbGaugeType.ListIndex = 2 Then ' Humidity
-        cmbLandscapeLocked.ListIndex = Val(PzGHumidityLandscapeLocked)
-        cmbPortraitLocked.ListIndex = Val(PzGHumidityPortraitLocked)
-        txtLandscapeHoffset.Text = PzGHumidityLandscapeLockedHoffset
-        txtLandscapeVoffset.Text = PzGHumidityLandscapeLockedVoffset
-        txtPortraitHoffset.Text = PzGHumidityPortraitLockedHoffset
-        txtPortraitVoffset.Text = PzGHumidityPortraitLockedVoffset
+        cmbLandscapeLocked.ListIndex = Val(gblHumidityLandscapeLocked)
+        cmbPortraitLocked.ListIndex = Val(gblHumidityPortraitLocked)
+        txtLandscapeHoffset.Text = gblHumidityLandscapeLockedHoffset
+        txtLandscapeVoffset.Text = gblHumidityLandscapeLockedVoffset
+        txtPortraitHoffset.Text = gblHumidityPortraitLockedHoffset
+        txtPortraitVoffset.Text = gblHumidityPortraitLockedVoffset
     End If
     
     ' Windows tab
-    cmbWindowLevel.ListIndex = Val(PzGWindowLevel)
-    chkIgnoreMouse.Value = Val(PzGIgnoreMouse)
+    cmbWindowLevel.ListIndex = Val(gblWindowLevel)
+    chkIgnoreMouse.Value = Val(gblIgnoreMouse)
     
-    'chkPreventDragging.Value = Val(PzGPreventDraggingTemperature)
-    'chkPreventDragging.Value = val(PzGPreventDraggingAnemometer)
-    'PzGPreventDraggingHumidity
+    'chkPreventDragging.Value = Val(gblPreventDraggingTemperature)
+    'chkPreventDragging.Value = val(gblPreventDraggingAnemometer)
+    'gblPreventDraggingHumidity
     
     cmbGaugeType.ListIndex = 0
     
-    sliOpacity.Value = Val(PzGOpacity)
-    chkWidgetHidden.Value = Val(PzGWidgetHidden)
-    cmbHidingTime.ListIndex = Val(PzGHidingTime)
+    sliOpacity.Value = Val(gblOpacity)
+    chkWidgetHidden.Value = Val(gblWidgetHidden)
+    cmbHidingTime.ListIndex = Val(gblHidingTime)
     
         
    On Error GoTo 0
@@ -4589,6 +4652,17 @@ Private Sub clearBorderStyle()
     fraWindowButton.BorderStyle = 0
     fraSoundsButton.BorderStyle = 0
     fraAboutButton.BorderStyle = 0
+    
+    #If TWINBASIC Then
+        fraGeneralButton.Refresh
+        fraConfigButton.Refresh
+        fraDevelopmentButton.Refresh
+        fraPositionButton.Refresh
+        fraFontsButton.Refresh
+        fraWindowButton.Refresh
+        fraSoundsButton.Refresh
+        fraAboutButton.Refresh
+    #End If
 
    On Error GoTo 0
    Exit Sub
@@ -4609,10 +4683,37 @@ End Sub
 '
 Private Sub Form_Resize()
     
+    On Error GoTo Form_Resize_Error
+    
+    Call PrefsForm_Resize_Event
+    
+    On Error GoTo 0
+    Exit Sub
+
+Form_Resize_Error:
+
+    With Err
+         If .Number <> 0 Then
+            MsgBox "Error " & Err.Number & " (" & Err.Description & ") in procedure Form_Resize of Form panzerPrefs"
+            Resume Next
+          End If
+    End With
+End Sub
+
+'---------------------------------------------------------------------------------------
+' Procedure : PrefsForm_Resize_Event
+' Author    : beededea
+' Date      : 10/10/2024
+' Purpose   :
+'
+'---------------------------------------------------------------------------------------
+Public Sub PrefsForm_Resize_Event()
+
+    Dim currentFontSize As Long: currentFontSize = 0
     Dim ratio As Double: ratio = 0
     Dim currentFont As Long: currentFont = 0
     
-    On Error GoTo Form_Resize_Error
+    On Error GoTo PrefsForm_Resize_Event_Error
     
     If Me.WindowState = vbMinimized Then Exit Sub
     
@@ -4624,10 +4725,10 @@ Private Sub Form_Resize()
     
     If prefsDynamicSizingFlg = True Then
         
-        If PzGDpiAwareness = "1" Then
-            currentFont = PzGPrefsFontSizeHighDPI
+        If gblDpiAwareness = "1" Then
+            currentFont = gblPrefsFontSizeHighDPI
         Else
-            currentFont = PzGPrefsFontSizeLowDPI
+            currentFont = gblPrefsFontSizeLowDPI
         End If
         
         Call resizeControls(Me, prefsControlPositions(), prefsCurrentWidth, prefsCurrentHeight, currentFont)
@@ -4643,22 +4744,17 @@ Private Sub Form_Resize()
             If lastFormHeight <> 0 Then Me.Height = lastFormHeight
         End If
     End If
-        
     'lblSize.Caption = "topIconWidth = " & topIconWidth & " imgGeneral width = " & imgGeneral.Width
     
-    On Error GoTo 0
-    Exit Sub
+   On Error GoTo 0
+   Exit Sub
 
-Form_Resize_Error:
+PrefsForm_Resize_Event_Error:
 
-    With Err
-         If .Number <> 0 Then
-            MsgBox "Error " & Err.Number & " (" & Err.Description & ") in procedure Form_Resize of Form panzerPrefs"
-            Resume Next
-          End If
-    End With
+    MsgBox "Error " & Err.Number & " (" & Err.Description & ") in procedure PrefsForm_Resize_Event of Form widgetPrefs"
+
 End Sub
-
+        
 
 '---------------------------------------------------------------------------------------
 ' Procedure : tweakPrefsControlPositions
@@ -4732,7 +4828,7 @@ End Sub
 Private Sub Form_Unload(Cancel As Integer)
    On Error GoTo Form_Unload_Error
 
-    PzGPrefsLoadedFlg = False
+    gblPrefsLoadedFlg = False
     
     Call writePrefsPosition
     
@@ -4745,78 +4841,78 @@ Form_Unload_Error:
 
     MsgBox "Error " & Err.Number & " (" & Err.Description & ") in procedure Form_Unload of Form panzerPrefs"
 End Sub
-Private Sub Form_MouseMove(Button As Integer, Shift As Integer, X As Single, Y As Single)
+Private Sub Form_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
     fraScrollbarCover.Visible = True
 
 End Sub
-Private Sub fraAbout_MouseDown(Button As Integer, Shift As Integer, X As Single, Y As Single)
+Private Sub fraAbout_MouseDown(Button As Integer, Shift As Integer, x As Single, y As Single)
     If Button = 2 Then
         Me.PopupMenu prefsMnuPopmenu, vbPopupMenuRightButton
     End If
 End Sub
-Private Sub fraAbout_MouseMove(Button As Integer, Shift As Integer, X As Single, Y As Single)
+Private Sub fraAbout_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
     fraScrollbarCover.Visible = True
-    If PzGEnableBalloonTooltips = "1" Then CreateToolTip fraAbout.hwnd, "The About tab tells you all about this program and its creation using VB6.", _
+    If gblEnableBalloonTooltips = "1" Then CreateToolTip fraAbout.hwnd, "The About tab tells you all about this program and its creation using " & gblCodingEnvironment & ".", _
                   TTIconInfo, "Help on the About Tab", , , , True
 End Sub
-Private Sub fraConfigInner_MouseDown(Button As Integer, Shift As Integer, X As Single, Y As Single)
+Private Sub fraConfigInner_MouseDown(Button As Integer, Shift As Integer, x As Single, y As Single)
     If Button = 2 Then
         Me.PopupMenu prefsMnuPopmenu, vbPopupMenuRightButton
     End If
 End Sub
-Private Sub fraConfigInner_MouseMove(Button As Integer, Shift As Integer, X As Single, Y As Single)
-    If PzGEnableBalloonTooltips = "1" Then CreateToolTip fraConfigInner.hwnd, "The configuration panel is the location for optional configuration items. These items change how the widget operates, configure them to suit your needs and your mode of operation.", _
+Private Sub fraConfigInner_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
+    If gblEnableBalloonTooltips = "1" Then CreateToolTip fraConfigInner.hwnd, "The configuration panel is the location for optional configuration items. These items change how the widget operates, configure them to suit your needs and your mode of operation.", _
                   TTIconInfo, "Help on Configuration", , , , True
 
 End Sub
-Private Sub fraConfig_MouseDown(Button As Integer, Shift As Integer, X As Single, Y As Single)
+Private Sub fraConfig_MouseDown(Button As Integer, Shift As Integer, x As Single, y As Single)
     If Button = 2 Then
         Me.PopupMenu prefsMnuPopmenu, vbPopupMenuRightButton
     End If
 End Sub
-Private Sub fraConfig_MouseMove(Button As Integer, Shift As Integer, X As Single, Y As Single)
-    If PzGEnableBalloonTooltips = "1" Then CreateToolTip fraConfig.hwnd, "The configuration panel is the location for optional configuration items. These items change how the widget operates, configure them to suit your needs and your mode of operation.", _
+Private Sub fraConfig_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
+    If gblEnableBalloonTooltips = "1" Then CreateToolTip fraConfig.hwnd, "The configuration panel is the location for optional configuration items. These items change how the widget operates, configure them to suit your needs and your mode of operation.", _
                   TTIconInfo, "Help on Configuration", , , , True
 
 End Sub
 
-Private Sub fraDefaultEditor_MouseMove(Button As Integer, Shift As Integer, X As Single, Y As Single)
+Private Sub fraDefaultEditor_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
     lblGitHub.ForeColor = &H80000012
 End Sub
 
-Private Sub fraDevelopment_MouseDown(Button As Integer, Shift As Integer, X As Single, Y As Single)
+Private Sub fraDevelopment_MouseDown(Button As Integer, Shift As Integer, x As Single, y As Single)
     If Button = 2 Then
         Me.PopupMenu prefsMnuPopmenu, vbPopupMenuRightButton
     End If
 End Sub
-Private Sub fraDevelopment_MouseMove(Button As Integer, Shift As Integer, X As Single, Y As Single)
-    If PzGEnableBalloonTooltips = "1" Then CreateToolTip fraDevelopment.hwnd, "This tab contains elements that will assist in debugging and developing this program further. ", _
+Private Sub fraDevelopment_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
+    If gblEnableBalloonTooltips = "1" Then CreateToolTip fraDevelopment.hwnd, "This tab contains elements that will assist in debugging and developing this program further. ", _
                   TTIconInfo, "Help on the Development Tab", , , , True
 End Sub
 
 
-Private Sub fraDevelopmentInner_MouseDown(Button As Integer, Shift As Integer, X As Single, Y As Single)
+Private Sub fraDevelopmentInner_MouseDown(Button As Integer, Shift As Integer, x As Single, y As Single)
     If Button = 2 Then
         Me.PopupMenu prefsMnuPopmenu, vbPopupMenuRightButton
     End If
 End Sub
-Private Sub fraDevelopmentInner_MouseMove(Button As Integer, Shift As Integer, X As Single, Y As Single)
-    If PzGEnableBalloonTooltips = "1" Then CreateToolTip fraDevelopmentInner.hwnd, "This tab contains elements that will assist in debugging and developing this program further. ", _
+Private Sub fraDevelopmentInner_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
+    If gblEnableBalloonTooltips = "1" Then CreateToolTip fraDevelopmentInner.hwnd, "This tab contains elements that will assist in debugging and developing this program further. ", _
                   TTIconInfo, "Help on the Development Tab", , , , True
 
 End Sub
-Private Sub fraFonts_MouseMove(Button As Integer, Shift As Integer, X As Single, Y As Single)
-    If PzGEnableBalloonTooltips = "1" Then CreateToolTip fraFonts.hwnd, "This tab allows you to set a specific font for the preferences only as there are no textual elements in the main program. We suggest Centurion Light SF at 8pt, which you will find bundled in the PzG program folder. Choose a small 8pt font for each.", _
+Private Sub fraFonts_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
+    If gblEnableBalloonTooltips = "1" Then CreateToolTip fraFonts.hwnd, "This tab allows you to set a specific font for the preferences only as there are no textual elements in the main program. We suggest Centurion Light SF at 8pt, which you will find bundled in the gbl program folder. Choose a small 8pt font for each.", _
                   TTIconInfo, "Help on Setting the Fonts", , , , True
 
 End Sub
-Private Sub fraFontsInner_MouseDown(Button As Integer, Shift As Integer, X As Single, Y As Single)
+Private Sub fraFontsInner_MouseDown(Button As Integer, Shift As Integer, x As Single, y As Single)
     If Button = 2 Then
         Me.PopupMenu prefsMnuPopmenu, vbPopupMenuRightButton
     End If
 End Sub
-Private Sub fraFontsInner_MouseMove(Button As Integer, Shift As Integer, X As Single, Y As Single)
-    If PzGEnableBalloonTooltips = "1" Then CreateToolTip fraFontsInner.hwnd, "This tab allows you to set a specific font for the preferences only as there are no textual elements in the main program. We suggest Centurion Light SF at 8pt, which you will find bundled in the PzG program folder. Choose a small 8pt font for each.", _
+Private Sub fraFontsInner_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
+    If gblEnableBalloonTooltips = "1" Then CreateToolTip fraFontsInner.hwnd, "This tab allows you to set a specific font for the preferences only as there are no textual elements in the main program. We suggest Centurion Light SF at 8pt, which you will find bundled in the gbl program folder. Choose a small 8pt font for each.", _
                   TTIconInfo, "Help on Setting the Fonts", , , , True
 End Sub
 
@@ -4834,10 +4930,10 @@ End Sub
 ' Author: beededea
 ' Date: 08/05/2024
 ' ----------------------------------------------------------------
-Private Sub fraGaugePosition_MouseMove(Button As Integer, Shift As Integer, X As Single, Y As Single)
+Private Sub fraGaugePosition_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
     On Error GoTo fraGaugePosition_MouseMove_Error
     
-    If PzGEnableBalloonTooltips = "1" Then CreateToolTip fraGaugePosition.hwnd, "Select the gauge type first - then this section allows you to determine " _
+    If gblEnableBalloonTooltips = "1" Then CreateToolTip fraGaugePosition.hwnd, "Select the gauge type first - then this section allows you to determine " _
         & "the X and Y positioning of your widget in landscape and portrait screen modes. Best left well alone unless you use Windows on a tablet. " _
         & "This functionality is a hangover from the Yahoo/Konfabulator widget of the same name that was created when Windows tablets were briefly " _
         & "a 'thing'. Who uses Windows Tablets nowadays anyway?" & vbCrLf _
@@ -4859,83 +4955,83 @@ End Sub
 '        Me.PopupMenu prefsMnuPopmenu, vbPopupMenuRightButton
 '    End If
 'End Sub
-Private Sub fraGeneral_MouseDown(Button As Integer, Shift As Integer, X As Single, Y As Single)
+Private Sub fraGeneral_MouseDown(Button As Integer, Shift As Integer, x As Single, y As Single)
     If Button = 2 Then
         Me.PopupMenu prefsMnuPopmenu, vbPopupMenuRightButton
     End If
 
 End Sub
-Private Sub fraGeneral_MouseMove(Button As Integer, Shift As Integer, X As Single, Y As Single)
-    If PzGEnableBalloonTooltips = "1" Then CreateToolTip fraGeneral.hwnd, "The General Panel contains the most important user-configurable items required for the program to operate correctly.", _
+Private Sub fraGeneral_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
+    If gblEnableBalloonTooltips = "1" Then CreateToolTip fraGeneral.hwnd, "The General Panel contains the most important user-configurable items required for the program to operate correctly.", _
                   TTIconInfo, "Help on Essential Configuration", , , , True
 End Sub
 
-Private Sub fraGeneralInner_MouseDown(Button As Integer, Shift As Integer, X As Single, Y As Single)
+Private Sub fraGeneralInner_MouseDown(Button As Integer, Shift As Integer, x As Single, y As Single)
     If Button = 2 Then
         Me.PopupMenu prefsMnuPopmenu, vbPopupMenuRightButton
     End If
 End Sub
-Private Sub fraGeneralInner_MouseMove(Button As Integer, Shift As Integer, X As Single, Y As Single)
-    If PzGEnableBalloonTooltips = "1" Then CreateToolTip fraGeneralInner.hwnd, "The General Panel contains the most important user-configurable items required for the program to operate correctly.", _
+Private Sub fraGeneralInner_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
+    If gblEnableBalloonTooltips = "1" Then CreateToolTip fraGeneralInner.hwnd, "The General Panel contains the most important user-configurable items required for the program to operate correctly.", _
                   TTIconInfo, "Help on Essential Configuration", , , , True
 End Sub
 
-Private Sub fraPosition_MouseMove(Button As Integer, Shift As Integer, X As Single, Y As Single)
-     If PzGEnableBalloonTooltips = "1" Then CreateToolTip fraPosition.hwnd, "This section allows you to determine size, lockability and positioning of your widget in various ways on different screen aspect ratios. ", _
+Private Sub fraPosition_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
+     If gblEnableBalloonTooltips = "1" Then CreateToolTip fraPosition.hwnd, "This section allows you to determine size, lockability and positioning of your widget in various ways on different screen aspect ratios. ", _
                   TTIconInfo, "Help on Tablet Positioning", , , , True
 End Sub
 
 
 
-Private Sub fraPositionBalloonBox_MouseMove(Button As Integer, Shift As Integer, X As Single, Y As Single)
-    If PzGEnableBalloonTooltips = "1" Then CreateToolTip fraPositionBalloonBox.hwnd, "Aspect ratio is for tablets only. Don't fiddle with this unless you really know what you are doing. Here you can choose whether this widget is hidden by default in either landscape or portrait mode or not at all. This option allows you to have certain widgets that do not obscure the screen in either landscape or portrait. If you accidentally set it so you can't find your widget on screen then change the setting here to NONE.", _
+Private Sub fraPositionBalloonBox_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
+    If gblEnableBalloonTooltips = "1" Then CreateToolTip fraPositionBalloonBox.hwnd, "Aspect ratio is for tablets only. Don't fiddle with this unless you really know what you are doing. Here you can choose whether this widget is hidden by default in either landscape or portrait mode or not at all. This option allows you to have certain widgets that do not obscure the screen in either landscape or portrait. If you accidentally set it so you can't find your widget on screen then change the setting here to NONE.", _
                   TTIconInfo, "Help on Tablet Positioning", , , , True
 End Sub
 
-Private Sub fraPositionInner_MouseDown(Button As Integer, Shift As Integer, X As Single, Y As Single)
+Private Sub fraPositionInner_MouseDown(Button As Integer, Shift As Integer, x As Single, y As Single)
     If Button = 2 Then
         Me.PopupMenu prefsMnuPopmenu, vbPopupMenuRightButton
     End If
 End Sub
-Private Sub fraScrollbarCover_MouseMove(Button As Integer, Shift As Integer, X As Single, Y As Single)
+Private Sub fraScrollbarCover_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
     fraScrollbarCover.Visible = False
 
 End Sub
-Private Sub fraSounds_MouseDown(Button As Integer, Shift As Integer, X As Single, Y As Single)
+Private Sub fraSounds_MouseDown(Button As Integer, Shift As Integer, x As Single, y As Single)
     If Button = 2 Then
         Me.PopupMenu prefsMnuPopmenu, vbPopupMenuRightButton
     End If
 End Sub
-Private Sub fraSounds_MouseMove(Button As Integer, Shift As Integer, X As Single, Y As Single)
- If PzGEnableBalloonTooltips = "1" Then CreateToolTip fraSounds.hwnd, "The sound panel allows you to configure the sounds that occur within PzG. Some of the animations have associated sounds, you can control these here..", _
+Private Sub fraSounds_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
+ If gblEnableBalloonTooltips = "1" Then CreateToolTip fraSounds.hwnd, "The sound panel allows you to configure the sounds that occur within gbl. Some of the animations have associated sounds, you can control these here..", _
                   TTIconInfo, "Help on Configuring Sounds", , , , True
 End Sub
-Private Sub fraSoundsInner_MouseDown(Button As Integer, Shift As Integer, X As Single, Y As Single)
+Private Sub fraSoundsInner_MouseDown(Button As Integer, Shift As Integer, x As Single, y As Single)
     If Button = 2 Then
         Me.PopupMenu prefsMnuPopmenu, vbPopupMenuRightButton
     End If
 End Sub
-Private Sub fraSoundsInner_MouseMove(Button As Integer, Shift As Integer, X As Single, Y As Single)
-     If PzGEnableBalloonTooltips = "1" Then CreateToolTip fraSoundsInner.hwnd, "The sound panel allows you to configure the sounds that occur within PzG. Some of the animations have associated sounds, you can control these here..", _
+Private Sub fraSoundsInner_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
+     If gblEnableBalloonTooltips = "1" Then CreateToolTip fraSoundsInner.hwnd, "The sound panel allows you to configure the sounds that occur within gbl. Some of the animations have associated sounds, you can control these here..", _
                   TTIconInfo, "Help on Configuring Sounds", , , , True
 End Sub
 
-Private Sub fraWindow_MouseDown(Button As Integer, Shift As Integer, X As Single, Y As Single)
+Private Sub fraWindow_MouseDown(Button As Integer, Shift As Integer, x As Single, y As Single)
     If Button = 2 Then
         Me.PopupMenu prefsMnuPopmenu, vbPopupMenuRightButton
     End If
 End Sub
-Private Sub fraWindow_MouseMove(Button As Integer, Shift As Integer, X As Single, Y As Single)
-     If PzGEnableBalloonTooltips = "1" Then CreateToolTip fraWindow.hwnd, "The Opacity and Window Level of the program are rather strange characteristics to change in a Windows program, however this widget is a copy of a Yahoo Widget of the same name. All widgets have similar window tab options including the capability to change the opacity and window level. Whether these options are useful to you or anyone is a moot point but as this tool aims to replicate the YWE version functionality it has been reproduced here. It is here as more of an experiment as to how to implement a feature, one carried over from the Yahoo Widget (javascript) version of this program.", _
+Private Sub fraWindow_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
+     If gblEnableBalloonTooltips = "1" Then CreateToolTip fraWindow.hwnd, "The Opacity and Window Level of the program are rather strange characteristics to change in a Windows program, however this widget is a copy of a Yahoo Widget of the same name. All widgets have similar window tab options including the capability to change the opacity and window level. Whether these options are useful to you or anyone is a moot point but as this tool aims to replicate the YWE version functionality it has been reproduced here. It is here as more of an experiment as to how to implement a feature, one carried over from the Yahoo Widget (javascript) version of this program.", _
                   TTIconInfo, "Help on YWE Quirk Mode Options", , , , True
 End Sub
-Private Sub fraWindowInner_MouseDown(Button As Integer, Shift As Integer, X As Single, Y As Single)
+Private Sub fraWindowInner_MouseDown(Button As Integer, Shift As Integer, x As Single, y As Single)
     If Button = 2 Then
         Me.PopupMenu prefsMnuPopmenu, vbPopupMenuRightButton
     End If
 End Sub
-Private Sub fraWindowInner_MouseMove(Button As Integer, Shift As Integer, X As Single, Y As Single)
-     If PzGEnableBalloonTooltips = "1" Then CreateToolTip fraWindowInner.hwnd, "The Opacity and Window Level of the program are rather strange characteristics to change in a Windows program, however this widget is a copy of a Yahoo Widget of the same name. All widgets have similar window tab options including the capability to change the opacity and window level. Whether these options are useful to you or anyone is a moot point but as this tool aims to replicate the YWE version functionality it has been reproduced here. It is here as more of an experiment as to how to implement a feature, one carried over from the Yahoo Widget (javascript) version of this program.", _
+Private Sub fraWindowInner_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
+     If gblEnableBalloonTooltips = "1" Then CreateToolTip fraWindowInner.hwnd, "The Opacity and Window Level of the program are rather strange characteristics to change in a Windows program, however this widget is a copy of a Yahoo Widget of the same name. All widgets have similar window tab options including the capability to change the opacity and window level. Whether these options are useful to you or anyone is a moot point but as this tool aims to replicate the YWE version functionality it has been reproduced here. It is here as more of an experiment as to how to implement a feature, one carried over from the Yahoo Widget (javascript) version of this program.", _
                   TTIconInfo, "Help on YWE Quirk Mode Options", , , , True
 End Sub
 
@@ -4947,10 +5043,7 @@ Private Sub imgGeneral_Click()
     imgGeneralClicked.Visible = True
 End Sub
 
-Private Sub imgGeneral_MouseUp(Button As Integer, Shift As Integer, X As Single, Y As Single)
-    
-    Call picButtonMouseUpEvent("general", imgGeneral, imgGeneralClicked, fraGeneral, fraGeneralButton) ' was imgGeneralMouseUpEvent
-End Sub
+
 '---------------------------------------------------------------------------------------
 ' Procedure : lblGitHub_dblClick
 ' Author    : beededea
@@ -4968,7 +5061,7 @@ Private Sub lblGitHub_dblClick()
     answerMsg = "This option opens a browser window and take you straight to Github. Proceed?"
     answer = msgBoxA(answerMsg, vbExclamation + vbYesNo, "Proceed to Github? ", True, "lblGitHubDblClick")
     If answer = vbYes Then
-       Call ShellExecute(Me.hwnd, "Open", "https://github.com/yereverluvinunclebert/Panzer-Weather-Temperature-Gauge-VB6", vbNullString, App.path, 1)
+       Call ShellExecute(Me.hwnd, "Open", "https://github.com/yereverluvinunclebert/Panzer-Weather-Temperature-Gauge-" & gblCodingEnvironment, vbNullString, App.path, 1)
     End If
 
    On Error GoTo 0
@@ -4980,7 +5073,7 @@ lblGitHub_dblClick_Error:
 End Sub
 
 
-Private Sub lblGitHub_MouseMove(Button As Integer, Shift As Integer, X As Single, Y As Single)
+Private Sub lblGitHub_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
     lblGitHub.ForeColor = &H8000000D
 End Sub
 
@@ -5001,9 +5094,9 @@ Private Sub sliErrorInterval_Click()
     btnSave.Enabled = True ' enable the save button
  
     If prefsStartupFlg = False Then
-        PzGErrorInterval = LTrim$(Str$(sliErrorInterval.Value))
+        gblErrorInterval = LTrim$(Str$(sliErrorInterval.Value))
         'overlayTemperatureWidget.samplingInterval = sliSamplingInterval.Value
-        sPutINISetting "Software\PzTemperatureGauge", "sliErrorInterval", PzGErrorInterval, PzGSettingsFile
+        sPutINISetting "Software\PzTemperatureGauge", "sliErrorInterval", gblErrorInterval, gblSettingsFile
     End If
     
     On Error GoTo 0
@@ -5015,13 +5108,13 @@ sliErrorInterval_Click_Error:
 
 End Sub
 
-Private Sub sliErrorInterval_MouseMove(Button As Integer, Shift As Integer, X As Single, Y As Single)
-    If PzGEnableBalloonTooltips = "1" Then CreateToolTip sliErrorInterval.hwnd, "Adjust to error reporting frequency (seconds). This is the interval by which the program determines if a feed is in error by failing to supply data. If the interval is reached and the feed provides no data, then an error message is displayed. A value of zero means that no error messages will be displayed.", _
+Private Sub sliErrorInterval_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
+    If gblEnableBalloonTooltips = "1" Then CreateToolTip sliErrorInterval.hwnd, "Adjust to error reporting frequency (seconds). This is the interval by which the program determines if a feed is in error by failing to supply data. If the interval is reached and the feed provides no data, then an error message is displayed. A value of zero means that no error messages will be displayed.", _
                   TTIconInfo, "Help on the Error Interval", , , , True
 End Sub
 
-Private Sub sliGaugeSize_MouseMove(Button As Integer, Shift As Integer, X As Single, Y As Single)
-    If PzGEnableBalloonTooltips = "1" Then CreateToolTip sliGaugeSize.hwnd, "Changing this slider will change the size of the chosen gauge selected above", _
+Private Sub sliGaugeSize_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
+    If gblEnableBalloonTooltips = "1" Then CreateToolTip sliGaugeSize.hwnd, "Changing this slider will change the size of the chosen gauge selected above", _
                   TTIconInfo, "Help on the Gauge Size Slider", , , , True
 End Sub
 
@@ -5043,9 +5136,9 @@ Private Sub sliSamplingInterval_Click()
 
  
     If prefsStartupFlg = False Then
-        PzGSamplingInterval = LTrim$(Str$(sliSamplingInterval.Value))
+        gblSamplingInterval = LTrim$(Str$(sliSamplingInterval.Value))
         WeatherMeteo.samplingInterval = sliSamplingInterval.Value
-        sPutINISetting "Software\PzTemperatureGauge", "samplingInterval", PzGSamplingInterval, PzGSettingsFile
+        sPutINISetting "Software\PzTemperatureGauge", "samplingInterval", gblSamplingInterval, gblSettingsFile
         
     End If
     
@@ -5058,8 +5151,8 @@ sliSamplingInterval_Click_Error:
 
 End Sub
 
-Private Sub sliSamplingInterval_MouseMove(Button As Integer, Shift As Integer, X As Single, Y As Single)
-    If PzGEnableBalloonTooltips = "1" Then CreateToolTip sliSamplingInterval.hwnd, "Adjust to determine gauge sampling frequency (seconds). This is the polling interval by which the widget attempts to get the data from the source (default 600 seconds or ten minutes). The metar source provider and the location itself determines when the data is actually provided - there are weather sensors that have to provide rea-time data and a real person somewhere is probably responsible for providing an actual forecast.*", _
+Private Sub sliSamplingInterval_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
+    If gblEnableBalloonTooltips = "1" Then CreateToolTip sliSamplingInterval.hwnd, "Adjust to determine gauge sampling frequency (seconds). This is the polling interval by which the widget attempts to get the data from the source (default 600 seconds or ten minutes). The metar source provider and the location itself determines when the data is actually provided - there are weather sensors that have to provide rea-time data and a real person somewhere is probably responsible for providing an actual forecast.*", _
                   TTIconInfo, "Help on Sampling Interval", , , , True
 
 End Sub
@@ -5078,9 +5171,9 @@ Private Sub sliStormTestInterval_Click()
     btnSave.Enabled = True ' enable the save button
  
     If prefsStartupFlg = False Then
-        PzGStormTestInterval = LTrim$(Str$(sliStormTestInterval.Value))
+        gblStormTestInterval = LTrim$(Str$(sliStormTestInterval.Value))
         'overlayTemperatureWidget.samplingInterval = sliStormTestInterval.Value
-        sPutINISetting "Software\PzTemperatureGauge", "stormTestInterval", PzGStormTestInterval, PzGSettingsFile
+        sPutINISetting "Software\PzTemperatureGauge", "stormTestInterval", gblStormTestInterval, gblSettingsFile
         
     End If
 
@@ -5094,8 +5187,8 @@ sliStormTestInterval_Click_Error:
 
 End Sub
 
-Private Sub sliStormTestInterval_MouseMove(Button As Integer, Shift As Integer, X As Single, Y As Single)
-    If PzGEnableBalloonTooltips = "1" Then CreateToolTip sliStormTestInterval.hwnd, "Adjust to determine storm checking frequency (seconds). This is the interval by which the widget compares pressure drops of 1 millibar (default 3600 seconds or one hour) indicating the increased chance of a storm. If this condition is detected, it will light a red lamp on the barometer gauge", _
+Private Sub sliStormTestInterval_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
+    If gblEnableBalloonTooltips = "1" Then CreateToolTip sliStormTestInterval.hwnd, "Adjust to determine storm checking frequency (seconds). This is the interval by which the widget compares pressure drops of 1 millibar (default 3600 seconds or one hour) indicating the increased chance of a storm. If this condition is detected, it will light a red lamp on the barometer gauge", _
                   TTIconInfo, "Help on Storm Test Interval", , , , True
 
 End Sub
@@ -5107,7 +5200,7 @@ End Sub
 ' Purpose   :
 '---------------------------------------------------------------------------------------
 '
-Private Sub txtAboutText_MouseDown(Button As Integer, Shift As Integer, X As Single, Y As Single)
+Private Sub txtAboutText_MouseDown(Button As Integer, Shift As Integer, x As Single, y As Single)
     On Error GoTo txtAboutText_MouseDown_Error
 
     If Button = vbRightButton Then
@@ -5124,87 +5217,152 @@ txtAboutText_MouseDown_Error:
      MsgBox "Error " & Err.Number & " (" & Err.Description & ") in procedure txtAboutText_MouseDown of Form panzerPrefs"
 End Sub
 
-Private Sub txtAboutText_MouseMove(Button As Integer, Shift As Integer, X As Single, Y As Single)
+Private Sub txtAboutText_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
     fraScrollbarCover.Visible = False
 End Sub
 
-Private Sub imgAbout_MouseDown(Button As Integer, Shift As Integer, X As Single, Y As Single)
+Private Sub imgAbout_MouseDown(Button As Integer, Shift As Integer, x As Single, y As Single)
     imgAbout.Visible = False
     imgAboutClicked.Visible = True
 End Sub
-Private Sub imgAbout_MouseUp(Button As Integer, Shift As Integer, X As Single, Y As Single)
-  
-    Call picButtonMouseUpEvent("about", imgAbout, imgAboutClicked, fraAbout, fraAboutButton)
-End Sub
 
-Private Sub imgDevelopment_MouseDown(Button As Integer, Shift As Integer, X As Single, Y As Single)
+
+'---------------------------------------------------------------------------------------
+' Procedure : General _MouseUp events to generate menu pop-ups across the form
+' Author    : beededea
+' Date      : 14/08/2023
+' Purpose   : due to a bug/difference with TwinBasic versus VB6
+'---------------------------------------------------------------------------------------
+#If TWINBASIC Then
+    Private Sub imgAboutClicked_MouseUp(Button As Integer, Shift As Integer, x As Single, y As Single)
+        Call picButtonMouseUpEvent("about", imgAbout, imgAboutClicked, fraAbout, fraAboutButton)
+    End Sub
+#Else
+    Private Sub imgAbout_MouseUp(Button As Integer, Shift As Integer, x As Single, y As Single)
+        Call picButtonMouseUpEvent("about", imgAbout, imgAboutClicked, fraAbout, fraAboutButton)
+    End Sub
+#End If
+
+#If TWINBASIC Then
+    Private Sub imgDevelopmentClicked_MouseUp(Button As Integer, Shift As Integer, x As Single, y As Single)
+        Call picButtonMouseUpEvent("development", imgDevelopment, imgDevelopmentClicked, fraDevelopment, fraDevelopmentButton)
+    End Sub
+#Else
+    Private Sub imgDevelopment_MouseUp(Button As Integer, Shift As Integer, x As Single, y As Single)
+        Call picButtonMouseUpEvent("development", imgDevelopment, imgDevelopmentClicked, fraDevelopment, fraDevelopmentButton)
+    End Sub
+#End If
+
+#If TWINBASIC Then
+    Private Sub imgFontsClicked_MouseUp(Button As Integer, Shift As Integer, x As Single, y As Single)
+        Call picButtonMouseUpEvent("fonts", imgFonts, imgFontsClicked, fraFonts, fraFontsButton)
+    End Sub
+#Else
+    Private Sub imgFonts_MouseUp(Button As Integer, Shift As Integer, x As Single, y As Single)
+        Call picButtonMouseUpEvent("fonts", imgFonts, imgFontsClicked, fraFonts, fraFontsButton)
+    End Sub
+#End If
+
+#If TWINBASIC Then
+    Private Sub imgConfigClicked_MouseUp(Button As Integer, Shift As Integer, x As Single, y As Single)
+        Call picButtonMouseUpEvent("config", imgConfig, imgConfigClicked, fraConfig, fraConfigButton) ' was imgConfigMouseUpEvent
+    End Sub
+#Else
+    Private Sub imgConfig_MouseUp(Button As Integer, Shift As Integer, x As Single, y As Single)
+        Call picButtonMouseUpEvent("config", imgConfig, imgConfigClicked, fraConfig, fraConfigButton) ' was imgConfigMouseUpEvent
+    End Sub
+#End If
+
+#If TWINBASIC Then
+    Private Sub imgPositionClicked_MouseUp(Button As Integer, Shift As Integer, x As Single, y As Single)
+        Call picButtonMouseUpEvent("position", imgPosition, imgPositionClicked, fraPosition, fraPositionButton)
+    End Sub
+#Else
+    Private Sub imgPosition_MouseUp(Button As Integer, Shift As Integer, x As Single, y As Single)
+        Call picButtonMouseUpEvent("position", imgPosition, imgPositionClicked, fraPosition, fraPositionButton)
+    End Sub
+#End If
+
+#If TWINBASIC Then
+    Private Sub imgSoundsClicked_MouseUp(Button As Integer, Shift As Integer, x As Single, y As Single)
+        Call picButtonMouseUpEvent("sounds", imgSounds, imgSoundsClicked, fraSounds, fraSoundsButton)
+    End Sub
+#Else
+    Private Sub imgSounds_MouseUp(Button As Integer, Shift As Integer, x As Single, y As Single)
+        Call picButtonMouseUpEvent("sounds", imgSounds, imgSoundsClicked, fraSounds, fraSoundsButton)
+    End Sub
+#End If
+
+#If TWINBASIC Then
+    Private Sub imgWindowClicked_MouseUp(Button As Integer, Shift As Integer, x As Single, y As Single)
+        Call picButtonMouseUpEvent("window", imgWindow, imgWindowClicked, fraWindow, fraWindowButton)
+    End Sub
+#Else
+    Private Sub imgWindow_MouseUp(Button As Integer, Shift As Integer, x As Single, y As Single)
+        Call picButtonMouseUpEvent("window", imgWindow, imgWindowClicked, fraWindow, fraWindowButton)
+    End Sub
+#End If
+
+#If TWINBASIC Then
+    Private Sub imgGeneralClicked_MouseUp(Button As Integer, Shift As Integer, x As Single, y As Single)
+        Call picButtonMouseUpEvent("general", imgGeneral, imgGeneralClicked, fraGeneral, fraGeneralButton) ' was imgGeneralMouseUpEvent
+    End Sub
+#Else
+    Private Sub imgGeneral_MouseUp(Button As Integer, Shift As Integer, x As Single, y As Single)
+        Call picButtonMouseUpEvent("general", imgGeneral, imgGeneralClicked, fraGeneral, fraGeneralButton) ' was imgGeneralMouseUpEvent
+    End Sub
+#End If
+
+
+
+
+Private Sub imgDevelopment_MouseDown(Button As Integer, Shift As Integer, x As Single, y As Single)
     imgDevelopment.Visible = False
     imgDevelopmentClicked.Visible = True
 End Sub
 
-Private Sub imgDevelopment_MouseUp(Button As Integer, Shift As Integer, X As Single, Y As Single)
-    
 
-    Call picButtonMouseUpEvent("development", imgDevelopment, imgDevelopmentClicked, fraDevelopment, fraDevelopmentButton)
-End Sub
-
-Private Sub imgFonts_MouseDown(Button As Integer, Shift As Integer, X As Single, Y As Single)
+Private Sub imgFonts_MouseDown(Button As Integer, Shift As Integer, x As Single, y As Single)
     imgFonts.Visible = False
     imgFontsClicked.Visible = True
 End Sub
 
-Private Sub imgFonts_MouseUp(Button As Integer, Shift As Integer, X As Single, Y As Single)
-    
-    Call picButtonMouseUpEvent("fonts", imgFonts, imgFontsClicked, fraFonts, fraFontsButton)
-End Sub
 
-Private Sub imgConfig_MouseDown(Button As Integer, Shift As Integer, X As Single, Y As Single)
+
+Private Sub imgConfig_MouseDown(Button As Integer, Shift As Integer, x As Single, y As Single)
     imgConfig.Visible = False
     imgConfigClicked.Visible = True
 End Sub
 
-Private Sub imgConfig_MouseUp(Button As Integer, Shift As Integer, X As Single, Y As Single)
-        
-    Call picButtonMouseUpEvent("config", imgConfig, imgConfigClicked, fraConfig, fraConfigButton) ' was imgConfigMouseUpEvent
-End Sub
 
-Private Sub imgGeneral_MouseDown(Button As Integer, Shift As Integer, X As Single, Y As Single)
+
+Private Sub imgGeneral_MouseDown(Button As Integer, Shift As Integer, x As Single, y As Single)
     imgGeneral.Visible = False
     imgGeneralClicked.Visible = True
 End Sub
 
 
-Private Sub imgPosition_MouseDown(Button As Integer, Shift As Integer, X As Single, Y As Single)
+Private Sub imgPosition_MouseDown(Button As Integer, Shift As Integer, x As Single, y As Single)
     imgPosition.Visible = False
     imgPositionClicked.Visible = True
 End Sub
 
-Private Sub imgPosition_MouseUp(Button As Integer, Shift As Integer, X As Single, Y As Single)
 
-    Call picButtonMouseUpEvent("position", imgPosition, imgPositionClicked, fraPosition, fraPositionButton)
-End Sub
 
-Private Sub imgSounds_MouseDown(Button As Integer, Shift As Integer, X As Single, Y As Single)
+Private Sub imgSounds_MouseDown(Button As Integer, Shift As Integer, x As Single, y As Single)
     '
     imgSounds.Visible = False
     imgSoundsClicked.Visible = True
 End Sub
 
-Private Sub imgSounds_MouseUp(Button As Integer, Shift As Integer, X As Single, Y As Single)
-    'Call imgSoundsMouseUpEvent
 
-    Call picButtonMouseUpEvent("sounds", imgSounds, imgSoundsClicked, fraSounds, fraSoundsButton)
-End Sub
 
-Private Sub imgWindow_MouseDown(Button As Integer, Shift As Integer, X As Single, Y As Single)
+Private Sub imgWindow_MouseDown(Button As Integer, Shift As Integer, x As Single, y As Single)
     imgWindow.Visible = False
     imgWindowClicked.Visible = True
 End Sub
 
-Private Sub imgWindow_MouseUp(Button As Integer, Shift As Integer, X As Single, Y As Single)
-        
-    Call picButtonMouseUpEvent("window", imgWindow, imgWindowClicked, fraWindow, fraWindowButton)
-End Sub
+
 
 'Private Sub sliAnimationInterval_Change()
 '    'overlayTemperatureWidget.RotationSpeed = sliAnimationInterval.Value
@@ -5274,9 +5432,9 @@ Private Sub sliOpacity_Click()
     btnSave.Enabled = True ' enable the save button
 
     If prefsStartupFlg = False Then
-        PzGOpacity = LTrim$(Str$(sliOpacity.Value))
+        gblOpacity = LTrim$(Str$(sliOpacity.Value))
     
-        sPutINISetting "Software\PzTemperatureGauge", "opacity", PzGOpacity, PzGSettingsFile
+        sPutINISetting "Software\PzTemperatureGauge", "opacity", gblOpacity, gblSettingsFile
         
         'Call setOpacity(sliOpacity.Value) ' this works but reveals the background form itself
         
@@ -5308,7 +5466,7 @@ End Sub
 ' Purpose   :
 '---------------------------------------------------------------------------------------
 '
-Private Sub Form_MouseDown(ByRef Button As Integer, ByRef Shift As Integer, ByRef X As Single, ByRef Y As Single)
+Private Sub Form_MouseDown(ByRef Button As Integer, ByRef Shift As Integer, ByRef x As Single, ByRef y As Single)
    On Error GoTo Form_MouseDown_Error
 
     If Button = 2 Then
@@ -5337,7 +5495,7 @@ End Sub
 '    End If
 'End Sub
 
-Private Sub fraFonts_MouseDown(ByRef Button As Integer, ByRef Shift As Integer, ByRef X As Single, ByRef Y As Single)
+Private Sub fraFonts_MouseDown(ByRef Button As Integer, ByRef Shift As Integer, ByRef x As Single, ByRef y As Single)
     If Button = 2 Then
         Me.PopupMenu prefsMnuPopmenu, vbPopupMenuRightButton
     End If
@@ -5350,8 +5508,8 @@ End Sub
 
 
 
-Private Sub txtAirportsURL_MouseMove(Button As Integer, Shift As Integer, X As Single, Y As Single)
-    If PzGEnableBalloonTooltips = "1" Then CreateToolTip txtAirportsURL.hwnd, "Don't change this unless your alternative has an airports file with the " _
+Private Sub txtAirportsURL_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
+    If gblEnableBalloonTooltips = "1" Then CreateToolTip txtAirportsURL.hwnd, "Don't change this unless your alternative has an airports file with the " _
         & "EXACT same format and layout. this is the full URL giving the location of the airports.dat file containing all the airfields in the world " _
         & "that ought to be providing a valid METAR data feed. This URL will be used when you select the menu option to download a new Airports.dat file.", _
                   TTIconInfo, "Airports ICAO Data Download", , , , True
@@ -5368,7 +5526,7 @@ Private Sub txtDefaultEditor_Change()
 End Sub
 
 Private Sub txtIcao_Change()
-    If PzGEnableBalloonTooltips = "1" Then CreateToolTip txtIcao.hwnd, "This shows the current ICAO code used to identify the weather feed source data. To change this field use the button to the right", _
+    If gblEnableBalloonTooltips = "1" Then CreateToolTip txtIcao.hwnd, "This shows the current ICAO code used to identify the weather feed source data. To change this field use the button to the right", _
                   TTIconInfo, "Select the current ICAO code", , , , True
 End Sub
 
@@ -5690,6 +5848,8 @@ Private Sub loadPrefsAboutText()
     lblMinorVersion.Caption = App.Minor
     lblRevisionNum.Caption = App.Revision
     
+    lblAbout(1).Caption = "(32bit WoW64 using " & gblCodingEnvironment & ")"
+    
     Call LoadFileToTB(txtAboutText, App.path & "\resources\txt\about.txt", False)
 
    On Error GoTo 0
@@ -5730,16 +5890,20 @@ Private Sub picButtonMouseUpEvent(ByVal thisTabName As String, ByRef thisPicName
     
     Call clearBorderStyle
 
-    PzGLastSelectedTab = thisTabName
-    sPutINISetting "Software\PzTemperatureGauge", "lastSelectedTab", PzGLastSelectedTab, PzGSettingsFile
+    gblLastSelectedTab = thisTabName
+    sPutINISetting "Software\PzTemperatureGauge", "lastSelectedTab", gblLastSelectedTab, gblSettingsFile
 
     thisFraName.Visible = True
     thisFraButtonName.BorderStyle = 1
-
+    
+    #If TWINBASIC Then
+        thisFraButtonName.Refresh
+    #End If
+    
     ' Get the form's current scale factors.
     y_scale = Me.ScaleHeight / prefsCurrentHeight
     
-    If PzGDpiAwareness = "1" Then
+    If gblDpiAwareness = "1" Then
         btnHelp.Top = fraGeneral.Top + fraGeneral.Height + (200 * y_scale)
     Else
         btnHelp.Top = thisFraName.Top + thisFraName.Height + (200 * y_scale)
@@ -5769,7 +5933,7 @@ Private Sub picButtonMouseUpEvent(ByVal thisTabName As String, ByRef thisPicName
         Me.Height = lastFormHeight
     End If
     
-    If PzGDpiAwareness = "0" Then
+    If gblDpiAwareness = "0" Then
         If thisTabName = "about" Then
             lblAsterix.Visible = False
             chkEnableResizing.Visible = True
@@ -6017,7 +6181,7 @@ Private Sub mnuDark_Click()
     mnuLight.Caption = "Light Theme Enable"
     themeTimer.Enabled = False
     
-    PzGSkinTheme = "dark"
+    gblSkinTheme = "dark"
 
     Call setThemeShade(212, 208, 199)
 
@@ -6046,7 +6210,7 @@ Private Sub mnuLight_Click()
     mnuLight.Caption = "Light Theme Enabled"
     themeTimer.Enabled = False
     
-    PzGSkinTheme = "light"
+    gblSkinTheme = "light"
 
     Call setThemeShade(240, 240, 240)
 
@@ -6113,7 +6277,7 @@ Private Sub setThemeShade(ByVal redC As Integer, ByVal greenC As Integer, ByVal 
     sliStormTestInterval.BackColor = RGB(redC, greenC, blueC)
     sliErrorInterval.BackColor = RGB(redC, greenC, blueC)
     
-    sPutINISetting "Software\PzTemperatureGauge", "skinTheme", PzGSkinTheme, PzGSettingsFile
+    sPutINISetting "Software\PzTemperatureGauge", "skinTheme", gblSkinTheme, gblSettingsFile
 
     On Error GoTo 0
     Exit Sub
@@ -6151,7 +6315,7 @@ Private Sub setThemeColour()
         'set themed buttons to none
         Call setThemeShade(212, 208, 199)
         SysClr = GetSysColor(COLOR_BTNFACE)
-        PzGSkinTheme = "dark"
+        gblSkinTheme = "dark"
         
         mnuDark.Caption = "Dark Theme Enabled"
         mnuLight.Caption = "Light Theme Enable"
@@ -6181,8 +6345,8 @@ End Sub
 Private Sub adjustPrefsTheme()
    On Error GoTo adjustPrefsTheme_Error
 
-    If PzGSkinTheme <> vbNullString Then
-        If PzGSkinTheme = "dark" Then
+    If gblSkinTheme <> vbNullString Then
+        If gblSkinTheme = "dark" Then
             Call setThemeShade(212, 208, 199)
         Else
             Call setThemeShade(240, 240, 240)
@@ -6192,7 +6356,7 @@ Private Sub adjustPrefsTheme()
             mnuAuto.Caption = "Auto Theme Enabled - Click to Disable"
             themeTimer.Enabled = True
         Else
-            PzGSkinTheme = "light"
+            gblSkinTheme = "light"
             Call setModernThemeColours
         End If
     End If
@@ -6226,10 +6390,10 @@ Private Sub setModernThemeColours()
     SysClr = GetSysColor(COLOR_BTNFACE)
     If SysClr = 13160660 Then
         Call setThemeShade(212, 208, 199)
-        PzGSkinTheme = "dark"
+        gblSkinTheme = "dark"
     Else ' 15790320
         Call setThemeShade(240, 240, 240)
-        PzGSkinTheme = "light"
+        gblSkinTheme = "light"
     End If
 
    On Error GoTo 0
@@ -6331,8 +6495,8 @@ chkEnableResizing_Click_Error:
 
 End Sub
 
-Private Sub chkEnableResizing_MouseMove(Button As Integer, Shift As Integer, X As Single, Y As Single)
-    If PzGEnableBalloonTooltips = "1" Then CreateToolTip chkEnableResizing.hwnd, "This allows you to resize the whole prefs window by dragging the bottom right corner of the window. It provides an alternative method of supporting high DPI screens.", _
+Private Sub chkEnableResizing_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
+    If gblEnableBalloonTooltips = "1" Then CreateToolTip chkEnableResizing.hwnd, "This allows you to resize the whole prefs window by dragging the bottom right corner of the window. It provides an alternative method of supporting high DPI screens.", _
                   TTIconInfo, "Help on Resizing", , , , True
 End Sub
  
@@ -6366,7 +6530,7 @@ Private Sub setframeHeights()
         fraDevelopment.Width = fraAbout.Width
         fraWindow.Width = fraAbout.Width
     
-        'If PzGDpiAwareness = "1" Then
+        'If gblDpiAwareness = "1" Then
             ' save the initial positions of ALL the controls on the prefs form
             
             Call SaveSizes(Me, prefsControlPositions(), prefsCurrentWidth, prefsCurrentHeight)
@@ -6497,8 +6661,8 @@ setPrefsIconImagesLight_Error:
 
 End Sub
 
-Private Sub txtPrefsFontCurrentSize_MouseMove(Button As Integer, Shift As Integer, X As Single, Y As Single)
-    If PzGEnableBalloonTooltips = "1" Then CreateToolTip txtPrefsFontCurrentSize.hwnd, "This is a read-only text box. It displays the current font as set when dynamic form resizing is enabled. Drag the right hand corner of the window downward and the form will auto-resize. This text box will display the resized font currently in operation for informational purposes only.", _
+Private Sub txtPrefsFontCurrentSize_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
+    If gblEnableBalloonTooltips = "1" Then CreateToolTip txtPrefsFontCurrentSize.hwnd, "This is a read-only text box. It displays the current font as set when dynamic form resizing is enabled. Drag the right hand corner of the window downward and the form will auto-resize. This text box will display the resized font currently in operation for informational purposes only.", _
                   TTIconInfo, "Help on Setting the Font size Dynamically", , , , True
 End Sub
 
@@ -6856,7 +7020,7 @@ End Sub
 ' Purpose   :
 '---------------------------------------------------------------------------------------
 '
-Private Sub lblDragCorner_MouseDown(Button As Integer, Shift As Integer, X As Single, Y As Single)
+Private Sub lblDragCorner_MouseDown(Button As Integer, Shift As Integer, x As Single, y As Single)
 
     On Error GoTo lblDragCorner_MouseDown_Error
     
@@ -6881,7 +7045,7 @@ End Sub
 ' Purpose   :
 '---------------------------------------------------------------------------------------
 '
-Private Sub lblDragCorner_MouseMove(Button As Integer, Shift As Integer, X As Single, Y As Single)
+Private Sub lblDragCorner_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
 
     On Error GoTo lblDragCorner_MouseMove_Error
 
@@ -6908,11 +7072,11 @@ Public Sub setPrefsFormZordering()
 
    On Error GoTo setPrefsFormZordering_Error
 
-'    If Val(PzGWindowLevel) = 0 Then
+'    If Val(gblWindowLevel) = 0 Then
 '        Call SetWindowPos(Me.hwnd, HWND_BOTTOM, 0&, 0&, 0&, 0&, OnTopFlags)
-'    ElseIf Val(PzGWindowLevel) = 1 Then
+'    ElseIf Val(gblWindowLevel) = 1 Then
 '        Call SetWindowPos(Me.hwnd, HWND_TOP, 0&, 0&, 0&, 0&, OnTopFlags)
-'    ElseIf Val(PzGWindowLevel) = 2 Then
+'    ElseIf Val(gblWindowLevel) = 2 Then
 '        Call SetWindowPos(Me.hwnd, HWND_TOPMOST, 0&, 0&, 0&, 0&, OnTopFlags)
 '    End If
 
@@ -6923,6 +7087,35 @@ setPrefsFormZordering_Error:
 
     MsgBox "Error " & Err.Number & " (" & Err.Description & ") in procedure setPrefsFormZordering of Module modMain"
 End Sub
+
+#If TWINBASIC Then
+    '---------------------------------------------------------------------------------------
+    ' Procedure : setVisualStyles
+    ' Author    : beededea
+    ' Date      : 13/01/2025
+    ' Purpose   : loop through all the controls and identify the labels and text boxes and disable modern styles
+    '             reverts TwinBasic form themeing to that of the earlier classic look and feel.
+    '---------------------------------------------------------------------------------------
+    '
+        Private Sub setVisualStyles()
+            Dim Ctrl As Control
+          
+            On Error GoTo setVisualStyles_Error
+
+            For Each Ctrl In widgetPrefs.Controls
+                If (TypeOf Ctrl Is TextBox) Or (TypeOf Ctrl Is FileListBox) Or (TypeOf Ctrl Is ComboBox) Or (TypeOf Ctrl Is CheckBox) Or (TypeOf Ctrl Is OptionButton) Or (TypeOf Ctrl Is Frame) Or (TypeOf Ctrl Is ListBox) Then
+                    Ctrl.VisualStyles = False
+                End If
+            Next
+
+       On Error GoTo 0
+       Exit Sub
+
+setVisualStyles_Error:
+
+        MsgBox "Error " & Err.Number & " (" & Err.Description & ") in procedure setVisualStyles of Form widgetPrefs"
+        End Sub
+#End If
 
 
 '\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/

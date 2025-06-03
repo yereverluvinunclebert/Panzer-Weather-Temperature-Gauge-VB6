@@ -96,8 +96,8 @@ Private Sub revealWidgetTimer_Timer()
 
         fTemperature.temperatureGaugeForm.Visible = True
         revealWidgetTimer.Enabled = False
-        PzGWidgetHidden = "0"
-        sPutINISetting "Software\PzTemperatureGauge", "widgetHidden", PzGWidgetHidden, PzGSettingsFile
+        gblWidgetHidden = "0"
+        sPutINISetting "Software\PzTemperatureGauge", "widgetHidden", gblWidgetHidden, gblSettingsFile
     End If
 
     On Error GoTo 0
@@ -163,12 +163,12 @@ Private Sub settingsTimer_Timer()
     
     On Error GoTo settingsTimer_Timer_Error
 
-    PzGUnhide = fGetINISetting("Software\PzTemperatureGauge", "unhide", PzGSettingsFile)
+    gblUnhide = fGetINISetting("Software\PzTemperatureGauge", "unhide", gblSettingsFile)
 
-    If PzGUnhide = "true" Then
+    If gblUnhide = "true" Then
         'overlayTemperatureWidget.Hidden = False
         fTemperature.temperatureGaugeForm.Visible = True
-        sPutINISetting "Software\PzTemperatureGauge", "unhide", vbNullString, PzGSettingsFile
+        sPutINISetting "Software\PzTemperatureGauge", "unhide", vbNullString, gblSettingsFile
     End If
 
     On Error GoTo 0

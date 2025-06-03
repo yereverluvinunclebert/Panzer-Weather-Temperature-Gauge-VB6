@@ -353,7 +353,12 @@ Private Sub mnuEditWidget_Click()
     
     On Error GoTo mnuEditWidget_Click_Error
 
-    editorPath = PzGDefaultEditor
+    #If TWINBASIC Then
+        editorPath = gblDefaultTBEditor
+    #Else
+        editorPath = gblDefaultVB6Editor
+    #End If
+    
     If fFExists(editorPath) Then ' if it is a folder already
         '''If debugflg = 1  Then msgBox "ShellExecute " & sCommand
         
@@ -441,9 +446,9 @@ Private Sub mnuHideWidget_Click()
     'overlayTemperatureWidget.Hidden = True
     fTemperature.temperatureGaugeForm.Visible = False
     frmTimer.revealWidgetTimer.Enabled = True
-    PzGWidgetHidden = "1"
+    gblWidgetHidden = "1"
     ' we have to save the value here
-    sPutINISetting "Software\PzTemperatureGauge", "widgetHidden", PzGWidgetHidden, PzGSettingsFile
+    sPutINISetting "Software\PzTemperatureGauge", "widgetHidden", gblWidgetHidden, gblSettingsFile
 
    On Error GoTo 0
    Exit Sub
@@ -467,7 +472,7 @@ Private Sub mnuLockAnemometerGauge_Click()
     On Error GoTo mnuLockAnemometerGauge_Click_Error
     
     If gblOriginatingForm = "anemometerForm" Then
-        If PzGPreventDraggingAnemometer = "1" Then
+        If gblPreventDraggingAnemometer = "1" Then
             overlayAnemoWidget.Locked = False
         Else
             overlayAnemoWidget.Locked = True
@@ -495,7 +500,7 @@ Private Sub mnuLockTemperatureGauge_Click()
     On Error GoTo mnuLockTemperatureGauge_Click_Error
     
     If gblOriginatingForm = "temperatureForm" Then
-        If PzGPreventDraggingTemperature = "1" Then
+        If gblPreventDraggingTemperature = "1" Then
             overlayTemperatureWidget.Locked = False
         Else
             overlayTemperatureWidget.Locked = True
@@ -646,7 +651,7 @@ Public Sub mnuLatest_Click()
     answer = msgBoxA(answerMsg, vbExclamation + vbYesNo, "Request to Upgrade", True, "mnuLatestClick")
 
     If answer = vbYes Then
-        Call ShellExecute(Me.hwnd, "Open", "https://github.com/yereverluvinunclebert/Panzer-Temperature-Gauge-VB6", vbNullString, App.path, 1)
+        Call ShellExecute(Me.hwnd, "Open", "https://github.com/yereverluvinunclebert/Panzer-Temperature-Gauge-" & gblCodingEnvironment & "/releases", vbNullString, App.path, 1)
     End If
 
 

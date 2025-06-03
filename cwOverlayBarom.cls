@@ -318,12 +318,12 @@ Public Property Let Locked(ByVal newValue As Boolean)
              panzerPrefs.chkPreventDragging.Value = 1
         End If
 
-        PzGPreventDraggingBarometer = "1"
+        gblPreventDraggingBarometer = "1"
         If aspectRatio = "landscape" Then
-            PzGBarometerLandscapeLocked = "1"
+            gblBarometerLandscapeLocked = "1"
             panzerPrefs.cmbLandscapeLocked.ListIndex = 1
         Else
-            PzGBarometerPortraitLocked = "1"
+            gblBarometerPortraitLocked = "1"
             panzerPrefs.cmbPortraitLocked.ListIndex = 1
         End If
             
@@ -335,23 +335,23 @@ Public Property Let Locked(ByVal newValue As Boolean)
              panzerPrefs.chkPreventDragging.Value = 0
         End If
 
-        PzGPreventDraggingBarometer = "0"
+        gblPreventDraggingBarometer = "0"
         If aspectRatio = "landscape" Then
-            PzGBarometerLandscapeLocked = "0"
+            gblBarometerLandscapeLocked = "0"
             panzerPrefs.cmbLandscapeLocked.ListIndex = 0
        Else
-            PzGBarometerPortraitLocked = "0"
+            gblBarometerPortraitLocked = "0"
             panzerPrefs.cmbPortraitLocked.ListIndex = 0
         End If
             
-        fBarometer.barometerGaugeForm.Widgets("housing/lockbutton").Widget.Alpha = Val(PzGOpacity) / 100
+        fBarometer.barometerGaugeForm.Widgets("housing/lockbutton").Widget.Alpha = Val(gblOpacity) / 100
     End If
 
     fBarometer.barometerGaugeForm.Refresh
 
-    sPutINISetting "Software\PzBarometerGauge", "preventDraggingBarometer", PzGPreventDraggingBarometer, PzGSettingsFile
+    sPutINISetting "Software\PzBarometerGauge", "preventDraggingBarometer", gblPreventDraggingBarometer, gblSettingsFile
 
-    If PzGEnableSounds = "1" And fFExists(App.path & "\resources\sounds\" & fileToPlay) Then
+    If gblEnableSounds = "1" And fFExists(App.path & "\resources\sounds\" & fileToPlay) Then
         PlaySound App.path & "\resources\sounds\" & fileToPlay, ByVal 0&, SND_FILENAME Or SND_ASYNC
     End If
 
@@ -397,8 +397,8 @@ Public Property Let thisFace(ByVal newValue As Integer)
         panzerPrefs.cmbPressureScale.ListIndex = mThisFace
     End If
     
-    PzGPressureScale = mThisFace
-    sPutINISetting "Software\PzTemperatureGauge", "pressureScale", PzGPressureScale, PzGSettingsFile
+    gblPressureScale = mThisFace
+    sPutINISetting "Software\PzTemperatureGauge", "pressureScale", gblPressureScale, gblSettingsFile
     
     Call obtainPressure
     
