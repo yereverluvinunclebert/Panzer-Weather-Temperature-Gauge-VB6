@@ -53,6 +53,9 @@ Public overlayHumidWidget As cwOverlayHumid
 
 Public fBarometer As New cfBarometer
 Public overlayBaromWidget As cwOverlayBarom
+ 
+Public fPictorial As New cfPictorial
+Public overlayPictorialWidget As cwOverlayPict
 
 Public sunriseSunset As cwSunriseSunset
 Public WeatherMeteo As cwWeatherMeteo
@@ -63,6 +66,7 @@ Public widgetName3 As String
 Public widgetName4 As String
 Public widgetName5 As String
 Public widgetName6 As String
+Public widgetName7 As String
 
 'Public startupFlg As Boolean
 
@@ -111,6 +115,7 @@ Public Sub mainRoutine(ByVal restart As Boolean)
     Dim anemometerPSDFullPath As String: anemometerPSDFullPath = vbNullString
     Dim HumidityPSDFullPath As String: HumidityPSDFullPath = vbNullString
     Dim barometerPSDFullPath As String: barometerPSDFullPath = vbNullString
+    Dim pictorialPSDFullPath As String: pictorialPSDFullPath = vbNullString
     Dim licenceState As Integer: licenceState = 0
 
     On Error GoTo main_routine_Error
@@ -135,6 +140,9 @@ Public Sub mainRoutine(ByVal restart As Boolean)
     
     widgetName6 = "Barometer Gauge"
     barometerPSDFullPath = App.path & "\Res\Panzer Weather Barometer Gauge VB6.psd"
+    
+    widgetName7 = "Pictorial Gauge"
+    pictorialPSDFullPath = App.path & "\Res\Panzer Weather Pictorial Gauge VB6.psd"
     
     prefsCurrentWidth = 9075
     prefsCurrentHeight = 16450
@@ -189,6 +197,7 @@ Public Sub mainRoutine(ByVal restart As Boolean)
         Call loadAnemometerExcludePathCollection
         Call loadHumidityExcludePathCollection
         Call loadBarometerExcludePathCollection
+        Call loadPictorialExcludePathCollection
     End If
     
     ' start the load of the PSD files using the RC6 PSD-Parser.instance
@@ -198,6 +207,7 @@ Public Sub mainRoutine(ByVal restart As Boolean)
     Call fAnemometer.InitAnemometerFromPSD(anemometerPSDFullPath)
     Call fHumidity.InitHumidityFromPSD(HumidityPSDFullPath)
     Call fBarometer.InitBarometerFromPSD(barometerPSDFullPath)
+    Call fPictorial.InitPictorialFromPSD(pictorialPSDFullPath)
     
     ' resolve VB6 sizing width bug
     Call determineScreenDimensions
@@ -236,6 +246,9 @@ Public Sub mainRoutine(ByVal restart As Boolean)
     
     ' set characteristics of widgets on the clipboard form
     Call adjustClipBMainControls
+    
+    ' set characteristics of widgets on the pictorial form
+    Call adjustPictorialMainControls
     
     ' set the z-ordering of the window
     Call setAlphaFormZordering
@@ -418,6 +431,19 @@ Private Sub initialiseGlobalVars()
     gblBarometerPortraitLockedHoffset = vbNullString
     gblBarometerPortraitLockedVoffset = vbNullString
     gblPreventDraggingBarometer = vbNullString
+    
+    gblPictorialGaugeSize = vbNullString
+    gblPictorialLandscapeLocked = vbNullString
+    gblPictorialPortraitLocked = vbNullString
+    gblPictorialFormHighDpiXPos = vbNullString
+    gblPictorialFormHighDpiYPos = vbNullString
+    gblPictorialFormLowDpiXPos = vbNullString
+    gblPictorialFormLowDpiYPos = vbNullString
+    gblPictorialLandscapeLockedHoffset = vbNullString
+    gblPictorialLandscapeLockedVoffset = vbNullString
+    gblPictorialPortraitLockedHoffset = vbNullString
+    gblPictorialPortraitLockedVoffset = vbNullString
+    gblPreventDraggingPictorial = vbNullString
         
     ' sounds
     gblEnableSounds = vbNullString
@@ -539,6 +565,7 @@ Private Sub addGeneralImagesToImageLists()
     Cairo.ImageList.AddImage "helpSelector", App.path & "\Resources\images\panzerClipboard-help.png"
     Cairo.ImageList.AddImage "helpClipboard", App.path & "\Resources\images\panzerClipboard-help.png"
     Cairo.ImageList.AddImage "helpWeather", App.path & "\Resources\images\panzerweather-icon-help.png"
+    ' deanieboy
     Cairo.ImageList.AddImage "licence", App.path & "\Resources\images\frame.png"
     
     ' prefs icons
@@ -736,6 +763,97 @@ adjustClipBMainControls_Error:
 
     MsgBox "Error " & Err.Number & " (" & Err.Description & ") in procedure adjustClipBMainControls, line " & Erl & ". " & "Most likely a badly-named layer in the PSD file."
 
+End Sub
+
+'---------------------------------------------------------------------------------------
+' Procedure : adjustPictorialMainControls
+' Author    : beededea
+' Date      : 04/06/2025
+' Purpose   :
+'---------------------------------------------------------------------------------------
+'
+Private Sub adjustPictorialMainControls()
+
+   On Error GoTo adjustPictorialMainControls_Error
+
+    fPictorial.pictAdjustZoom Val(gblPictorialGaugeSize) / 100
+    
+    ' set the characteristics of the interactive areas
+    ' Note: set the Hover colour close to the original layer to avoid too much intrusion, 0 being grey
+    With fPictorial.pictorialGaugeForm.Widgets("housing/helpbutton").Widget
+        .HoverColor = 0 ' set the hover colour to grey - this may change later with new RC6
+        .MousePointer = IDC_HAND
+        .Alpha = Val(gblOpacity) / 100
+    End With
+     
+    With fPictorial.pictorialGaugeForm.Widgets("housing/startbutton").Widget
+        .HoverColor = 0 ' set the hover colour to grey - this may change later with new RC6
+        .MousePointer = IDC_HAND
+        .Alpha = Val(gblOpacity) / 100
+        .Tag = 0.25
+    End With
+      
+    With fPictorial.pictorialGaugeForm.Widgets("housing/stopbutton").Widget
+        .HoverColor = 0 ' set the hover colour to grey - this may change later with new RC6
+        .MousePointer = IDC_HAND
+        .Alpha = Val(gblOpacity) / 100
+        .Tag = 0.25
+    End With
+      
+    With fPictorial.pictorialGaugeForm.Widgets("housing/switchfacesbutton").Widget
+        .HoverColor = 0 ' set the hover colour to grey - this may change later with new RC6
+        .MousePointer = IDC_HAND
+        .Alpha = Val(gblOpacity) / 100
+    End With
+          
+    With fPictorial.pictorialGaugeForm.Widgets("housing/lockbutton").Widget
+        .HoverColor = 0 ' set the hover colour to grey - this may change later with new RC6
+        .MousePointer = IDC_HAND
+    End With
+          
+    With fPictorial.pictorialGaugeForm.Widgets("housing/prefsbutton").Widget
+        .HoverColor = 0 ' set the hover colour to grey - this may change later with new RC6
+        .MousePointer = IDC_HAND
+        .Alpha = Val(gblOpacity) / 100
+    End With
+          
+    With fPictorial.pictorialGaugeForm.Widgets("housing/tickbutton").Widget
+        .HoverColor = 0 ' set the hover colour to grey - this may change later with new RC6
+        .MousePointer = IDC_HAND
+    End With
+    
+    With fPictorial.pictorialGaugeForm.Widgets("housing/surround").Widget
+        .HoverColor = 0 ' set the hover colour to grey - this may change later with new RC6
+        .MousePointer = IDC_SIZEALL
+        .Alpha = Val(gblOpacity) / 100
+    End With
+    
+'    If gblPointerAnimate = "0" Then
+'        overlaypictorialWidget.pointerAnimate = False
+'        fPictorial.PictorialGaugeForm.Widgets("housing/tickbutton").Widget.Alpha = Val(gblOpacity) / 100
+'    Else
+'        overlaypictorialWidget.pointerAnimate = True
+'        fPictorial.PictorialGaugeForm.Widgets("housing/tickbutton").Widget.Alpha = 0
+'    End If
+        
+    If gblPreventDraggingPictorial = "0" Then
+        menuForm.mnuLockTemperatureGauge.Checked = False
+        overlayPictorialWidget.Locked = False
+        fPictorial.pictorialGaugeForm.Widgets("housing/lockbutton").Widget.Alpha = Val(gblOpacity) / 100
+    Else
+        menuForm.mnuLockTemperatureGauge.Checked = True
+        overlayPictorialWidget.Locked = True ' this is just here for continuity's sake, it is also set at the time the control is selected
+        fPictorial.pictorialGaugeForm.Widgets("housing/lockbutton").Widget.Alpha = 0
+    End If
+
+    overlayPictorialWidget.thisOpacity = Val(gblOpacity)
+
+   On Error GoTo 0
+   Exit Sub
+
+adjustPictorialMainControls_Error:
+
+    MsgBox "Error " & Err.Number & " (" & Err.Description & ") in procedure adjustPictorialMainControls of Module modMain"
 End Sub
 
 '---------------------------------------------------------------------------------------
@@ -1144,18 +1262,21 @@ Public Sub setAlphaFormZordering()
         Call SetWindowPos(fAnemometer.anemometerGaugeForm.hwnd, HWND_BOTTOM, 0&, 0&, 0&, 0&, OnTopFlags)
         Call SetWindowPos(fHumidity.humidityGaugeForm.hwnd, HWND_BOTTOM, 0&, 0&, 0&, 0&, OnTopFlags)
         Call SetWindowPos(fBarometer.barometerGaugeForm.hwnd, HWND_BOTTOM, 0&, 0&, 0&, 0&, OnTopFlags)
+        Call SetWindowPos(fPictorial.pictorialGaugeForm.hwnd, HWND_BOTTOM, 0&, 0&, 0&, 0&, OnTopFlags)
         Call SetWindowPos(fClipB.clipBForm.hwnd, HWND_BOTTOM, 0&, 0&, 0&, 0&, OnTopFlags)
     ElseIf Val(gblWindowLevel) = 1 Then
         Call SetWindowPos(fTemperature.temperatureGaugeForm.hwnd, HWND_TOP, 0&, 0&, 0&, 0&, OnTopFlags)
         Call SetWindowPos(fAnemometer.anemometerGaugeForm.hwnd, HWND_TOP, 0&, 0&, 0&, 0&, OnTopFlags)
         Call SetWindowPos(fHumidity.humidityGaugeForm.hwnd, HWND_TOP, 0&, 0&, 0&, 0&, OnTopFlags)
         Call SetWindowPos(fBarometer.barometerGaugeForm.hwnd, HWND_TOP, 0&, 0&, 0&, 0&, OnTopFlags)
+        Call SetWindowPos(fPictorial.pictorialGaugeForm.hwnd, HWND_TOP, 0&, 0&, 0&, 0&, OnTopFlags)
         Call SetWindowPos(fClipB.clipBForm.hwnd, HWND_TOP, 0&, 0&, 0&, 0&, OnTopFlags)
     ElseIf Val(gblWindowLevel) = 2 Then
         Call SetWindowPos(fTemperature.temperatureGaugeForm.hwnd, HWND_TOPMOST, 0&, 0&, 0&, 0&, OnTopFlags)
         Call SetWindowPos(fAnemometer.anemometerGaugeForm.hwnd, HWND_TOPMOST, 0&, 0&, 0&, 0&, OnTopFlags)
         Call SetWindowPos(fHumidity.humidityGaugeForm.hwnd, HWND_TOPMOST, 0&, 0&, 0&, 0&, OnTopFlags)
         Call SetWindowPos(fBarometer.barometerGaugeForm.hwnd, HWND_TOPMOST, 0&, 0&, 0&, 0&, OnTopFlags)
+        Call SetWindowPos(fPictorial.pictorialGaugeForm.hwnd, HWND_TOPMOST, 0&, 0&, 0&, 0&, OnTopFlags)
         Call SetWindowPos(fClipB.clipBForm.hwnd, HWND_TOPMOST, 0&, 0&, 0&, 0&, OnTopFlags)
     End If
 
@@ -1274,6 +1395,21 @@ Public Sub readSettingsFile(ByVal location As String, ByVal gblSettingsFile As S
         gblBarometerFormLowDpiXPos = fGetINISetting("Software\PzBarometerGauge", "barometerFormLowDpiXPos", gblSettingsFile)
         gblBarometerFormLowDpiYPos = fGetINISetting("Software\PzBarometerGauge", "barometerFormLowDpiYPos", gblSettingsFile)
         gblPreventDraggingBarometer = fGetINISetting("Software\PzBarometerGauge", "preventDraggingBarometer", gblSettingsFile)
+        
+        gblPictorialGaugeSize = fGetINISetting(location, "pictorialGaugeSize", gblSettingsFile)
+        gblPictorialLandscapeLocked = fGetINISetting(location, "pictorialLandscapeLocked", gblSettingsFile)
+        gblPictorialPortraitLocked = fGetINISetting(location, "pictorialPortraitLocked", gblSettingsFile)
+        gblPictorialLandscapeLockedHoffset = fGetINISetting(location, "pictorialLandscapeHoffset", gblSettingsFile)
+        gblPictorialLandscapeLockedVoffset = fGetINISetting(location, "pictorialLandscapeYoffset", gblSettingsFile)
+        gblPictorialPortraitLockedHoffset = fGetINISetting(location, "pictorialPortraitHoffset", gblSettingsFile)
+        gblPictorialPortraitLockedVoffset = fGetINISetting(location, "pictorialPortraitVoffset", gblSettingsFile)
+        gblPictorialVLocationPerc = fGetINISetting(location, "pictorialVLocationPerc", gblSettingsFile)
+        gblPictorialHLocationPerc = fGetINISetting(location, "pictorialHLocationPerc", gblSettingsFile)
+        gblPictorialFormHighDpiXPos = fGetINISetting("Software\PzPictorialGauge", "pictorialFormHighDpiXPos", gblSettingsFile)
+        gblPictorialFormHighDpiYPos = fGetINISetting("Software\PzPictorialGauge", "pictorialFormHighDpiYPos", gblSettingsFile)
+        gblPictorialFormLowDpiXPos = fGetINISetting("Software\PzPictorialGauge", "pictorialFormLowDpiXPos", gblSettingsFile)
+        gblPictorialFormLowDpiYPos = fGetINISetting("Software\PzPictorialGauge", "pictorialFormLowDpiYPos", gblSettingsFile)
+        gblPreventDraggingPictorial = fGetINISetting(location, "preventDraggingPictorial", gblSettingsFile)
              
         ' font
         gblTempFormFont = fGetINISetting(location, "tempFormFont", gblSettingsFile)
@@ -1447,6 +1583,17 @@ Public Sub validateInputs()
     If gblBarometerHLocationPerc = vbNullString Then gblBarometerHLocationPerc = vbNullString
     If gblPreventDraggingBarometer = vbNullString Then gblPreventDraggingBarometer = "0"
             
+    If gblPictorialGaugeSize = vbNullString Then gblPictorialGaugeSize = "50"
+    If gblPictorialLandscapeLocked = vbNullString Then gblPictorialLandscapeLocked = "0"
+    If gblPictorialPortraitLocked = vbNullString Then gblPictorialPortraitLocked = "0"
+    If gblPictorialLandscapeLockedHoffset = vbNullString Then gblPictorialLandscapeLockedHoffset = vbNullString
+    If gblPictorialLandscapeLockedVoffset = vbNullString Then gblPictorialLandscapeLockedVoffset = vbNullString
+    If gblPictorialPortraitLockedHoffset = vbNullString Then gblPictorialPortraitLockedHoffset = vbNullString
+    If gblPictorialPortraitLockedVoffset = vbNullString Then gblPictorialPortraitLockedVoffset = vbNullString
+    If gblPictorialVLocationPerc = vbNullString Then gblPictorialVLocationPerc = vbNullString
+    If gblPictorialHLocationPerc = vbNullString Then gblPictorialHLocationPerc = vbNullString
+    If gblPreventDraggingPictorial = vbNullString Then gblPreventDraggingPictorial = "0"
+    
     ' development
     If gblDebug = vbNullString Then gblDebug = "0"
     If gblDblClickCommand = vbNullString Then gblDblClickCommand = vbNullString
@@ -1933,7 +2080,35 @@ loadBarometerExcludePathCollection_Error:
 End Sub
 
 
+'---------------------------------------------------------------------------------------
+' Procedure : loadPictorialExcludePathCollection
+' Author    : Dean Beedell (yereverluvinunclebert)
+' Date      : 30/07/2023
+' Purpose   : Do not create Widgets for those in the exclude list.
+'             all non UI-interacting elements (no mouse events) must be inserted here
+'---------------------------------------------------------------------------------------
+'
+Private Sub loadPictorialExcludePathCollection()
 
+    'all of these will be rendered in cwOverlay in the same order as below
+    On Error GoTo loadPictorialExcludePathCollection_Error
+
+    With fPictorial.collPictorialPSDNonUIElements ' the exclude list
+        
+        .Add Empty, "greenlamp"
+        .Add Empty, "bigreflection"     'all reflections
+        .Add Empty, "windowreflection"
+        
+    End With
+
+   On Error GoTo 0
+   Exit Sub
+
+loadPictorialExcludePathCollection_Error:
+
+    MsgBox "Error " & Err.Number & " (" & Err.Description & ") in procedure loadPictorialExcludePathCollection of Module modMain"
+
+End Sub
 
 ' .74 DAEB 22/05/2022 rDIConConfig.frm Msgbox replacement that can be placed on top of the form instead as the middle of the screen, see Steamydock for a potential replacement?
 '---------------------------------------------------------------------------------------
@@ -1989,13 +2164,15 @@ Private Sub setTaskbarEntry()
         fAnemometer.anemometerGaugeForm.ShowInTaskbar = False
         fHumidity.humidityGaugeForm.ShowInTaskbar = False
         fBarometer.barometerGaugeForm.ShowInTaskbar = False
+        fPictorial.pictorialGaugeForm.ShowInTaskbar = False
         fClipB.clipBForm.ShowInTaskbar = False
     Else
         fTemperature.temperatureGaugeForm.ShowInTaskbar = True
         fAnemometer.anemometerGaugeForm.ShowInTaskbar = True
         fHumidity.humidityGaugeForm.ShowInTaskbar = True
         fBarometer.barometerGaugeForm.ShowInTaskbar = True
-       fClipB.clipBForm.ShowInTaskbar = True
+        fPictorial.pictorialGaugeForm.ShowInTaskbar = True
+        fClipB.clipBForm.ShowInTaskbar = True
     End If
 
     On Error GoTo 0

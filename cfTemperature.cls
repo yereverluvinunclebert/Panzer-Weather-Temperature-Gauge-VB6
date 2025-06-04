@@ -725,6 +725,7 @@ Private Sub temperatureGaugeForm_MouseDown(ByRef Button As Integer, ByRef Shift 
         menuForm.mnuLockHumidityGauge.Visible = False
         menuForm.mnuLockAnemometerGauge.Visible = False
         menuForm.mnuLockBarometerGauge.Visible = False
+        menuForm.mnuLockPictorialGauge.Visible = False
         
         Call menuForm.PopupMenu(menuForm.mnuMainMenu)
     Else

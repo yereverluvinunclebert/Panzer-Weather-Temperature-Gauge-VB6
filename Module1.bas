@@ -385,6 +385,22 @@ Public gblBarometerFormHighDpiYPos As String
 Public gblBarometerFormLowDpiXPos As String
 Public gblBarometerFormLowDpiYPos As String
 
+
+Public gblPictorialGaugeSize As String
+Public gblPictorialLandscapeLocked As String
+Public gblPictorialPortraitLocked As String
+Public gblPictorialLandscapeLockedHoffset As String
+Public gblPictorialLandscapeLockedVoffset As String
+Public gblPictorialPortraitLockedHoffset As String
+Public gblPictorialPortraitLockedVoffset As String
+Public gblPictorialVLocationPerc As String
+Public gblPictorialHLocationPerc As String
+Public gblPreventDraggingPictorial As String
+Public gblPictorialFormHighDpiXPos As String
+Public gblPictorialFormHighDpiYPos As String
+Public gblPictorialFormLowDpiXPos As String
+Public gblPictorialFormLowDpiYPos As String
+
 ' sounds
 Public gblEnableSounds  As String
 
@@ -1892,6 +1908,22 @@ Public Sub makeVisibleFormElements()
         fBarometer.barometerGaugeForm.Top = screenHeightPixels * (gblBarometerVLocationPerc / 100)
     End If
     fBarometer.barometerGaugeForm.Show
+    
+    
+    ' position the Pictorial gauge explicitly by px position
+    If gblWidgetPosition = "0" Then
+        If gblDpiAwareness = "1" Then
+            fPictorial.pictorialGaugeForm.Left = Val(gblPictorialFormHighDpiXPos)
+            fPictorial.pictorialGaugeForm.Top = Val(gblPictorialFormHighDpiYPos)
+        Else
+            fPictorial.pictorialGaugeForm.Left = Val(gblPictorialFormLowDpiXPos)
+            fPictorial.pictorialGaugeForm.Top = Val(gblPictorialFormLowDpiYPos)
+        End If
+    Else ' by percentage (tablet)
+        fPictorial.pictorialGaugeForm.Left = screenWidthPixels * (gblPictorialHLocationPerc / 100)
+        fPictorial.pictorialGaugeForm.Top = screenHeightPixels * (gblPictorialVLocationPerc / 100)
+    End If
+    fPictorial.pictorialGaugeForm.Show
 
     On Error GoTo 0
     Exit Sub
@@ -2161,6 +2193,13 @@ Public Sub mainScreen()
         gblBarometerVLocationPerc = CStr(fBarometer.barometerGaugeForm.Top / screenHeightPixels * 100)
     End If
    
+     ' calculate the current hlocation in % of the screen
+    ' store the current hlocation in % of the screen
+    If gblWidgetPosition = "1" Then
+        gblPictorialHLocationPerc = CStr(fPictorial.pictorialGaugeForm.Left / screenWidthPixels * 100)
+        gblPictorialVLocationPerc = CStr(fPictorial.pictorialGaugeForm.Top / screenHeightPixels * 100)
+    End If
+   
    On Error GoTo 0
    Exit Sub
 
@@ -2185,6 +2224,7 @@ Public Sub thisForm_Unload() ' name follows VB6 standard naming convention
     Call saveAnemometerGaugePosition
     Call saveBarometerGaugePosition
     Call saveHumidityGaugePosition
+    Call savePictorialGaugePosition
     
     Call unloadAllForms(True)
 
@@ -2251,6 +2291,7 @@ Public Sub unloadAllForms(ByVal endItAll As Boolean)
     fBarometer.barometerGaugeForm.Widgets.RemoveAll
     fSelector.SelectorForm.Widgets.RemoveAll
     fClipB.clipBForm.Widgets.RemoveAll
+    fPictorial.pictorialGaugeForm.Widgets.RemoveAll
     
     ' unload the native VB6 forms
     
@@ -2270,6 +2311,7 @@ Public Sub unloadAllForms(ByVal endItAll As Boolean)
     fSelector.SelectorForm.Unload
     fClipB.clipBForm.Unload
     fMain.licenceForm.Unload
+    fPictorial.pictorialGaugeForm.Unload
     
     ' remove all variable references to each RC6 form in turn
     
@@ -2281,6 +2323,7 @@ Public Sub unloadAllForms(ByVal endItAll As Boolean)
     Set fBarometer.barometerGaugeForm = Nothing
     Set fSelector.SelectorForm = Nothing
     Set fMain.licenceForm = Nothing
+    Set fPictorial.pictorialGaugeForm = Nothing
     
     ' remove all variable references to each VB6 form in turn
     
@@ -2504,6 +2547,49 @@ Public Sub saveBarometerGaugePosition()
 saveBarometerGaugePosition_Error:
 
     MsgBox "Error " & Err.Number & " (" & Err.Description & ") in procedure saveBarometerGaugePosition of Module Module1"
+    
+End Sub
+
+ '---------------------------------------------------------------------------------------
+' Procedure : savePictorialGaugePosition
+' Author    : Dean Beedell (yereverluvinunclebert)
+' Date      : 04/08/2023
+' Purpose   :
+'---------------------------------------------------------------------------------------
+'
+Public Sub savePictorialGaugePosition()
+
+   On Error GoTo savePictorialGaugePosition_Error
+
+    If gblDpiAwareness = "1" Then
+        gblPictorialFormHighDpiXPos = CStr(fPictorial.pictorialGaugeForm.Left) ' saving in pixels
+        gblPictorialFormHighDpiYPos = CStr(fPictorial.pictorialGaugeForm.Top)
+        sPutINISetting "Software\PzPictorialGauge", "pictorialFormHighDpiXPos", gblPictorialFormHighDpiXPos, gblSettingsFile
+        sPutINISetting "Software\PzPictorialGauge", "pictorialFormHighDpiYPos", gblPictorialFormHighDpiYPos, gblSettingsFile
+    Else
+        gblPictorialFormLowDpiXPos = CStr(fPictorial.pictorialGaugeForm.Left) ' saving in pixels
+        gblPictorialFormLowDpiYPos = CStr(fPictorial.pictorialGaugeForm.Top)
+        sPutINISetting "Software\PzPictorialGauge", "pictorialFormLowDpiXPos", gblPictorialFormLowDpiXPos, gblSettingsFile
+        sPutINISetting "Software\PzPictorialGauge", "pictorialFormLowDpiYPos", gblPictorialFormLowDpiYPos, gblSettingsFile
+    End If
+    
+    ' calculate the current hlocation in % of the screen
+    ' store the current hlocation in % of the screen
+    If gblWidgetPosition = "1" Then
+        gblPictorialHLocationPerc = CStr(fPictorial.pictorialGaugeForm.Left / screenWidthPixels * 100)
+        gblPictorialVLocationPerc = CStr(fPictorial.pictorialGaugeForm.Top / screenHeightPixels * 100)
+    End If
+
+    
+    gblPictorialGaugeSize = CStr(fPictorial.pictorialGaugeForm.WidgetRoot.Zoom * 100)
+    sPutINISetting "Software\PzPictorialGauge", "pictorialGaugeSize", gblPictorialGaugeSize, gblSettingsFile
+
+   On Error GoTo 0
+   Exit Sub
+
+savePictorialGaugePosition_Error:
+
+    MsgBox "Error " & Err.Number & " (" & Err.Description & ") in procedure savePictorialGaugePosition of Module Module1"
     
 End Sub
  '---------------------------------------------------------------------------------------

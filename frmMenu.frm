@@ -110,6 +110,9 @@ Begin VB.Form menuForm
       Begin VB.Menu mnuLockHumidityGauge 
          Caption         =   "Lock Humidity Gauge"
       End
+      Begin VB.Menu mnuLockPictorialGauge 
+         Caption         =   "Lock Pictorial Gauge"
+      End
       Begin VB.Menu mnuHideWidget 
          Caption         =   "Hide Widget"
       End
