@@ -514,6 +514,9 @@ Private Sub processMetarData()
     Dim thisTooltip As String: thisTooltip = vbNullString
     Dim weatherIconToolTip As String: weatherIconToolTip = vbNullString
     
+    Dim force As Integer: force = 0
+    Dim windIconSrc As String: windIconSrc = vbNullString
+    
     On Error GoTo processMetarData_Error
     
     debugFlg = 0
@@ -728,9 +731,15 @@ Private Sub processMetarData()
     sPutINISetting "Software\PzTemperatureGauge", "lastUpdated", gblLastUpdated, gblSettingsFile
 
     If (debugFlg = 1) Then Debug.Print ("%processMetarData - difString " & difString)
+    
+    ' convert the windspeed to the beaufort scale
+    force = beaufortConversion(wind_speed_kt)
+    
+    ' determine the wind icon image
+    windIconSrc = fWindIconSrc(force)
 
     ' set the hover over tooltips on the gauges
-    thisTooltip = setHoverTooltip(precipitationDepth, visibilityDistance, skyClarityString, HumidityValue, mTemperatureValue, pressureValue, weekDayDate, wind_dir_degrees, wind_speed_kt, precip_in, wx_string)
+    thisTooltip = setHoverTooltip(force, precipitationDepth, visibilityDistance, skyClarityString, HumidityValue, mTemperatureValue, pressureValue, weekDayDate, wind_dir_degrees, wind_speed_kt, precip_in, wx_string)
     thisTooltip = thisTooltip & vbCrLf & raw_text
     
     fClipB.sLblMETARText.Caption = thisTooltip
@@ -755,6 +764,9 @@ Private Sub processMetarData()
     
     ' restart the sampling timer now the data has been processed
     SamplerEnabled = True
+        
+    ' pass the wind image to the pictorial gauge
+    overlayPictorialWidget.thisWindImage = windIconSrc
     
     ' refresh the pictorial weather gauge so that it displays the provided weather icon (the pic gauge has no timer refresh)
     fPictorial.pictorialGaugeForm.Refresh
@@ -1270,21 +1282,13 @@ End Function
 ' ----------------------------------------------------------------
 Private Function beaufortConversion(ByVal wind_speed_kt As Integer) As Integer
     
-    Dim windIconSrc As String: windIconSrc = vbNullString
-    
-    Dim windIconToolTip As String: windIconToolTip = vbNullString
     Dim force As Integer: force = 0
 
     On Error GoTo beaufortConversion_Error
-    
-    windIconSrc = vbNullString
-    
-    windIconToolTip = vbNullString
-    
+        
     ' Beaufort Scales (Wind Speed)
     If wind_speed_kt < 1 Then
         force = 0 ' Calm    Sea like a mirror.
-        windIconSrc = vbNullString
     End If
     If wind_speed_kt >= 1 And wind_speed_kt <= 3 Then
         force = 1 ' 1 1-3   Light air   Ripples only.
@@ -1297,77 +1301,46 @@ Private Function beaufortConversion(ByVal wind_speed_kt As Integer) As Integer
     End If
     If wind_speed_kt >= 11 And wind_speed_kt <= 16 Then
         force = 4 ' 11-16  Moderate breeze  Small waves (1 m), some whitecaps
-        windIconSrc = "Resources/images/icons_metar/night/" & "windy01.png"
-        windIconToolTip = "Moderate breeze " & "force " & force
     End If
     If wind_speed_kt >= 17 And wind_speed_kt <= 21 Then
         force = 5 '  17-21 Fresh breeze
-        windIconSrc = "Resources/images/icons_metar/night/" & "windy02.png"
-        windIconToolTip = "Fresh breeze " & "force " & force
     End If
     If wind_speed_kt >= 22 And wind_speed_kt <= 27 Then
         force = 6 ' 22-27 Strong breeze
-        windIconSrc = "Resources/images/icons_metar/night/" & "windy03.png"
-        windIconToolTip = "Strong Wind " & "force " & force
     End If
     If wind_speed_kt >= 28 And wind_speed_kt <= 33 Then
         force = 7 ' 28-33 Near gale
-        windIconSrc = "Resources/images/icons_metar/night/" & "windy04.png"
-        windIconToolTip = "Near gale " & "force " & force
     End If
     If wind_speed_kt >= 34 And wind_speed_kt <= 40 Then
         force = 8 ' 34-40 Gale
-        windIconToolTip = "Gale " & "force " & force
-        windIconSrc = "Resources/images/icons_metar/night/" & "windy05.png"
     End If
-    
     If wind_speed_kt >= 41 And wind_speed_kt <= 47 Then
         force = 9 ' 41-47 Strong gale
-        windIconToolTip = "Strong gale " & "force " & force
-        windIconSrc = "Resources/images/icons_metar/night/" & "windy05.png"
     End If
     If wind_speed_kt >= 48 And wind_speed_kt <= 55 Then
         force = 10 ' 48-55 Storm
-        windIconToolTip = "Storm " & "force " & force
-        windIconSrc = "Resources/images/icons_metar/night/" & "windy05.png"
     End If
     If wind_speed_kt >= 56 And wind_speed_kt <= 63 Then
         force = 11 ' 56-63 Violent storm
-        windIconToolTip = "Violent storm " & "force " & force
-        windIconSrc = "Resources/images/icons_metar/night/" & "windy05.png"
     End If
     If wind_speed_kt >= 64 And wind_speed_kt <= 79 Then
         force = 12 ' 64+ Hurricane
-        windIconToolTip = "Hurricane " & "force " & force
-        windIconSrc = "Resources/images/icons_metar/night/" & "windy05.png"
     End If
     If wind_speed_kt >= 80 And wind_speed_kt <= 88 Then
         force = 13 ' 80+ Typhoon
-        windIconToolTip = "Typhoon " & "force " & force
-        windIconSrc = "Resources/images/icons_metar/night/" & "windy05.png"
     End If
     If wind_speed_kt >= 89 And wind_speed_kt <= 98 Then
         force = 14 ' 80+ Typhoon
-        windIconToolTip = "Typhoon " & "force " & force
-        windIconSrc = "Resources/images/icons_metar/night/" & "windy05.png"
     End If
     If wind_speed_kt >= 99 And wind_speed_kt <= 107 Then
         force = 15 ' 80+ Typhoon
-        windIconToolTip = "Typhoon " & "force " & force
-        windIconSrc = "Resources/images/icons_metar/night/" & "windy05.png"
     End If
     If wind_speed_kt >= 108 And wind_speed_kt <= 117 Then
         force = 16 ' 80+ Severe Typhoon
-        windIconToolTip = "Severe Typhoon " & "force " & force
-        windIconSrc = "Resources/images/icons_metar/night/" & "windy05.png"
     End If
     If wind_speed_kt >= 118 Then
        force = 17 ' 80+ Severe Typhoon
-       windIconToolTip = "Severe Typhoon " & "force " & force
-       windIconSrc = "Resources/images/icons_metar/night/" + "windy05.png"
      End If
-     'windIcon.Visible = True
-     'windIcon.ZOrder = 50
     
      beaufortConversion = force ' return
     
@@ -1380,6 +1353,210 @@ beaufortConversion_Error:
 
 End Function
 
+
+
+' ----------------------------------------------------------------
+' Procedure Name: fWindIconTooltip
+' Purpose:
+' Procedure Kind: Sub
+' Procedure Access: Private
+' Parameter wind_speed_kt (Integer):
+' Author: Dean Beedell (yereverluvinunclebert)
+' Date: 15/03/2024
+' ----------------------------------------------------------------
+Private Function fWindIconTooltip(ByVal force As Integer) As String
+
+    Dim thisWindIconToolTip As String: thisWindIconToolTip = vbNullString
+
+    On Error GoTo fWindIconTooltip_Error
+    
+    fWindIconTooltip = vbNullString
+    
+    ' Beaufort Scales (Wind Speed)
+    If force = 0 Then
+         ' Calm    Sea like a mirror.
+        thisWindIconToolTip = "Calm " & "strength force " & force
+    End If
+    If force = 1 Then
+        ' 1 1-3   Light air   Ripples only.
+        thisWindIconToolTip = "Light air ripples " & "strength force " & force
+    End If
+    If force = 2 Then
+        ' 4-6 Light breeze    Small wavelets (0.2 m). Crests have a glassy appearance.
+        thisWindIconToolTip = "Light breeze " & "strength force " & force
+    End If
+    If force = 3 Then
+         ' 7-10  Gentle breeze     Large wavelets (0.6 m), crests begin to break.
+        thisWindIconToolTip = "Gentle breeze " & "strength force " & force
+    End If
+    If force = 4 Then
+        ' 11-16  Moderate breeze  Small waves (1 m), some whitecaps
+        thisWindIconToolTip = "Moderate breeze " & "strength force " & force
+    End If
+    If force = 5 Then
+        '  17-21 Fresh breeze
+        thisWindIconToolTip = "Fresh breeze " & "strength force " & force
+    End If
+    If force = 6 Then
+        ' 22-27 Strong breeze
+        thisWindIconToolTip = "Strong Wind " & "strength force " & force
+    End If
+    If force = 7 Then
+         ' 28-33 Near gale
+        thisWindIconToolTip = "Near gale " & "strength force " & force
+    End If
+    If force = 8 Then
+         ' 34-40 Gale
+        thisWindIconToolTip = "Gale " & "strength force " & force
+    End If
+    If force = 9 Then
+         ' 41-47 Strong gale
+        thisWindIconToolTip = "Strong gale " & "strength force " & force
+    End If
+    If force = 10 Then
+         ' 48-55 Storm
+        thisWindIconToolTip = "Storm " & "strength force " & force
+    End If
+    If force = 11 Then
+         ' 56-63 Violent storm
+        thisWindIconToolTip = "Violent storm " & "strength force " & force
+    End If
+    If force = 12 Then
+         ' 64+ Hurricane
+        thisWindIconToolTip = "Hurricane " & "strength force " & force
+    End If
+    If force = 13 Then
+        ' 80+ Typhoon
+        thisWindIconToolTip = "Typhoon " & "strength force " & force
+    End If
+    If force = 14 Then
+         ' 80+ Typhoon
+        thisWindIconToolTip = "Typhoon " & "strength force " & force
+    End If
+    If force = 15 Then
+         ' 80+ Typhoon
+        thisWindIconToolTip = "Typhoon " & "strength force " & force
+    End If
+    If force = 16 Then
+        ' 80+ Severe Typhoon
+        thisWindIconToolTip = "Severe Typhoon " & "strength force " & force
+    End If
+    If force = 17 Then
+       ' 80+ Severe Typhoon
+       thisWindIconToolTip = "Severe Typhoon " & "strength force " & force
+     End If
+    
+     fWindIconTooltip = thisWindIconToolTip ' return
+    
+    On Error GoTo 0
+    Exit Function
+
+fWindIconTooltip_Error:
+
+    MsgBox "Error " & Err.Number & " (" & Err.Description & ") in procedure fWindIconTooltip, line " & Erl & "."
+
+End Function
+
+
+' ----------------------------------------------------------------
+' Procedure Name: fWindIconSrc
+' Purpose:
+' Procedure Kind: Sub
+' Procedure Access: Private
+' Author: Dean Beedell (yereverluvinunclebert)
+' Date: 15\03\2024
+' ----------------------------------------------------------------
+Private Function fWindIconSrc(ByVal force As Integer) As String
+
+    Dim thisWindIconSrc As String: thisWindIconSrc = vbNullString
+
+    On Error GoTo fWindIconSrc_Error
+    
+    fWindIconSrc = vbNullString
+    
+    ' Beaufort Scales (Wind Speed)
+    If force = 0 Then
+        ' Calm    Sea like a mirror.
+        thisWindIconSrc = "Resources\images\icons_metar\" & "nowind.png"
+    End If
+    If force = 1 Then
+        ' 1 1-3   Light air   Ripples only.
+        thisWindIconSrc = "Resources\images\icons_metar\" & "nowind.png"
+    End If
+    If force = 2 Then
+        'force = 2 ' 4-6 Light breeze    Small wavelets (0.2 m). Crests have a glassy appearance.
+    End If
+    If force = 3 Then
+        'force = 3 ' 7-10  Gentle breeze     Large wavelets (0.6 m), crests begin to break.
+        thisWindIconSrc = "Resources\images\icons_metar\" & "nowind.png"
+    End If
+    If force = 4 Then
+        'force = 4 ' 11-16  Moderate breeze  Small waves (1 m), some whitecaps
+        thisWindIconSrc = "Resources\images\icons_metar\" & "windy01.png"
+    End If
+    If force = 5 Then
+        'force = 5 '  17-21 Fresh breeze
+        thisWindIconSrc = "Resources\images\icons_metar\" & "windy02.png"
+    End If
+    If force = 6 Then
+         ' 22-27 Strong breeze
+        thisWindIconSrc = "Resources\images\icons_metar\" & "windy03.png"
+    End If
+    If force = 7 Then
+         ' 28-33 Near gale
+        thisWindIconSrc = "Resources\images\icons_metar\" & "windy04.png"
+    End If
+    If force = 8 Then
+        ' 34-40 Gale
+        thisWindIconSrc = "Resources\images\icons_metar\" & "windy05.png"
+    End If
+    If force = 9 Then
+         ' 41-47 Strong gale
+        thisWindIconSrc = "Resources\images\icons_metar\" & "windy05.png"
+    End If
+    If force = 10 Then
+         ' 48-55 Storm
+        thisWindIconSrc = "Resources\images\icons_metar\" & "windy05.png"
+    End If
+    If force = 11 Then
+        ' 56-63 Violent storm
+        thisWindIconSrc = "Resources\images\icons_metar\" & "windy05.png"
+    End If
+    If force = 12 Then
+        ' 64+ Hurricane
+        thisWindIconSrc = "Resources\images\icons_metar\" & "windy05.png"
+    End If
+    If force = 13 Then
+         ' 80+ Typhoon
+        thisWindIconSrc = "Resources\images\icons_metar\" & "windy05.png"
+    End If
+    If force = 14 Then
+        'force = 14 ' 80+ Typhoon
+        thisWindIconSrc = "Resources\images\icons_metar\" & "windy05.png"
+    End If
+    If force = 15 Then
+        'force = 15 ' 80+ Typhoon
+        thisWindIconSrc = "Resources\images\icons_metar\" & "windy05.png"
+    End If
+    If force = 16 Then
+        'force = 16 ' 80+ Severe Typhoon
+        thisWindIconSrc = "Resources\images\icons_metar\" & "windy05.png"
+    End If
+    If force = 17 Then
+       'force = 17 ' 80+ Severe Typhoon
+       thisWindIconSrc = "Resources\images\icons_metar\" + "windy05.png"
+     End If
+
+     fWindIconSrc = thisWindIconSrc ' return
+    
+    On Error GoTo 0
+    Exit Function
+
+fWindIconSrc_Error:
+
+    MsgBox "Error " & Err.Number & " (" & Err.Description & ") in procedure fWindIconSrc, line " & Erl & "."
+
+End Function
 
 ' ----------------------------------------------------------------
 ' Procedure Name: setHoverTooltip
@@ -1395,19 +1572,20 @@ End Function
 ' Author: Dean Beedell (yereverluvinunclebert)
 ' Date: 17/03/2024
 ' ----------------------------------------------------------------
-Private Function setHoverTooltip(ByVal precipitationDepth As String, ByVal visibilityDistance As String, ByVal skyClarityString As String, ByVal HumidityValue As Double, ByVal thisTemperatureValue As Single, ByVal pressureValue As Double, ByVal weekDayDate As String, ByVal wind_dir_degrees As String, ByVal wind_speed_kt As String, ByVal precip_in As String, ByVal wx_string As String) As String
+Private Function setHoverTooltip(ByVal force As Integer, ByVal precipitationDepth As String, ByVal visibilityDistance As String, ByVal skyClarityString As String, ByVal HumidityValue As Double, ByVal thisTemperatureValue As Single, ByVal pressureValue As Double, ByVal weekDayDate As String, ByVal wind_dir_degrees As String, ByVal wind_speed_kt As String, ByVal precip_in As String, ByVal wx_string As String) As String
     
-    Dim force As String: force = vbNullString
+    Dim windSpeedTooltip As String: windSpeedTooltip = vbNullString
     Dim tooltipString As String: tooltipString = vbNullString
     Dim compassDirection As String: compassDirection = vbNullString
     Dim wx_str As String: wx_str = vbNullString
-            
+
     On Error GoTo setHoverTooltip_Error
     
     compassDirection = degToCompass(wind_dir_degrees)
-
-    force = Str$(beaufortConversion(wind_speed_kt))
-
+    
+    ' obtain the wind related tooltips
+    windSpeedTooltip = fWindIconTooltip(force)
+    
     tooltipString = CStr(weekDayDate) & vbCrLf
     tooltipString = tooltipString & gblIcao & " " & icaoLocation1 & ", " & vbCrLf & icaoLocation2 & ", " & icaoLocation3 & " " & vbCrLf
 
@@ -1441,11 +1619,11 @@ Private Function setHoverTooltip(ByVal precipitationDepth As String, ByVal visib
         tooltipString = tooltipString
     Else
         If gblWindSpeedScale = "0" Then  ' knots
-            tooltipString = tooltipString & "Wind speed : " & " " & wind_speed_kt & " knots, "
+            tooltipString = tooltipString & "Wind : " & windSpeedTooltip & ", speed " & wind_speed_kt & " knots "
         Else
-            tooltipString = tooltipString & "Wind speed : " & " " & Int(wind_speed_kt * 0.51444) & " m/sec, "
+            tooltipString = tooltipString & "Wind : " & windSpeedTooltip & ", speed " & Int(wind_speed_kt * 0.51444) & " m/sec "
         End If
-        tooltipString = tooltipString & "strength force" & force & ", " & vbCrLf & "Direction : " & " " & compassDirection & vbCrLf
+        tooltipString = tooltipString & vbCrLf & "Direction : " & compassDirection & vbCrLf
     End If
     
     If (wx_string <> vbNullString) Then
@@ -1796,7 +1974,7 @@ Private Sub determineWeatherConditionIcon(ByRef skyClarity As String, ByVal this
        End If
    End If
 
-   'windIconSrc= "Resources\images\icons_metar\night\windy03"   'default
+   'windIconSrc= "Resources\images\icons_metar\windy03"   'default
    If (InStr(thisWxString, "SQ") <> 0) Then
      '"strong winds "
      windIconSrc = "windy03"
@@ -1841,13 +2019,14 @@ Private Sub determineWeatherConditionIcon(ByRef skyClarity As String, ByVal this
      '"sandstorm\duststorm "endif
       exoticIconSrc = "duststorm"
    End If
-
+   
+    ' turn the image from day to night
     If (weatherIconSrc <> vbNullString) Then
       If (thisIsDay = True) Then
          iconSrc = weatherIconSrc
          weatherIconSrc = iconSrc
-         precedingSrc = iconSrc
-         followingSrc = iconSrc
+         precedingSrc = iconSrc ' the preceding icon not  used yet
+         followingSrc = iconSrc ' the following icon not  used yet
       Else
          iconSrc = "n_" & weatherIconSrc
          weatherIconSrc = iconSrc
@@ -1860,6 +2039,10 @@ Private Sub determineWeatherConditionIcon(ByRef skyClarity As String, ByVal this
     
     ' pass the weather icon to be used to the pictorial overlay where it will be displayed.
     overlayPictorialWidget.thisWeatherImage = weatherIconSrc
+
+'    overlayPictorialWidget.thisWeatherImage = showersIconSrc
+'    overlayPictorialWidget.thisWeatherImage = fogIconSrc
+'    overlayPictorialWidget.thisWeatherImage = exoticIconSrc
     
     On Error GoTo 0
     Exit Sub

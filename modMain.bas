@@ -171,7 +171,7 @@ Public Sub mainRoutine(ByVal restart As Boolean)
     'add non-PSD Resources to the global ImageList
     Call addGeneralImagesToImageLists
     Call addDayWeatherImagesToImageLists
-    Call addNightWeatherImagesToImageLists
+    'Call addNightWeatherImagesToImageLists
     
     ' check the Windows version
     classicThemeCapable = fTestClassicThemeCapable
@@ -636,10 +636,11 @@ Private Sub addDayWeatherImagesToImageLists()
     Dim weatherImagePresent As Boolean: weatherImagePresent = False
     Dim myName  As String: myName = vbNullString
     
-    MyPath = App.path & "\Resources\images\icons_metar\day\"
+    MyPath = App.path & "\Resources\images\icons_metar\"
     weatherImagePresent = False
     
     Cairo.ImageList.AddImage "weathericonimage", MyPath & "globe.png"
+    Cairo.ImageList.AddImage "windiconimage", MyPath & "nowind.png"
 
     If Not fDirExists(MyPath) Then
         MsgBox "WARNING - The Weather Icon folder is not present in the correct location " & App.path
@@ -674,59 +675,6 @@ addDayWeatherImagesToImageLists_Error:
 
 End Sub
 
-        
-'---------------------------------------------------------------------------------------
-' Procedure : addNightWeatherImagesToImageLists
-' Author    : Dean Beedell (yereverluvinunclebert)
-' Date      : 27/04/2023
-' Purpose   : add weather icon Resources to the global ImageList that are not being pulled from the PSD directly
-'---------------------------------------------------------------------------------------
-'
-Private Sub addNightWeatherImagesToImageLists()
-    
-    On Error GoTo addNightWeatherImagesToImageLists_Error
-    
-    Dim MyPath  As String: MyPath = vbNullString
-    Dim thisFullPath  As String: thisFullPath = vbNullString
-    Dim match   As String: match = vbNullString
-    Dim weatherImagePresent As Boolean: weatherImagePresent = False
-    Dim myName  As String: myName = vbNullString
-    
-    MyPath = App.path & "\Resources\images\icons_metar\night\"
-    weatherImagePresent = False
-
-    If Not fDirExists(MyPath) Then
-        MsgBox "WARNING - The Weather Icon folder is not present in the correct location " & App.path
-    End If
-        
-    myName = Dir(MyPath, vbDirectory)   ' Retrieve the first entry.
-    Do While myName <> vbNullString   ' Start the loop.
-       ' Ignore the current directory and the encompassing directory.
-       If myName <> "." And myName <> ".." Then
-          ' Use bitwise comparison to make sure MyName is a directory.
-          If (GetAttr(MyPath & myName) And vbDirectory) = vbDirectory Then
-             'Debug.Print MyName   ' Display entry only if it
-          End If   ' it represents a directory.
-       End If
-       myName = Dir   ' Get next entry.
-       If myName <> "." And myName <> ".." And myName <> vbNullString Then
-            match = LCase$(Right$(myName, 4))
-            If match = ".png" Or match = ".PNG" Then
-                thisFullPath = MyPath & myName
-                ' add just the name without the .png suffix as the key to the imaagelist
-                Cairo.ImageList.AddImage Left$(myName, Len(myName) - 4), thisFullPath
-            End If
-       End If
-    Loop
-
-   On Error GoTo 0
-   Exit Sub
-
-addNightWeatherImagesToImageLists_Error:
-
-    MsgBox "Error " & Err.Number & " (" & Err.Description & ") in procedure addNightWeatherImagesToImageLists of Module modMain - probably a missing file or an incorrect named reference."
-
-End Sub
         
 '---------------------------------------------------------------------------------------
 ' Procedure : adjustSelectorMainControls
@@ -2213,8 +2161,6 @@ Private Sub loadPictorialExcludePathCollection()
         .Add Empty, "redlamp"
         .Add Empty, "greenlampfalse"
         .Add Empty, "bigreflection"     'all reflections
-        .Add Empty, "windowreflection"
-'        .Add Empty, "weathericonimage"
         .Add Empty, "manualpointer"
         
     End With

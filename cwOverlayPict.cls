@@ -36,6 +36,8 @@ Private mLocked As Boolean                      ' property Locked
 Private mHidden As Boolean                      ' property Hidden
 Private mThisOpacity As String                  ' property ThisOpacity
 Private mthisWeatherImage As String             ' property
+Private mthisWindImage As String                ' property
+
 
 
 
@@ -147,6 +149,49 @@ thisOpacityLet_Error:
 End Property
 
 
+'---------------------------------------------------------------------------------------
+' Property : thisWindImage
+' Author    : Dean Beedell (yereverluvinunclebert)
+' Date      : 17/05/2023
+' Purpose   :
+'---------------------------------------------------------------------------------------
+'
+Public Property Get thisWindImage() As String
+   On Error GoTo thisWindImageGet_Error
+
+    thisWindImage = mthisWindImage
+
+   On Error GoTo 0
+   Exit Property
+
+thisWindImageGet_Error:
+
+    MsgBox "Error " & Err.Number & " (" & Err.Description & ") in Property thisWindImage of Class Module cwoverlaypict"
+End Property
+'---------------------------------------------------------------------------------------
+' Property  : thisWindImage
+' Author    :
+' Date      : 09/05/2023
+' Purpose   :
+'---------------------------------------------------------------------------------------
+'
+Public Property Let thisWindImage(ByVal newValue As String)
+    On Error GoTo thisWindImageLet_Error
+
+    If mthisWindImage <> newValue Then mthisWindImage = newValue Else Exit Property
+    
+    Cairo.ImageList.AddSurface "windiconimage", Cairo.ImageList(mthisWindImage)
+
+    On Error GoTo 0
+    Exit Property
+
+thisWindImageLet_Error:
+
+    MsgBox "Error " & Err.Number & " (" & Err.Description & ") in Property thisWindImage of Class Module cwoverlaypict"
+End Property
+
+
+
 
 '---------------------------------------------------------------------------------------
 ' Property : thisWeatherImage
@@ -180,8 +225,6 @@ Public Property Let thisWeatherImage(ByVal newValue As String)
     If mthisWeatherImage <> newValue Then mthisWeatherImage = newValue Else Exit Property
     
     Cairo.ImageList.AddSurface "weathericonimage", Cairo.ImageList(mthisWeatherImage)
-'    Cairo.ImageList.AddSurface "weathericonimage", Cairo.ImageList("1cloud_lightsnow")
-'    Cairo.ImageList.AddSurface "weathericonimage", Cairo.ImageList("globe")
 
     On Error GoTo 0
     Exit Property
@@ -438,7 +481,8 @@ Private Sub W_Paint(CC As RC6.cCairoContext, ByVal xAbs As Single, ByVal yAbs As
      Next
      
      CC.RenderSurfaceContent "weathericonimage", 295, 250, , , , someOpacity
-     
+     CC.RenderSurfaceContent "windiconimage", 295, 250, , , , someOpacity
+          
     W.Refresh
 
    On Error GoTo 0
