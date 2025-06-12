@@ -35,6 +35,7 @@ Attribute W.VB_VarHelpID = -1
 Private mLocked As Boolean                      ' property Locked
 Private mHidden As Boolean                      ' property Hidden
 Private mThisOpacity As String                  ' property ThisOpacity
+Private mthisWeatherImage As String             ' property
 
 
 
@@ -143,6 +144,51 @@ Public Property Let thisOpacity(ByVal newValue As String)
 thisOpacityLet_Error:
 
     MsgBox "Error " & Err.Number & " (" & Err.Description & ") in Property thisOpacity of Class Module cwoverlaypict"
+End Property
+
+
+
+'---------------------------------------------------------------------------------------
+' Property : thisWeatherImage
+' Author    : Dean Beedell (yereverluvinunclebert)
+' Date      : 17/05/2023
+' Purpose   :
+'---------------------------------------------------------------------------------------
+'
+Public Property Get thisWeatherImage() As String
+   On Error GoTo thisWeatherImageGet_Error
+
+    thisWeatherImage = mthisWeatherImage
+
+   On Error GoTo 0
+   Exit Property
+
+thisWeatherImageGet_Error:
+
+    MsgBox "Error " & Err.Number & " (" & Err.Description & ") in Property thisWeatherImage of Class Module cwoverlaypict"
+End Property
+'---------------------------------------------------------------------------------------
+' Property  : thisWeatherImage
+' Author    :
+' Date      : 09/05/2023
+' Purpose   :
+'---------------------------------------------------------------------------------------
+'
+Public Property Let thisWeatherImage(ByVal newValue As String)
+    On Error GoTo thisWeatherImageLet_Error
+
+    If mthisWeatherImage <> newValue Then mthisWeatherImage = newValue Else Exit Property
+    
+    Cairo.ImageList.AddSurface "weathericonimage", Cairo.ImageList(mthisWeatherImage)
+'    Cairo.ImageList.AddSurface "weathericonimage", Cairo.ImageList("1cloud_lightsnow")
+'    Cairo.ImageList.AddSurface "weathericonimage", Cairo.ImageList("globe")
+
+    On Error GoTo 0
+    Exit Property
+
+thisWeatherImageLet_Error:
+
+    MsgBox "Error " & Err.Number & " (" & Err.Description & ") in Property thisWeatherImage of Class Module cwoverlaypict"
 End Property
 
 
@@ -353,90 +399,32 @@ Private Sub W_Paint(CC As RC6.cCairoContext, ByVal xAbs As Single, ByVal yAbs As
                          
             ' for specific keys perform rotation actions, clock hands &c
              Select Case key
+
+                Case "redlamp"
+
+                    'If mThisPictorial >= 34 Then
+                        Set Pat.Matrix = Pat.Matrix.TranslateCoords(-arr(0), -arr(1)) 'shift the Pattern via the original X,Y PSD-Offsets (stored in Arr(0) and Arr(1))
+                        CC.Paint arr(2), Pat 'render the Pattern
+                    'End If
+
+                 Case "greenlampfalse"
+
+                    'If mThisPictorial < 34 Then
+                        Set Pat.Matrix = Pat.Matrix.TranslateCoords(-arr(0), -arr(1))
+                        CC.Paint arr(2), Pat ' render the Pattern
+                    'End If
+
+                 Case "greenlamp"
+
+                    'If mThisPictorial <= 0 Then
+                        Set Pat.Matrix = Pat.Matrix.TranslateCoords(-arr(0), -arr(1)) 'shift the Pattern via the original X,Y PSD-Offsets (stored in Arr(0) and Arr(1))
+                        CC.Paint arr(2), Pat 'render the Pattern
+                    'End If
+                                            
+                 Case "manualpointer"
                  
-'                 Case "centigradeface"
-'
-'                    If mThisFace = 0 Then
-'                        Set Pat.Matrix = Pat.Matrix.TranslateCoords(-arr(0), -arr(1))
-'                        CC.Paint arr(2), Pat ' render the Pattern
-'                    End If
-'
-'                 Case "fahrenheitface"
-'
-'                    If mThisFace = 1 Then
-'                        Set Pat.Matrix = Pat.Matrix.TranslateCoords(-arr(0), -arr(1)) 'shift the Pattern via the original X,Y PSD-Offsets (stored in Arr(0) and Arr(1))
-'                        CC.Paint arr(2), Pat 'render the Pattern
-'                    End If
-'
-'                 Case "kelvinface"
-'
-'                    If mThisFace = 2 Then
-'                        Set Pat.Matrix = Pat.Matrix.TranslateCoords(-arr(0), -arr(1)) 'shift the Pattern via the original X,Y PSD-Offsets (stored in Arr(0) and Arr(1))
-'                        CC.Paint arr(2), Pat 'render the Pattern
-'                    End If
-'
-'                Case "redlamptrue"
-'
-'                    If mThisPictorial >= 34 Then
-'                        Set Pat.Matrix = Pat.Matrix.TranslateCoords(-arr(0), -arr(1)) 'shift the Pattern via the original X,Y PSD-Offsets (stored in Arr(0) and Arr(1))
-'                        CC.Paint arr(2), Pat 'render the Pattern
-'                    End If
-'
-'                 Case "redlampfalse"
-'
-'                    If mThisPictorial < 34 Then
-'                        Set Pat.Matrix = Pat.Matrix.TranslateCoords(-arr(0), -arr(1))
-'                        CC.Paint arr(2), Pat ' render the Pattern
-'                    End If
-'
-'                 Case "bluelamptrue"
-'
-'                    If mThisPictorial <= 0 Then
-'                        Set Pat.Matrix = Pat.Matrix.TranslateCoords(-arr(0), -arr(1)) 'shift the Pattern via the original X,Y PSD-Offsets (stored in Arr(0) and Arr(1))
-'                        CC.Paint arr(2), Pat 'render the Pattern
-'                    End If
-'
-'                 Case "bluelampfalse"
-'
-'                    If mThisPictorial > 0 Then
-'                        Set Pat.Matrix = Pat.Matrix.TranslateCoords(-arr(0), -arr(1))
-'                        CC.Paint arr(2), Pat ' render the Pattern
-'                    End If
-'
-'
-'                 Case "secondshadow", "secondhand"
-'
-'                     If mThisFace = 0 Then
-'                         scaleString = "C"
-'                         txtThisPictorial = CStr(Int(mThisPictorial))
-'
-'                     ElseIf mThisFace = 1 Then
-'
-'                         scaleString = "F"
-'                         txtThisPictorial = CStr(convertToFahrenheit(Int(mThisPictorial)))
-'
-'                     ElseIf mThisFace = "2" Then
-'                         scaleString = "K"
-'                         txtThisPictorial = CStr(convertToKelvin(Int(mThisPictorial)))
-'                     End If
-'
-'                    If Val(txtThisPictorial) >= 100 Then
-'                        boxLeft = 260
-'                    Else
-'                        boxLeft = 265
-'                    End If
-'
-'                     ' draw the date and day in the windows just once to retain opacity
-'                    CC.DrawText boxLeft, 103, 200, 200, txtThisPictorial, , , 2, True, , someOpacity
-'                    CC.DrawText 459, 297, 200, 200, scaleString, , , 2, True, , someOpacity
-'                    'textDrawn = True
-'
-'                    Set Pat.Matrix = Pat.Matrix.TranslateCoords(11, 246) 'shift to the "rotation-point" within the Pattern
-'                    CC.TranslateDrawings W.Width * cxPerc, W.Height * cyPerc 'shift to the center-point of the Overlay-Widget-area
-'
-'                    CC.RotateDrawingsDeg pictorialSDeg
-'                    CC.Paint arr(2), Pat 'render the Pattern with the current PSD-LayerAlpha, present in Arr(2)
-'
+                        Set Pat.Matrix = Pat.Matrix.TranslateCoords(-arr(0), -arr(1)) 'shift the Pattern via the original X,Y PSD-Offsets (stored in Arr(0) and Arr(1))
+                        CC.Paint arr(2), Pat 'render the Pattern
                     
                  Case Else 'plain output for everything else ... this includes the reflection-layers,
                      
@@ -448,6 +436,8 @@ Private Sub W_Paint(CC As RC6.cCairoContext, ByVal xAbs As Single, ByVal yAbs As
              CC.Restore
       End If
      Next
+     
+     CC.RenderSurfaceContent "weathericonimage", 295, 250, , , , someOpacity
      
     W.Refresh
 

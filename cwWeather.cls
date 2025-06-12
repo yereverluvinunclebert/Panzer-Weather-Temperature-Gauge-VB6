@@ -1507,7 +1507,7 @@ End Function
 ' Parameter thisIsDay (Boolean):
 ' Return Type: String, ByVal thisIsDay As Boolean)
 ' Author: Dean Beedell (yereverluvinunclebert)
-' Date: 14/03/2024
+' Date: 14\03\2024
 ' ----------------------------------------------------------------
 Private Sub determineWeatherConditionIcon(ByRef skyClarity As String, ByVal thisWxString As String, ByRef sky_cover() As String, ByVal thisIsDay As Boolean, ByVal uboundSkyConditions As Integer)
     On Error GoTo determineWeatherConditionIcon_Error
@@ -1529,6 +1529,8 @@ Private Sub determineWeatherConditionIcon(ByRef skyClarity As String, ByVal this
    Dim weatherType As String: weatherType = vbNullString
    Dim precedingSrc As String: precedingSrc = vbNullString
    Dim followingSrc As String: followingSrc = vbNullString
+   
+   weatherIconSrc = "globe"
    
    If uboundSkyConditions >= 0 Then
         If (sky_cover(0) = "SKC") Then skycover1 = "SKC"
@@ -1581,7 +1583,7 @@ Private Sub determineWeatherConditionIcon(ByRef skyClarity As String, ByVal this
 
    'in the absence of a weather code assume clear sky
    ' "clear and sunny"
-   weatherIconSrc = "0cloud.png"
+   weatherIconSrc = "0cloud"
 
    'determine the weather type,
    If thisWxString <> vbNullString Then
@@ -1616,7 +1618,7 @@ Private Sub determineWeatherConditionIcon(ByRef skyClarity As String, ByVal this
         End If
     End If
 
-   ' FEW = 1 or 2 eighths cover SCT = 3 or 4 eighths cover BKN = 5, 6 or 7 eighths cover & OVC = 8/8 cover
+   ' FEW = 1 or 2 eighths cover SCT = 3 or 4 eighths cover BKN = 5, 6 or 7 eighths cover & OVC = 8\8 cover
 
    'use the cloud code to determine cloud cover
     'kyClarity = "Uknown Sky Cover"
@@ -1627,19 +1629,19 @@ Private Sub determineWeatherConditionIcon(ByRef skyClarity As String, ByVal this
 
     If (skycover1 = "FEW" Or skycover2 = "FEW" Or skycover3 = "FEW") Then
       'Partly cloudy"
-      weatherIconSrc = "1cloud_norain.png"
+      weatherIconSrc = "1cloud_norain"
     End If
     If (skycover1 = "SCT" Or skycover2 = "SCT" Or skycover3 = "SCT") Then
       'Scattered clouds"
-      weatherIconSrc = "2cloud_norain.png"
+      weatherIconSrc = "2cloud_norain"
     End If
     If (skycover1 = "BKN" Or skycover2 = "BKN" Or skycover3 = "BKN") Then
       'Mostly cloudy"
-      weatherIconSrc = "3cloud_norain.png"
+      weatherIconSrc = "3cloud_norain"
     End If
     If (skycover1 = "OVC" Or skycover2 = "OVC" Or skycover3 = "OVC") Then
       'Overcast"
-      weatherIconSrc = "4cloud_norain.png"
+      weatherIconSrc = "4cloud_norain"
     End If
 
 
@@ -1649,33 +1651,33 @@ Private Sub determineWeatherConditionIcon(ByRef skyClarity As String, ByVal this
        If (wSeverity = "light") Then
           If (skycover1 = "SCT" Or skycover2 = "SCT" Or skycover3 = "SCT") Then
              'Scattered clouds"
-             weatherIconSrc = "1cloud_lightsnow.png" 'default
+             weatherIconSrc = "1cloud_lightsnow" 'default
           End If
           If (skycover1 = "BKN" Or skycover2 = "BKN" Or skycover3 = "BKN") Then
             'Mostly cloudy"
-            weatherIconSrc = "2cloud_lightsnow.png"
+            weatherIconSrc = "2cloud_lightsnow"
           End If
           If (skycover1 = "OVC" Or skycover2 = "OVC" Or skycover3 = "OVC") Then
             'Mostly cloudy"
-            weatherIconSrc = "4cloud_lightsnow.png"
+            weatherIconSrc = "4cloud_lightsnow"
           End If
        End If
        If (wSeverity = "medium") Then
           If (skycover1 = "SCT" Or skycover2 = "SCT" Or skycover3 = "SCT") Then
             'Scattered clouds"
-            weatherIconSrc = "2cloud_snow.png"
+            weatherIconSrc = "2cloud_snow"
           End If
           If (skycover1 = "BKN" Or skycover2 = "BKN" Or skycover3 = "BKN") Then
             'Mostly cloudy"
-            weatherIconSrc = "2cloud_snow.png"
+            weatherIconSrc = "2cloud_snow"
           End If
           If (skycover1 = "OVC" Or skycover2 = "OVC" Or skycover3 = "OVC") Then
             'Overcast"
-            weatherIconSrc = "3cloud_snow.png"
+            weatherIconSrc = "3cloud_snow"
           End If
        End If
        If (wSeverity = "heavy") Then
-            weatherIconSrc = "4cloud_heavysnow.png"
+            weatherIconSrc = "4cloud_heavysnow"
        End If
    End If
 
@@ -1696,29 +1698,29 @@ Private Sub determineWeatherConditionIcon(ByRef skyClarity As String, ByVal this
    If (InStr(thisWxString, "GS") <> 0) Then
      '"small hail "
      weatherType = "hail"
-   End If ' and/or snow pellets
+   End If ' and\or snow pellets
 
    'type of weather - hail
    If (weatherType = "hail") Then
        If (wSeverity = "light") Then
-          weatherIconSrc = "2cloud_hail.png" 'default
+          weatherIconSrc = "2cloud_hail" 'default
           If (skycover1 = "OVC" Or skycover2 = "OVC" Or skycover3 = "OVC") Then
             'Mostly cloudy"
-            weatherIconSrc = "4cloud_lighthail.png"
+            weatherIconSrc = "4cloud_lighthail"
           End If
        End If
        If (wSeverity = "medium") Then
           If ((skycover1 = "SCT" Or skycover2 = "SCT" Or skycover3 = "SCT") Or (skycover1 = "BKN" Or skycover2 = "BKN" Or skycover3 = "BKN")) Then
             'Scattered clouds"
-            weatherIconSrc = "2cloud_hail.png"
+            weatherIconSrc = "2cloud_hail"
           End If
           If (skycover1 = "OVC" Or skycover2 = "OVC" Or skycover3 = "OVC") Then
             'Mostly cloudy"
-            weatherIconSrc = "3cloud_hail.png"
+            weatherIconSrc = "3cloud_hail"
           End If
        End If
        If (wSeverity = "heavy") Then
-            weatherIconSrc = "4cloud_heavyhail.png"
+            weatherIconSrc = "4cloud_heavyhail"
        End If
    End If
 
@@ -1726,7 +1728,7 @@ Private Sub determineWeatherConditionIcon(ByRef skyClarity As String, ByVal this
     ' it is strange but it quite often occurs...
     If (InStr(thisWxString, "SH") <> 0 And InStr(thisWxString, "SN") = 0 And InStr(thisWxString, "SG") = 0 And weatherType <> "hail") Then
          'if no RAin code nor hail or snow but showers indicated then just assume rain...
-         showersIconSrc = "Resources/images/icons_metar/day/" & "showers.png"
+         showersIconSrc = "showers"
      Else
         showersIconSrc = vbNullString
     End If
@@ -1738,61 +1740,61 @@ Private Sub determineWeatherConditionIcon(ByRef skyClarity As String, ByVal this
        If (wSeverity = "light") Then
           If (skycover1 = "FEW" Or skycover2 = "FEW" Or skycover3 = "FEW") Then
             'Partly cloudy"
-            weatherIconSrc = "1cloud_lightrain.png"
+            weatherIconSrc = "1cloud_lightrain"
           End If
           If (skycover1 = "SCT" Or skycover2 = "SCT" Or skycover3 = "SCT") Then
             'Scattered clouds"
-            weatherIconSrc = "2cloud_lightrain.png"
+            weatherIconSrc = "2cloud_lightrain"
           End If
           If (skycover1 = "BKN" Or skycover2 = "BKN" Or skycover3 = "BKN") Then
             'Mostly cloudy"
-            weatherIconSrc = "3cloud_lightrain.png"
+            weatherIconSrc = "3cloud_lightrain"
           End If
           If (skycover1 = "OVC" Or skycover2 = "OVC" Or skycover3 = "OVC") Then
             'Overcast"
-            weatherIconSrc = "4cloud_lightrain.png"
+            weatherIconSrc = "4cloud_lightrain"
           End If
        End If
        If (wSeverity = "medium") Then
           If (skycover1 = "FEW" Or skycover2 = "FEW" Or skycover3 = "FEW") Then
             'Partly cloudy"
-            weatherIconSrc = "1cloud_modrain.png"
+            weatherIconSrc = "1cloud_modrain"
           End If
           If (skycover1 = "SCT" Or skycover2 = "SCT" Or skycover3 = "SCT") Then
             'Scattered clouds"
-            weatherIconSrc = "2cloud_modrain.png"
+            weatherIconSrc = "2cloud_modrain"
           End If
           If (skycover1 = "BKN" Or skycover2 = "BKN" Or skycover3 = "BKN") Then
             'Mostly cloudy"
-            weatherIconSrc = "3cloud_modrain.png"
+            weatherIconSrc = "3cloud_modrain"
           End If
           If (skycover1 = "OVC" Or skycover2 = "OVC" Or skycover3 = "OVC") Then
             'Overcast"
-            weatherIconSrc = "4cloud_modrain.png"
+            weatherIconSrc = "4cloud_modrain"
           End If
        End If
        If (wSeverity = "heavy") Then
           If (skycover1 = "FEW" Or skycover2 = "FEW" Or skycover3 = "FEW") Then
             'Partly cloudy"
-            weatherIconSrc = "1cloud_heavyrain.png"
+            weatherIconSrc = "1cloud_heavyrain"
           End If
           If (skycover1 = "SCT" Or skycover2 = "SCT" Or skycover3 = "SCT") Then
             'Scattered clouds"
-            weatherIconSrc = "2cloud_heavyrain.png"
+            weatherIconSrc = "2cloud_heavyrain"
           End If
           If (skycover1 = "BKN" Or skycover2 = "BKN" Or skycover3 = "BKN") Then
             'Mostly cloudy"
-            weatherIconSrc = "3cloud_heavyrain.png"
+            weatherIconSrc = "3cloud_heavyrain"
           End If
           If (skycover1 = "OVC" Or skycover2 = "OVC" Or skycover3 = "OVC") Then
             'Overcast"
-            weatherIconSrc = "4cloud_heavyrain.png"
+            weatherIconSrc = "4cloud_heavyrain"
           End If
        End If
 
        If (InStr(thisWxString, "TS") <> 0) Then
             wModifier = wModifier & "thunderstorm "
-            weatherIconSrc = "4cloud_heavyrain.png"
+            weatherIconSrc = "4cloud_heavyrain"
        End If
    End If
 
@@ -1801,79 +1803,82 @@ Private Sub determineWeatherConditionIcon(ByRef skyClarity As String, ByVal this
    If (InStr(thisWxString, "BR") <> 0 Or InStr(thisWxString, "FG") <> 0) Then
      '"fog " or "mist"
      If (wSeverity = "light") Then
-          fogIconSrc = "Resources/images/icons_metar/day/" & "1_fog.png" 'night or day makes no difference
+          fogIconSrc = "1_fog" 'night or day makes no difference
        End If
        If (wSeverity = "medium") Then
-          fogIconSrc = "Resources/images/icons_metar/day/" & "2_fog.png"
+          fogIconSrc = "2_fog"
        End If
        If (wSeverity = "heavy") Then
-          fogIconSrc = "Resources/images/icons_metar/day/" & "3_fog.png"
+          fogIconSrc = "3_fog"
        End If
    End If
 
-   'windIconSrc= "Resources/images/icons_metar/night/windy03.png"   'default
+   'windIconSrc= "Resources\images\icons_metar\night\windy03"   'default
    If (InStr(thisWxString, "SQ") <> 0) Then
      '"strong winds "
-     windIconSrc = "Resources/images/icons_metar/day/" & "windy03.png"
+     windIconSrc = "windy03"
    End If
 
    
    exoticIconSrc = vbNullString   'default
    'exotic types - we have no icons for any of these
    If (InStr(thisWxString, "FU") <> 0) Then
-      exoticIconSrc = "Resources/images/icons_metar/day/" & "smoke.png"
+      exoticIconSrc = "smoke"
       '"smoke "
    End If
    If (InStr(thisWxString, "VA") <> 0) Then
      '"volcanic ash "
-      exoticIconSrc = "Resources/images/icons_metar/day/" & "volcano.png"
+      exoticIconSrc = "volcano"
    End If
    If (InStr(thisWxString, "DU") <> 0) Then
      '"widespread dust "endif
-      exoticIconSrc = "Resources/images/icons_metar/day/" & "dust.png"
+      exoticIconSrc = "dust"
    End If
    If (InStr(thisWxString, "SA") <> 0) Then
      '"sand "endif
-      exoticIconSrc = "Resources/images/icons_metar/day/" & "sand.png"
+      exoticIconSrc = "sand"
    End If
    If (InStr(thisWxString, "HZ") <> 0) Then
      '"haze "endif
-      exoticIconSrc = "Resources/images/icons_metar/day/" & "haze.png"
+      exoticIconSrc = "haze"
    End If
    If (InStr(thisWxString, "PY") <> 0) Then
      '"spray "endif
-      exoticIconSrc = "Resources/images/icons_metar/day/" & "spray.png"
+      exoticIconSrc = "spray"
    End If
    If (InStr(thisWxString, "PO") <> 0) Then
      '"dustdevils "endif
-      exoticIconSrc = "Resources/images/icons_metar/day/" & "dustdevil.png"
+      exoticIconSrc = "dustdevil"
    End If
    If (InStr(thisWxString, "FC") <> 0) Then
      '"tornado "endif
-      exoticIconSrc = "Resources/images/icons_metar/day/" & "tornado.png"
+      exoticIconSrc = "tornado"
    End If
    If (InStr(thisWxString, "SS") <> 0) Then
-     '"sandstorm/duststorm "endif
-      exoticIconSrc = "Resources/images/icons_metar/day/" & "duststorm.png"
+     '"sandstorm\duststorm "endif
+      exoticIconSrc = "duststorm"
    End If
 
     If (weatherIconSrc <> vbNullString) Then
       If (thisIsDay = True) Then
-         iconSrc = "Resources/images/icons_metar/day/" & weatherIconSrc
+         iconSrc = weatherIconSrc
          weatherIconSrc = iconSrc
          precedingSrc = iconSrc
          followingSrc = iconSrc
       Else
-         iconSrc = "Resources/images/icons_metar/night/n_" & weatherIconSrc
+         iconSrc = "n_" & weatherIconSrc
          weatherIconSrc = iconSrc
          precedingSrc = iconSrc
          followingSrc = iconSrc
       End If
-     Else
-      weatherIconSrc = "Resources/images/globe.png"
+
     End If
     If (debugFlg = 1) Then Debug.Print ("%determineWeatherCondition - iconSrc " & iconSrc)
-
+    
+    ' pass the weather icon to be used to the pictorial overlay where it will be displayed.
+    overlayPictorialWidget.thisWeatherImage = weatherIconSrc
+    fPictorial.pictorialGaugeForm.Refresh
+    
     On Error GoTo 0
     Exit Sub
 
