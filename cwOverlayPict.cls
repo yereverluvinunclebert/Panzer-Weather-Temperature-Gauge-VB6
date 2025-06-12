@@ -37,6 +37,7 @@ Private mHidden As Boolean                      ' property Hidden
 Private mThisOpacity As String                  ' property ThisOpacity
 Private mthisWeatherImage As String             ' property
 Private mthisWindImage As String                ' property
+Private mvalidData As Boolean
 
 
 
@@ -110,6 +111,48 @@ End Property
 
 
 '---------------------------------------------------------------------------------------
+' Property : validData
+' Author    : Dean Beedell (yereverluvinunclebert)
+' Date      : 17/05/2023
+' Purpose   :
+'---------------------------------------------------------------------------------------
+'
+Public Property Get validData() As Boolean
+   On Error GoTo validDataGet_Error
+
+    validData = mvalidData
+
+   On Error GoTo 0
+   Exit Property
+
+validDataGet_Error:
+
+    MsgBox "Error " & Err.Number & " (" & Err.Description & ") in Property validData of Class Module cwoverlaypict"
+End Property
+'---------------------------------------------------------------------------------------
+' Property  : validData
+' Author    :
+' Date      : 09/05/2023
+' Purpose   :
+'---------------------------------------------------------------------------------------
+'
+Public Property Let validData(ByVal newValue As Boolean)
+    On Error GoTo validDataLet_Error
+
+    If mvalidData <> newValue Then mvalidData = newValue Else Exit Property
+    
+    fPictorial.pictorialGaugeForm.Refresh
+        
+    On Error GoTo 0
+    Exit Property
+
+validDataLet_Error:
+
+    MsgBox "Error " & Err.Number & " (" & Err.Description & ") in Property validData of Class Module cwoverlaypict"
+End Property
+
+
+'---------------------------------------------------------------------------------------
 ' Property : thisOpacity
 ' Author    : Dean Beedell (yereverluvinunclebert)
 ' Date      : 17/05/2023
@@ -147,6 +190,10 @@ thisOpacityLet_Error:
 
     MsgBox "Error " & Err.Number & " (" & Err.Description & ") in Property thisOpacity of Class Module cwoverlaypict"
 End Property
+
+
+
+
 
 
 '---------------------------------------------------------------------------------------
@@ -445,24 +492,26 @@ Private Sub W_Paint(CC As RC6.cCairoContext, ByVal xAbs As Single, ByVal yAbs As
 
                 Case "redlamp"
 
-                    'If mThisPictorial >= 34 Then
-                        Set Pat.Matrix = Pat.Matrix.TranslateCoords(-arr(0), -arr(1)) 'shift the Pattern via the original X,Y PSD-Offsets (stored in Arr(0) and Arr(1))
-                        CC.Paint arr(2), Pat 'render the Pattern
-                    'End If
-
-                 Case "greenlampfalse"
-
-                    'If mThisPictorial < 34 Then
+                     ' change the lamp to bright green or red if no valid data
+                    If mvalidData = False Then
                         Set Pat.Matrix = Pat.Matrix.TranslateCoords(-arr(0), -arr(1))
                         CC.Paint arr(2), Pat ' render the Pattern
-                    'End If
+                    End If
+
+                 Case "greenlampfalse"
+                 
+'                     ' change the lamp to bright or unlit green
+'                    If mvalidData = False Then
+'                        Set Pat.Matrix = Pat.Matrix.TranslateCoords(-arr(0), -arr(1))
+'                        CC.Paint arr(2), Pat ' render the Pattern
+'                    End If
 
                  Case "greenlamp"
-
-                    'If mThisPictorial <= 0 Then
+                 
+                    If mvalidData = True Then
                         Set Pat.Matrix = Pat.Matrix.TranslateCoords(-arr(0), -arr(1)) 'shift the Pattern via the original X,Y PSD-Offsets (stored in Arr(0) and Arr(1))
                         CC.Paint arr(2), Pat 'render the Pattern
-                    'End If
+                    End If
                                             
                  Case "manualpointer"
                  

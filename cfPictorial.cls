@@ -30,6 +30,7 @@ Private PSDWidth As Long
 Private PSDHeight As Long
 'Private mGlowing As Boolean
 
+
 '---------------------------------------------------------------------------------------
 ' Procedure : Class_Initialize
 ' Author    : olaf schmidt
@@ -687,7 +688,6 @@ W_MouseDown_Error:
 
     MsgBox "Error " & Err.Number & " (" & Err.Description & ") in procedure W_MouseDown of Class Module cwOverlayPict"
 End Sub
-
 
 
 

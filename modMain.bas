@@ -2156,10 +2156,10 @@ Private Sub loadPictorialExcludePathCollection()
     On Error GoTo loadPictorialExcludePathCollection_Error
 
     With fPictorial.collPictorialPSDNonUIElements ' the exclude list
-        
         .Add Empty, "greenlamp"
         .Add Empty, "redlamp"
         .Add Empty, "greenlampfalse"
+
         .Add Empty, "bigreflection"     'all reflections
         .Add Empty, "manualpointer"
         

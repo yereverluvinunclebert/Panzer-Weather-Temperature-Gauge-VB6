@@ -554,7 +554,10 @@ Private Sub processMetarData()
             End If
         End If
         mWeHaveData = False
-        
+            
+        ' set the valid data lamp to display dull unlit version
+        overlayPictorialWidget.validData = True
+
         ' restart the sampling timer
         SamplerEnabled = True
 
@@ -771,6 +774,9 @@ Private Sub processMetarData()
     ' refresh the pictorial weather gauge so that it displays the provided weather icon (the pic gauge has no timer refresh)
     fPictorial.pictorialGaugeForm.Refresh
     
+    ' set the valid data lamp to green
+    overlayPictorialWidget.validData = True
+        
     On Error GoTo 0
     Exit Sub
 
