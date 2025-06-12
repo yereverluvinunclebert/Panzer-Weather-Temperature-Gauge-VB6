@@ -512,24 +512,14 @@ Private Sub processMetarData()
     Dim usableObsTime As Date: usableObsTime = #1/1/2000 12:00:00 PM#
     Dim weekDayDate As String: weekDayDate = vbNullString
     Dim thisTooltip As String: thisTooltip = vbNullString
-    
-'    Dim HumidityBackgroundToolTip As String: HumidityBackgroundToolTip = vbNullString
-'    Dim thermometerBackgroundToolTip As String: HumidityBackgroundToolTip = vbNullString
-'    Dim anemometerBackgroundToolTip As String: HumidityBackgroundToolTip = vbNullString
-'    Dim weatherIconGaugeBackgroundToolTip As String: HumidityBackgroundToolTip = vbNullString
-'    Dim barometerBackgroundToolTip As String: HumidityBackgroundToolTip = vbNullString
-    
     Dim weatherIconToolTip As String: weatherIconToolTip = vbNullString
     
     On Error GoTo processMetarData_Error
     
     debugFlg = 0
     
-    ' pause both timers whilst the data is processed
-    SamplerEnabled = False
-    'tmrAsyncResponse.Enabled = False
-    
-    'MsgBox "Obtained METAR data" & ", interval " & tmrAsyncResponse.Interval & " secs"
+    ' pause the sampling timer whilst the data is processed
+    SamplerEnabled = False ' property
     
     pressureValue = 0
     
@@ -747,16 +737,6 @@ Private Sub processMetarData()
     
     thisTooltip = thisTooltip & vbCrLf & vbCrLf & difString
 
-    ' save the tooltip value so it can be used during the regular timed 60 second tooltip updates.
-    'gblLastTooltip = thisTooltip
-    
-    ' set the tooltips to the various gauges
-'    HumidityBackgroundToolTip = thisTooltip
-'    thermometerBackgroundToolTip = HumidityBackgroundToolTip
-'    anemometerBackgroundToolTip = HumidityBackgroundToolTip
-'    weatherIconGaugeBackgroundToolTip = HumidityBackgroundToolTip
-'    barometerBackgroundToolTip = HumidityBackgroundToolTip
-
     weatherIconToolTip = setIconTooltip(wx_string, sky_condition_items(), uboundSkyConditions)
     If (weatherIconToolTip = vbNullString) Then
         weatherIconToolTip = thisTooltip
@@ -764,22 +744,20 @@ Private Sub processMetarData()
     
     ' for setting the balloon tooltip using the WeatherDetails property
     mWeatherDetails = thisTooltip
-        
-'        fclibForm.
-'    sLblMETARText
-    'overlayTemperatureWidget.WeatherDetails
 
     mTemperatureValue = temp_c
     mWeHaveData = True
     firstPoll = False
     
-    ' set the animation variables and call the routine to move the gauge pointer
-    'Call obtainTemperature
+    ' set the animation variables and call the routine to move the temperature gauge pointer
     overlayTemperatureWidget.thisTemperature = TemperatureValue
     wehavedata = True
     
     ' restart the sampling timer now the data has been processed
     SamplerEnabled = True
+    
+    ' refresh the pictorial weather gauge so that it displays the provided weather icon (the pic gauge has no timer refresh)
+    fPictorial.pictorialGaugeForm.Refresh
     
     On Error GoTo 0
     Exit Sub
@@ -843,8 +821,10 @@ Private Sub tmrSleepTester_TimerCode()
         
 '        answerMsg = "2. Weather widget has awoken from sleep after " & lngSecondsGap & " seconds. gblJustAwoken = " & gblJustAwoken
 '        answer = msgBoxA(answerMsg, vbExclamation + vbYesNo, "Awoken from sleep", False)
-        
-        'WeatherMeteo.GetMetar = True
+
+        ' Set the current pressure storage dates to now to prevent barometric drop alarms after a long sleep and a short storm warning interval
+        gblPressureStorageDate = CStr(Now())
+
         Call WeatherMeteo.getData
         
         fAnemometer.anemometerGaugeForm.Widgets("housing/startbutton").Widget.Alpha = 0 ' visual indicator that a sleep has been handled
@@ -854,6 +834,7 @@ Private Sub tmrSleepTester_TimerCode()
         fHumidity.humidityGaugeForm.Refresh
         fBarometer.barometerGaugeForm.Refresh
         fClipB.clipBForm.Refresh
+        fPictorial.pictorialGaugeForm.Refresh
         
         ' trigger another poll 2.5 seconds after the system has awoken to give it time to wake up and re-poll!
         tmrSampler.Interval = 2500 ' this abnormal interval will be reset to the sampling interval by the timer itself
@@ -1001,6 +982,8 @@ Private Function getCloudCover(ByRef sky_condition_items() As String, ByVal ubou
     Dim thisSkyClarity As String: thisSkyClarity = vbNullString
    
     On Error GoTo getCloudCover_Error
+    
+    thisSkyClarity = "Ceiling and visibility OK"
 
    If uboundSkyConditions >= 0 Then
         If (sky_condition_items(0) = "SKC") Then thisSkyClarity = "Clear skies"
@@ -1458,11 +1441,11 @@ Private Function setHoverTooltip(ByVal precipitationDepth As String, ByVal visib
         tooltipString = tooltipString
     Else
         If gblWindSpeedScale = "0" Then  ' knots
-            tooltipString = tooltipString & "Wind speed is" & " " & wind_speed_kt & " knots, "
+            tooltipString = tooltipString & "Wind speed : " & " " & wind_speed_kt & " knots, "
         Else
-            tooltipString = tooltipString & "Wind speed is" & " " & Int(wind_speed_kt * 0.51444) & " m/sec, "
+            tooltipString = tooltipString & "Wind speed : " & " " & Int(wind_speed_kt * 0.51444) & " m/sec, "
         End If
-        tooltipString = tooltipString & "strength force" & force & ", " & vbCrLf & "direction" & " " & compassDirection & vbCrLf
+        tooltipString = tooltipString & "strength force" & force & ", " & vbCrLf & "Direction : " & " " & compassDirection & vbCrLf
     End If
     
     If (wx_string <> vbNullString) Then
@@ -1877,7 +1860,6 @@ Private Sub determineWeatherConditionIcon(ByRef skyClarity As String, ByVal this
     
     ' pass the weather icon to be used to the pictorial overlay where it will be displayed.
     overlayPictorialWidget.thisWeatherImage = weatherIconSrc
-    fPictorial.pictorialGaugeForm.Refresh
     
     On Error GoTo 0
     Exit Sub

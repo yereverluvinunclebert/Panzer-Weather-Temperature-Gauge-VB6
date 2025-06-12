@@ -602,7 +602,10 @@ Private Sub temperatureGaugeForm_MouseMove(ByRef Button As Integer, ByRef Shift 
     
     If overlayTemperatureWidget.Locked = True Then Exit Sub
     If gblIgnoreMouse = "1" Then Exit Sub
-
+    If gblMenuOccurred = True Then
+        gblMenuOccurred = False
+        Exit Sub
+    End If
     If Button = vbLeftButton And Not temperatureGaugeForm.ActiveWidget Is Nothing Then 'Form-Dragging (under certain conditions)
 
       FX = (X - x0) * temperatureGaugeForm.WidgetRoot.Zoom + temperatureGaugeForm.Left
@@ -721,6 +724,7 @@ Private Sub temperatureGaugeForm_MouseDown(ByRef Button As Integer, ByRef Shift 
 
     gblOriginatingForm = "temperatureForm"
     If Button = vbRightButton Then
+        gblMenuOccurred = True
         menuForm.mnuLockTemperatureGauge.Visible = True
         menuForm.mnuLockHumidityGauge.Visible = False
         menuForm.mnuLockAnemometerGauge.Visible = False

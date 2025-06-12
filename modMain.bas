@@ -474,6 +474,7 @@ Private Sub initialiseGlobalVars()
     gblWidgetHidden = vbNullString
     gblHidingTime = vbNullString
     gblIgnoreMouse = vbNullString
+    gblMenuOccurred = False ' bool
     gblFirstTimeRun = vbNullString
     
     ' general storage variables declared

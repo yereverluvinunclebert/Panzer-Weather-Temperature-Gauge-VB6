@@ -656,6 +656,7 @@ Private Sub SelectorForm_MouseDown(ByRef Button As Integer, ByRef Shift As Integ
    On Error GoTo W_MouseDown_Error
 
     If Button = vbRightButton Then
+        gblMenuOccurred = True
         gblOriginatingForm = "selectorForm"
         menuForm.mnuCloseSelector.Visible = True
         menuForm.mnuCloseWidget.Visible = False
@@ -697,7 +698,10 @@ Private Sub SelectorForm_MouseMove(ByRef Button As Integer, ByRef Shift As Integ
     
     If overlaySelectorWidget.Locked = True Then Exit Sub
     If gblIgnoreMouse = "1" Then Exit Sub
-
+    If gblMenuOccurred = True Then
+        gblMenuOccurred = False
+        Exit Sub
+    End If
     If Button = vbLeftButton And Not SelectorForm.ActiveWidget Is Nothing Then 'Form-Dragging (under certain conditions)
 
       SelectorFX = (X - x0) * SelectorForm.WidgetRoot.Zoom + SelectorForm.Left

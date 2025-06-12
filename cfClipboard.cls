@@ -198,6 +198,7 @@ Private Sub ClipBForm_MouseDown(ByRef Button As Integer, ByRef Shift As Integer,
    On Error GoTo W_MouseDown_Error
 
     If Button = vbRightButton Then
+        gblMenuOccurred = True
         gblOriginatingForm = "clipboardForm"
         
         menuForm.mnuCloseSelector.Visible = False
@@ -238,7 +239,10 @@ Private Sub ClipBForm_MouseMove(ByRef Button As Integer, ByRef Shift As Integer,
     
     'If overlayTemperatureWidget.Locked = True Then Exit Sub
     If gblIgnoreMouse = "1" Then Exit Sub
-
+    If gblMenuOccurred = True Then
+        gblMenuOccurred = False
+        Exit Sub
+    End If
     If Button = vbLeftButton And Not clipBForm.ActiveWidget Is Nothing Then 'Form-Dragging (under certain conditions)
 
       ClipBFX = (X - x0) * clipBForm.WidgetRoot.Zoom + clipBForm.Left

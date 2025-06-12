@@ -540,7 +540,10 @@ Private Sub pictorialGaugeForm_MouseMove(ByRef Button As Integer, ByRef Shift As
     
     If overlayPictorialWidget.Locked = True Then Exit Sub
     If gblIgnoreMouse = "1" Then Exit Sub
-
+    If gblMenuOccurred = True Then
+        gblMenuOccurred = False
+        Exit Sub
+    End If
     If Button = vbLeftButton And Not pictorialGaugeForm.ActiveWidget Is Nothing Then 'Form-Dragging (under certain conditions)
 
       FX = (X - x0) * pictorialGaugeForm.WidgetRoot.Zoom + pictorialGaugeForm.Left
@@ -658,7 +661,9 @@ Private Sub pictorialGaugeForm_MouseDown(ByRef Button As Integer, ByRef Shift As
    On Error GoTo W_MouseDown_Error
 
     gblOriginatingForm = "pictorialForm"
+    
     If Button = vbRightButton Then
+        gblMenuOccurred = True
         menuForm.mnuLockPictorialGauge.Visible = True
         menuForm.mnuLockHumidityGauge.Visible = False
         menuForm.mnuLockAnemometerGauge.Visible = False

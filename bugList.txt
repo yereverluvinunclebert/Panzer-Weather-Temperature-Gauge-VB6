@@ -83,11 +83,36 @@ editor globals definition and usage throughout for TwinBasic
 addTargetFile source path empty then uses current app.path
 All TwinBasic changes implemented as per clock/calendar
 
+test the repoll functionality
+move the weather code to a separate module.bas or a class - remove the temperature stuff to another class?
+create pictorial gauge
+pass the weather icon image information to the pictorial gauge for display
+clouds: none     visibility not impaired
+
 TODO
 
-test the sleep and repoll functionality - wip
+pictorial gauge extra showers/wind icons
 
-move the weather code to a separate module.bas or a class - remove the temperature stuff to another class?
+pictorial gauge green lamp showing what?
+
+pictorial gauge right click menu display, then the gauge moves, should be a fix for that we can apply to the other gauges.
+
+pictorial gauge stop/restart remove functionality
+
+pictorial gauge tooltips, buttons
+
+pictorial gauge middle button
+
+lock pictorial gauge menu text
+
+all gauges top right button should trigger one page help display
+
+pictorial gauge time to next update rotator
+
+pressure drop alarm
+
+test the sleep functionality - wip
+
 refactor to use just one cwOverlay file
 
 think about removing some global vars and changing them to properties in the new overlay, should be possible to incorporate with the above

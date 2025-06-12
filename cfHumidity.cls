@@ -550,6 +550,10 @@ Private Sub humidityGaugeForm_MouseMove(ByRef Button As Integer, ByRef Shift As 
     
     If overlayHumidWidget.Locked = True Then Exit Sub
     If gblIgnoreMouse = "1" Then Exit Sub
+    If gblMenuOccurred = True Then
+        gblMenuOccurred = False
+        Exit Sub
+    End If
 
     If Button = vbLeftButton And Not humidityGaugeForm.ActiveWidget Is Nothing Then 'Form-Dragging (under certain conditions)
 
@@ -642,6 +646,7 @@ Private Sub humidityGaugeForm_MouseDown(ByRef Button As Integer, ByRef Shift As 
 
     gblOriginatingForm = "humidityForm"
     If Button = vbRightButton Then
+        gblMenuOccurred = True
 
         menuForm.mnuLockTemperatureGauge.Visible = False
         menuForm.mnuLockHumidityGauge.Visible = True

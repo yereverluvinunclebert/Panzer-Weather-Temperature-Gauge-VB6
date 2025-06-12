@@ -560,7 +560,11 @@ Private Sub anemometerGaugeForm_MouseMove(ByRef Button As Integer, ByRef Shift A
     
     If overlayAnemoWidget.Locked = True Then Exit Sub
     If gblIgnoreMouse = "1" Then Exit Sub
-
+    If gblMenuOccurred = True Then
+        gblMenuOccurred = False
+        Exit Sub
+    End If
+    
     If Button = vbLeftButton And Not anemometerGaugeForm.ActiveWidget Is Nothing Then 'Form-Dragging (under certain conditions)
 
       FX = (X - x0) * anemometerGaugeForm.WidgetRoot.Zoom + anemometerGaugeForm.Left
@@ -652,7 +656,7 @@ Private Sub anemometerGaugeForm_MouseDown(ByRef Button As Integer, ByRef Shift A
 
     gblOriginatingForm = "anemometerForm"
     If Button = vbRightButton Then
-
+        gblMenuOccurred = True
         menuForm.mnuLockTemperatureGauge.Visible = False
         menuForm.mnuLockHumidityGauge.Visible = False
         menuForm.mnuLockAnemometerGauge.Visible = True

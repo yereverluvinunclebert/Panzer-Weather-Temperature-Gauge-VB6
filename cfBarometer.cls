@@ -560,7 +560,11 @@ Private Sub barometerGaugeForm_MouseMove(ByRef Button As Integer, ByRef Shift As
     
     If overlayBaromWidget.Locked = True Then Exit Sub
     If gblIgnoreMouse = "1" Then Exit Sub
-
+    If gblMenuOccurred = True Then
+        gblMenuOccurred = False
+        Exit Sub
+    End If
+    
     If Button = vbLeftButton And Not barometerGaugeForm.ActiveWidget Is Nothing Then 'Form-Dragging (under certain conditions)
 
       FX = (X - x0) * barometerGaugeForm.WidgetRoot.Zoom + barometerGaugeForm.Left
@@ -652,6 +656,7 @@ Private Sub barometerGaugeForm_MouseDown(ByRef Button As Integer, ByRef Shift As
 
     gblOriginatingForm = "barometerForm"
     If Button = vbRightButton Then
+        gblMenuOccurred = True
 
         menuForm.mnuLockTemperatureGauge.Visible = False
         menuForm.mnuLockHumidityGauge.Visible = False
