@@ -88,24 +88,22 @@ move the weather code to a separate module.bas or a class - remove the temperatu
 create pictorial gauge
 pass the weather icon image information to the pictorial gauge for display
 clouds: none     visibility not impaired
-
-TODO
+add windicon
 
 pictorial gauge extra showers/wind icons
-
-pictorial gauge green lamp showing what?
-
+pictorial gauge green lamp showing good METAR poll
 pictorial gauge right click menu display, then the gauge moves, should be a fix for that we can apply to the other gauges.
-
 pictorial gauge stop/restart remove functionality
-
 pictorial gauge tooltips, buttons
-
 pictorial gauge middle button
-
 lock pictorial gauge menu text
-
 all gauges top right button should trigger one page help display
+
+TODO:
+
+showersIconSrc
+fogIconSrc
+exoticIconSrc
 
 pictorial gauge time to next update rotator
 
@@ -113,18 +111,9 @@ pressure drop alarm
 
 test the sleep functionality - wip
 
-windIconSrc
-showersIconSrc
-fogIconSrc
-exoticIconSrc
-
-
-
 refactor to use just one cwOverlay file
 
 think about removing some global vars and changing them to properties in the new overlay, should be possible to incorporate with the above
-
-add the pictorial gauge
 
 fix population of the RC6 combobox - wip
 
@@ -133,7 +122,6 @@ add a rainfall alarm
 tiny tooltips for other gauges?
 
 update html code documentation using MZTools code documenter
-
 
 ' test usage of RC6 for monitor awareness - wip
 '      adjust Form Position on startup placing form onto Correct Monitor when placed off screen due to

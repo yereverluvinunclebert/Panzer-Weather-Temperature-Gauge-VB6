@@ -567,8 +567,7 @@ Private Sub addGeneralImagesToImageLists()
     Cairo.ImageList.AddImage "helpAnemometer", App.path & "\Resources\images\panzerAnemometer-help.png"
     Cairo.ImageList.AddImage "helpSelector", App.path & "\Resources\images\panzerClipboard-help.png"
     Cairo.ImageList.AddImage "helpClipboard", App.path & "\Resources\images\panzerClipboard-help.png"
-    Cairo.ImageList.AddImage "helpWeather", App.path & "\Resources\images\panzerweather-icon-help.png"
-    ' deanieboy
+    Cairo.ImageList.AddImage "helpPictorial", App.path & "\Resources\images\panzerPictorial-help.png"
     Cairo.ImageList.AddImage "licence", App.path & "\Resources\images\frame.png"
     
     ' prefs icons

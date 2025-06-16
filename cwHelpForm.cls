@@ -321,6 +321,7 @@ Private Sub Draw(ByRef CC As cCairoContext, ByVal mMyOpacity As Double)
     If gblOriginatingForm = "clipboardForm" Then helpFileToShow = "helpClipboard"
     If gblOriginatingForm = "humidityForm" Then helpFileToShow = "helpHumidity"
     If gblOriginatingForm = "barometerForm" Then helpFileToShow = "helpBarometer"
+    If gblOriginatingForm = "pictorialForm" Then helpFileToShow = "helpPictorial"
     CC.RenderSurfaceContent helpFileToShow, helpxo, helpyo, , , , mMyOpacity
         
    ' W.Refresh
