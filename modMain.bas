@@ -240,7 +240,7 @@ Public Sub mainRoutine(ByVal restart As Boolean)
     ' set characteristics of widgets on the Humidity gauge form
     Call adjustHumidityMainControls
 
-    ' set characteristics of widgets on the Humidity gauge form
+    ' set characteristics of widgets on the Barometer gauge form
     Call adjustBarometerMainControls
     
     ' set characteristics of widgets on the selector form

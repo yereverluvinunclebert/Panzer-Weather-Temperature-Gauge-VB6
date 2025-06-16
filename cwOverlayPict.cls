@@ -325,7 +325,7 @@ Public Property Let Locked(ByVal newValue As Boolean)
     If mLocked = True Then
         menuForm.mnuLockPictorialGauge.Checked = True
         If panzerPrefs.IsVisible = True Then
-            panzerPrefs.cmbGaugeType.ListIndex = 0
+            panzerPrefs.cmbGaugeType.ListIndex = 4
             panzerPrefs.chkPreventDragging.Value = 1
         End If
         
@@ -342,7 +342,7 @@ Public Property Let Locked(ByVal newValue As Boolean)
     Else
         menuForm.mnuLockPictorialGauge.Checked = False
         If panzerPrefs.IsVisible = True Then
-            panzerPrefs.cmbGaugeType.ListIndex = 0
+            panzerPrefs.cmbGaugeType.ListIndex = 4
             panzerPrefs.chkPreventDragging.Value = 0
         End If
         

@@ -661,6 +661,7 @@ Private Sub anemometerGaugeForm_MouseDown(ByRef Button As Integer, ByRef Shift A
         menuForm.mnuLockHumidityGauge.Visible = False
         menuForm.mnuLockAnemometerGauge.Visible = True
         menuForm.mnuLockBarometerGauge.Visible = False
+        menuForm.mnuLockPictorialGauge.Visible = False
 
         Call menuForm.PopupMenu(menuForm.mnuMainMenu)
     Else

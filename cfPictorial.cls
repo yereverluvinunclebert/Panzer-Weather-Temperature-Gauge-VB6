@@ -152,16 +152,16 @@ Private Sub pictorialGaugeForm_BubblingEvent(ByRef sender As Object, ByRef Event
                      TTIconInfo, widgetName7 & " Prefs Button Help", , , , True
             Case "housing/tickbutton"
                 If gblEnableBalloonTooltips = "1" Then CreateToolTip pictorialGaugeForm.hwnd, "This button is non-functional in this gauge.", _
-                     TTIconInfo, widgetName7 & " Tick Button Help", , , , True
+                     TTIconInfo, widgetName7 & " Button Help", , , , True
             Case "housing/switchfacesbutton"
-                If gblEnableBalloonTooltips = "1" Then CreateToolTip pictorialGaugeForm.hwnd, "Click here to select between different faces showing alternative pictorial scales, celsius/fahrenheit or kelvin.", _
-                     TTIconInfo, widgetName7 & " Switch Faces Button Help", , , , True
+                If gblEnableBalloonTooltips = "1" Then CreateToolTip pictorialGaugeForm.hwnd, "This button is non-functional in this gauge.", _
+                     TTIconInfo, widgetName7 & " Button Help", , , , True
             Case "housing/stopbutton"
-                If gblEnableBalloonTooltips = "1" Then CreateToolTip pictorialGaugeForm.hwnd, "This button stops all animated gauge functions for this widget, pointer movement, digital displays &c .", _
-                     TTIconInfo, widgetName7 & " Stop Button Help", , , , True
+                If gblEnableBalloonTooltips = "1" Then CreateToolTip pictorialGaugeForm.hwnd, "This button is non-functional in this gauge.", _
+                     TTIconInfo, widgetName7 & " Button Help", , , , True
             Case "housing/startbutton"
-                If gblEnableBalloonTooltips = "1" Then CreateToolTip pictorialGaugeForm.hwnd, "This button restarts all stopped animated gauge functions for this widget, pointer movement &c .", _
-                     TTIconInfo, widgetName7 & " Start Button Help", , , , True
+                If gblEnableBalloonTooltips = "1" Then CreateToolTip pictorialGaugeForm.hwnd, "This button is non-functional in this gauge..", _
+                     TTIconInfo, widgetName7 & " Button Help", , , , True
             Case "housing/helpbutton"
                 If gblEnableBalloonTooltips = "1" Then CreateToolTip pictorialGaugeForm.hwnd, "This button opens the one-page help file for this widget. There is a further detailed CHM help file available from the right-click menu that contains all the information that you need to run this widget.", _
                      TTIconInfo, widgetName7 & " Help Button Help", , , , True
@@ -665,6 +665,7 @@ Private Sub pictorialGaugeForm_MouseDown(ByRef Button As Integer, ByRef Shift As
     
     If Button = vbRightButton Then
         gblMenuOccurred = True
+        menuForm.mnuLockTemperatureGauge.Visible = False
         menuForm.mnuLockPictorialGauge.Visible = True
         menuForm.mnuLockHumidityGauge.Visible = False
         menuForm.mnuLockAnemometerGauge.Visible = False

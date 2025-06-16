@@ -741,7 +741,7 @@ Private Sub processMetarData()
     force = beaufortConversion(wind_speed_kt)
     
     ' determine the wind icon image using the beaufort scale
-    windIconSrc = fWindIconSrc(force)
+    windIconSrc = fWindIconSrc(force, isday)
 
     ' set the hover-over tooltips on the gauges
     thisTooltip = setHoverTooltip(force, precipitationDepth, visibilityDistance, skyClarityString, HumidityValue, mTemperatureValue, pressureValue, weekDayDate, wind_dir_degrees, wind_speed_kt, precip_in, wx_string)
@@ -1477,7 +1477,7 @@ End Function
 ' Author: Dean Beedell (yereverluvinunclebert)
 ' Date: 15\03\2024
 ' ----------------------------------------------------------------
-Private Function fWindIconSrc(ByVal force As Integer) As String
+Private Function fWindIconSrc(ByVal force As Integer, ByVal thisIsDay As Boolean) As String
 
     Dim thisWindIconSrc As String: thisWindIconSrc = vbNullString
 
@@ -1558,6 +1558,13 @@ Private Function fWindIconSrc(ByVal force As Integer) As String
        'force = 17 ' 80+ Severe Typhoon
        thisWindIconSrc = "windy05.png"
      End If
+     
+    ' turn the image from day to night
+    If (thisWindIconSrc <> vbNullString) Then
+      If (thisIsDay = False) Then
+         thisWindIconSrc = "n_" & thisWindIconSrc
+      End If
+    End If
      
      thisWindIconSrc = App.path & "\Resources\images\icons_metar\"
 
@@ -2039,13 +2046,13 @@ Private Sub determineWeatherConditionIcon(ByRef skyClarity As String, ByVal this
       If (thisIsDay = True) Then
          iconSrc = weatherIconSrc
          weatherIconSrc = iconSrc
-         precedingSrc = iconSrc ' the preceding icon not  used yet
-         followingSrc = iconSrc ' the following icon not  used yet
+         'precedingSrc = iconSrc ' the preceding icon not  used yet
+         'followingSrc = iconSrc ' the following icon not  used yet
       Else
          iconSrc = "n_" & weatherIconSrc
          weatherIconSrc = iconSrc
-         precedingSrc = iconSrc
-         followingSrc = iconSrc
+         'precedingSrc = iconSrc
+         'followingSrc = iconSrc
       End If
 
     End If

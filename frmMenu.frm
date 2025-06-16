@@ -492,6 +492,91 @@ mnuLockAnemometerGauge_Click_Error:
 End Sub
 
 '---------------------------------------------------------------------------------------
+' Procedure : mnuLockHumidityGauge_Click
+' Author    : beededea
+' Date      : 16/06/2025
+' Purpose   :
+'---------------------------------------------------------------------------------------
+'
+Private Sub mnuLockHumidityGauge_Click()
+
+   On Error GoTo mnuLockHumidityGauge_Click_Error
+
+    If gblOriginatingForm = "humidityForm" Then
+        If gblPreventDraggingHumidity = "1" Then
+            overlayHumidWidget.Locked = False
+        Else
+            overlayHumidWidget.Locked = True
+        End If
+    End If
+       
+
+   On Error GoTo 0
+   Exit Sub
+
+mnuLockHumidityGauge_Click_Error:
+
+    MsgBox "Error " & Err.Number & " (" & Err.Description & ") in procedure mnuLockHumidityGauge_Click of Form menuForm"
+End Sub
+
+
+'---------------------------------------------------------------------------------------
+' Procedure : mnuLockBarometerGauge_Click
+' Author    : beededea
+' Date      : 16/06/2025
+' Purpose   :
+'---------------------------------------------------------------------------------------
+'
+Private Sub mnuLockBarometerGauge_Click()
+
+   On Error GoTo mnuLockBarometerGauge_Click_Error
+
+    If gblOriginatingForm = "barometerForm" Then
+        If gblPreventDraggingBarometer = "1" Then
+            overlayBaromWidget.Locked = False
+        Else
+            overlayBaromWidget.Locked = True
+        End If
+    End If
+       
+
+   On Error GoTo 0
+   Exit Sub
+
+mnuLockBarometerGauge_Click_Error:
+
+    MsgBox "Error " & Err.Number & " (" & Err.Description & ") in procedure mnuLockBarometerGauge_Click of Form menuForm"
+End Sub
+
+
+'---------------------------------------------------------------------------------------
+' Procedure : mnuLockPictorialGauge_Click
+' Author    : beededea
+' Date      : 16/06/2025
+' Purpose   :
+'---------------------------------------------------------------------------------------
+'
+Private Sub mnuLockPictorialGauge_Click()
+
+   On Error GoTo mnuLockPictorialGauge_Click_Error
+
+    If gblOriginatingForm = "pictorialForm" Then
+        If gblPreventDraggingPictorial = "1" Then
+            overlayPictorialWidget.Locked = False
+        Else
+            overlayPictorialWidget.Locked = True
+        End If
+    End If
+   
+   On Error GoTo 0
+   Exit Sub
+
+mnuLockPictorialGauge_Click_Error:
+
+    MsgBox "Error " & Err.Number & " (" & Err.Description & ") in procedure mnuLockPictorialGauge_Click of Form menuForm"
+End Sub
+
+'---------------------------------------------------------------------------------------
 ' Procedure : mnuLockTemperatureGauge_Click
 ' Author    : Dean Beedell (yereverluvinunclebert)
 ' Date      : 05/05/2023
@@ -509,9 +594,7 @@ Private Sub mnuLockTemperatureGauge_Click()
             overlayTemperatureWidget.Locked = True
         End If
     End If
-   
-
-    
+       
    On Error GoTo 0
    Exit Sub
 
