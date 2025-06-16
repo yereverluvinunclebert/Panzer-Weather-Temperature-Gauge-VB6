@@ -430,8 +430,6 @@ Public gblIgnoreMouse  As String
 Public gblMenuOccurred As Boolean ' bool
 Public gblFirstTimeRun  As String
 
-
-
 ' General storage variables declared
 Public gblSettingsDir As String
 Public gblSettingsFile As String

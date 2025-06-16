@@ -113,6 +113,13 @@ pressure drop alarm
 
 test the sleep functionality - wip
 
+windIconSrc
+showersIconSrc
+fogIconSrc
+exoticIconSrc
+
+
+
 refactor to use just one cwOverlay file
 
 think about removing some global vars and changing them to properties in the new overlay, should be possible to incorporate with the above

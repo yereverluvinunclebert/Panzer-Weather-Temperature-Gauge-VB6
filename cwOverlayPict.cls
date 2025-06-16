@@ -227,7 +227,9 @@ Public Property Let thisWindImage(ByVal newValue As String)
 
     If mthisWindImage <> newValue Then mthisWindImage = newValue Else Exit Property
     
-    Cairo.ImageList.AddSurface "windiconimage", Cairo.ImageList(mthisWindImage)
+    If fFExists(mthisWindImage) Then
+        Cairo.ImageList.AddSurface "windiconimage", Cairo.ImageList(mthisWindImage)
+    End If
 
     On Error GoTo 0
     Exit Property

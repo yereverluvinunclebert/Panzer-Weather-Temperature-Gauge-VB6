@@ -462,7 +462,7 @@ Private Sub processMetarData()
     Dim pressureValue As Double: pressureValue = 0
     Dim TheDate As Date: TheDate = #1/1/2000 12:00:00 PM#
     Dim secsDif As Double: secsDif = 0
-    Dim difString As String: difString = vbNullString
+    Dim lastUpdateString As String: lastUpdateString = vbNullString
     Dim num_results As Integer: num_results = 0
     Dim observation_time As String: observation_time = vbNullString
     
@@ -512,7 +512,7 @@ Private Sub processMetarData()
     Dim usableObsTime As Date: usableObsTime = #1/1/2000 12:00:00 PM#
     Dim weekDayDate As String: weekDayDate = vbNullString
     Dim thisTooltip As String: thisTooltip = vbNullString
-    Dim weatherIconToolTip As String: weatherIconToolTip = vbNullString
+    'Dim weatherIconToolTip As String: weatherIconToolTip = vbNullString
     
     Dim force As Integer: force = 0
     Dim windIconSrc As String: windIconSrc = vbNullString
@@ -718,8 +718,10 @@ Private Sub processMetarData()
     ' make a pretty date for the balloon tooltip
     weekDayDate = humanFriendlyDate(usableObsTime)
 
-    'set the mini clock to show the observation time
+    'set the mini clock on the clipboard to show the observation time
     overlayClipbWidget.thisTime = usableObsTime
+    
+    'refresh the clipboard to show the just-set time
     fClipB.clipBForm.Refresh
 
     ' get the current time string and compare
@@ -727,43 +729,46 @@ Private Sub processMetarData()
     secsDif = CDbl(DateDiff("s", TheDate, usableObsTime))
 
     ' format the interval for display in the tooltip
-    difString = niceFormatInterval(secsDif, TheDate)
+    lastUpdateString = niceFormatInterval(secsDif, TheDate)
 
     ' store the last updated value in the settings
     gblLastUpdated = usableObsTime
     sPutINISetting "Software\PzTemperatureGauge", "lastUpdated", gblLastUpdated, gblSettingsFile
 
-    If (debugFlg = 1) Then Debug.Print ("%processMetarData - difString " & difString)
+    If (debugFlg = 1) Then Debug.Print ("%processMetarData - lastUpdateString " & lastUpdateString)
     
     ' convert the windspeed to the beaufort scale
     force = beaufortConversion(wind_speed_kt)
     
-    ' determine the wind icon image
+    ' determine the wind icon image using the beaufort scale
     windIconSrc = fWindIconSrc(force)
 
-    ' set the hover over tooltips on the gauges
+    ' set the hover-over tooltips on the gauges
     thisTooltip = setHoverTooltip(force, precipitationDepth, visibilityDistance, skyClarityString, HumidityValue, mTemperatureValue, pressureValue, weekDayDate, wind_dir_degrees, wind_speed_kt, precip_in, wx_string)
     thisTooltip = thisTooltip & vbCrLf & raw_text
     
+    ' pass the current tooltip to the clipboard widget
     fClipB.sLblMETARText.Caption = thisTooltip
     
-    thisTooltip = thisTooltip & vbCrLf & vbCrLf & difString
+    ' add the last updated time to the end of the gauge tooltip
+    thisTooltip = thisTooltip & vbCrLf & vbCrLf & lastUpdateString
 
-    weatherIconToolTip = setIconTooltip(wx_string, sky_condition_items(), uboundSkyConditions)
-    If (weatherIconToolTip = vbNullString) Then
-        weatherIconToolTip = thisTooltip
-    End If
+    ' ?????
+'    weatherIconToolTip = setIconTooltip(wx_string, sky_condition_items(), uboundSkyConditions)
+'    If (weatherIconToolTip = vbNullString) Then
+'        weatherIconToolTip = thisTooltip
+'    End If
     
     ' for setting the balloon tooltip using the WeatherDetails property
     mWeatherDetails = thisTooltip
 
     mTemperatureValue = temp_c
     mWeHaveData = True
+    wehavedata = True
     firstPoll = False
     
     ' set the animation variables and call the routine to move the temperature gauge pointer
     overlayTemperatureWidget.thisTemperature = TemperatureValue
-    wehavedata = True
     
     ' restart the sampling timer now the data has been processed
     SamplerEnabled = True
@@ -888,7 +893,7 @@ Private Function setIconTooltip(ByVal wx_string As String, ByRef sky_condition_i
     On Error GoTo setIconTooltip_Error
     
     'firstly, try the wx_string
-    If wx_string <> vbNullString Then thisTooltip = getMetarDescription(wx_string)
+    If wx_string <> vbNullString Then thisTooltip = fGetMetarDescription(wx_string)
     
     If (thisTooltip = vbNullString) Then
       ' if no wx_string use the cloud cover or lack of it
@@ -1483,75 +1488,78 @@ Private Function fWindIconSrc(ByVal force As Integer) As String
     ' Beaufort Scales (Wind Speed)
     If force = 0 Then
         ' Calm    Sea like a mirror.
-        thisWindIconSrc = "Resources\images\icons_metar\" & "nowind.png"
+        thisWindIconSrc = thisWindIconSrc = "nowind.png"
     End If
     If force = 1 Then
         ' 1 1-3   Light air   Ripples only.
-        thisWindIconSrc = "Resources\images\icons_metar\" & "nowind.png"
+        thisWindIconSrc = thisWindIconSrc = "nowind.png"
     End If
     If force = 2 Then
         'force = 2 ' 4-6 Light breeze    Small wavelets (0.2 m). Crests have a glassy appearance.
+        thisWindIconSrc = thisWindIconSrc = "nowind.png"
     End If
     If force = 3 Then
         'force = 3 ' 7-10  Gentle breeze     Large wavelets (0.6 m), crests begin to break.
-        thisWindIconSrc = "Resources\images\icons_metar\" & "nowind.png"
+        thisWindIconSrc = thisWindIconSrc = "nowind.png"
     End If
     If force = 4 Then
         'force = 4 ' 11-16  Moderate breeze  Small waves (1 m), some whitecaps
-        thisWindIconSrc = "Resources\images\icons_metar\" & "windy01.png"
+        thisWindIconSrc = thisWindIconSrc = "windy01.png"
     End If
     If force = 5 Then
         'force = 5 '  17-21 Fresh breeze
-        thisWindIconSrc = "Resources\images\icons_metar\" & "windy02.png"
+        thisWindIconSrc = thisWindIconSrc = "windy02.png"
     End If
     If force = 6 Then
          ' 22-27 Strong breeze
-        thisWindIconSrc = "Resources\images\icons_metar\" & "windy03.png"
+        thisWindIconSrc = thisWindIconSrc = "windy03.png"
     End If
     If force = 7 Then
          ' 28-33 Near gale
-        thisWindIconSrc = "Resources\images\icons_metar\" & "windy04.png"
+        thisWindIconSrc = thisWindIconSrc = "windy04.png"
     End If
     If force = 8 Then
         ' 34-40 Gale
-        thisWindIconSrc = "Resources\images\icons_metar\" & "windy05.png"
+        thisWindIconSrc = thisWindIconSrc = "windy05.png"
     End If
     If force = 9 Then
          ' 41-47 Strong gale
-        thisWindIconSrc = "Resources\images\icons_metar\" & "windy05.png"
+        thisWindIconSrc = thisWindIconSrc = "windy05.png"
     End If
     If force = 10 Then
          ' 48-55 Storm
-        thisWindIconSrc = "Resources\images\icons_metar\" & "windy05.png"
+        thisWindIconSrc = thisWindIconSrc = "windy05.png"
     End If
     If force = 11 Then
         ' 56-63 Violent storm
-        thisWindIconSrc = "Resources\images\icons_metar\" & "windy05.png"
+        thisWindIconSrc = thisWindIconSrc = "windy05.png"
     End If
     If force = 12 Then
         ' 64+ Hurricane
-        thisWindIconSrc = "Resources\images\icons_metar\" & "windy05.png"
+        thisWindIconSrc = thisWindIconSrc = "windy05.png"
     End If
     If force = 13 Then
          ' 80+ Typhoon
-        thisWindIconSrc = "Resources\images\icons_metar\" & "windy05.png"
+        thisWindIconSrc = thisWindIconSrc = "windy05.png"
     End If
     If force = 14 Then
         'force = 14 ' 80+ Typhoon
-        thisWindIconSrc = "Resources\images\icons_metar\" & "windy05.png"
+        thisWindIconSrc = thisWindIconSrc = "windy05.png"
     End If
     If force = 15 Then
         'force = 15 ' 80+ Typhoon
-        thisWindIconSrc = "Resources\images\icons_metar\" & "windy05.png"
+        thisWindIconSrc = thisWindIconSrc = "windy05.png"
     End If
     If force = 16 Then
         'force = 16 ' 80+ Severe Typhoon
-        thisWindIconSrc = "Resources\images\icons_metar\" & "windy05.png"
+        thisWindIconSrc = thisWindIconSrc = "windy05.png"
     End If
     If force = 17 Then
        'force = 17 ' 80+ Severe Typhoon
-       thisWindIconSrc = "Resources\images\icons_metar\" + "windy05.png"
+       thisWindIconSrc = "windy05.png"
      End If
+     
+     thisWindIconSrc = App.path & "\Resources\images\icons_metar\"
 
      fWindIconSrc = thisWindIconSrc ' return
     
@@ -1573,7 +1581,7 @@ End Function
 ' Parameter wind_dir_degrees (String):
 ' Parameter wind_speed_kt (String):
 ' Parameter precip_in (String):
-' Parameter difString (String):
+' Parameter lastUpdateString (String):
 ' Parameter wx_string (String):
 ' Author: Dean Beedell (yereverluvinunclebert)
 ' Date: 17/03/2024
@@ -1633,7 +1641,7 @@ Private Function setHoverTooltip(ByVal force As Integer, ByVal precipitationDept
     End If
     
     If (wx_string <> vbNullString) Then
-      wx_str = getMetarDescription(wx_string)    ' get the interpreted wx string data
+      wx_str = fGetMetarDescription(wx_string)    ' get the interpreted wx string data
       wx_str = UCase$(Left$(wx_str, 1)) & Mid$(wx_str, 2, Len(wx_str))
       tooltipString = tooltipString & "Rainfall: " & wx_str & "  "
     End If
@@ -2060,7 +2068,7 @@ determineWeatherConditionIcon_Error:
 End Sub
 
 ' ----------------------------------------------------------------
-' Procedure Name: getMetarDescription
+' Procedure Name: fGetMetarDescription
 ' Purpose:
 ' Procedure Kind: Function
 ' Procedure Access: Public
@@ -2069,12 +2077,12 @@ End Sub
 ' Author: Dean Beedell (yereverluvinunclebert)
 ' Date: 15/03/2024
 ' ----------------------------------------------------------------
-Private Function getMetarDescription(ByVal wx_string As String) As String
+Private Function fGetMetarDescription(ByVal wx_string As String) As String
     Dim presentConditions As String: presentConditions = vbNullString
     Dim wSeverity As String: wSeverity = vbNullString
     Dim wModifier As String: wModifier = vbNullString
 
-    On Error GoTo getMetarDescription_Error
+    On Error GoTo fGetMetarDescription_Error
     
     debugFlg = 0
     
@@ -2131,7 +2139,7 @@ Private Function getMetarDescription(ByVal wx_string As String) As String
     If InStr(wx_string, "-") = 0 Or InStr(wx_string, "+") = 0 Then
         presentConditions = presentConditions & wSeverity
         If debugFlg = 1 Then
-            Debug.Print ("%getMetarDescription - wSeverity " & wSeverity)
+            Debug.Print ("%fGetMetarDescription - wSeverity " & wSeverity)
         End If
     End If
     
@@ -2216,17 +2224,17 @@ Private Function getMetarDescription(ByVal wx_string As String) As String
     End If
     
     If debugFlg = 1 And presentConditions <> vbNullString Then
-        Debug.Print ("%getMetarDescription - presentConditions " & presentConditions)
+        Debug.Print ("%fGetMetarDescription - presentConditions " & presentConditions)
     End If
     
-    getMetarDescription = presentConditions
+    fGetMetarDescription = presentConditions
     
     On Error GoTo 0
     Exit Function
 
-getMetarDescription_Error:
+fGetMetarDescription_Error:
 
-    MsgBox "Error " & Err.Number & " (" & Err.Description & ") in procedure getMetarDescription, line " & Erl & "."
+    MsgBox "Error " & Err.Number & " (" & Err.Description & ") in procedure fGetMetarDescription, line " & Erl & "."
 
 End Function
 
