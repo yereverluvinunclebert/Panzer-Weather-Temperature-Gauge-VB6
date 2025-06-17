@@ -210,7 +210,7 @@ Private Sub menuReload_Click()
         CTRL_1 = False
         Call hardRestart
     Else
-        Call reloadWidget
+        Call reloadProgram
     End If
 
     On Error GoTo 0

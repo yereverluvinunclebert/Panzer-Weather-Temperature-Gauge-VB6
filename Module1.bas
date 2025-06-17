@@ -305,6 +305,8 @@ Public gblIcao As String
 
 
 ' config
+
+Public gblGaugeTooltips As String
 Public gblEnableTooltips As String
 Public gblEnablePrefsTooltips As String
 Public gblEnableBalloonTooltips As String
@@ -1724,43 +1726,39 @@ mnuLicence_ClickEvent_Error:
 
 End Sub
 '---------------------------------------------------------------------------------------
-' Procedure : setMainTooltips
+' Procedure : setRCHumidityTooltips
 ' Author    : Dean Beedell (yereverluvinunclebert)
 ' Date      : 15/05/2023
 ' Purpose   : this only sets the small tooltips
 '---------------------------------------------------------------------------------------
 '
-Public Sub setMainTooltips()
-   On Error GoTo setMainTooltips_Error
+Public Sub setRCHumidityTooltips()
+   On Error GoTo setRCHumidityTooltips_Error
 
     If gblEnableTooltips = "1" Then
 
-        overlayTemperatureWidget.Widget.ToolTip = vbNullString & vbCrLf & "Use CTRL+mouse scrollwheel up/down to resize."
-        helpWidget.Widget.ToolTip = "Click on me to make me go away."
-        aboutWidget.Widget.ToolTip = "Click on me to make me go away."
+        overlayHumidWidget.Widget.ToolTip = vbNullString & vbCrLf & "Use CTRL+mouse scrollwheel up/down to resize."
         
-        fTemperature.temperatureGaugeForm.Widgets("housing/tickbutton").Widget.ToolTip = "Choose smooth movement or regular flicks"
-        fTemperature.temperatureGaugeForm.Widgets("housing/helpbutton").Widget.ToolTip = "Press for a little help"
-        fTemperature.temperatureGaugeForm.Widgets("housing/startbutton").Widget.ToolTip = "Press to restart (when stopped)"
-        fTemperature.temperatureGaugeForm.Widgets("housing/stopbutton").Widget.ToolTip = "Press to stop clock operation."
-        fTemperature.temperatureGaugeForm.Widgets("housing/switchfacesbutton").Widget.ToolTip = "Press to do nothing at all."
-        fTemperature.temperatureGaugeForm.Widgets("housing/lockbutton").Widget.ToolTip = "Press to lock the widget in place"
-        fTemperature.temperatureGaugeForm.Widgets("housing/prefsbutton").Widget.ToolTip = "Press to open the widget preferences"
-        fTemperature.temperatureGaugeForm.Widgets("housing/surround").Widget.ToolTip = "Ctrl + mouse scrollwheel up/down to resize, you can also drag me to a new position."
+        fHumidity.humidityGaugeForm.Widgets("housing/tickbutton").Widget.ToolTip = "Choose smooth movement or regular flicks"
+        fHumidity.humidityGaugeForm.Widgets("housing/helpbutton").Widget.ToolTip = "Press for a little help"
+        fHumidity.humidityGaugeForm.Widgets("housing/startbutton").Widget.ToolTip = "Press to restart (when stopped)"
+        fHumidity.humidityGaugeForm.Widgets("housing/stopbutton").Widget.ToolTip = "Press to stop gauge operation."
+        fHumidity.humidityGaugeForm.Widgets("housing/switchfacesbutton").Widget.ToolTip = "This button is non functional on this gauge."
+        fHumidity.humidityGaugeForm.Widgets("housing/lockbutton").Widget.ToolTip = "Press to lock the gauge in place."
+        fHumidity.humidityGaugeForm.Widgets("housing/prefsbutton").Widget.ToolTip = "Press to open the widget preferences"
+        fHumidity.humidityGaugeForm.Widgets("housing/surround").Widget.ToolTip = "Ctrl + mouse scrollwheel up/down to resize, you can also drag me to a new position."
         
     Else
-        overlayTemperatureWidget.Widget.ToolTip = vbNullString
-        helpWidget.Widget.ToolTip = vbNullString
-        aboutWidget.Widget.ToolTip = vbNullString
+        overlayHumidWidget.Widget.ToolTip = vbNullString
         
-        fTemperature.temperatureGaugeForm.Widgets("housing/tickbutton").Widget.ToolTip = vbNullString
-        fTemperature.temperatureGaugeForm.Widgets("housing/helpbutton").Widget.ToolTip = vbNullString
-        fTemperature.temperatureGaugeForm.Widgets("housing/startbutton").Widget.ToolTip = vbNullString
-        fTemperature.temperatureGaugeForm.Widgets("housing/stopbutton").Widget.ToolTip = vbNullString
-        fTemperature.temperatureGaugeForm.Widgets("housing/switchfacesbutton").Widget.ToolTip = vbNullString
-        fTemperature.temperatureGaugeForm.Widgets("housing/lockbutton").Widget.ToolTip = vbNullString
-        fTemperature.temperatureGaugeForm.Widgets("housing/prefsbutton").Widget.ToolTip = vbNullString
-        fTemperature.temperatureGaugeForm.Widgets("housing/surround").Widget.ToolTip = vbNullString
+        fHumidity.humidityGaugeForm.Widgets("housing/tickbutton").Widget.ToolTip = vbNullString
+        fHumidity.humidityGaugeForm.Widgets("housing/helpbutton").Widget.ToolTip = vbNullString
+        fHumidity.humidityGaugeForm.Widgets("housing/startbutton").Widget.ToolTip = vbNullString
+        fHumidity.humidityGaugeForm.Widgets("housing/stopbutton").Widget.ToolTip = vbNullString
+        fHumidity.humidityGaugeForm.Widgets("housing/switchfacesbutton").Widget.ToolTip = vbNullString
+        fHumidity.humidityGaugeForm.Widgets("housing/lockbutton").Widget.ToolTip = vbNullString
+        fHumidity.humidityGaugeForm.Widgets("housing/prefsbutton").Widget.ToolTip = vbNullString
+        fHumidity.humidityGaugeForm.Widgets("housing/surround").Widget.ToolTip = vbNullString
         
     End If
     
@@ -1769,9 +1767,9 @@ Public Sub setMainTooltips()
    On Error GoTo 0
    Exit Sub
 
-setMainTooltips_Error:
+setRCHumidityTooltips_Error:
 
-    MsgBox "Error " & Err.Number & " (" & Err.Description & ") in procedure setMainTooltips of Module Module1"
+    MsgBox "Error " & Err.Number & " (" & Err.Description & ") in procedure setRCHumidityTooltips of Module Module1"
 End Sub
 '---------------------------------------------------------------------------------------
 ' Procedure : ChangeToolTipWidgetDefaultSettings
@@ -1788,6 +1786,7 @@ Public Sub ChangeToolTipWidgetDefaultSettings(ByRef My_Widget As cWidgetBase)
     
         .FontName = gblTempFormFont
         .FontSize = Val(gblPrefsFontSizeLowDPI)
+        .FontSize = 8
     
     End With
 
@@ -2052,7 +2051,7 @@ Public Sub getKeyPress(ByVal KeyCode As Integer, ByVal Shift As Integer)
         Case 82 ' R
             If Shift = 1 Then Call hardRestart
         Case 116
-            Call reloadWidget 'f5 refresh button as per all browsers
+            Call reloadProgram 'f5 refresh button as per all browsers
     End Select
  
     On Error GoTo 0
@@ -2343,18 +2342,21 @@ End Sub
 
 
 '---------------------------------------------------------------------------------------
-' Procedure : reloadWidget
+' Procedure : reloadProgram
 ' Author    : Dean Beedell (yereverluvinunclebert)
 ' Date      : 05/05/2023
 ' Purpose   :
 '---------------------------------------------------------------------------------------
 '
-Public Sub reloadWidget()
+Public Sub reloadProgram()
     
-    On Error GoTo reloadWidget_Error
+    On Error GoTo reloadProgram_Error
     
     Call saveTemperatureGaugePosition
     Call saveAnemometerGaugePosition
+    Call saveBarometerGaugePosition
+    Call saveHumidityGaugePosition
+    Call savePictorialGaugePosition
     
     Call unloadAllForms(False) ' unload forms but do not END
     
@@ -2364,11 +2366,11 @@ Public Sub reloadWidget()
     On Error GoTo 0
     Exit Sub
 
-reloadWidget_Error:
+reloadProgram_Error:
 
     With Err
          If .Number <> 0 Then
-            MsgBox "Error " & Err.Number & " (" & Err.Description & ") in procedure reloadWidget of Module Module1"
+            MsgBox "Error " & Err.Number & " (" & Err.Description & ") in procedure reloadProgram of Module Module1"
             Resume Next
           End If
     End With
@@ -3071,6 +3073,7 @@ Public Sub clearAllMessageBoxRegistryEntries()
     SaveSetting App.EXEName, "Options", "Show message" & "mnuSupportClickEvent", 0
     SaveSetting App.EXEName, "Options", "Show message" & "chkDpiAwarenessRestart", 0
     SaveSetting App.EXEName, "Options", "Show message" & "chkDpiAwarenessAbnormal", 0
+    SaveSetting App.EXEName, "Options", "Show message" & "optClockTooltipsClick", 0
     SaveSetting App.EXEName, "Options", "Show message" & "chkEnableTooltipsClick", 0
     SaveSetting App.EXEName, "Options", "Show message" & "lblGitHubDblClick", 0
     SaveSetting App.EXEName, "Options", "Show message" & "sliOpacityClick", 0

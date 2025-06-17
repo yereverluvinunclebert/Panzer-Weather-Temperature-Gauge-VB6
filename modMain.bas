@@ -6,7 +6,7 @@ Option Explicit
 
 '------------------------------------------------------ STARTS
 ' for SetWindowPos z-ordering
-Public Declare Function SetWindowPos Lib "user32" (ByVal hwnd As Long, ByVal hWndInsertAfter As Long, ByVal X As Long, ByVal Y As Long, ByVal cx As Long, ByVal cy As Long, ByVal wFlags As Long) As Long
+Public Declare Function SetWindowPos Lib "user32" (ByVal hwnd As Long, ByVal hWndInsertAfter As Long, ByVal x As Long, ByVal y As Long, ByVal cx As Long, ByVal cy As Long, ByVal wFlags As Long) As Long
 
 Public Const HWND_TOP As Long = 0 ' for SetWindowPos z-ordering
 Public Const HWND_TOPMOST As Long = -1
@@ -255,9 +255,6 @@ Public Sub mainRoutine(ByVal restart As Boolean)
     ' set the z-ordering of the window
     Call setAlphaFormZordering
     
-    ' set the tooltips on the main screen
-    Call setMainTooltips
-    
     ' set the hiding time for the hiding timer, can't read the minutes from comboxbox as the prefs isn't yet open
     Call setHidingTime
 
@@ -363,6 +360,8 @@ Private Sub initialiseGlobalVars()
     gblIcao = vbNullString
 
     ' config
+    gblGaugeTooltips = vbNullString
+    
     gblEnableTooltips = vbNullString
     gblEnablePrefsTooltips = vbNullString
     gblEnableBalloonTooltips = vbNullString
@@ -911,6 +910,9 @@ Private Sub adjustPictorialMainControls()
     End If
 
     overlayPictorialWidget.thisOpacity = Val(gblOpacity)
+    
+    ' set the tooltips on the main screen
+    Call setRCPictorialTooltips
 
    On Error GoTo 0
    Exit Sub
@@ -920,6 +922,54 @@ adjustPictorialMainControls_Error:
     MsgBox "Error " & Err.Number & " (" & Err.Description & ") in procedure adjustPictorialMainControls of Module modMain"
 End Sub
 
+
+
+'---------------------------------------------------------------------------------------
+' Procedure : setRCPictorialTooltips
+' Author    : beededea
+' Date      : 15/05/2023
+' Purpose   : Set the tooltips using RC tooltip functionality only.
+'             Note: there are also the balloon tooltips and standard VB tooltips set elsewhere.
+'---------------------------------------------------------------------------------------
+'
+Public Sub setRCPictorialTooltips()
+   On Error GoTo setRCPictorialTooltips_Error
+
+    If gblEnableTooltips = "1" Then
+
+        overlayPictorialWidget.Widget.ToolTip = vbNullString & vbCrLf & "Use CTRL+mouse scrollwheel up/down to resize."
+        
+        fPictorial.pictorialGaugeForm.Widgets("housing/tickbutton").Widget.ToolTip = "This button is non-functional on this gauge."
+        fPictorial.pictorialGaugeForm.Widgets("housing/helpbutton").Widget.ToolTip = "Press for a little help"
+        fPictorial.pictorialGaugeForm.Widgets("housing/startbutton").Widget.ToolTip = "This button is non-functional on this gauge."
+        fPictorial.pictorialGaugeForm.Widgets("housing/stopbutton").Widget.ToolTip = "This button is non-functional on this gauge."
+        fPictorial.pictorialGaugeForm.Widgets("housing/switchfacesbutton").Widget.ToolTip = "This button is non-functional on this gauge."
+        fPictorial.pictorialGaugeForm.Widgets("housing/lockbutton").Widget.ToolTip = "Press to lock the widget in place"
+        fPictorial.pictorialGaugeForm.Widgets("housing/prefsbutton").Widget.ToolTip = "Press to open the widget preferences"
+        fPictorial.pictorialGaugeForm.Widgets("housing/surround").Widget.ToolTip = "Ctrl + mouse scrollwheel up/down to resize, you can also drag me to a new position."
+        
+    Else
+        overlayPictorialWidget.Widget.ToolTip = vbNullString
+        
+        fPictorial.pictorialGaugeForm.Widgets("housing/tickbutton").Widget.ToolTip = vbNullString
+        fPictorial.pictorialGaugeForm.Widgets("housing/helpbutton").Widget.ToolTip = vbNullString
+        fPictorial.pictorialGaugeForm.Widgets("housing/startbutton").Widget.ToolTip = vbNullString
+        fPictorial.pictorialGaugeForm.Widgets("housing/stopbutton").Widget.ToolTip = vbNullString
+        fPictorial.pictorialGaugeForm.Widgets("housing/switchfacesbutton").Widget.ToolTip = vbNullString
+        fPictorial.pictorialGaugeForm.Widgets("housing/lockbutton").Widget.ToolTip = vbNullString
+        fPictorial.pictorialGaugeForm.Widgets("housing/prefsbutton").Widget.ToolTip = vbNullString
+        fPictorial.pictorialGaugeForm.Widgets("housing/surround").Widget.ToolTip = vbNullString
+   End If
+   
+   Call ChangeToolTipWidgetDefaultSettings(Cairo.ToolTipWidget.Widget)
+
+   On Error GoTo 0
+   Exit Sub
+
+setRCPictorialTooltips_Error:
+
+    MsgBox "Error " & Err.Number & " (" & Err.Description & ") in procedure setRCPictorialTooltips of Module Module1"
+End Sub
 '---------------------------------------------------------------------------------------
 ' Procedure : adjustTempMainControls
 ' Author    : Dean Beedell (yereverluvinunclebert)
@@ -1010,7 +1060,9 @@ Public Sub adjustTempMainControls()
     overlayTemperatureWidget.thisOpacity = Val(gblOpacity)
     WeatherMeteo.samplingInterval = Val(gblSamplingInterval)
     overlayTemperatureWidget.thisFace = Val(gblTemperatureScale)
-
+    
+    ' set the tooltips on the main screen
+    Call setRCTemperatureTooltips
     
    On Error GoTo 0
    Exit Sub
@@ -1021,7 +1073,83 @@ adjustTempMainControls_Error:
 
 End Sub
 
+'---------------------------------------------------------------------------------------
+' Procedure : setRCTemperatureTooltips
+' Author    : beededea
+' Date      : 15/05/2023
+' Purpose   : Set the tooltips using RC tooltip functionality only.
+'             Note: there are also the balloon tooltips and standard VB tooltips set elsewhere.
+'---------------------------------------------------------------------------------------
+'
+Public Sub setRCTemperatureTooltips()
+   On Error GoTo setRCTemperatureTooltips_Error
 
+    If gblEnableTooltips = "1" Then
+
+        overlayTemperatureWidget.Widget.ToolTip = vbNullString & vbCrLf & "Use CTRL+mouse scrollwheel up/down to resize."
+        helpWidget.Widget.ToolTip = "Click on me to make me go away."
+        aboutWidget.Widget.ToolTip = "Click on me to make me go away."
+        
+        fTemperature.temperatureGaugeForm.Widgets("housing/tickbutton").Widget.ToolTip = "Choose smooth movement or regular flicks"
+        fTemperature.temperatureGaugeForm.Widgets("housing/helpbutton").Widget.ToolTip = "Press for a little help"
+        fTemperature.temperatureGaugeForm.Widgets("housing/startbutton").Widget.ToolTip = "Press to restart (when stopped)"
+        fTemperature.temperatureGaugeForm.Widgets("housing/stopbutton").Widget.ToolTip = "Press to stop gauge operation."
+        fTemperature.temperatureGaugeForm.Widgets("housing/switchfacesbutton").Widget.ToolTip = "Press to switch the gauge face to alternative scales, ie. Fahrenheit, Celsius and Kelvin."
+        fTemperature.temperatureGaugeForm.Widgets("housing/lockbutton").Widget.ToolTip = "Press to lock the widget in place"
+        fTemperature.temperatureGaugeForm.Widgets("housing/prefsbutton").Widget.ToolTip = "Press to open the widget preferences"
+        fTemperature.temperatureGaugeForm.Widgets("housing/surround").Widget.ToolTip = "Ctrl + mouse scrollwheel up/down to resize, you can also drag me to a new position."
+        
+    Else
+        overlayTemperatureWidget.Widget.ToolTip = vbNullString
+        helpWidget.Widget.ToolTip = vbNullString
+        aboutWidget.Widget.ToolTip = vbNullString
+        
+        fTemperature.temperatureGaugeForm.Widgets("housing/tickbutton").Widget.ToolTip = vbNullString
+        fTemperature.temperatureGaugeForm.Widgets("housing/helpbutton").Widget.ToolTip = vbNullString
+        fTemperature.temperatureGaugeForm.Widgets("housing/startbutton").Widget.ToolTip = vbNullString
+        fTemperature.temperatureGaugeForm.Widgets("housing/stopbutton").Widget.ToolTip = vbNullString
+        fTemperature.temperatureGaugeForm.Widgets("housing/switchfacesbutton").Widget.ToolTip = vbNullString
+        fTemperature.temperatureGaugeForm.Widgets("housing/lockbutton").Widget.ToolTip = vbNullString
+        fTemperature.temperatureGaugeForm.Widgets("housing/prefsbutton").Widget.ToolTip = vbNullString
+        fTemperature.temperatureGaugeForm.Widgets("housing/surround").Widget.ToolTip = vbNullString
+   End If
+   
+   Call ChangeToolTipWidgetDefaultSettings(Cairo.ToolTipWidget.Widget)
+
+   On Error GoTo 0
+   Exit Sub
+
+setRCTemperatureTooltips_Error:
+
+    MsgBox "Error " & Err.Number & " (" & Err.Description & ") in procedure setRCTemperatureTooltips of Module Module1"
+End Sub
+
+'
+''---------------------------------------------------------------------------------------
+'' Procedure : ChangeToolTipWidgetDefaultSettings
+'' Author    : beededea
+'' Date      : 20/06/2023
+'' Purpose   : Set the size and characteristics of the RC tooltips
+''---------------------------------------------------------------------------------------
+''
+'Public Sub ChangeToolTipWidgetDefaultSettings(ByRef My_Widget As cWidgetBase)
+'
+'   On Error GoTo ChangeToolTipWidgetDefaultSettings_Error
+'
+'    With My_Widget
+'
+'        .FontName = gblTempFormFont
+'        .FontSize = Val(gblPrefsFontSizeLowDPI)
+'
+'    End With
+'
+'   On Error GoTo 0
+'   Exit Sub
+'
+'ChangeToolTipWidgetDefaultSettings_Error:
+'
+'    MsgBox "Error " & Err.Number & " (" & Err.Description & ") in procedure ChangeToolTipWidgetDefaultSettings of Module Module1"
+'End Sub
 
 '---------------------------------------------------------------------------------------
 ' Procedure : adjustAnemometerMainControls
@@ -1108,10 +1236,11 @@ Public Sub adjustAnemometerMainControls()
     End If
 
     overlayAnemoWidget.thisOpacity = Val(gblOpacity)
-    
     overlayAnemoWidget.thisFace = Val(gblWindSpeedScale)
-               
     
+    ' set the tooltips on the main screen
+    Call setRCAnemometerTooltips
+               
    On Error GoTo 0
    Exit Sub
 
@@ -1121,7 +1250,52 @@ adjustAnemometerMainControls_Error:
 
 End Sub
 
+'---------------------------------------------------------------------------------------
+' Procedure : setRCAnemometerTooltips
+' Author    : beededea
+' Date      : 15/05/2023
+' Purpose   : Set the tooltips using RC tooltip functionality only.
+'             Note: there are also the balloon tooltips and standard VB tooltips set elsewhere.
+'---------------------------------------------------------------------------------------
+'
+Public Sub setRCAnemometerTooltips()
+   On Error GoTo setRCAnemometerTooltips_Error
 
+    If gblEnableTooltips = "1" Then
+
+        overlayAnemoWidget.Widget.ToolTip = vbNullString & vbCrLf & "Use CTRL+mouse scrollwheel up/down to resize."
+        
+        fAnemometer.anemometerGaugeForm.Widgets("housing/tickbutton").Widget.ToolTip = "Choose smooth movement or regular flicks"
+        fAnemometer.anemometerGaugeForm.Widgets("housing/helpbutton").Widget.ToolTip = "Press for a little help"
+        fAnemometer.anemometerGaugeForm.Widgets("housing/startbutton").Widget.ToolTip = "Press to restart (when stopped)"
+        fAnemometer.anemometerGaugeForm.Widgets("housing/stopbutton").Widget.ToolTip = "Press to stop gauge operation."
+        fAnemometer.anemometerGaugeForm.Widgets("housing/switchfacesbutton").Widget.ToolTip = "Press to switch between alternative scales, metres/sec or knots."
+        fAnemometer.anemometerGaugeForm.Widgets("housing/lockbutton").Widget.ToolTip = "Press to lock the widget in place"
+        fAnemometer.anemometerGaugeForm.Widgets("housing/prefsbutton").Widget.ToolTip = "Press to open the widget preferences"
+        fAnemometer.anemometerGaugeForm.Widgets("housing/surround").Widget.ToolTip = "Ctrl + mouse scrollwheel up/down to resize, you can also drag me to a new position."
+        
+    Else
+        overlayAnemoWidget.Widget.ToolTip = vbNullString
+        
+        fAnemometer.anemometerGaugeForm.Widgets("housing/tickbutton").Widget.ToolTip = vbNullString
+        fAnemometer.anemometerGaugeForm.Widgets("housing/helpbutton").Widget.ToolTip = vbNullString
+        fAnemometer.anemometerGaugeForm.Widgets("housing/startbutton").Widget.ToolTip = vbNullString
+        fAnemometer.anemometerGaugeForm.Widgets("housing/stopbutton").Widget.ToolTip = vbNullString
+        fAnemometer.anemometerGaugeForm.Widgets("housing/switchfacesbutton").Widget.ToolTip = vbNullString
+        fAnemometer.anemometerGaugeForm.Widgets("housing/lockbutton").Widget.ToolTip = vbNullString
+        fAnemometer.anemometerGaugeForm.Widgets("housing/prefsbutton").Widget.ToolTip = vbNullString
+        fAnemometer.anemometerGaugeForm.Widgets("housing/surround").Widget.ToolTip = vbNullString
+   End If
+   
+   Call ChangeToolTipWidgetDefaultSettings(Cairo.ToolTipWidget.Widget)
+
+   On Error GoTo 0
+   Exit Sub
+
+setRCAnemometerTooltips_Error:
+
+    MsgBox "Error " & Err.Number & " (" & Err.Description & ") in procedure setRCAnemometerTooltips of Module Module1"
+End Sub
 
 '---------------------------------------------------------------------------------------
 ' Procedure : adjustHumidityMainControls
@@ -1209,7 +1383,8 @@ Public Sub adjustHumidityMainControls()
 
     overlayHumidWidget.thisOpacity = Val(gblOpacity)
 
-               
+    ' set the tooltips on the main screen
+    Call setRCHumidityTooltips
     
    On Error GoTo 0
    Exit Sub
@@ -1302,6 +1477,9 @@ Public Sub adjustBarometerMainControls()
                
     overlayBaromWidget.thisFace = Val(gblPressureScale)
     
+    ' set the tooltips on the main screen
+    Call setRCBarometerTooltips
+    
    On Error GoTo 0
    Exit Sub
 
@@ -1310,6 +1488,54 @@ adjustBarometerMainControls_Error:
     MsgBox "Error " & Err.Number & " (" & Err.Description & ") in procedure adjustBarometerMainControls of Module modMain"
 
 End Sub
+
+'---------------------------------------------------------------------------------------
+' Procedure : setRCBarometerTooltips
+' Author    : beededea
+' Date      : 15/05/2023
+' Purpose   : Set the tooltips using RC tooltip functionality only.
+'             Note: there are also the balloon tooltips and standard VB tooltips set elsewhere.
+'---------------------------------------------------------------------------------------
+'
+Public Sub setRCBarometerTooltips()
+   On Error GoTo setRCBarometerTooltips_Error
+
+    If gblEnableTooltips = "1" Then
+
+        overlayBaromWidget.Widget.ToolTip = vbNullString & vbCrLf & "Use CTRL+mouse scrollwheel up/down to resize."
+        
+        fBarometer.barometerGaugeForm.Widgets("housing/tickbutton").Widget.ToolTip = "Choose smooth movement or regular flicks"
+        fBarometer.barometerGaugeForm.Widgets("housing/helpbutton").Widget.ToolTip = "Press for a little help"
+        fBarometer.barometerGaugeForm.Widgets("housing/startbutton").Widget.ToolTip = "Press to restart (when stopped)"
+        fBarometer.barometerGaugeForm.Widgets("housing/stopbutton").Widget.ToolTip = "Press to stop gauge operation."
+        fBarometer.barometerGaugeForm.Widgets("housing/switchfacesbutton").Widget.ToolTip = "Press to switch between alternative scales, inches or mm of mercury, millibars and HPa."
+        fBarometer.barometerGaugeForm.Widgets("housing/lockbutton").Widget.ToolTip = "Press to lock the widget in place"
+        fBarometer.barometerGaugeForm.Widgets("housing/prefsbutton").Widget.ToolTip = "Press to open the widget preferences"
+        fBarometer.barometerGaugeForm.Widgets("housing/surround").Widget.ToolTip = "Ctrl + mouse scrollwheel up/down to resize, you can also drag me to a new position."
+        
+    Else
+        overlayBaromWidget.Widget.ToolTip = vbNullString
+        
+        fBarometer.barometerGaugeForm.Widgets("housing/tickbutton").Widget.ToolTip = vbNullString
+        fBarometer.barometerGaugeForm.Widgets("housing/helpbutton").Widget.ToolTip = vbNullString
+        fBarometer.barometerGaugeForm.Widgets("housing/startbutton").Widget.ToolTip = vbNullString
+        fBarometer.barometerGaugeForm.Widgets("housing/stopbutton").Widget.ToolTip = vbNullString
+        fBarometer.barometerGaugeForm.Widgets("housing/switchfacesbutton").Widget.ToolTip = vbNullString
+        fBarometer.barometerGaugeForm.Widgets("housing/lockbutton").Widget.ToolTip = vbNullString
+        fBarometer.barometerGaugeForm.Widgets("housing/prefsbutton").Widget.ToolTip = vbNullString
+        fBarometer.barometerGaugeForm.Widgets("housing/surround").Widget.ToolTip = vbNullString
+   End If
+   
+   Call ChangeToolTipWidgetDefaultSettings(Cairo.ToolTipWidget.Widget)
+
+   On Error GoTo 0
+   Exit Sub
+
+setRCBarometerTooltips_Error:
+
+    MsgBox "Error " & Err.Number & " (" & Err.Description & ") in procedure setRCBarometerTooltips of Module Module1"
+End Sub
+
 '---------------------------------------------------------------------------------------
 ' Procedure : setAlphaFormZordering
 ' Author    : Dean Beedell (yereverluvinunclebert)
@@ -1574,6 +1800,9 @@ Public Sub validateInputs()
     If gblIcao = vbNullString Then gblIcao = "EGSH"
 
     ' Configuration
+    If gblGaugeTooltips = "False" Then gblGaugeTooltips = "0"
+    If gblGaugeTooltips = vbNullString Then gblGaugeTooltips = "0"
+        
     If gblEnableTooltips = vbNullString Then gblEnableTooltips = "0"
     If gblEnablePrefsTooltips = vbNullString Then gblEnablePrefsTooltips = "1"
     If gblEnableBalloonTooltips = vbNullString Then gblEnableBalloonTooltips = "1"
