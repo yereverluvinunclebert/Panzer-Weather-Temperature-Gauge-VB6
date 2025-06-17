@@ -1483,80 +1483,80 @@ Private Function fWindIconSrc(ByVal force As Integer, ByVal thisIsDay As Boolean
 
     On Error GoTo fWindIconSrc_Error
     
-    fWindIconSrc = vbNullString
+    thisWindIconSrc = "nowind"
     
     ' Beaufort Scales (Wind Speed)
     If force = 0 Then
         ' Calm    Sea like a mirror.
-        thisWindIconSrc = thisWindIconSrc = "nowind.png"
+        thisWindIconSrc = "nowind"
     End If
     If force = 1 Then
         ' 1 1-3   Light air   Ripples only.
-        thisWindIconSrc = thisWindIconSrc = "nowind.png"
+        thisWindIconSrc = "nowind"
     End If
     If force = 2 Then
         'force = 2 ' 4-6 Light breeze    Small wavelets (0.2 m). Crests have a glassy appearance.
-        thisWindIconSrc = thisWindIconSrc = "nowind.png"
+        thisWindIconSrc = "nowind"
     End If
     If force = 3 Then
         'force = 3 ' 7-10  Gentle breeze     Large wavelets (0.6 m), crests begin to break.
-        thisWindIconSrc = thisWindIconSrc = "nowind.png"
+        thisWindIconSrc = "nowind"
     End If
     If force = 4 Then
         'force = 4 ' 11-16  Moderate breeze  Small waves (1 m), some whitecaps
-        thisWindIconSrc = thisWindIconSrc = "windy01.png"
+        thisWindIconSrc = "windy01"
     End If
     If force = 5 Then
         'force = 5 '  17-21 Fresh breeze
-        thisWindIconSrc = thisWindIconSrc = "windy02.png"
+        thisWindIconSrc = "windy02"
     End If
     If force = 6 Then
          ' 22-27 Strong breeze
-        thisWindIconSrc = thisWindIconSrc = "windy03.png"
+        thisWindIconSrc = "windy03"
     End If
     If force = 7 Then
          ' 28-33 Near gale
-        thisWindIconSrc = thisWindIconSrc = "windy04.png"
+        thisWindIconSrc = "windy04"
     End If
     If force = 8 Then
         ' 34-40 Gale
-        thisWindIconSrc = thisWindIconSrc = "windy05.png"
+        thisWindIconSrc = "windy05"
     End If
     If force = 9 Then
          ' 41-47 Strong gale
-        thisWindIconSrc = thisWindIconSrc = "windy05.png"
+        thisWindIconSrc = "windy05"
     End If
     If force = 10 Then
          ' 48-55 Storm
-        thisWindIconSrc = thisWindIconSrc = "windy05.png"
+        thisWindIconSrc = "windy05"
     End If
     If force = 11 Then
         ' 56-63 Violent storm
-        thisWindIconSrc = thisWindIconSrc = "windy05.png"
+        thisWindIconSrc = "windy05"
     End If
     If force = 12 Then
         ' 64+ Hurricane
-        thisWindIconSrc = thisWindIconSrc = "windy05.png"
+        thisWindIconSrc = "windy05"
     End If
     If force = 13 Then
          ' 80+ Typhoon
-        thisWindIconSrc = thisWindIconSrc = "windy05.png"
+        thisWindIconSrc = "windy05"
     End If
     If force = 14 Then
         'force = 14 ' 80+ Typhoon
-        thisWindIconSrc = thisWindIconSrc = "windy05.png"
+        thisWindIconSrc = "windy05"
     End If
     If force = 15 Then
         'force = 15 ' 80+ Typhoon
-        thisWindIconSrc = thisWindIconSrc = "windy05.png"
+        thisWindIconSrc = "windy05"
     End If
     If force = 16 Then
         'force = 16 ' 80+ Severe Typhoon
-        thisWindIconSrc = thisWindIconSrc = "windy05.png"
+        thisWindIconSrc = "windy05"
     End If
     If force = 17 Then
        'force = 17 ' 80+ Severe Typhoon
-       thisWindIconSrc = "windy05.png"
+       thisWindIconSrc = "windy05"
      End If
      
     ' turn the image from day to night
@@ -1566,9 +1566,7 @@ Private Function fWindIconSrc(ByVal force As Integer, ByVal thisIsDay As Boolean
       End If
     End If
      
-     thisWindIconSrc = App.path & "\Resources\images\icons_metar\"
-
-     fWindIconSrc = thisWindIconSrc ' return
+    fWindIconSrc = thisWindIconSrc ' return
     
     On Error GoTo 0
     Exit Function
@@ -1910,9 +1908,9 @@ Private Sub determineWeatherConditionIcon(ByRef skyClarity As String, ByVal this
     ' it is strange but it quite often occurs...
     If (InStr(thisWxString, "SH") <> 0 And InStr(thisWxString, "SN") = 0 And InStr(thisWxString, "SG") = 0 And weatherType <> "hail") Then
          'if no RAin code nor hail or snow but showers indicated then just assume rain...
-         showersIconSrc = "showers"
-     Else
-        showersIconSrc = vbNullString
+        showersIconSrc = "showers"
+    Else
+        showersIconSrc = "blank"
     End If
 
    'type of weather - rain
@@ -1981,7 +1979,7 @@ Private Sub determineWeatherConditionIcon(ByRef skyClarity As String, ByVal this
    End If
 
    
-   fogIconSrc = vbNullString    'default
+   fogIconSrc = "blank"    'default
    If (InStr(thisWxString, "BR") <> 0 Or InStr(thisWxString, "FG") <> 0) Then
      '"fog " or "mist"
      If (wSeverity = "light") Then
@@ -1993,6 +1991,7 @@ Private Sub determineWeatherConditionIcon(ByRef skyClarity As String, ByVal this
        If (wSeverity = "heavy") Then
           fogIconSrc = "3_fog"
        End If
+       
    End If
 
    'windIconSrc= "Resources\images\icons_metar\windy03"   'default
@@ -2002,7 +2001,7 @@ Private Sub determineWeatherConditionIcon(ByRef skyClarity As String, ByVal this
    End If
 
    
-   exoticIconSrc = vbNullString   'default
+   exoticIconSrc = "blank"   'default
    'exotic types - we have no icons for any of these
    If (InStr(thisWxString, "FU") <> 0) Then
       exoticIconSrc = "smoke"
@@ -2037,7 +2036,7 @@ Private Sub determineWeatherConditionIcon(ByRef skyClarity As String, ByVal this
       exoticIconSrc = "tornado"
    End If
    If (InStr(thisWxString, "SS") <> 0) Then
-     '"sandstorm\duststorm "endif
+     '"sandstorm\duststorm "
       exoticIconSrc = "duststorm"
    End If
    
@@ -2060,10 +2059,9 @@ Private Sub determineWeatherConditionIcon(ByRef skyClarity As String, ByVal this
     
     ' pass the weather icon to be used to the pictorial overlay where it will be displayed.
     overlayPictorialWidget.thisWeatherImage = weatherIconSrc
-
-'    overlayPictorialWidget.thisWeatherImage = showersIconSrc
-'    overlayPictorialWidget.thisWeatherImage = fogIconSrc
-'    overlayPictorialWidget.thisWeatherImage = exoticIconSrc
+    overlayPictorialWidget.thisShowersImage = showersIconSrc
+    overlayPictorialWidget.thisFogImage = fogIconSrc
+    overlayPictorialWidget.thisExoticImage = exoticIconSrc
     
     On Error GoTo 0
     Exit Sub
@@ -2689,8 +2687,8 @@ Private Sub tmrSampler_Timer()
     
     'MsgBox " sampling the METAR data, interval " & mSamplingInterval & " secs"
     
-     'WeatherMeteo.GetMetar = True
-        Call WeatherMeteo.getData
+    'WeatherMeteo.GetMetar = True
+    Call WeatherMeteo.getData
 
    On Error GoTo 0
    Exit Sub

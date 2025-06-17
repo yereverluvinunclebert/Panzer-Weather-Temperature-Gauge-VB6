@@ -731,6 +731,8 @@ Private Sub temperatureGaugeForm_MouseDown(ByRef Button As Integer, ByRef Shift 
         menuForm.mnuLockBarometerGauge.Visible = False
         menuForm.mnuLockPictorialGauge.Visible = False
         
+        menuForm.mnuHelpSplash.Caption = "Panzer Temperature Gauge One-Page Help"
+        
         Call menuForm.PopupMenu(menuForm.mnuMainMenu)
     Else
         ' ensure that the associated forms pop to the front when the main gauge receives focus

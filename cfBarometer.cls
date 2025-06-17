@@ -663,6 +663,9 @@ Private Sub barometerGaugeForm_MouseDown(ByRef Button As Integer, ByRef Shift As
         menuForm.mnuLockBarometerGauge.Visible = True
         menuForm.mnuLockAnemometerGauge.Visible = False
         menuForm.mnuLockPictorialGauge.Visible = False
+        
+        menuForm.mnuHelpSplash.Caption = "Panzer Barometer Gauge One-Page Help"
+        
         Call menuForm.PopupMenu(menuForm.mnuMainMenu)
     Else
         ' ensure that the associated forms pop to the front when the main gauge receives focus

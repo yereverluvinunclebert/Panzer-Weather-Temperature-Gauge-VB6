@@ -37,6 +37,10 @@ Private mHidden As Boolean                      ' property Hidden
 Private mThisOpacity As String                  ' property ThisOpacity
 Private mthisWeatherImage As String             ' property
 Private mthisWindImage As String                ' property
+Private mthisShowersImage As String
+Private mthisFogImage As String
+Private mthisExoticImage As String
+
 Private mvalidData As Boolean
 
 
@@ -226,10 +230,8 @@ Public Property Let thisWindImage(ByVal newValue As String)
     On Error GoTo thisWindImageLet_Error
 
     If mthisWindImage <> newValue Then mthisWindImage = newValue Else Exit Property
-    
-    If fFExists(mthisWindImage) Then
-        Cairo.ImageList.AddSurface "windiconimage", Cairo.ImageList(mthisWindImage)
-    End If
+   
+    Cairo.ImageList.AddSurface "windiconimage", Cairo.ImageList(mthisWindImage)
 
     On Error GoTo 0
     Exit Property
@@ -284,8 +286,131 @@ thisWeatherImageLet_Error:
 End Property
 
 
+'---------------------------------------------------------------------------------------
+' Property : thisShowersImage
+' Author    : Dean Beedell (yereverluvinunclebert)
+' Date      : 17/05/2023
+' Purpose   :
+'---------------------------------------------------------------------------------------
+'
+Public Property Get thisShowersImage() As String
+   On Error GoTo thisShowersImageGet_Error
+
+    thisShowersImage = mthisShowersImage
+
+   On Error GoTo 0
+   Exit Property
+
+thisShowersImageGet_Error:
+
+    MsgBox "Error " & Err.Number & " (" & Err.Description & ") in Property thisShowersImage of Class Module cwoverlaypict"
+End Property
+'---------------------------------------------------------------------------------------
+' Property  : thisShowersImage
+' Author    :
+' Date      : 09/05/2023
+' Purpose   :
+'---------------------------------------------------------------------------------------
+'
+Public Property Let thisShowersImage(ByVal newValue As String)
+    On Error GoTo thisShowersImageLet_Error
+
+    If mthisShowersImage <> newValue Then mthisShowersImage = newValue Else Exit Property
+    
+    Cairo.ImageList.AddSurface "showersiconimage", Cairo.ImageList(mthisShowersImage)
+
+    On Error GoTo 0
+    Exit Property
+
+thisShowersImageLet_Error:
+
+    MsgBox "Error " & Err.Number & " (" & Err.Description & ") in Property thisShowersImage of Class Module cwoverlaypict"
+End Property
 
 
+'---------------------------------------------------------------------------------------
+' Property : thisFogImage
+' Author    : Dean Beedell (yereverluvinunclebert)
+' Date      : 17/05/2023
+' Purpose   :
+'---------------------------------------------------------------------------------------
+'
+Public Property Get thisFogImage() As String
+   On Error GoTo thisFogImageGet_Error
+
+    thisFogImage = mthisFogImage
+
+   On Error GoTo 0
+   Exit Property
+
+thisFogImageGet_Error:
+
+    MsgBox "Error " & Err.Number & " (" & Err.Description & ") in Property thisFogImage of Class Module cwoverlaypict"
+End Property
+'---------------------------------------------------------------------------------------
+' Property  : thisFogImage
+' Author    :
+' Date      : 09/05/2023
+' Purpose   :
+'---------------------------------------------------------------------------------------
+'
+Public Property Let thisFogImage(ByVal newValue As String)
+    On Error GoTo thisFogImageLet_Error
+
+    If mthisFogImage <> newValue Then mthisFogImage = newValue Else Exit Property
+    
+    Cairo.ImageList.AddSurface "fogiconimage", Cairo.ImageList(mthisFogImage)
+
+    On Error GoTo 0
+    Exit Property
+
+thisFogImageLet_Error:
+
+    MsgBox "Error " & Err.Number & " (" & Err.Description & ") in Property thisFogImage of Class Module cwoverlaypict"
+End Property
+
+
+
+'---------------------------------------------------------------------------------------
+' Property : thisExoticImage
+' Author    : Dean Beedell (yereverluvinunclebert)
+' Date      : 17/05/2023
+' Purpose   :
+'---------------------------------------------------------------------------------------
+'
+Public Property Get thisExoticImage() As String
+   On Error GoTo thisExoticImageGet_Error
+
+    thisExoticImage = mthisExoticImage
+
+   On Error GoTo 0
+   Exit Property
+
+thisExoticImageGet_Error:
+
+    MsgBox "Error " & Err.Number & " (" & Err.Description & ") in Property thisExoticImage of Class Module cwoverlaypict"
+End Property
+'---------------------------------------------------------------------------------------
+' Property  : thisExoticImage
+' Author    :
+' Date      : 09/05/2023
+' Purpose   :
+'---------------------------------------------------------------------------------------
+'
+Public Property Let thisExoticImage(ByVal newValue As String)
+    On Error GoTo thisExoticImageLet_Error
+
+    If mthisExoticImage <> newValue Then mthisExoticImage = newValue Else Exit Property
+    
+    Cairo.ImageList.AddSurface "exoticiconimage", Cairo.ImageList(mthisExoticImage)
+
+    On Error GoTo 0
+    Exit Property
+
+thisExoticImageLet_Error:
+
+    MsgBox "Error " & Err.Number & " (" & Err.Description & ") in Property thisExoticImage of Class Module cwoverlaypict"
+End Property
 
 '---------------------------------------------------------------------------------------
 ' Property : Locked
@@ -533,6 +658,9 @@ Private Sub W_Paint(CC As RC6.cCairoContext, ByVal xAbs As Single, ByVal yAbs As
      
      CC.RenderSurfaceContent "weathericonimage", 295, 250, , , , someOpacity
      CC.RenderSurfaceContent "windiconimage", 295, 250, , , , someOpacity
+     CC.RenderSurfaceContent "showersiconimage", 295, 250, , , , someOpacity
+     CC.RenderSurfaceContent "fogiconimage", 295, 250, , , , someOpacity
+     CC.RenderSurfaceContent "exoticiconimage", 295, 250, , , , someOpacity
           
     W.Refresh
 

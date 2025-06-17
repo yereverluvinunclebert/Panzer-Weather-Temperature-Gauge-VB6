@@ -640,7 +640,10 @@ Private Sub addDayWeatherImagesToImageLists()
     
     Cairo.ImageList.AddImage "weathericonimage", MyPath & "globe.png"
     Cairo.ImageList.AddImage "windiconimage", MyPath & "nowind.png"
-
+    Cairo.ImageList.AddImage "showersiconimage", MyPath & "showers.png"
+    Cairo.ImageList.AddImage "fogiconimage", MyPath & "1_fog.png"
+    Cairo.ImageList.AddImage "exoticiconimage", MyPath & "smoke.png"
+    
     If Not fDirExists(MyPath) Then
         MsgBox "WARNING - The Weather Icon folder is not present in the correct location " & App.path
     End If

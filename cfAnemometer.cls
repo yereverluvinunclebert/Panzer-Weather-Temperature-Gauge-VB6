@@ -662,6 +662,8 @@ Private Sub anemometerGaugeForm_MouseDown(ByRef Button As Integer, ByRef Shift A
         menuForm.mnuLockAnemometerGauge.Visible = True
         menuForm.mnuLockBarometerGauge.Visible = False
         menuForm.mnuLockPictorialGauge.Visible = False
+        
+        menuForm.mnuHelpSplash.Caption = "Panzer Anemometer Gauge One-Page Help"
 
         Call menuForm.PopupMenu(menuForm.mnuMainMenu)
     Else
