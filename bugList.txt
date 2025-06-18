@@ -105,24 +105,41 @@ showersIconSrc now shows
 fogIconSrc
 exoticIconSrc
 
+tooltips RC style
+reloadProgram
+
+test the sleep functionality
+
 TODO:
+
+new print-out for the new rainfall indicator
+
+prefs balloon tooltips on all controls
+
+preferences window positioning as per the clock/cal
 
 pictorial gauge time to next update rotator
 
+add a rainfall alarm, ie, if it wasn't raining but in now is then raise an alarm
+
+add rainfall indicator lamp to humidity gauge WIP
+    if new rain, flash using timers
+    if storm, flash using timers
+
+add rainfall indicator to pictorial gauge WIP
+    if new rain reveal the rainfall ticker tape
+
 pressure drop alarm - test
-test the sleep functionality - wip
-
-refactor to use just one cwOverlay file
-
-think about removing some global vars and changing them to properties in the new overlay, should be possible to incorporate with the above
 
 fix population of the RC6 combobox - wip
 
-add a rainfall alarm, ie, if it wasn't raining but in now is then raise an alarm
-
-tiny tooltips for other gauges?
+think about removing some global vars and changing them to properties in the new overlay, should be possible to incorporate with the above
 
 update html code documentation using MZTools code documenter
+
+tiny tooltips resove this with Olaf?
+
+refactor to use just one cwOverlay file
 
 ' test usage of RC6 for monitor awareness - wip
 '      adjust Form Position on startup placing form onto Correct Monitor when placed off screen due to
@@ -138,10 +155,8 @@ update html code documentation using MZTools code documenter
 
 ' setup2go create setup.exe
 
-prefs balloon tooltips on all controls
 resizing using subclassing
 github home menu link
-
 
 ' -oOo-
 

@@ -1686,20 +1686,20 @@ Public Sub readSettingsFile(ByVal location As String, ByVal gblSettingsFile As S
         gblBarometerFormLowDpiYPos = fGetINISetting("Software\PzBarometerGauge", "barometerFormLowDpiYPos", gblSettingsFile)
         gblPreventDraggingBarometer = fGetINISetting("Software\PzBarometerGauge", "preventDraggingBarometer", gblSettingsFile)
         
-        gblPictorialGaugeSize = fGetINISetting(location, "pictorialGaugeSize", gblSettingsFile)
-        gblPictorialLandscapeLocked = fGetINISetting(location, "pictorialLandscapeLocked", gblSettingsFile)
-        gblPictorialPortraitLocked = fGetINISetting(location, "pictorialPortraitLocked", gblSettingsFile)
-        gblPictorialLandscapeLockedHoffset = fGetINISetting(location, "pictorialLandscapeHoffset", gblSettingsFile)
-        gblPictorialLandscapeLockedVoffset = fGetINISetting(location, "pictorialLandscapeYoffset", gblSettingsFile)
-        gblPictorialPortraitLockedHoffset = fGetINISetting(location, "pictorialPortraitHoffset", gblSettingsFile)
-        gblPictorialPortraitLockedVoffset = fGetINISetting(location, "pictorialPortraitVoffset", gblSettingsFile)
-        gblPictorialVLocationPerc = fGetINISetting(location, "pictorialVLocationPerc", gblSettingsFile)
-        gblPictorialHLocationPerc = fGetINISetting(location, "pictorialHLocationPerc", gblSettingsFile)
+        gblPictorialGaugeSize = fGetINISetting("Software\PzPictorialGauge", "pictorialGaugeSize", gblSettingsFile)
+        gblPictorialLandscapeLocked = fGetINISetting("Software\PzPictorialGauge", "pictorialLandscapeLocked", gblSettingsFile)
+        gblPictorialPortraitLocked = fGetINISetting("Software\PzPictorialGauge", "pictorialPortraitLocked", gblSettingsFile)
+        gblPictorialLandscapeLockedHoffset = fGetINISetting("Software\PzPictorialGauge", "pictorialLandscapeHoffset", gblSettingsFile)
+        gblPictorialLandscapeLockedVoffset = fGetINISetting("Software\PzPictorialGauge", "pictorialLandscapeYoffset", gblSettingsFile)
+        gblPictorialPortraitLockedHoffset = fGetINISetting("Software\PzPictorialGauge", "pictorialPortraitHoffset", gblSettingsFile)
+        gblPictorialPortraitLockedVoffset = fGetINISetting("Software\PzPictorialGauge", "pictorialPortraitVoffset", gblSettingsFile)
+        gblPictorialVLocationPerc = fGetINISetting("Software\PzPictorialGauge", "pictorialVLocationPerc", gblSettingsFile)
+        gblPictorialHLocationPerc = fGetINISetting("Software\PzPictorialGauge", "pictorialHLocationPerc", gblSettingsFile)
         gblPictorialFormHighDpiXPos = fGetINISetting("Software\PzPictorialGauge", "pictorialFormHighDpiXPos", gblSettingsFile)
         gblPictorialFormHighDpiYPos = fGetINISetting("Software\PzPictorialGauge", "pictorialFormHighDpiYPos", gblSettingsFile)
         gblPictorialFormLowDpiXPos = fGetINISetting("Software\PzPictorialGauge", "pictorialFormLowDpiXPos", gblSettingsFile)
         gblPictorialFormLowDpiYPos = fGetINISetting("Software\PzPictorialGauge", "pictorialFormLowDpiYPos", gblSettingsFile)
-        gblPreventDraggingPictorial = fGetINISetting(location, "preventDraggingPictorial", gblSettingsFile)
+        gblPreventDraggingPictorial = fGetINISetting("Software\PzPictorialGauge", "preventDraggingPictorial", gblSettingsFile)
              
         ' font
         gblTempFormFont = fGetINISetting(location, "tempFormFont", gblSettingsFile)
@@ -2309,7 +2309,8 @@ Private Sub loadHumidityExcludePathCollection()
         
         .Add Empty, "bigreflection"     'all reflections
         .Add Empty, "windowreflection"
-        
+        .Add Empty, "redlamptrue"
+        .Add Empty, "redlampfalse"
         .Add Empty, "pointerShadow"
         .Add Empty, "pointer"
        
