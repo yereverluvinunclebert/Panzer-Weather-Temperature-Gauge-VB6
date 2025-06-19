@@ -893,8 +893,9 @@ Private Sub adjustPictorialMainControls()
     
     With fPictorial.pictorialGaugeForm.Widgets("precipitationprintout").Widget
         .HoverColor = 0 ' set the hover colour to grey - this may change later with new RC6
-        .MousePointer = IDC_SIZEALL
-        .Alpha = Val(gblOpacity) / 100
+        .MousePointer = IDC_HAND
+        .Alpha = 0
+        .Refresh
     End With
     
 '    If gblPointerAnimate = "0" Then
@@ -914,8 +915,6 @@ Private Sub adjustPictorialMainControls()
         overlayPictorialWidget.Locked = True ' this is just here for continuity's sake, it is also set at the time the control is selected
         fPictorial.pictorialGaugeForm.Widgets("housing/lockbutton").Widget.Alpha = 0
     End If
-
-
 
     overlayPictorialWidget.thisOpacity = Val(gblOpacity)
     

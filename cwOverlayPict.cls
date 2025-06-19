@@ -40,8 +40,10 @@ Private mthisWindImage As String                ' property
 Private mthisShowersImage As String
 Private mthisFogImage As String
 Private mthisExoticImage As String
-
 Private mvalidData As Boolean
+
+
+
 
 
 
@@ -558,7 +560,7 @@ End Property
 '             For this Overlay-Widget alone, we make everything "fully click-through"
 '---------------------------------------------------------------------------------------------
 '
-Private Sub W_HitTest(ByVal X As Single, ByVal Y As Single, HitResultHit As Boolean) 'ensure ClickThrough-behaviour in ImagePixels which are "fully Alpha"
+Private Sub W_HitTest(ByVal x As Single, ByVal y As Single, HitResultHit As Boolean) 'ensure ClickThrough-behaviour in ImagePixels which are "fully Alpha"
    On Error GoTo W_HitTest_Error
 
    HitResultHit = False

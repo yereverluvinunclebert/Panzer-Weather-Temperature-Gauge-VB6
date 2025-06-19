@@ -31,6 +31,8 @@ Private PSDWidth As Long
 Private PSDHeight As Long
 'Private mGlowing As Boolean
 
+Private mNewPrecipitation As Boolean
+
 
 '---------------------------------------------------------------------------------------
 ' Procedure : Class_Initialize
@@ -118,25 +120,28 @@ Public Sub InitPictorialFromPSD(ByRef PSD_FileNameOrByteArray As Variant)
         Next i
     End With '<-- the Parser-instance will be destroyed here (freeing the Memory, the internal PSD-Layers have occupied)
     
+    ' create a new widget and add it to the pictorial form using the pictorial overlay class
     Set overlayPictorialWidget = pictorialGaugeForm.Widgets.Add(New cwOverlayPict, "Overlay", 0, 0, PSDWidth, PSDHeight)
-    Set overlayPictorialWidget.cCollOverlayPictImages = collPictorialPSDNonUIElements 'make the excluded PSD-Surface-Paths known to the Overlay-Widget
+    
+    ' add the 'excluded' PSD-Surface-Paths to the Overlay-Widget, now acting as a single widget comprising multiple images
+    Set overlayPictorialWidget.cCollOverlayPictImages = collPictorialPSDNonUIElements
         overlayPictorialWidget.cxPerc = 0.4940476 'define the relative center (within cwOverlayPict, which has the same size as the Form and the PSD...) this is used for clock-hand-positioning
         overlayPictorialWidget.cyPerc = 0.4727272
         
+    ' add a RC label widget to the pictorial gauge to display rainfall alarm text information
     Set sLblPrecipitationText = pictorialGaugeForm.Widgets.Add(New_W("cwLabel"), "sLblPrecipitationText", 185, 630, 295, 450)
     sLblPrecipitationText.Widget.FontSize = 15
     sLblPrecipitationText.Widget.FontName = "courier new"
     sLblPrecipitationText.Widget.FontBold = True
-    sLblPrecipitationText.Widget.Alpha = 0 ' this does not work
+    'sLblPrecipitationText.Widget.Alpha = 0 ' this does not work
     sLblPrecipitationText.borderWidth = 0
     sLblPrecipitationText.WordWrap = True
     sLblPrecipitationText.VAlign = 0
     sLblPrecipitationText.Alignment = vbCenter
     sLblPrecipitationText.TextShadowColor = &H80000010
     sLblPrecipitationText.Widget.BackColor = -1
-
-    sLblPrecipitationText.Caption = "Weather data indicates imminent rainfall"
-        
+    sLblPrecipitationText.Widget.MousePointer = IDC_HAND
+    sLblPrecipitationText.Caption = "" ' has to be this at startup
 
    On Error GoTo 0
    Exit Sub
@@ -170,7 +175,7 @@ Private Sub pictorialGaugeForm_BubblingEvent(ByRef sender As Object, ByRef Event
                 If gblEnableBalloonTooltips = "1" Then CreateToolTip pictorialGaugeForm.hwnd, "This button is non-functional in this gauge.", _
                      TTIconInfo, widgetName7 & " Button Help", , , , True
             Case "housing/switchfacesbutton"
-                If gblEnableBalloonTooltips = "1" Then CreateToolTip pictorialGaugeForm.hwnd, "This button is non-functional in this gauge.", _
+                If gblEnableBalloonTooltips = "1" Then CreateToolTip pictorialGaugeForm.hwnd, "This button tests the weather data precipitation alert system, raising the humidity red lamp and displaying the precipitation alarm print-out..", _
                      TTIconInfo, widgetName7 & " Button Help", , , , True
             Case "housing/stopbutton"
                 If gblEnableBalloonTooltips = "1" Then CreateToolTip pictorialGaugeForm.hwnd, "This button is non-functional in this gauge.", _
@@ -198,8 +203,8 @@ Private Sub pictorialGaugeForm_BubblingEvent(ByRef sender As Object, ByRef Event
                 Call lockbutton_mouseDown(sender)
             Case "housing/prefsbutton"
                 Call prefsbutton_mouseDown(sender)
-'            Case "housing/tickbutton"
-'                Call tickbutton_mouseDown(sender)
+            Case "housing/switchfacesbutton"
+                 Call switchfacesbutton_mouseDown(sender)
             Case "housing/stopbutton"
                 Call stopbutton_mouseDown(sender)
             Case "precipitationprintout"
@@ -346,7 +351,34 @@ stopbutton_mouseDown_Error:
 
 End Sub
 
+'---------------------------------------------------------------------------------------
+' Procedure : switchfacesbutton_mouseDown
+' Author    : Dean Beedell (yereverluvinunclebert)
+' Date      : 03/08/2023
+' Purpose   :
+'---------------------------------------------------------------------------------------
+'
+Private Sub switchfacesbutton_mouseDown(ByRef sender As Object)
+    On Error GoTo switchfacesbutton_mouseDown_Error
+'
+    sender.Widget.Alpha = 0
+    sender.Widget.Refresh
+    
+    fPictorial.pictorialGaugeForm.Widgets("sLblPrecipitationText").Caption = "Testing the Weather Data Precipitation Alert System " & vbCrLf & vbCrLf & "Testing Successful." & vbCrLf & vbCrLf & vbCrLf & vbCrLf & "Press here to close."
 
+    Call showPrecipitationPrintOut
+    
+    sender.Widget.Alpha = 1
+    sender.Widget.Refresh
+    
+   On Error GoTo 0
+   Exit Sub
+
+switchfacesbutton_mouseDown_Error:
+
+    MsgBox "Error " & Err.Number & " (" & Err.Description & ") in procedure switchfacesbutton_mouseDown of Class Module cfBarometer"
+
+End Sub
 
 
 '---------------------------------------------------------------------------------------
@@ -404,20 +436,30 @@ End Sub
 '---------------------------------------------------------------------------------------
 '
 Private Sub hidePrecipitationPrintOut()
+    Dim fileToPlay As String: fileToPlay = vbNullString
 
     ' humidity gauge to extinguish the new rain warning lamp
-   On Error GoTo hidePrecipitationPrintOut_Error
+    On Error GoTo hidePrecipitationPrintOut_Error
 
+    ' switch the humidity gauge red lamp off
     overlayHumidWidget.precipitationRedLamp = False
     
+    ' remove the precipitation text
     'sLblPrecipitationText.Widget.Alpha = 0 ' this does not work
-    sLblPrecipitationText.Caption = "" ' we remove the caption altogether manually
+    sLblPrecipitationText.Caption = "" ' instead we remove the caption altogether manually
     sLblPrecipitationText.Widget.Refresh
 
+    ' now remove the printout widget
     pictorialGaugeForm.Widgets("precipitationprintout").Widget.Alpha = 0
     pictorialGaugeForm.Widgets("precipitationprintout").Widget.Refresh
     
-    ' now clear the precipitationWasFalling flag .
+    ' now clear the precipitationWasFalling flag
+    WeatherMeteo.PrecipitationWasFalling = False
+    
+    fileToPlay = "shredder.wav"
+    If gblEnableSounds = "1" And fFExists(App.path & "\resources\sounds\" & fileToPlay) Then
+        PlaySound App.path & "\resources\sounds\" & fileToPlay, ByVal 0&, SND_FILENAME Or SND_ASYNC
+    End If
 
    On Error GoTo 0
    Exit Sub
@@ -427,6 +469,43 @@ hidePrecipitationPrintOut_Error:
     MsgBox "Error " & Err.Number & " (" & Err.Description & ") in procedure hidePrecipitationPrintOut of Class Module cfPictorial"
 
 End Sub
+
+'---------------------------------------------------------------------------------------
+' Procedure : showPrecipitationPrintOut
+' Author    : beededea
+' Date      : 19/06/2025
+' Purpose   :
+'---------------------------------------------------------------------------------------
+'
+Private Sub showPrecipitationPrintOut()
+    Dim fileToPlay As String: fileToPlay = vbNullString
+
+    ' humidity gauge to extinguish the new rain warning lamp
+    On Error GoTo showPrecipitationPrintOut_Error
+
+    ' switch the humidity gauge red lamp off
+    overlayHumidWidget.precipitationRedLamp = True
+    
+    sLblPrecipitationText.Widget.Refresh
+
+    ' now display the printout widget
+    pictorialGaugeForm.Widgets("precipitationprintout").Widget.Alpha = Val(gblOpacity) / 100
+    pictorialGaugeForm.Widgets("precipitationprintout").Widget.Refresh
+    
+    fileToPlay = "shredder.wav"
+    If gblEnableSounds = "1" And fFExists(App.path & "\resources\sounds\" & fileToPlay) Then
+        PlaySound App.path & "\resources\sounds\" & fileToPlay, ByVal 0&, SND_FILENAME Or SND_ASYNC
+    End If
+
+   On Error GoTo 0
+   Exit Sub
+
+showPrecipitationPrintOut_Error:
+
+    MsgBox "Error " & Err.Number & " (" & Err.Description & ") in procedure showPrecipitationPrintOut of Class Module cfPictorial"
+
+End Sub
+
 '---------------------------------------------------------------------------------------
 ' Procedure : lockbutton_mouseDown
 ' Author    : Dean Beedell (yereverluvinunclebert)
@@ -798,3 +877,50 @@ End Sub
 
 
 
+
+'---------------------------------------------------------------------------------------
+' Property : newPrecipitation
+' Author    : Dean Beedell (yereverluvinunclebert)
+' Date      : 17/05/2023
+' Purpose   :
+'---------------------------------------------------------------------------------------
+'
+Public Property Get newPrecipitation() As Boolean
+   On Error GoTo newPrecipitationGet_Error
+
+    newPrecipitation = mNewPrecipitation
+
+   On Error GoTo 0
+   Exit Property
+
+newPrecipitationGet_Error:
+
+    MsgBox "Error " & Err.Number & " (" & Err.Description & ") in Property newPrecipitation of Class Module cwoverlaypict"
+End Property
+
+'---------------------------------------------------------------------------------------
+' Property  : newPrecipitation
+' Author    :
+' Date      : 09/05/2023
+' Purpose   :
+'---------------------------------------------------------------------------------------
+'
+Public Property Let newPrecipitation(ByVal newValue As Boolean)
+    On Error GoTo newPrecipitationLet_Error
+
+    If mNewPrecipitation <> newValue Then mNewPrecipitation = newValue Else Exit Property
+    
+    If mNewPrecipitation = True Then
+        Call showPrecipitationPrintOut
+    Else
+        Call hidePrecipitationPrintOut
+    End If
+    
+    
+    On Error GoTo 0
+    Exit Property
+
+newPrecipitationLet_Error:
+
+    MsgBox "Error " & Err.Number & " (" & Err.Description & ") in Property newPrecipitation of Class Module cwoverlaypict"
+End Property

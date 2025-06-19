@@ -116,7 +116,10 @@ Public Sub InitAnemometerFromPSD(ByRef PSD_FileNameOrByteArray As Variant)
         Next i
     End With '<-- the Parser-instance will be destroyed here (freeing the Memory, the internal PSD-Layers have occupied)
     
+    ' create a new widget and add it to the anemometer form using the anemometer overlay class
     Set overlayAnemoWidget = anemometerGaugeForm.Widgets.Add(New cwOverlayAnemo, "Overlay", 0, 0, PSDWidth, PSDHeight)
+    
+    ' add the 'excluded' PSD-Surface-Paths to the Overlay-Widget, now acting as a single widget comprising multiple images
     Set overlayAnemoWidget.cCollOverlayAnemoImages = collAnemometerPSDNonUIElements 'make the excluded PSD-Surface-Paths known to the Overlay-Widget
         overlayAnemoWidget.cxPerc = 0.4940476 'define the relative center (within cwOverlayTemp, which has the same size as the Form and the PSD...) this is used for clock-hand-positioning
         overlayAnemoWidget.cyPerc = 0.4727272

@@ -42,6 +42,7 @@ Private mWeatherDetails As String ' property
 Private mWeHaveData As Boolean ' property
 Private mTicking As Boolean ' property Ticking
 Private mTemperatureValue As Single ' property Ticking
+Private mPrecipitationWasFalling As Boolean
 
 Public Event OnChange(ByVal wehavedata As Boolean)
 
@@ -57,7 +58,7 @@ Private icaoLocation5 As String
 
 Private strTimeThen As Date
 
-Private precipitationWasFalling As Boolean ' was there any precipitation prior to current poll
+'Private PrecipitationWasFalling As Boolean ' was there any precipitation prior to current poll
 
 
 '---------------------------------------------------------------------------------------
@@ -77,7 +78,7 @@ Private Sub Class_Initialize()
     On Error GoTo Class_Initialize_Error
 
     strTimeThen = Now()
-    precipitationWasFalling = False
+    'PrecipitationWasFalling = False
     
     ' these initialisations need to be moved elsewhere
     'Dim sunriseSunset As cwSunriseSunset   'uninitialised declaration X
@@ -203,6 +204,53 @@ SamplerEnabledLet_Error:
 
     MsgBox "Error " & Err.Number & " (" & Err.Description & ") in Property SamplerEnabled of Class Module cwOverlayTemp"
 End Property
+
+'---------------------------------------------------------------------------------------
+' Property  : PrecipitationWasFalling
+' Author    : Dean Beedell (yereverluvinunclebert)
+' Date      : 17/05/2023
+' Purpose   :
+'---------------------------------------------------------------------------------------
+'
+Public Property Get PrecipitationWasFalling() As Boolean
+   On Error GoTo PrecipitationWasFallingGet_Error
+
+   PrecipitationWasFalling = mPrecipitationWasFalling
+
+   On Error GoTo 0
+   Exit Property
+
+PrecipitationWasFallingGet_Error:
+
+    MsgBox "Error " & Err.Number & " (" & Err.Description & ") in Property PrecipitationWasFalling of Class Module cwOverlayTemp"
+End Property
+'---------------------------------------------------------------------------------------
+' Property  : PrecipitationWasFalling
+' Author    : Dean Beedell (yereverluvinunclebert)
+' Date      : 10/05/2023
+' Purpose   :
+'---------------------------------------------------------------------------------------
+'
+Public Property Let PrecipitationWasFalling(ByVal newValue As Boolean)
+   On Error GoTo PrecipitationWasFallingLet_Error
+
+    If mPrecipitationWasFalling <> newValue Then mPrecipitationWasFalling = newValue Else Exit Property
+    
+    If mPrecipitationWasFalling = True Then
+        tmrSampler.Enabled = True
+    Else
+        tmrSampler.Enabled = False
+    End If
+
+   On Error GoTo 0
+   Exit Property
+
+PrecipitationWasFallingLet_Error:
+
+    MsgBox "Error " & Err.Number & " (" & Err.Description & ") in Property PrecipitationWasFalling of Class Module cwOverlayTemp"
+End Property
+
+
 '---------------------------------------------------------------------------------------
 ' Property  : TestPressureDrop
 ' Author    : Dean Beedell (yereverluvinunclebert)
@@ -2069,18 +2117,23 @@ Private Sub determineWeatherConditionIcon(ByRef skyClarity As String, ByVal this
 
     End If
     
+    
     ' if it is raining now and it is new rain ie. it was not previously raining nor any other form of precipitation
-    If precipitationIsFalling = True And precipitationWasFalling = False Then
+    If precipitationIsFalling = True And mPrecipitationWasFalling = False Then
         
-        precipitationWasFalling = True
+        ' now we set the flag that lets the program know NOT to raise a precipitation alarm again
+        PrecipitationWasFalling = True
              
         ' humidity gauge to light the new rain warning lamp
-        overlayHumidWidget.precipitationRedLamp = True
+        'overlayHumidWidget.precipitationRedLamp = True
              
         ' pictorial gauge to show the new precipitation print out
-        'overlayPictorialWidget.newPrecipitation = True
+        fPictorial.newPrecipitation = True
+    
+        fPictorial.pictorialGaugeForm.Widgets("sLblPrecipitationText").Caption = "Weather Data Precipitation Alert System " & vbCrLf & "Weather data indicates imminent rainfall"
+            
     End If
-           
+               
     If (debugFlg = 1) Then Debug.Print ("%determineWeatherCondition - iconSrc " & iconSrc)
     
     ' pass the weather icon to be used to the pictorial overlay where it will be displayed.

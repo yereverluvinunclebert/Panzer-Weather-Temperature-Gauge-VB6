@@ -50,7 +50,7 @@ Description="FOSS Panzer Temperature Gauge VB6 Widget for Windows"
 CompatibleMode="0"
 MajorVer=0
 MinorVer=0
-RevisionVer=1350
+RevisionVer=1373
 AutoIncrementVer=1
 ServerSupportFiles=0
 VersionComments="Alpha-release version. "
@@ -89,3 +89,5 @@ RevisionVersion=0
 
 [Rubberduck]
 ProjectId=79e9b044-786f-4d2a-abd2-5aecb28ec8a1
+
+
