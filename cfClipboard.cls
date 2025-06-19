@@ -107,7 +107,7 @@ Public Sub InitClipBFromPSD(ByRef PSD_FileNameOrByteArray As Variant)
                             W.Alpha = 1
                         End If
                         
-                        W.Tag = 0.01
+                        'W .Tag = 0.01
                         
                         ' set the default characteristics of the non-interactive areas
                         ' note: the clickable layers characteristics are set in adjustSelectMainControls
@@ -194,7 +194,7 @@ End Sub
 ' Purpose   :
 '---------------------------------------------------------------------------------------
 '
-Private Sub ClipBForm_MouseDown(ByRef Button As Integer, ByRef Shift As Integer, ByRef X As Single, ByRef Y As Single)
+Private Sub ClipBForm_MouseDown(ByRef Button As Integer, ByRef Shift As Integer, ByRef x As Single, ByRef y As Single)
    On Error GoTo W_MouseDown_Error
 
     If Button = vbRightButton Then
@@ -232,8 +232,8 @@ End Sub
 ' Purpose   :
 '---------------------------------------------------------------------------------------
 '
-Private Sub ClipBForm_MouseMove(ByRef Button As Integer, ByRef Shift As Integer, ByRef X As Single, ByRef Y As Single)
-  Static x0 As Single, y0 As Single: If Button = 0 Then x0 = X: y0 = Y 'just store the offsets when no button is down
+Private Sub ClipBForm_MouseMove(ByRef Button As Integer, ByRef Shift As Integer, ByRef x As Single, ByRef y As Single)
+  Static x0 As Single, y0 As Single: If Button = 0 Then x0 = x: y0 = y 'just store the offsets when no button is down
   
    On Error GoTo ClipBForm_MouseMove_Error
     
@@ -245,8 +245,8 @@ Private Sub ClipBForm_MouseMove(ByRef Button As Integer, ByRef Shift As Integer,
     End If
     If Button = vbLeftButton And Not clipBForm.ActiveWidget Is Nothing Then 'Form-Dragging (under certain conditions)
 
-      ClipBFX = (X - x0) * clipBForm.WidgetRoot.Zoom + clipBForm.Left
-      ClipBFY = (Y - y0) * clipBForm.WidgetRoot.Zoom + clipBForm.Top
+      ClipBFX = (x - x0) * clipBForm.WidgetRoot.Zoom + clipBForm.Left
+      ClipBFY = (y - y0) * clipBForm.WidgetRoot.Zoom + clipBForm.Top
       clipBForm.Move ClipBFX, ClipBFY
     End If
 
@@ -300,7 +300,7 @@ End Sub
 ' Purpose   : save the form x,y position when ever the gauge/form is dragged
 '---------------------------------------------------------------------------------------
 '
-Private Sub ClipBForm_MouseUp(ByRef Button As Integer, ByRef Shift As Integer, ByRef X As Single, ByRef Y As Single)
+Private Sub ClipBForm_MouseUp(ByRef Button As Integer, ByRef Shift As Integer, ByRef x As Single, ByRef y As Single)
     On Error GoTo ClipBForm_MouseUp_Error
     
     Call saveClipboardGaugePosition

@@ -57,6 +57,9 @@ Private icaoLocation5 As String
 
 Private strTimeThen As Date
 
+Private precipitationWasFalling As Boolean ' was there any precipitation prior to current poll
+
+
 '---------------------------------------------------------------------------------------
 ' Procedure : Class_Initialize
 ' Author    : Dean Beedell (yereverluvinunclebert)
@@ -74,6 +77,7 @@ Private Sub Class_Initialize()
     On Error GoTo Class_Initialize_Error
 
     strTimeThen = Now()
+    precipitationWasFalling = False
     
     ' these initialisations need to be moved elsewhere
     'Dim sunriseSunset As cwSunriseSunset   'uninitialised declaration X
@@ -511,7 +515,7 @@ Private Sub processMetarData()
     Dim initialObsTime As String: initialObsTime = vbNullString
     Dim usableObsTime As Date: usableObsTime = #1/1/2000 12:00:00 PM#
     Dim weekDayDate As String: weekDayDate = vbNullString
-    Dim thisTooltip As String: thisTooltip = vbNullString
+    Dim thisToolTip As String: thisToolTip = vbNullString
     'Dim weatherIconToolTip As String: weatherIconToolTip = vbNullString
     
     Dim force As Integer: force = 0
@@ -744,14 +748,14 @@ Private Sub processMetarData()
     windIconSrc = fWindIconSrc(force, isday)
 
     ' set the hover-over tooltips on the gauges
-    thisTooltip = setHoverTooltip(force, precipitationDepth, visibilityDistance, skyClarityString, HumidityValue, mTemperatureValue, pressureValue, weekDayDate, wind_dir_degrees, wind_speed_kt, precip_in, wx_string)
-    thisTooltip = thisTooltip & vbCrLf & raw_text
+    thisToolTip = setHoverTooltip(force, precipitationDepth, visibilityDistance, skyClarityString, HumidityValue, mTemperatureValue, pressureValue, weekDayDate, wind_dir_degrees, wind_speed_kt, precip_in, wx_string)
+    thisToolTip = thisToolTip & vbCrLf & raw_text
     
     ' pass the current tooltip to the clipboard widget
-    fClipB.sLblMETARText.Caption = thisTooltip
+    fClipB.sLblMETARText.Caption = thisToolTip
     
     ' add the last updated time to the end of the gauge tooltip
-    thisTooltip = thisTooltip & vbCrLf & vbCrLf & lastUpdateString
+    thisToolTip = thisToolTip & vbCrLf & vbCrLf & lastUpdateString
 
     ' ?????
 '    weatherIconToolTip = setIconTooltip(wx_string, sky_condition_items(), uboundSkyConditions)
@@ -760,7 +764,7 @@ Private Sub processMetarData()
 '    End If
     
     ' for setting the balloon tooltip using the WeatherDetails property
-    mWeatherDetails = thisTooltip
+    mWeatherDetails = thisToolTip
 
     mTemperatureValue = temp_c
     mWeHaveData = True
@@ -888,21 +892,21 @@ End Sub
 ' Date: 21/03/2024
 ' ----------------------------------------------------------------
 Private Function setIconTooltip(ByVal wx_string As String, ByRef sky_condition_items() As String, ByVal uboundSkyConditions As Integer) As String
-    Dim thisTooltip As String: thisTooltip = vbNullString
+    Dim thisToolTip As String: thisToolTip = vbNullString
     
     On Error GoTo setIconTooltip_Error
     
     'firstly, try the wx_string
-    If wx_string <> vbNullString Then thisTooltip = fGetMetarDescription(wx_string)
+    If wx_string <> vbNullString Then thisToolTip = fGetMetarDescription(wx_string)
     
-    If (thisTooltip = vbNullString) Then
+    If (thisToolTip = vbNullString) Then
       ' if no wx_string use the cloud cover or lack of it
-      thisTooltip = getCloudCover(sky_condition_items(), uboundSkyConditions)
+      thisToolTip = getCloudCover(sky_condition_items(), uboundSkyConditions)
     End If
 
-    If (debugFlg = 1) Then Debug.Print ("%setIconTooltip - thisTooltip " & thisTooltip)
+    If (debugFlg = 1) Then Debug.Print ("%setIconTooltip - thisTooltip " & thisToolTip)
     
-    setIconTooltip = thisTooltip ' return
+    setIconTooltip = thisToolTip ' return
     
     On Error GoTo 0
     Exit Function
@@ -1710,18 +1714,21 @@ Private Sub determineWeatherConditionIcon(ByRef skyClarity As String, ByVal this
    Dim precedingSrc As String: precedingSrc = vbNullString
    Dim followingSrc As String: followingSrc = vbNullString
    
-   weatherIconSrc = "globe"
-   
-   If uboundSkyConditions >= 0 Then
-        If (sky_cover(0) = "SKC") Then skycover1 = "SKC"
-        If (sky_cover(0) = "CLR") Then skycover1 = "CLR"
-        If (sky_cover(0) = "FEW") Then skycover1 = "FEW"
-        If (sky_cover(0) = "SCT") Then skycover1 = "SCT"
-        If (sky_cover(0) = "BKN") Then skycover1 = "BKN"
-        If (sky_cover(0) = "OVC") Then skycover1 = "OVC"
-        If (sky_cover(0) = "VV ") Then skycover1 = "VV "
-        If (sky_cover(0) = "CAVOK") Then skycover1 = "CAVOK"
-    End If
+    Static precipitationIsFalling As Boolean
+      
+    weatherIconSrc = "globe"
+    precipitationIsFalling = False
+    
+    If uboundSkyConditions >= 0 Then
+         If (sky_cover(0) = "SKC") Then skycover1 = "SKC"
+         If (sky_cover(0) = "CLR") Then skycover1 = "CLR"
+         If (sky_cover(0) = "FEW") Then skycover1 = "FEW"
+         If (sky_cover(0) = "SCT") Then skycover1 = "SCT"
+         If (sky_cover(0) = "BKN") Then skycover1 = "BKN"
+         If (sky_cover(0) = "OVC") Then skycover1 = "OVC"
+         If (sky_cover(0) = "VV ") Then skycover1 = "VV "
+         If (sky_cover(0) = "CAVOK") Then skycover1 = "CAVOK"
+     End If
         
    
    If uboundSkyConditions >= 1 Then
@@ -1859,6 +1866,8 @@ Private Sub determineWeatherConditionIcon(ByRef skyClarity As String, ByVal this
        If (wSeverity = "heavy") Then
             weatherIconSrc = "4cloud_heavysnow"
        End If
+       
+        precipitationIsFalling = True ' snow
    End If
 
    ' no need to take the cloud into account, always cloudy with hail
@@ -1902,6 +1911,8 @@ Private Sub determineWeatherConditionIcon(ByRef skyClarity As String, ByVal this
        If (wSeverity = "heavy") Then
             weatherIconSrc = "4cloud_heavyhail"
        End If
+       
+        precipitationIsFalling = True ' hail
    End If
 
     ' this caters for the event when there are showers indicated but no associated rain code
@@ -1976,69 +1987,71 @@ Private Sub determineWeatherConditionIcon(ByRef skyClarity As String, ByVal this
             wModifier = wModifier & "thunderstorm "
             weatherIconSrc = "4cloud_heavyrain"
        End If
+        
+        precipitationIsFalling = True ' rain
    End If
 
    
    fogIconSrc = "blank"    'default
-   If (InStr(thisWxString, "BR") <> 0 Or InStr(thisWxString, "FG") <> 0) Then
-     '"fog " or "mist"
-     If (wSeverity = "light") Then
-          fogIconSrc = "1_fog" 'night or day makes no difference
-       End If
-       If (wSeverity = "medium") Then
-          fogIconSrc = "2_fog"
-       End If
-       If (wSeverity = "heavy") Then
-          fogIconSrc = "3_fog"
-       End If
-       
-   End If
-
-   'windIconSrc= "Resources\images\icons_metar\windy03"   'default
-   If (InStr(thisWxString, "SQ") <> 0) Then
-     '"strong winds "
-     windIconSrc = "windy03"
-   End If
-
-   
-   exoticIconSrc = "blank"   'default
-   'exotic types - we have no icons for any of these
-   If (InStr(thisWxString, "FU") <> 0) Then
-      exoticIconSrc = "smoke"
-      '"smoke "
-   End If
-   If (InStr(thisWxString, "VA") <> 0) Then
-     '"volcanic ash "
-      exoticIconSrc = "volcano"
-   End If
-   If (InStr(thisWxString, "DU") <> 0) Then
-     '"widespread dust "endif
-      exoticIconSrc = "dust"
-   End If
-   If (InStr(thisWxString, "SA") <> 0) Then
-     '"sand "endif
-      exoticIconSrc = "sand"
-   End If
-   If (InStr(thisWxString, "HZ") <> 0) Then
-     '"haze "endif
-      exoticIconSrc = "haze"
-   End If
-   If (InStr(thisWxString, "PY") <> 0) Then
-     '"spray "endif
-      exoticIconSrc = "spray"
-   End If
-   If (InStr(thisWxString, "PO") <> 0) Then
-     '"dustdevils "endif
-      exoticIconSrc = "dustdevil"
-   End If
-   If (InStr(thisWxString, "FC") <> 0) Then
-     '"tornado "endif
-      exoticIconSrc = "tornado"
-   End If
-   If (InStr(thisWxString, "SS") <> 0) Then
-     '"sandstorm\duststorm "
-      exoticIconSrc = "duststorm"
-   End If
+    If (InStr(thisWxString, "BR") <> 0 Or InStr(thisWxString, "FG") <> 0) Then
+      '"fog " or "mist"
+      If (wSeverity = "light") Then
+           fogIconSrc = "1_fog" 'night or day makes no difference
+        End If
+        If (wSeverity = "medium") Then
+           fogIconSrc = "2_fog"
+        End If
+        If (wSeverity = "heavy") Then
+           fogIconSrc = "3_fog"
+        End If
+        
+    End If
+    
+    'windIconSrc= "Resources\images\icons_metar\windy03"   'default
+    If (InStr(thisWxString, "SQ") <> 0) Then
+      '"strong winds "
+      windIconSrc = "windy03"
+    End If
+    
+    
+    exoticIconSrc = "blank"   'default
+    'exotic types - we have no icons for any of these
+    If (InStr(thisWxString, "FU") <> 0) Then
+       exoticIconSrc = "smoke"
+       '"smoke "
+    End If
+    If (InStr(thisWxString, "VA") <> 0) Then
+      '"volcanic ash "
+       exoticIconSrc = "volcano"
+    End If
+    If (InStr(thisWxString, "DU") <> 0) Then
+      '"widespread dust "endif
+       exoticIconSrc = "dust"
+    End If
+    If (InStr(thisWxString, "SA") <> 0) Then
+      '"sand "endif
+       exoticIconSrc = "sand"
+    End If
+    If (InStr(thisWxString, "HZ") <> 0) Then
+      '"haze "endif
+       exoticIconSrc = "haze"
+    End If
+    If (InStr(thisWxString, "PY") <> 0) Then
+      '"spray "endif
+       exoticIconSrc = "spray"
+    End If
+    If (InStr(thisWxString, "PO") <> 0) Then
+      '"dustdevils "endif
+       exoticIconSrc = "dustdevil"
+    End If
+    If (InStr(thisWxString, "FC") <> 0) Then
+      '"tornado "endif
+       exoticIconSrc = "tornado"
+    End If
+    If (InStr(thisWxString, "SS") <> 0) Then
+      '"sandstorm\duststorm "
+       exoticIconSrc = "duststorm"
+    End If
    
     ' turn the image from day to night
     If (weatherIconSrc <> vbNullString) Then
@@ -2055,6 +2068,19 @@ Private Sub determineWeatherConditionIcon(ByRef skyClarity As String, ByVal this
       End If
 
     End If
+    
+    ' if it is raining now and it is new rain ie. it was not previously raining nor any other form of precipitation
+    If precipitationIsFalling = True And precipitationWasFalling = False Then
+        
+        precipitationWasFalling = True
+             
+        ' humidity gauge to light the new rain warning lamp
+        overlayHumidWidget.precipitationRedLamp = True
+             
+        ' pictorial gauge to show the new precipitation print out
+        'overlayPictorialWidget.newPrecipitation = True
+    End If
+           
     If (debugFlg = 1) Then Debug.Print ("%determineWeatherCondition - iconSrc " & iconSrc)
     
     ' pass the weather icon to be used to the pictorial overlay where it will be displayed.

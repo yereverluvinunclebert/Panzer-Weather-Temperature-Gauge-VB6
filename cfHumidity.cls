@@ -100,7 +100,7 @@ Public Sub InitHumidityFromPSD(ByRef PSD_FileNameOrByteArray As Variant)
                             W.Alpha = 1
                         End If
                         
-                        W.Tag = 0.05
+                        'W .Tag = 0.05
                         
                         ' set the default characteristics of the non-interactive areas
                         ' note: the clickable layers characteristics are set in adjustTempMainControls
@@ -518,7 +518,7 @@ End Sub
 ' Purpose   : save the form x,y position when ever the gauge/form is dragged
 '---------------------------------------------------------------------------------------
 '
-Private Sub humidityGaugeForm_MouseUp(ByRef Button As Integer, ByRef Shift As Integer, ByRef X As Single, ByRef Y As Single)
+Private Sub humidityGaugeForm_MouseUp(ByRef Button As Integer, ByRef Shift As Integer, ByRef x As Single, ByRef y As Single)
     On Error GoTo humidityGaugeForm_MouseUp_Error
     
     Call saveHumidityGaugePosition
@@ -543,8 +543,8 @@ End Sub
 ' Purpose   :
 '---------------------------------------------------------------------------------------
 '
-Private Sub humidityGaugeForm_MouseMove(ByRef Button As Integer, ByRef Shift As Integer, ByRef X As Single, ByRef Y As Single)
-  Static x0 As Single, y0 As Single: If Button = 0 Then x0 = X: y0 = Y 'just store the offsets when no button is down
+Private Sub humidityGaugeForm_MouseMove(ByRef Button As Integer, ByRef Shift As Integer, ByRef x As Single, ByRef y As Single)
+  Static x0 As Single, y0 As Single: If Button = 0 Then x0 = x: y0 = y 'just store the offsets when no button is down
   
    On Error GoTo humidityGaugeForm_MouseMove_Error
     
@@ -557,8 +557,8 @@ Private Sub humidityGaugeForm_MouseMove(ByRef Button As Integer, ByRef Shift As 
 
     If Button = vbLeftButton And Not humidityGaugeForm.ActiveWidget Is Nothing Then 'Form-Dragging (under certain conditions)
 
-      FX = (X - x0) * humidityGaugeForm.WidgetRoot.Zoom + humidityGaugeForm.Left
-      FY = (Y - y0) * humidityGaugeForm.WidgetRoot.Zoom + humidityGaugeForm.Top
+      FX = (x - x0) * humidityGaugeForm.WidgetRoot.Zoom + humidityGaugeForm.Left
+      FY = (y - y0) * humidityGaugeForm.WidgetRoot.Zoom + humidityGaugeForm.Top
       humidityGaugeForm.Move FX, FY
     End If
 
@@ -641,7 +641,7 @@ End Sub
 ' Purpose   :
 '---------------------------------------------------------------------------------------
 '
-Private Sub humidityGaugeForm_MouseDown(ByRef Button As Integer, ByRef Shift As Integer, ByRef X As Single, ByRef Y As Single)
+Private Sub humidityGaugeForm_MouseDown(ByRef Button As Integer, ByRef Shift As Integer, ByRef x As Single, ByRef y As Single)
    On Error GoTo W_MouseDown_Error
 
     gblOriginatingForm = "humidityForm"

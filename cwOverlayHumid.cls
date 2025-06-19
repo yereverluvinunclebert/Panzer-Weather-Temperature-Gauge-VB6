@@ -48,6 +48,7 @@ Private mLocked As Boolean ' property Locked
 Private mthisHumidityDetails As String ' property
 Private mHidden As Boolean ' property Hidden
 Private mThisOpacity As String ' property ThisOpacity
+Private mPrecipitationRedLamp As Boolean
 
 
     
@@ -233,6 +234,50 @@ Public Property Let pointerAnimate(ByVal newValue As Boolean)
 pointerAnimateLet_Error:
 
     MsgBox "Error " & Err.Number & " (" & Err.Description & ") in Property pointerAnimate of Class Module cwOverlayHumid"
+End Property
+
+
+
+
+'---------------------------------------------------------------------------------------
+' Property : precipitationRedLamp
+' Author    : Dean Beedell (yereverluvinunclebert)
+' Date      : 17/05/2023
+' Purpose   :
+'---------------------------------------------------------------------------------------
+'
+Public Property Get precipitationRedLamp() As Boolean
+   On Error GoTo precipitationRedLampGet_Error
+
+    precipitationRedLamp = mPrecipitationRedLamp
+
+   On Error GoTo 0
+   Exit Property
+
+precipitationRedLampGet_Error:
+
+    MsgBox "Error " & Err.Number & " (" & Err.Description & ") in Property precipitationRedLamp of Class Module cwOverlayHumid"
+End Property
+'---------------------------------------------------------------------------------------
+' Property  : precipitationRedLamp
+' Author    :
+' Date      : 09/05/2023
+' Purpose   :
+'---------------------------------------------------------------------------------------
+'
+Public Property Let precipitationRedLamp(ByVal newValue As Boolean)
+    On Error GoTo precipitationRedLampLet_Error
+
+    If mPrecipitationRedLamp <> newValue Then mPrecipitationRedLamp = newValue Else Exit Property
+    
+    W.Refresh
+    
+   On Error GoTo 0
+   Exit Property
+
+precipitationRedLampLet_Error:
+
+    MsgBox "Error " & Err.Number & " (" & Err.Description & ") in Property precipitationRedLamp of Class Module cwOverlayHumid"
 End Property
 
 '---------------------------------------------------------------------------------------
@@ -446,18 +491,18 @@ Private Sub W_Paint(CC As RC6.cCairoContext, ByVal xAbs As Single, ByVal yAbs As
                 Case "redlamptrue"
                     
                     ' if it is raining
-                    'If mWindSpeed >= 40 And mWindSpeed < 58 Then
+                    If mPrecipitationRedLamp = True Then
                         Set Pat.Matrix = Pat.Matrix.TranslateCoords(-arr(0), -arr(1)) 'shift the Pattern via the original X,Y PSD-Offsets (stored in Arr(0) and Arr(1))
                         CC.Paint arr(2), Pat 'render the Pattern
-                    'End If
+                    End If
                     
                  Case "redlampfalse"
                     
                     ' if it is not raining
-                    'If mWindSpeed < 26 Then
+                    If mPrecipitationRedLamp = False Then
                         Set Pat.Matrix = Pat.Matrix.TranslateCoords(-arr(0), -arr(1))
                         CC.Paint arr(2), Pat ' render the Pattern
-                    'End If
+                    End If
                                             
                  Case "pointerShadow", "pointer"
 

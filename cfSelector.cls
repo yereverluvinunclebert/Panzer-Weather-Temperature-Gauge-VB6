@@ -115,7 +115,7 @@ Public Sub InitSelectorFromPSD(ByRef PSD_FileNameOrByteArray As Variant)
                             W.Alpha = 1
                         End If
                         
-                        W.Tag = 0.05
+                        'W.Tag = 0.05
                         
                         ' set the default characteristics of the non-interactive areas
                         ' note: the clickable layers characteristics are set in adjustSelectMainControls
@@ -652,7 +652,7 @@ End Sub
 ' Purpose   :
 '---------------------------------------------------------------------------------------
 '
-Private Sub SelectorForm_MouseDown(ByRef Button As Integer, ByRef Shift As Integer, ByRef X As Single, ByRef Y As Single)
+Private Sub SelectorForm_MouseDown(ByRef Button As Integer, ByRef Shift As Integer, ByRef x As Single, ByRef y As Single)
    On Error GoTo W_MouseDown_Error
 
     If Button = vbRightButton Then
@@ -691,8 +691,8 @@ End Sub
 ' Purpose   :
 '---------------------------------------------------------------------------------------
 '
-Private Sub SelectorForm_MouseMove(ByRef Button As Integer, ByRef Shift As Integer, ByRef X As Single, ByRef Y As Single)
-  Static x0 As Single, y0 As Single: If Button = 0 Then x0 = X: y0 = Y 'just store the offsets when no button is down
+Private Sub SelectorForm_MouseMove(ByRef Button As Integer, ByRef Shift As Integer, ByRef x As Single, ByRef y As Single)
+  Static x0 As Single, y0 As Single: If Button = 0 Then x0 = x: y0 = y 'just store the offsets when no button is down
   
    On Error GoTo SelectorForm_MouseMove_Error
     
@@ -704,8 +704,8 @@ Private Sub SelectorForm_MouseMove(ByRef Button As Integer, ByRef Shift As Integ
     End If
     If Button = vbLeftButton And Not SelectorForm.ActiveWidget Is Nothing Then 'Form-Dragging (under certain conditions)
 
-      SelectorFX = (X - x0) * SelectorForm.WidgetRoot.Zoom + SelectorForm.Left
-      SelectorFY = (Y - y0) * SelectorForm.WidgetRoot.Zoom + SelectorForm.Top
+      SelectorFX = (x - x0) * SelectorForm.WidgetRoot.Zoom + SelectorForm.Left
+      SelectorFY = (y - y0) * SelectorForm.WidgetRoot.Zoom + SelectorForm.Top
       SelectorForm.Move SelectorFX, SelectorFY
     End If
 
@@ -758,7 +758,7 @@ End Sub
 ' Purpose   : save the form x,y position when ever the gauge/form is dragged
 '---------------------------------------------------------------------------------------
 '
-Private Sub SelectorForm_MouseUp(ByRef Button As Integer, ByRef Shift As Integer, ByRef X As Single, ByRef Y As Single)
+Private Sub SelectorForm_MouseUp(ByRef Button As Integer, ByRef Shift As Integer, ByRef x As Single, ByRef y As Single)
     On Error GoTo SelectorForm_MouseUp_Error
     
     Call saveSelectorGaugePosition

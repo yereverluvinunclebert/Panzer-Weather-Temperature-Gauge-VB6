@@ -24,6 +24,7 @@ Option Explicit 'simple Alpha-Form (...to be filled with (mostly Img-) Content v
 Public WithEvents pictorialGaugeForm As cWidgetForm
 Attribute pictorialGaugeForm.VB_VarHelpID = -1
 
+Public sLblPrecipitationText As cwLabel
 Public collPictorialPSDNonUIElements As cCollection, FX As Long, FY As Long, FZ As Single  'available on the outside, even after the Form was closed
 
 Private PSDWidth As Long
@@ -101,7 +102,7 @@ Public Sub InitPictorialFromPSD(ByRef PSD_FileNameOrByteArray As Variant)
                             W.Alpha = 1
                         End If
                         
-                        W.Tag = 0.05
+                        'W .Tag = 0.05
                         
                         ' set the default characteristics of the non-interactive areas
                         ' note: the clickable layers characteristics are set in adjustPictorialMainControls
@@ -121,6 +122,21 @@ Public Sub InitPictorialFromPSD(ByRef PSD_FileNameOrByteArray As Variant)
     Set overlayPictorialWidget.cCollOverlayPictImages = collPictorialPSDNonUIElements 'make the excluded PSD-Surface-Paths known to the Overlay-Widget
         overlayPictorialWidget.cxPerc = 0.4940476 'define the relative center (within cwOverlayPict, which has the same size as the Form and the PSD...) this is used for clock-hand-positioning
         overlayPictorialWidget.cyPerc = 0.4727272
+        
+    Set sLblPrecipitationText = pictorialGaugeForm.Widgets.Add(New_W("cwLabel"), "sLblPrecipitationText", 185, 630, 295, 450)
+    sLblPrecipitationText.Widget.FontSize = 15
+    sLblPrecipitationText.Widget.FontName = "courier new"
+    sLblPrecipitationText.Widget.FontBold = True
+    sLblPrecipitationText.Widget.Alpha = 0 ' this does not work
+    sLblPrecipitationText.borderWidth = 0
+    sLblPrecipitationText.WordWrap = True
+    sLblPrecipitationText.VAlign = 0
+    sLblPrecipitationText.Alignment = vbCenter
+    sLblPrecipitationText.TextShadowColor = &H80000010
+    sLblPrecipitationText.Widget.BackColor = -1
+
+    sLblPrecipitationText.Caption = "Weather data indicates imminent rainfall"
+        
 
    On Error GoTo 0
    Exit Sub
@@ -165,6 +181,9 @@ Private Sub pictorialGaugeForm_BubblingEvent(ByRef sender As Object, ByRef Event
             Case "housing/helpbutton"
                 If gblEnableBalloonTooltips = "1" Then CreateToolTip pictorialGaugeForm.hwnd, "This button opens the one-page help file for this widget. There is a further detailed CHM help file available from the right-click menu that contains all the information that you need to run this widget.", _
                      TTIconInfo, widgetName7 & " Help Button Help", , , , True
+            Case "precipitationprintout"
+                If gblEnableBalloonTooltips = "1" Then CreateToolTip pictorialGaugeForm.hwnd, " This print-out appears when the gauge notices newly-falling precipitation, if it rains, snows or hails after a dry period it will appear.", _
+                     TTIconInfo, widgetName7 & " Button Help", , , , True
             Case Else
                 If gblEnableBalloonTooltips = "1" Then CreateToolTip pictorialGaugeForm.hwnd, " " & WeatherMeteo.WeatherDetails _
                     & vbCrLf & "" _
@@ -183,6 +202,10 @@ Private Sub pictorialGaugeForm_BubblingEvent(ByRef sender As Object, ByRef Event
 '                Call tickbutton_mouseDown(sender)
             Case "housing/stopbutton"
                 Call stopbutton_mouseDown(sender)
+            Case "precipitationprintout"
+                Call precipitationprintout_mouseDown(sender)
+            Case "slblprecipitationtext"
+                Call sLblPrecipitationText_mouseDown(sender)
             Case Else
                 Debug.Print sender.Widget.key
         End Select
@@ -323,6 +346,87 @@ stopbutton_mouseDown_Error:
 
 End Sub
 
+
+
+
+'---------------------------------------------------------------------------------------
+' Procedure : precipitationprintout_mouseDown
+' Author    : Dean Beedell (yereverluvinunclebert)
+' Date      : 03/08/2023
+' Purpose   :
+'---------------------------------------------------------------------------------------
+'
+Private Sub precipitationprintout_mouseDown(ByRef sender As Object)
+   
+    On Error GoTo precipitationprintout_mouseDown_Error
+    
+    Call hidePrecipitationPrintOut
+           
+   On Error GoTo 0
+   Exit Sub
+
+precipitationprintout_mouseDown_Error:
+
+    MsgBox "Error " & Err.Number & " (" & Err.Description & ") in procedure precipitationprintout_mouseDown of Class Module cfPictorial"
+
+End Sub
+
+
+
+
+'---------------------------------------------------------------------------------------
+' Procedure : sLblPrecipitationText_mouseDown
+' Author    : Dean Beedell (yereverluvinunclebert)
+' Date      : 03/08/2023
+' Purpose   :
+'---------------------------------------------------------------------------------------
+'
+Private Sub sLblPrecipitationText_mouseDown(ByRef sender As Object)
+   
+    On Error GoTo sLblPrecipitationText_mouseDown_Error
+
+    Call hidePrecipitationPrintOut
+           
+   On Error GoTo 0
+   Exit Sub
+
+sLblPrecipitationText_mouseDown_Error:
+
+    MsgBox "Error " & Err.Number & " (" & Err.Description & ") in procedure sLblPrecipitationText_mouseDown of Class Module cfPictorial"
+
+End Sub
+
+'---------------------------------------------------------------------------------------
+' Procedure : hidePrecipitationPrintOut
+' Author    : beededea
+' Date      : 19/06/2025
+' Purpose   :
+'---------------------------------------------------------------------------------------
+'
+Private Sub hidePrecipitationPrintOut()
+
+    ' humidity gauge to extinguish the new rain warning lamp
+   On Error GoTo hidePrecipitationPrintOut_Error
+
+    overlayHumidWidget.precipitationRedLamp = False
+    
+    'sLblPrecipitationText.Widget.Alpha = 0 ' this does not work
+    sLblPrecipitationText.Caption = "" ' we remove the caption altogether manually
+    sLblPrecipitationText.Widget.Refresh
+
+    pictorialGaugeForm.Widgets("precipitationprintout").Widget.Alpha = 0
+    pictorialGaugeForm.Widgets("precipitationprintout").Widget.Refresh
+    
+    ' now clear the precipitationWasFalling flag .
+
+   On Error GoTo 0
+   Exit Sub
+
+hidePrecipitationPrintOut_Error:
+
+    MsgBox "Error " & Err.Number & " (" & Err.Description & ") in procedure hidePrecipitationPrintOut of Class Module cfPictorial"
+
+End Sub
 '---------------------------------------------------------------------------------------
 ' Procedure : lockbutton_mouseDown
 ' Author    : Dean Beedell (yereverluvinunclebert)
@@ -509,7 +613,7 @@ End Sub
 ' Purpose   : save the form x,y position when ever the gauge/form is dragged
 '---------------------------------------------------------------------------------------
 '
-Private Sub pictorialGaugeForm_MouseUp(ByRef Button As Integer, ByRef Shift As Integer, ByRef X As Single, ByRef Y As Single)
+Private Sub pictorialGaugeForm_MouseUp(ByRef Button As Integer, ByRef Shift As Integer, ByRef x As Single, ByRef y As Single)
     On Error GoTo pictorialGaugeForm_MouseUp_Error
     
     Call savePictorialGaugePosition
@@ -534,8 +638,8 @@ End Sub
 ' Purpose   :
 '---------------------------------------------------------------------------------------
 '
-Private Sub pictorialGaugeForm_MouseMove(ByRef Button As Integer, ByRef Shift As Integer, ByRef X As Single, ByRef Y As Single)
-  Static x0 As Single, y0 As Single: If Button = 0 Then x0 = X: y0 = Y 'just store the offsets when no button is down
+Private Sub pictorialGaugeForm_MouseMove(ByRef Button As Integer, ByRef Shift As Integer, ByRef x As Single, ByRef y As Single)
+  Static x0 As Single, y0 As Single: If Button = 0 Then x0 = x: y0 = y 'just store the offsets when no button is down
   
    On Error GoTo pictorialGaugeForm_MouseMove_Error
     
@@ -547,8 +651,8 @@ Private Sub pictorialGaugeForm_MouseMove(ByRef Button As Integer, ByRef Shift As
     End If
     If Button = vbLeftButton And Not pictorialGaugeForm.ActiveWidget Is Nothing Then 'Form-Dragging (under certain conditions)
 
-      FX = (X - x0) * pictorialGaugeForm.WidgetRoot.Zoom + pictorialGaugeForm.Left
-      FY = (Y - y0) * pictorialGaugeForm.WidgetRoot.Zoom + pictorialGaugeForm.Top
+      FX = (x - x0) * pictorialGaugeForm.WidgetRoot.Zoom + pictorialGaugeForm.Left
+      FY = (y - y0) * pictorialGaugeForm.WidgetRoot.Zoom + pictorialGaugeForm.Top
       pictorialGaugeForm.Move FX, FY
     End If
 
@@ -658,7 +762,7 @@ End Sub
 ' Purpose   :
 '---------------------------------------------------------------------------------------
 '
-Private Sub pictorialGaugeForm_MouseDown(ByRef Button As Integer, ByRef Shift As Integer, ByRef X As Single, ByRef Y As Single)
+Private Sub pictorialGaugeForm_MouseDown(ByRef Button As Integer, ByRef Shift As Integer, ByRef x As Single, ByRef y As Single)
    On Error GoTo W_MouseDown_Error
 
     gblOriginatingForm = "pictorialForm"

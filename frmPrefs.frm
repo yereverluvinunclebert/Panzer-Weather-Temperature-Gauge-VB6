@@ -4445,7 +4445,6 @@ Private Sub adjustPrefsControls()
     
     cmbScrollWheelDirection.ListIndex = Val(gblScrollWheelDirection)
     
-    
     optClockTooltips(CStr(gblGaugeTooltips)).Value = True
     optClockTooltips(0).Tag = CStr(gblGaugeTooltips)
     optClockTooltips(1).Tag = CStr(gblGaugeTooltips)

@@ -100,7 +100,7 @@ Public Sub InitTemperatureFromPSD(ByRef PSD_FileNameOrByteArray As Variant)
                             W.Alpha = 1
                         End If
                         
-                        W.Tag = 0.05
+                        'W.Tag = 0.05
                         
                         ' set the default characteristics of the non-interactive areas
                         ' note: the clickable layers characteristics are set in adjustTempMainControls
@@ -570,7 +570,7 @@ End Sub
 ' Purpose   : save the form x,y position when ever the gauge/form is dragged
 '---------------------------------------------------------------------------------------
 '
-Private Sub temperatureGaugeForm_MouseUp(ByRef Button As Integer, ByRef Shift As Integer, ByRef X As Single, ByRef Y As Single)
+Private Sub temperatureGaugeForm_MouseUp(ByRef Button As Integer, ByRef Shift As Integer, ByRef x As Single, ByRef y As Single)
     On Error GoTo temperatureGaugeForm_MouseUp_Error
     
     Call saveTemperatureGaugePosition
@@ -595,8 +595,8 @@ End Sub
 ' Purpose   :
 '---------------------------------------------------------------------------------------
 '
-Private Sub temperatureGaugeForm_MouseMove(ByRef Button As Integer, ByRef Shift As Integer, ByRef X As Single, ByRef Y As Single)
-  Static x0 As Single, y0 As Single: If Button = 0 Then x0 = X: y0 = Y 'just store the offsets when no button is down
+Private Sub temperatureGaugeForm_MouseMove(ByRef Button As Integer, ByRef Shift As Integer, ByRef x As Single, ByRef y As Single)
+  Static x0 As Single, y0 As Single: If Button = 0 Then x0 = x: y0 = y 'just store the offsets when no button is down
   
    On Error GoTo temperatureGaugeForm_MouseMove_Error
     
@@ -608,8 +608,8 @@ Private Sub temperatureGaugeForm_MouseMove(ByRef Button As Integer, ByRef Shift 
     End If
     If Button = vbLeftButton And Not temperatureGaugeForm.ActiveWidget Is Nothing Then 'Form-Dragging (under certain conditions)
 
-      FX = (X - x0) * temperatureGaugeForm.WidgetRoot.Zoom + temperatureGaugeForm.Left
-      FY = (Y - y0) * temperatureGaugeForm.WidgetRoot.Zoom + temperatureGaugeForm.Top
+      FX = (x - x0) * temperatureGaugeForm.WidgetRoot.Zoom + temperatureGaugeForm.Left
+      FY = (y - y0) * temperatureGaugeForm.WidgetRoot.Zoom + temperatureGaugeForm.Top
       temperatureGaugeForm.Move FX, FY
     End If
 
@@ -719,7 +719,7 @@ End Sub
 ' Purpose   :
 '---------------------------------------------------------------------------------------
 '
-Private Sub temperatureGaugeForm_MouseDown(ByRef Button As Integer, ByRef Shift As Integer, ByRef X As Single, ByRef Y As Single)
+Private Sub temperatureGaugeForm_MouseDown(ByRef Button As Integer, ByRef Shift As Integer, ByRef x As Single, ByRef y As Single)
    On Error GoTo W_MouseDown_Error
 
     gblOriginatingForm = "temperatureForm"

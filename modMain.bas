@@ -694,28 +694,28 @@ Private Sub adjustSelectorMainControls()
         .HoverColor = 0 ' set the hover colour to grey - this may change later with new RC6
         .MousePointer = IDC_HAND
         .Alpha = Val(gblOpacity) / 100
-        .Tag = 0.25
+        ' .Tag = 0.25
     End With
     
     With fSelector.SelectorForm.Widgets("optlocationred").Widget
         .HoverColor = 0 ' set the hover colour to grey - this may change later with new RC6
         .MousePointer = IDC_HAND
         .Alpha = Val(gblOpacity) / 100
-        .Tag = 0.25
+        ' .Tag = 0.25
     End With
     
     With fSelector.SelectorForm.Widgets("opticaogreen").Widget
         .HoverColor = 0 ' set the hover colour to grey - this may change later with new RC6
         .MousePointer = IDC_HAND
         .Alpha = Val(gblOpacity) / 100
-        .Tag = 0.25
+        ' .Tag = 0.25
     End With
     
     With fSelector.SelectorForm.Widgets("opticaored").Widget
         .HoverColor = 0 ' set the hover colour to grey - this may change later with new RC6
         .MousePointer = IDC_HAND
         .Alpha = Val(gblOpacity) / 100
-        .Tag = 0.25
+        ' .Tag = 0.25
     End With
     
     With fSelector.SelectorForm.Widgets("sbtnexit").Widget
@@ -793,28 +793,28 @@ Private Sub adjustClipBMainControls()
 '        .HoverColor = 0 ' set the hover colour to grey - this may change later with new RC6
 '        .MousePointer = IDC_HAND
 '        .Alpha = val(gblOpacity) / 100
-'        .Tag = 0.25
+'        ' .Tag = 0.25
 '    End With
 '
 '    With fClipB.ClipBForm.Widgets("minhand").Widget
 '        .HoverColor = 0 ' set the hover colour to grey - this may change later with new RC6
 '        .MousePointer = IDC_HAND
 '        .Alpha = val(gblOpacity) / 100
-'        .Tag = 0.25
+'        ' .Tag = 0.25
 '    End With
 '
 '    With fClipB.ClipBForm.Widgets("clock").Widget
 '        .HoverColor = 0 ' set the hover colour to grey - this may change later with new RC6
 '        .MousePointer = IDC_HAND
 '        .Alpha = val(gblOpacity) / 100
-'        .Tag = 0.25
+'        ' .Tag = 0.25
 '    End With
 '
     With fClipB.clipBForm.Widgets("clipboard").Widget
         .HoverColor = 0 ' set the hover colour to grey - this may change later with new RC6
         .MousePointer = IDC_HAND
         .Alpha = Val(gblOpacity) / 100
-        .Tag = 0.25
+        ' .Tag = 0.25
     End With
 
     overlayClipbWidget.thisOpacity = Val(gblOpacity)
@@ -853,14 +853,14 @@ Private Sub adjustPictorialMainControls()
         .HoverColor = 0 ' set the hover colour to grey - this may change later with new RC6
         .MousePointer = IDC_HAND
         .Alpha = Val(gblOpacity) / 100
-        .Tag = 0.25
+        ' .Tag = 0.25
     End With
       
     With fPictorial.pictorialGaugeForm.Widgets("housing/stopbutton").Widget
         .HoverColor = 0 ' set the hover colour to grey - this may change later with new RC6
         .MousePointer = IDC_HAND
         .Alpha = Val(gblOpacity) / 100
-        .Tag = 0.25
+        ' .Tag = 0.25
     End With
       
     With fPictorial.pictorialGaugeForm.Widgets("housing/switchfacesbutton").Widget
@@ -891,6 +891,12 @@ Private Sub adjustPictorialMainControls()
         .Alpha = Val(gblOpacity) / 100
     End With
     
+    With fPictorial.pictorialGaugeForm.Widgets("precipitationprintout").Widget
+        .HoverColor = 0 ' set the hover colour to grey - this may change later with new RC6
+        .MousePointer = IDC_SIZEALL
+        .Alpha = Val(gblOpacity) / 100
+    End With
+    
 '    If gblPointerAnimate = "0" Then
 '        overlaypictorialWidget.pointerAnimate = False
 '        fPictorial.PictorialGaugeForm.Widgets("housing/tickbutton").Widget.Alpha = Val(gblOpacity) / 100
@@ -908,6 +914,8 @@ Private Sub adjustPictorialMainControls()
         overlayPictorialWidget.Locked = True ' this is just here for continuity's sake, it is also set at the time the control is selected
         fPictorial.pictorialGaugeForm.Widgets("housing/lockbutton").Widget.Alpha = 0
     End If
+
+
 
     overlayPictorialWidget.thisOpacity = Val(gblOpacity)
     
@@ -1001,14 +1009,14 @@ Public Sub adjustTempMainControls()
         .HoverColor = 0 ' set the hover colour to grey - this may change later with new RC6
         .MousePointer = IDC_HAND
         .Alpha = Val(gblOpacity) / 100
-        .Tag = 0.25
+        ' .Tag = 0.25
     End With
       
     With fTemperature.temperatureGaugeForm.Widgets("housing/stopbutton").Widget
         .HoverColor = 0 ' set the hover colour to grey - this may change later with new RC6
         .MousePointer = IDC_HAND
         .Alpha = Val(gblOpacity) / 100
-        .Tag = 0.25
+        ' .Tag = 0.25
     End With
       
     With fTemperature.temperatureGaugeForm.Widgets("housing/switchfacesbutton").Widget
@@ -1179,14 +1187,14 @@ Public Sub adjustAnemometerMainControls()
         .HoverColor = 0 ' set the hover colour to grey - this may change later with new RC6
         .MousePointer = IDC_HAND
         .Alpha = Val(gblOpacity) / 100
-        .Tag = 0.25
+        ' .Tag = 0.25
     End With
       
     With fAnemometer.anemometerGaugeForm.Widgets("housing/stopbutton").Widget
         .HoverColor = 0 ' set the hover colour to grey - this may change later with new RC6
         .MousePointer = IDC_HAND
         .Alpha = Val(gblOpacity) / 100
-        .Tag = 0.25
+        ' .Tag = 0.25
     End With
       
     With fAnemometer.anemometerGaugeForm.Widgets("housing/switchfacesbutton").Widget
@@ -1325,14 +1333,14 @@ Public Sub adjustHumidityMainControls()
         .HoverColor = 0 ' set the hover colour to grey - this may change later with new RC6
         .MousePointer = IDC_HAND
         .Alpha = Val(gblOpacity) / 100
-        .Tag = 0.25
+        ' .Tag = 0.25
     End With
       
     With fHumidity.humidityGaugeForm.Widgets("housing/stopbutton").Widget
         .HoverColor = 0 ' set the hover colour to grey - this may change later with new RC6
         .MousePointer = IDC_HAND
         .Alpha = Val(gblOpacity) / 100
-        .Tag = 0.25
+        ' .Tag = 0.25
     End With
       
     With fHumidity.humidityGaugeForm.Widgets("housing/switchfacesbutton").Widget
@@ -1425,14 +1433,14 @@ Public Sub adjustBarometerMainControls()
         .HoverColor = 0 ' set the hover colour to grey - this may change later with new RC6
         .MousePointer = IDC_HAND
         .Alpha = Val(gblOpacity) / 100
-        .Tag = 0.25
+        ' .Tag = 0.25
     End With
       
     With fBarometer.barometerGaugeForm.Widgets("housing/stopbutton").Widget
         .HoverColor = 0 ' set the hover colour to grey - this may change later with new RC6
         .MousePointer = IDC_HAND
         .Alpha = Val(gblOpacity) / 100
-        .Tag = 0.25
+        ' .Tag = 0.25
     End With
       
     With fBarometer.barometerGaugeForm.Widgets("housing/switchfacesbutton").Widget
