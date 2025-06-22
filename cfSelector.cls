@@ -122,7 +122,7 @@ Public Sub InitSelectorFromPSD(ByRef PSD_FileNameOrByteArray As Variant)
                         
                         ' all non-clickable Layer-Widgets will be -1 or "non-hoverable" and "fully click-through"
                         W.HoverColor = -1 ' task: might change this later when new ver or RC6 arrives
-                        If gblEnableTooltips = "1" Then W.ToolTip = "Ctrl + mouse scrollwheel up/down to resize, you can also drag me to a new position."
+                        If gblGaugeTooltips = "1" Then W.ToolTip = "Ctrl + mouse scrollwheel up/down to resize, you can also drag me to a new position."
                         W.MousePointer = IDC_SIZEALL
 
                     End If
@@ -235,28 +235,28 @@ Private Sub SelectorForm_BubblingEvent(ByRef sender As Object, ByRef EventName A
     If EventName = "W_MouseMove" Then
         Select Case LCase$(sender.Widget.key)
             Case "sbtnselect"
-                If gblEnableBalloonTooltips = "1" Then CreateToolTip SelectorForm.hwnd, "Click me to select the currently displayed ICAO location.", _
+                If gblGaugeTooltips = "0" Then CreateToolTip SelectorForm.hwnd, "Click me to select the currently displayed ICAO location.", _
                      TTIconInfo, widgetName2 & " Select Button Help", , , , True
             Case "sbtnexit"
-                If gblEnableBalloonTooltips = "1" Then CreateToolTip SelectorForm.hwnd, "Click me to close the ICAO selection utility.", _
+                If gblGaugeTooltips = "0" Then CreateToolTip SelectorForm.hwnd, "Click me to close the ICAO selection utility.", _
                      TTIconInfo, widgetName2 & " Exit Button Help", , , , True
             Case "optlocationgreen"
-                If gblEnableBalloonTooltips = "1" Then CreateToolTip SelectorForm.hwnd, "The selector utility is now searching by location name only.", _
+                If gblGaugeTooltips = "0" Then CreateToolTip SelectorForm.hwnd, "The selector utility is now searching by location name only.", _
                      TTIconInfo, widgetName2 & " Location Button Help", , , , True
             Case "optlocationred"
-                If gblEnableBalloonTooltips = "1" Then CreateToolTip SelectorForm.hwnd, "Click here to enable the option to search by location name (airport).", _
+                If gblGaugeTooltips = "0" Then CreateToolTip SelectorForm.hwnd, "Click here to enable the option to search by location name (airport).", _
                      TTIconInfo, widgetName2 & " Location Button Help", , , , True
             Case "opticaored"
-                If gblEnableBalloonTooltips = "1" Then CreateToolTip SelectorForm.hwnd, "Click here to enable the option to search by ICAO code.", _
+                If gblGaugeTooltips = "0" Then CreateToolTip SelectorForm.hwnd, "Click here to enable the option to search by ICAO code.", _
                      TTIconInfo, widgetName2 & " ICAO Button Help", , , , True
             Case "sbtnsearch"
-                If gblEnableBalloonTooltips = "1" Then CreateToolTip SelectorForm.hwnd, "Click here to search using your supplied airport name or ICAO code.", _
+                If gblGaugeTooltips = "0" Then CreateToolTip SelectorForm.hwnd, "Click here to search using your supplied airport name or ICAO code.", _
                      TTIconInfo, widgetName2 & " Search Button Help", , , , True
             Case "opticaogreen"
-                If gblEnableBalloonTooltips = "1" Then CreateToolTip SelectorForm.hwnd, "The selector utility is now searching by ICAO code only.", _
+                If gblGaugeTooltips = "0" Then CreateToolTip SelectorForm.hwnd, "The selector utility is now searching by ICAO code only.", _
                      TTIconInfo, widgetName2 & " ICAO Button Help", , , , True
             Case "radiobody"
-                If gblEnableBalloonTooltips = "1" Then CreateToolTip SelectorForm.hwnd, " " _
+                If gblGaugeTooltips = "0" Then CreateToolTip SelectorForm.hwnd, " " _
                     & "This is the Airport Selector utility. Use this tool to select a nearby airport with a valid ICAO code. Any airport of this type will be able to supply " _
                     & "valid and up-to-date METAR weather data. Start by selecting the ICAO or Location option buttons below. This will allow you to search the supplied airports data " _
                     & "file for either an ICAO code or search for the airport by name, for example: HEATHROW." & vbCrLf & vbCrLf _
@@ -344,8 +344,8 @@ Private Sub sbtnselect_mouseDown(ByRef sender As Object)
         End If
     End If
             
-    If panzerPrefs.IsVisible = True Then
-        panzerPrefs.txtIcao = gblIcao
+    If widgetPrefs.IsVisible = True Then
+        widgetPrefs.txtIcao = gblIcao
     End If
     
     ' trigger METAR get with new ICAO code
@@ -667,7 +667,7 @@ Private Sub SelectorForm_MouseDown(ByRef Button As Integer, ByRef Shift As Integ
     
         ' ensure that the associated forms pop to the front when the main gauge receives focus
         If fTemperature.temperatureGaugeForm.Visible = True Then fTemperature.temperatureGaugeForm.SetFocus
-        If panzerPrefs.IsVisible = True Then panzerPrefs.SetFocus
+        If widgetPrefs.IsVisible = True Then widgetPrefs.SetFocus
         If fSelector.SelectorForm.Visible = True Then fSelector.SelectorForm.SetFocus
         
         If gblIgnoreMouse = "1" Then Exit Sub
@@ -793,7 +793,7 @@ Public Sub SelectorAdjustZoom(ByVal NewZoom As Single)
     
     ' when resized from the gauge scroll up/down it needs to write it back so the size is correct when prefs opened.
     gblSelectorSize = LTrim$(Str$(NewZoom * 100))
-    'If panzerPrefs.IsVisible = True Then panzerPrefs.sliSelectorSize.Value = val(gblSelectorSize)
+    'If widgetPrefs.IsVisible = True Then widgetPrefs.sliSelectorSize.Value = val(gblSelectorSize)
     
     sPutINISetting "Software\PzSelector", "SelectorSize", gblSelectorSize, gblSettingsFile
    

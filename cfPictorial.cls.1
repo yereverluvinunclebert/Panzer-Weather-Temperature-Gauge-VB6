@@ -111,7 +111,7 @@ Public Sub InitPictorialFromPSD(ByRef PSD_FileNameOrByteArray As Variant)
                         
                         ' all non-clickable Layer-Widgets will be -1 or "non-hoverable" and "fully click-through"
                         W.HoverColor = -1 ' task: might change this later when new ver or RC6 arrives
-                        If gblGaugeTooltips = "1" Then W.ToolTip = "Ctrl + mouse scrollwheel up/down to resize, you can also drag me to a new position."
+                        If gblEnableTooltips = "1" Then W.ToolTip = "Ctrl + mouse scrollwheel up/down to resize, you can also drag me to a new position."
                         W.MousePointer = IDC_SIZEALL
 
                     End If
@@ -166,31 +166,31 @@ Private Sub pictorialGaugeForm_BubblingEvent(ByRef sender As Object, ByRef Event
     If EventName = "W_MouseMove" Then
         Select Case LCase$(sender.Widget.key)
             Case "housing/lockbutton"
-                If gblGaugeTooltips = "0" Then CreateToolTip pictorialGaugeForm.hwnd, "Click me to lock the widget in place. This lock can be released by clicking again on the lock button, or in the preferences. A locking sound will denote the button's operation.", _
+                If gblEnableBalloonTooltips = "1" Then CreateToolTip pictorialGaugeForm.hwnd, "Click me to lock the widget in place. This lock can be released by clicking again on the lock button, or in the preferences. A locking sound will denote the button's operation.", _
                      TTIconInfo, widgetName7 & " Lock Button Help", , , , True
             Case "housing/prefsbutton"
-                If gblGaugeTooltips = "0" Then CreateToolTip pictorialGaugeForm.hwnd, "Click me to open the preferences utility. All advanced configuration of the widget is performed using the preference utility.", _
+                If gblEnableBalloonTooltips = "1" Then CreateToolTip pictorialGaugeForm.hwnd, "Click me to open the preferences utility. All advanced configuration of the widget is performed using the preference utility.", _
                      TTIconInfo, widgetName7 & " Prefs Button Help", , , , True
             Case "housing/tickbutton"
-                If gblGaugeTooltips = "0" Then CreateToolTip pictorialGaugeForm.hwnd, "This button is non-functional in this gauge.", _
+                If gblEnableBalloonTooltips = "1" Then CreateToolTip pictorialGaugeForm.hwnd, "This button is non-functional in this gauge.", _
                      TTIconInfo, widgetName7 & " Button Help", , , , True
             Case "housing/switchfacesbutton"
-                If gblGaugeTooltips = "0" Then CreateToolTip pictorialGaugeForm.hwnd, "This button tests the weather data precipitation alert system, raising the humidity red lamp and displaying the precipitation alarm print-out..", _
+                If gblEnableBalloonTooltips = "1" Then CreateToolTip pictorialGaugeForm.hwnd, "This button tests the weather data precipitation alert system, raising the humidity red lamp and displaying the precipitation alarm print-out..", _
                      TTIconInfo, widgetName7 & " Button Help", , , , True
             Case "housing/stopbutton"
-                If gblGaugeTooltips = "0" Then CreateToolTip pictorialGaugeForm.hwnd, "This button is non-functional in this gauge.", _
+                If gblEnableBalloonTooltips = "1" Then CreateToolTip pictorialGaugeForm.hwnd, "This button is non-functional in this gauge.", _
                      TTIconInfo, widgetName7 & " Button Help", , , , True
             Case "housing/startbutton"
-                If gblGaugeTooltips = "0" Then CreateToolTip pictorialGaugeForm.hwnd, "This button is non-functional in this gauge..", _
+                If gblEnableBalloonTooltips = "1" Then CreateToolTip pictorialGaugeForm.hwnd, "This button is non-functional in this gauge..", _
                      TTIconInfo, widgetName7 & " Button Help", , , , True
             Case "housing/helpbutton"
-                If gblGaugeTooltips = "0" Then CreateToolTip pictorialGaugeForm.hwnd, "This button opens the one-page help file for this widget. There is a further detailed CHM help file available from the right-click menu that contains all the information that you need to run this widget.", _
+                If gblEnableBalloonTooltips = "1" Then CreateToolTip pictorialGaugeForm.hwnd, "This button opens the one-page help file for this widget. There is a further detailed CHM help file available from the right-click menu that contains all the information that you need to run this widget.", _
                      TTIconInfo, widgetName7 & " Help Button Help", , , , True
             Case "precipitationprintout"
-                If gblGaugeTooltips = "0" Then CreateToolTip pictorialGaugeForm.hwnd, " This print-out appears when the gauge notices newly-falling precipitation, if it rains, snows or hails after a dry period it will appear.", _
+                If gblEnableBalloonTooltips = "1" Then CreateToolTip pictorialGaugeForm.hwnd, " This print-out appears when the gauge notices newly-falling precipitation, if it rains, snows or hails after a dry period it will appear.", _
                      TTIconInfo, widgetName7 & " Button Help", , , , True
             Case Else
-                If gblGaugeTooltips = "0" Then CreateToolTip pictorialGaugeForm.hwnd, " " & WeatherMeteo.WeatherDetails _
+                If gblEnableBalloonTooltips = "1" Then CreateToolTip pictorialGaugeForm.hwnd, " " & WeatherMeteo.WeatherDetails _
                     & vbCrLf & "" _
                     & vbCrLf & "Right Click to open the menu and the preferences. CTRL+ Mouse scrollwheel UP/DOWN to resize." _
                     , TTIconInfo, widgetName7 & " METAR summary Information.", , , , True
@@ -438,9 +438,10 @@ End Sub
 Private Sub hidePrecipitationPrintOut()
     Dim fileToPlay As String: fileToPlay = vbNullString
 
+    ' humidity gauge to extinguish the new rain warning lamp
     On Error GoTo hidePrecipitationPrintOut_Error
 
-    ' humidity gauge to extinguish the new rain warning lamp
+    ' switch the humidity gauge red lamp off
     overlayHumidWidget.precipitationRedLamp = False
     
     ' remove the precipitation text
@@ -479,16 +480,17 @@ End Sub
 Private Sub showPrecipitationPrintOut()
     Dim fileToPlay As String: fileToPlay = vbNullString
 
+    ' humidity gauge to extinguish the new rain warning lamp
     On Error GoTo showPrecipitationPrintOut_Error
 
     ' switch the humidity gauge red lamp off
     overlayHumidWidget.precipitationRedLamp = True
     
+    sLblPrecipitationText.Widget.Refresh
+
     ' now display the printout widget
     pictorialGaugeForm.Widgets("precipitationprintout").Widget.Alpha = Val(gblOpacity) / 100
     pictorialGaugeForm.Widgets("precipitationprintout").Widget.Refresh
-    
-    sLblPrecipitationText.Widget.Refresh
     
     fileToPlay = "shredder.wav"
     If gblEnableSounds = "1" And fFExists(App.path & "\resources\sounds\" & fileToPlay) Then
@@ -596,7 +598,7 @@ End Sub
 '    End If
 '
 '    sPutINISetting "Software\PzPictorialGauge", "pointerAnimate", gblPointerAnimate, gblSettingsFile
-'    If widgetPrefs.IsVisible = True Then widgetPrefs.cmbTickSwitchPref.ListIndex = Val(gblPointerAnimate)
+'    If panzerPrefs.IsVisible = True Then panzerPrefs.cmbTickSwitchPref.ListIndex = Val(gblPointerAnimate)
 '
 '   On Error GoTo 0
 '   Exit Sub
@@ -812,14 +814,14 @@ Public Sub pictAdjustZoom(ByVal NewZoom As Single)
   
     ' when resized from the gauge scroll up/down it needs to write it back so the size is correct when prefs opened.
     gblPictorialGaugeSize = LTrim$(Str$(NewZoom * 100))
-    If widgetPrefs.IsVisible = True Then
+    If panzerPrefs.IsVisible = True Then
         
-'        If widgetPrefs.cmbGaugeType.ListIndex = 0 Then
-            widgetPrefs.sliGaugeSize.Value = Val(gblPictorialGaugeSize)
+'        If panzerPrefs.cmbGaugeType.ListIndex = 0 Then
+            panzerPrefs.sliGaugeSize.Value = Val(gblPictorialGaugeSize)
             sPutINISetting "Software\PzPictorialGauge", "pictorialGaugeSize", gblPictorialGaugeSize, gblSettingsFile
 '        End If
-'        If widgetPrefs.cmbGaugeType.ListIndex = 1 Then
-'            widgetPrefs.sliGaugeSize.Value = Val(gblAnemometerGaugeSize)
+'        If panzerPrefs.cmbGaugeType.ListIndex = 1 Then
+'            panzerPrefs.sliGaugeSize.Value = Val(gblAnemometerGaugeSize)
 '            sPutINISetting "Software\PzAnemometerGauge", "anemometerGaugeSize", gblAnemometerGaugeSize, gblSettingsFile
 '        End If
     End If
@@ -858,7 +860,7 @@ Private Sub pictorialGaugeForm_MouseDown(ByRef Button As Integer, ByRef Shift As
     Else
         ' ensure that the associated forms pop to the front when the main gauge receives focus
         If fSelector.SelectorForm.Visible = True Then fSelector.SelectorForm.SetFocus
-        If widgetPrefs.IsVisible = True Then widgetPrefs.SetFocus
+        If panzerPrefs.IsVisible = True Then panzerPrefs.SetFocus
         If fPictorial.pictorialGaugeForm.Visible = True Then fPictorial.pictorialGaugeForm.SetFocus
         
         If gblIgnoreMouse = "1" Then Exit Sub

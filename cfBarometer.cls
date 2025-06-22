@@ -106,7 +106,7 @@ Public Sub InitBarometerFromPSD(ByRef PSD_FileNameOrByteArray As Variant)
                         
                         ' all non-clickable Layer-Widgets will be -1 or "non-hoverable" and "fully click-through"
                         W.HoverColor = -1 ' task: might change this later when new ver or RC6 arrives
-                        If gblEnableTooltips = "1" Then W.ToolTip = "Ctrl + mouse scrollwheel up/down to resize, you can also drag me to a new position."
+                        If gblGaugeTooltips = "1" Then W.ToolTip = "Ctrl + mouse scrollwheel up/down to resize, you can also drag me to a new position."
                         W.MousePointer = IDC_SIZEALL
 
                     End If
@@ -143,28 +143,28 @@ Private Sub barometerGaugeForm_BubblingEvent(ByRef sender As Object, ByRef Event
     If EventName = "W_MouseMove" Then
         Select Case LCase$(sender.Widget.key)
             Case "housing/lockbutton"
-                If gblEnableBalloonTooltips = "1" Then CreateToolTip barometerGaugeForm.hwnd, "Click me to lock the widget in place. This lock can be released by clicking again on the lock button, or in the preferences. A locking sound will denote the button's operation.", _
+                If gblGaugeTooltips = "0" Then CreateToolTip barometerGaugeForm.hwnd, "Click me to lock the widget in place. This lock can be released by clicking again on the lock button, or in the preferences. A locking sound will denote the button's operation.", _
                      TTIconInfo, widgetName6 & " Lock Button Help", , , , True
             Case "housing/prefsbutton"
-                If gblEnableBalloonTooltips = "1" Then CreateToolTip barometerGaugeForm.hwnd, "Click me to open the preferences utility. All advanced configuration of the widget is performed using the preference utility.", _
+                If gblGaugeTooltips = "0" Then CreateToolTip barometerGaugeForm.hwnd, "Click me to open the preferences utility. All advanced configuration of the widget is performed using the preference utility.", _
                      TTIconInfo, widgetName6 & " Prefs Button Help", , , , True
             Case "housing/tickbutton"
-                If gblEnableBalloonTooltips = "1" Then CreateToolTip barometerGaugeForm.hwnd, "This button is non-functional in this gauge.", _
+                If gblGaugeTooltips = "0" Then CreateToolTip barometerGaugeForm.hwnd, "This button is non-functional in this gauge.", _
                      TTIconInfo, widgetName6 & " Tick Button Help", , , , True
             Case "housing/switchfacesbutton"
-                If gblEnableBalloonTooltips = "1" Then CreateToolTip barometerGaugeForm.hwnd, "Click here to select between different pressure faces showing alternative scales, ie. millibars, inches of mercury, mm of mercury or hectopascals.", _
+                If gblGaugeTooltips = "0" Then CreateToolTip barometerGaugeForm.hwnd, "Click here to select between different pressure faces showing alternative scales, ie. millibars, inches of mercury, mm of mercury or hectopascals.", _
                      TTIconInfo, widgetName6 & " Switch Faces Button Help", , , , True
             Case "housing/stopbutton"
-                If gblEnableBalloonTooltips = "1" Then CreateToolTip barometerGaugeForm.hwnd, "This button stops all animated gauge functions for this widget, pointer movement, digital displays &c .", _
+                If gblGaugeTooltips = "0" Then CreateToolTip barometerGaugeForm.hwnd, "This button stops all animated gauge functions for this widget, pointer movement, digital displays &c .", _
                      TTIconInfo, widgetName6 & " Stop Button Help", , , , True
             Case "housing/startbutton"
-                If gblEnableBalloonTooltips = "1" Then CreateToolTip barometerGaugeForm.hwnd, "This button restarts all stopped animated gauge functions for this widget, pointer movement &c .", _
+                If gblGaugeTooltips = "0" Then CreateToolTip barometerGaugeForm.hwnd, "This button restarts all stopped animated gauge functions for this widget, pointer movement &c .", _
                      TTIconInfo, widgetName6 & " Start Button Help", , , , True
             Case "housing/helpbutton"
-                If gblEnableBalloonTooltips = "1" Then CreateToolTip barometerGaugeForm.hwnd, "This button opens the one-page help file for this widget. There is a further detailed CHM help file available from the right-click menu that contains all the information that you need to run this widget.", _
+                If gblGaugeTooltips = "0" Then CreateToolTip barometerGaugeForm.hwnd, "This button opens the one-page help file for this widget. There is a further detailed CHM help file available from the right-click menu that contains all the information that you need to run this widget.", _
                      TTIconInfo, widgetName6 & " Help Button Help", , , , True
             Case Else
-                If gblEnableBalloonTooltips = "1" Then CreateToolTip barometerGaugeForm.hwnd, " " & WeatherMeteo.WeatherDetails _
+                If gblGaugeTooltips = "0" Then CreateToolTip barometerGaugeForm.hwnd, " " & WeatherMeteo.WeatherDetails _
                     & vbCrLf & "" _
                     & vbCrLf & "Right Click to open the menu and the preferences. CTRL+ Mouse scrollwheel UP/DOWN to resize." _
                     , TTIconInfo, widgetName6 & " METAR summary Information.", , , , True
@@ -630,9 +630,9 @@ Public Sub baromAdjustZoom(ByVal NewZoom As Single)
       
     ' when resized from the gauge scroll up/down it needs to write it back so the size is correct when prefs opened.
     gblBarometerGaugeSize = LTrim$(Str$(NewZoom * 100))
-    If panzerPrefs.IsVisible = True Then
+    If widgetPrefs.IsVisible = True Then
 
-        panzerPrefs.sliGaugeSize.Value = Val(gblBarometerGaugeSize)
+        widgetPrefs.sliGaugeSize.Value = Val(gblBarometerGaugeSize)
         sPutINISetting "Software\PzBarometerGauge", "BarometerGaugeSize", gblBarometerGaugeSize, gblSettingsFile
 
     End If
@@ -670,7 +670,7 @@ Private Sub barometerGaugeForm_MouseDown(ByRef Button As Integer, ByRef Shift As
     Else
         ' ensure that the associated forms pop to the front when the main gauge receives focus
         If fSelector.SelectorForm.Visible = True Then fSelector.SelectorForm.SetFocus
-        If panzerPrefs.IsVisible = True Then panzerPrefs.SetFocus
+        If widgetPrefs.IsVisible = True Then widgetPrefs.SetFocus
         If fBarometer.barometerGaugeForm.Visible = True Then fBarometer.barometerGaugeForm.SetFocus
         
         If gblIgnoreMouse = "1" Then Exit Sub

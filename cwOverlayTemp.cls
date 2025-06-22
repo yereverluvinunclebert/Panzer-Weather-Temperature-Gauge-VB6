@@ -267,8 +267,8 @@ Public Property Let thisFace(ByVal newValue As Integer)
 
     If mThisFace <> newValue Then mThisFace = newValue Else Exit Property
     
-    If panzerPrefs.IsVisible = True Then
-        panzerPrefs.cmbTemperatureScale.ListIndex = newValue
+    If widgetPrefs.IsVisible = True Then
+        widgetPrefs.cmbTemperatureScale.ListIndex = newValue
     End If
     
     gblTemperatureScale = mThisFace
@@ -360,35 +360,35 @@ Public Property Let Locked(ByVal newValue As Boolean)
 
     If mLocked = True Then
         menuForm.mnuLockTemperatureGauge.Checked = True
-        If panzerPrefs.IsVisible = True Then
-            panzerPrefs.cmbGaugeType.ListIndex = 0
-            panzerPrefs.chkPreventDragging.Value = 1
+        If widgetPrefs.IsVisible = True Then
+            widgetPrefs.cmbGaugeType.ListIndex = 0
+            widgetPrefs.chkPreventDragging.Value = 1
         End If
         
         gblPreventDraggingTemperature = "1"
         If aspectRatio = "landscape" Then
             gblTemperatureLandscapeLocked = "1"
-            panzerPrefs.cmbLandscapeLocked.ListIndex = 1
+            widgetPrefs.cmbLandscapeLocked.ListIndex = 1
         Else
             gblTemperaturePortraitLocked = "1"
-            panzerPrefs.cmbPortraitLocked.ListIndex = 1
+            widgetPrefs.cmbPortraitLocked.ListIndex = 1
        End If
         
         fTemperature.temperatureGaugeForm.Widgets("housing/lockbutton").Widget.Alpha = 0
     Else
         menuForm.mnuLockTemperatureGauge.Checked = False
-        If panzerPrefs.IsVisible = True Then
-            panzerPrefs.cmbGaugeType.ListIndex = 0
-            panzerPrefs.chkPreventDragging.Value = 0
+        If widgetPrefs.IsVisible = True Then
+            widgetPrefs.cmbGaugeType.ListIndex = 0
+            widgetPrefs.chkPreventDragging.Value = 0
         End If
         
         gblPreventDraggingTemperature = "0"
         If aspectRatio = "landscape" Then
             gblTemperatureLandscapeLocked = "0"
-            panzerPrefs.cmbLandscapeLocked.ListIndex = 0
+            widgetPrefs.cmbLandscapeLocked.ListIndex = 0
         Else
             gblTemperaturePortraitLocked = "0"
-            panzerPrefs.cmbPortraitLocked.ListIndex = 0
+            widgetPrefs.cmbPortraitLocked.ListIndex = 0
         End If
         
         fTemperature.temperatureGaugeForm.Widgets("housing/lockbutton").Widget.Alpha = Val(gblOpacity) / 100
@@ -775,7 +775,7 @@ End Property
 '             For this Overlay-Widget alone, we make everything "fully click-through"
 '---------------------------------------------------------------------------------------------
 '
-Private Sub W_HitTest(ByVal X As Single, ByVal Y As Single, HitResultHit As Boolean) 'ensure ClickThrough-behaviour in ImagePixels which are "fully Alpha"
+Private Sub W_HitTest(ByVal x As Single, ByVal y As Single, HitResultHit As Boolean) 'ensure ClickThrough-behaviour in ImagePixels which are "fully Alpha"
    On Error GoTo W_HitTest_Error
 
    HitResultHit = False

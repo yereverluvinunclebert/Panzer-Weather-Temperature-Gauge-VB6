@@ -361,10 +361,12 @@ Private Sub initialiseGlobalVars()
 
     ' config
     gblGaugeTooltips = vbNullString
+    gblPrefsTooltips = vbNullString
+
     
-    gblEnableTooltips = vbNullString
-    gblEnablePrefsTooltips = vbNullString
-    gblEnableBalloonTooltips = vbNullString
+    gblGaugeTooltips = vbNullString
+    gblPrefsTooltips = vbNullString
+    'gblEnableBalloonTooltips = vbNullString
     gblShowTaskbar = vbNullString
     gblDpiAwareness = vbNullString
     
@@ -512,14 +514,17 @@ Private Sub initialiseGlobalVars()
     windowsVer = vbNullString
     
     ' vars to obtain correct screen width (to correct VB6 bug) STARTS
-    screenTwipsPerPixelX = 0
-    screenTwipsPerPixelY = 0
-    screenWidthTwips = 0
-    screenHeightTwips = 0
-    screenHeightPixels = 0
-    screenWidthPixels = 0
-    oldScreenHeightPixels = 0
-    oldScreenWidthPixels = 0
+    gblScreenTwipsPerPixelX = 0
+    gblScreenTwipsPerPixelY = 0
+    gblVirtualScreenWidthPixels = 0
+    gblPhysicalScreenHeightTwips = 0
+    gblPhysicalScreenHeightPixels = 0
+    gblPhysicalScreenWidthPixels = 0
+    gblOldPhysicalScreenHeightPixels = 0
+    gblOldPhysicalScreenWidthPixels = 0
+    
+    gblVirtualScreenHeightPixels = 0
+    gblVirtualScreenWidthPixels = 0
     
     ' key presses
     CTRL_1 = False
@@ -942,7 +947,7 @@ End Sub
 Public Sub setRCPictorialTooltips()
    On Error GoTo setRCPictorialTooltips_Error
 
-    If gblEnableTooltips = "1" Then
+    If gblGaugeTooltips = "1" Then
 
         overlayPictorialWidget.Widget.ToolTip = vbNullString & vbCrLf & "Use CTRL+mouse scrollwheel up/down to resize."
         
@@ -1091,7 +1096,7 @@ End Sub
 Public Sub setRCTemperatureTooltips()
    On Error GoTo setRCTemperatureTooltips_Error
 
-    If gblEnableTooltips = "1" Then
+    If gblGaugeTooltips = "1" Then
 
         overlayTemperatureWidget.Widget.ToolTip = vbNullString & vbCrLf & "Use CTRL+mouse scrollwheel up/down to resize."
         helpWidget.Widget.ToolTip = "Click on me to make me go away."
@@ -1268,7 +1273,7 @@ End Sub
 Public Sub setRCAnemometerTooltips()
    On Error GoTo setRCAnemometerTooltips_Error
 
-    If gblEnableTooltips = "1" Then
+    If gblGaugeTooltips = "1" Then
 
         overlayAnemoWidget.Widget.ToolTip = vbNullString & vbCrLf & "Use CTRL+mouse scrollwheel up/down to resize."
         
@@ -1507,7 +1512,7 @@ End Sub
 Public Sub setRCBarometerTooltips()
    On Error GoTo setRCBarometerTooltips_Error
 
-    If gblEnableTooltips = "1" Then
+    If gblGaugeTooltips = "1" Then
 
         overlayBaromWidget.Widget.ToolTip = vbNullString & vbCrLf & "Use CTRL+mouse scrollwheel up/down to resize."
         
@@ -1614,9 +1619,10 @@ Public Sub readSettingsFile(ByVal location As String, ByVal gblSettingsFile As S
         gblIcao = fGetINISetting(location, "icao", gblSettingsFile)
 
         ' configuration
-        gblEnableTooltips = fGetINISetting(location, "enableTooltips", gblSettingsFile)
-        gblEnablePrefsTooltips = fGetINISetting(location, "enablePrefsTooltips", gblSettingsFile)
-        gblEnableBalloonTooltips = fGetINISetting(location, "enableBalloonTooltips", gblSettingsFile)
+        gblGaugeTooltips = fGetINISetting(location, "gaugeTooltips", gblSettingsFile)
+       
+        gblPrefsTooltips = fGetINISetting(location, "PrefsTooltips", gblSettingsFile)
+        'gblEnableBalloonTooltips = fGetINISetting(location, "enableBalloonTooltips", gblSettingsFile)
         gblShowTaskbar = fGetINISetting(location, "showTaskbar", gblSettingsFile)
         gblDpiAwareness = fGetINISetting(location, "dpiAwareness", gblSettingsFile)
         
@@ -1810,9 +1816,9 @@ Public Sub validateInputs()
     If gblGaugeTooltips = "False" Then gblGaugeTooltips = "0"
     If gblGaugeTooltips = vbNullString Then gblGaugeTooltips = "0"
         
-    If gblEnableTooltips = vbNullString Then gblEnableTooltips = "0"
-    If gblEnablePrefsTooltips = vbNullString Then gblEnablePrefsTooltips = "1"
-    If gblEnableBalloonTooltips = vbNullString Then gblEnableBalloonTooltips = "1"
+    If gblGaugeTooltips = vbNullString Then gblGaugeTooltips = "0"
+    If gblPrefsTooltips = vbNullString Then gblPrefsTooltips = "1"
+    'If gblEnableBalloonTooltips = vbNullString Then gblGaugeTooltips = "0"
     If gblShowTaskbar = vbNullString Then gblShowTaskbar = "0"
     If gblDpiAwareness = vbNullString Then gblDpiAwareness = "0"
     
@@ -2573,10 +2579,10 @@ Private Sub loadPreferenceForm()
         
    On Error GoTo loadPreferenceForm_Error
 
-    If panzerPrefs.IsLoaded = False Then
-        Load panzerPrefs
+    If widgetPrefs.IsLoaded = False Then
+        Load widgetPrefs
         'gblPrefsFormResizedInCode = True
-        Call panzerPrefs.PrefsForm_Resize_Event
+        Call widgetPrefs.PrefsForm_Resize_Event
     End If
 
    On Error GoTo 0

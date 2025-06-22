@@ -2,6 +2,7 @@ Type=Exe
 Reference=*\G{B7E5C25A-FEAA-4FB9-A36A-6B5918F51FFC}#9c.0#0#..\Panzer-StopWatch-Clock-VB6\BIN\RC6Widgets.dll#RC6Widgets
 Reference=*\G{CE4F61C1-7072-4180-9107-B38562AB6ABE}#167.0#0#..\Panzer-StopWatch-Clock-VB6\BIN\RC6.dll#RC6
 Reference=*\G{F5078F18-C551-11D3-89B9-0000F81FE221}#3.0#0#C:\Windows\SysWOW64\msxml3.dll#Microsoft XML, v3.0
+Reference=*\G{00020430-0000-0000-C000-000000000046}#2.0#0#C:\Windows\SysWOW64\stdole2.tlb#OLE Automation
 Object={BCE37951-37DF-4D69-A8A3-2CFABEE7B3CC}#1.0#0; CCRSlider.ocx
 Module=modMain; modMain.bas
 Class=cfTemperature; cfTemperature.cls
@@ -38,6 +39,7 @@ Class=cwWeatherMeteo; cwWeather.cls
 Class=cfPictorial; cfPictorial.cls
 Class=cwOverlayPict; cwOverlayPict.cls
 ResFile32="Panzer Temperature Gauge.RES"
+Module=Subclasser; Subclasser.bas
 IconForm="frmTimer"
 Startup="Sub Main"
 HelpFile=""
@@ -50,7 +52,7 @@ Description="FOSS Panzer Temperature Gauge VB6 Widget for Windows"
 CompatibleMode="0"
 MajorVer=0
 MinorVer=0
-RevisionVer=1373
+RevisionVer=1420
 AutoIncrementVer=1
 ServerSupportFiles=0
 VersionComments="Alpha-release version. "
@@ -89,5 +91,3 @@ RevisionVersion=0
 
 [Rubberduck]
 ProjectId=79e9b044-786f-4d2a-abd2-5aecb28ec8a1
-
-

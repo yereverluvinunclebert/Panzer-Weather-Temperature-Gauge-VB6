@@ -451,35 +451,35 @@ Public Property Let Locked(ByVal newValue As Boolean)
 
     If mLocked = True Then
         menuForm.mnuLockPictorialGauge.Checked = True
-        If panzerPrefs.IsVisible = True Then
-            panzerPrefs.cmbGaugeType.ListIndex = 4
-            panzerPrefs.chkPreventDragging.Value = 1
+        If widgetPrefs.IsVisible = True Then
+            widgetPrefs.cmbGaugeType.ListIndex = 4
+            widgetPrefs.chkPreventDragging.Value = 1
         End If
         
         gblPreventDraggingPictorial = "1"
         If aspectRatio = "landscape" Then
             gblPictorialLandscapeLocked = "1"
-            panzerPrefs.cmbLandscapeLocked.ListIndex = 1
+            widgetPrefs.cmbLandscapeLocked.ListIndex = 1
         Else
             gblPictorialPortraitLocked = "1"
-            panzerPrefs.cmbPortraitLocked.ListIndex = 1
+            widgetPrefs.cmbPortraitLocked.ListIndex = 1
        End If
         
         fPictorial.pictorialGaugeForm.Widgets("housing/lockbutton").Widget.Alpha = 0
     Else
         menuForm.mnuLockPictorialGauge.Checked = False
-        If panzerPrefs.IsVisible = True Then
-            panzerPrefs.cmbGaugeType.ListIndex = 4
-            panzerPrefs.chkPreventDragging.Value = 0
+        If widgetPrefs.IsVisible = True Then
+            widgetPrefs.cmbGaugeType.ListIndex = 4
+            widgetPrefs.chkPreventDragging.Value = 0
         End If
         
         gblPreventDraggingPictorial = "0"
         If aspectRatio = "landscape" Then
             gblPictorialLandscapeLocked = "0"
-            panzerPrefs.cmbLandscapeLocked.ListIndex = 0
+            widgetPrefs.cmbLandscapeLocked.ListIndex = 0
         Else
             gblPictorialPortraitLocked = "0"
-            panzerPrefs.cmbPortraitLocked.ListIndex = 0 ' deanieboy
+            widgetPrefs.cmbPortraitLocked.ListIndex = 0 ' deanieboy
         End If
         
         fPictorial.pictorialGaugeForm.Widgets("housing/lockbutton").Widget.Alpha = Val(gblOpacity) / 100

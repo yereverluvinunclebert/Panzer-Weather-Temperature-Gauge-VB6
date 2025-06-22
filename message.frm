@@ -116,7 +116,7 @@ Private yesNoReturnValue As Integer
 Private formMsgContext As String
 Private formShowAgainChkBox As Boolean
 
-'Private lastFormHeight As Long
+'Private pvtLastFormHeight As Long
 
 Private Const cMsgBoxAFormHeight As Long = 2565
 Private Const cMsgBoxAFormWidth  As Long = 11055
@@ -213,7 +213,7 @@ Private Sub Form_Resize()
         Call setMessageIconImagesLight(600)
     End If
 
-''    If panzerPrefs.mnuDark.Checked = True Then
+''    If widgetPrefs.mnuDark.Checked = True Then
 ''        Call setMessageIconImagesDark(determineIconWidth(Me, msgBoxADynamicSizingFlg))
 ''    Else
 '        Call setMessageIconImagesLight(1920)
@@ -330,7 +330,7 @@ Public Property Let propMessage(ByVal newValue As String)
           
     If msgBoxADynamicSizingFlg = True Then
         ' this causes a resize event
-        Me.Height = (screenHeightTwips / 5.5) '+ intDiff
+        Me.Height = (gblPhysicalScreenHeightTwips / 5.5) '+ intDiff
     Else
         fraPicVB.Top = 285
     End If
@@ -653,7 +653,7 @@ Private Sub loadHigherResMessageImages()
 
     If Me.WindowState = vbMinimized Then Exit Sub
 
-'    If panzerPrefs.mnuDark.Checked = True Then
+'    If widgetPrefs.mnuDark.Checked = True Then
 '        Call setMessageIconImagesDark(determineIconWidth(Me, msgBoxADynamicSizingFlg))
 '    Else
         Call setMessageIconImagesLight(1920)
@@ -664,7 +664,7 @@ Private Sub loadHigherResMessageImages()
 
 loadHigherResMessageImages_Error:
 
-    MsgBox "Error " & Err.Number & " (" & Err.Description & ") in procedure loadHigherResMessageImages of Form panzerPrefs"
+    MsgBox "Error " & Err.Number & " (" & Err.Description & ") in procedure loadHigherResMessageImages of Form widgetPrefs"
 End Sub
 
 
@@ -727,7 +727,7 @@ IsVisible_Error:
 
     With Err
          If .Number <> 0 Then
-            MsgBox "Error " & Err.Number & " (" & Err.Description & ") in procedure IsVisible of Form panzerPrefs"
+            MsgBox "Error " & Err.Number & " (" & Err.Description & ") in procedure IsVisible of Form widgetPrefs"
             Resume Next
           End If
     End With

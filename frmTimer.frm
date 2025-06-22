@@ -132,18 +132,18 @@ End Sub
 Private Sub rotationTimer_Timer()
     On Error GoTo rotationTimer_Timer_Error
 
-    screenHeightPixels = GetDeviceCaps(menuForm.hdc, VERTRES) ' we use the name of any form currently loaded
-    screenWidthPixels = GetDeviceCaps(menuForm.hdc, HORZRES)
+    gblPhysicalScreenHeightPixels = GetDeviceCaps(menuForm.hdc, VERTRES) ' we use the name of any form currently loaded
+    gblPhysicalScreenWidthPixels = GetDeviceCaps(menuForm.hdc, HORZRES)
     
     ' will be used to check for orientation changes
-    If (oldScreenHeightPixels <> screenHeightPixels) Or (oldScreenWidthPixels <> screenWidthPixels) Then
+    If (gblOldPhysicalScreenHeightPixels <> gblPhysicalScreenHeightPixels) Or (gblOldPhysicalScreenWidthPixels <> gblPhysicalScreenWidthPixels) Then
         
         ' move/hide onto/from the main screen
         Call mainScreen
         
         'store the resolution change
-        oldScreenHeightPixels = screenHeightPixels
-        oldScreenWidthPixels = screenWidthPixels
+        gblOldPhysicalScreenHeightPixels = gblPhysicalScreenHeightPixels
+        gblOldPhysicalScreenWidthPixels = gblPhysicalScreenWidthPixels
     End If
 
     On Error GoTo 0

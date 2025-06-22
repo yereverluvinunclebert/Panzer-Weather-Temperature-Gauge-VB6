@@ -69,19 +69,19 @@ Public Sub initAndShowAboutForm(Optional ByVal Caption As String)
     If gblDpiAwareness = "0" Then
         aboutFormWidth = 900
         aboutFormHeight = 850
-        If aboutFormWidth > screenWidthPixels Then aboutFormWidth = screenWidthPixels
-        If aboutFormHeight > screenHeightPixels Then aboutFormHeight = screenHeightPixels
+        If aboutFormWidth > gblPhysicalScreenWidthPixels Then aboutFormWidth = gblPhysicalScreenWidthPixels
+        If aboutFormHeight > gblPhysicalScreenHeightPixels Then aboutFormHeight = gblPhysicalScreenHeightPixels
     Else
         aboutFormWidth = 1800
         aboutFormHeight = 1600
-        If aboutFormWidth > screenWidthPixels Then
-            aboutFormWidth = screenWidthPixels
+        If aboutFormWidth > gblPhysicalScreenWidthPixels Then
+            aboutFormWidth = gblPhysicalScreenWidthPixels
             aboutWidgetZoomValue = 1
         Else
             aboutWidgetZoomValue = 1.6
         End If
-        If aboutFormHeight > screenHeightPixels Then
-            aboutFormHeight = screenHeightPixels
+        If aboutFormHeight > gblPhysicalScreenHeightPixels Then
+            aboutFormHeight = gblPhysicalScreenHeightPixels
             aboutWidgetZoomValue = 1
         Else
             aboutWidgetZoomValue = 1.6
@@ -139,21 +139,21 @@ Public Sub initAndShowHelpForm(Optional ByVal Caption As String)
     If gblDpiAwareness = "0" Then
         helpFormWidth = 1000
         helpFormHeight = 800
-        If helpFormWidth > screenWidthPixels Then helpFormWidth = screenWidthPixels
-        If helpFormHeight > screenHeightPixels Then helpFormHeight = screenHeightPixels
+        If helpFormWidth > gblPhysicalScreenWidthPixels Then helpFormWidth = gblPhysicalScreenWidthPixels
+        If helpFormHeight > gblPhysicalScreenHeightPixels Then helpFormHeight = gblPhysicalScreenHeightPixels
         helpWidgetZoomValue = 0.8
     Else
         helpFormWidth = 1600
         helpFormHeight = 1300
-        If helpFormWidth > screenWidthPixels Then
-            helpFormWidth = screenWidthPixels
+        If helpFormWidth > gblPhysicalScreenWidthPixels Then
+            helpFormWidth = gblPhysicalScreenWidthPixels
             helpWidgetZoomValue = 1
         Else
             helpWidgetZoomValue = 1.4
         End If
         
-        If helpFormHeight > screenHeightPixels Then
-            helpFormHeight = screenHeightPixels
+        If helpFormHeight > gblPhysicalScreenHeightPixels Then
+            helpFormHeight = gblPhysicalScreenHeightPixels
             helpWidgetZoomValue = 1
         Else
             helpWidgetZoomValue = 1.4
@@ -211,21 +211,21 @@ Public Sub initAndShowLicenceForm(Optional ByVal Caption As String)
     If gblDpiAwareness = "0" Then
         licenceFormWidth = 650
         licenceFormHeight = 550
-        If licenceFormWidth > screenWidthPixels Then licenceFormWidth = screenWidthPixels
-        If licenceFormHeight > screenHeightPixels Then licenceFormHeight = screenHeightPixels
+        If licenceFormWidth > gblPhysicalScreenWidthPixels Then licenceFormWidth = gblPhysicalScreenWidthPixels
+        If licenceFormHeight > gblPhysicalScreenHeightPixels Then licenceFormHeight = gblPhysicalScreenHeightPixels
         licenceWidgetZoomValue = 0.8
     Else
         licenceFormWidth = 750
         licenceFormHeight = 650
-        If licenceFormWidth > screenWidthPixels Then
-            licenceFormWidth = screenWidthPixels
+        If licenceFormWidth > gblPhysicalScreenWidthPixels Then
+            licenceFormWidth = gblPhysicalScreenWidthPixels
             licenceWidgetZoomValue = 0.8
         Else
             licenceWidgetZoomValue = 1.5
         End If
         
-        If licenceFormHeight > screenHeightPixels Then
-            licenceFormHeight = screenHeightPixels
+        If licenceFormHeight > gblPhysicalScreenHeightPixels Then
+            licenceFormHeight = gblPhysicalScreenHeightPixels
             licenceWidgetZoomValue = 0.8
         Else
             licenceWidgetZoomValue = 1.5
@@ -399,8 +399,8 @@ End Sub
 ' Purpose   :
 '---------------------------------------------------------------------------------------
 '
-Private Sub licenceForm_MouseMove(ByRef Button As Integer, ByRef Shift As Integer, ByRef X As Single, ByRef Y As Single)
-  Static x0 As Single, y0 As Single: If Button = 0 Then x0 = X: y0 = Y 'just store the offsets when no button is down
+Private Sub licenceForm_MouseMove(ByRef Button As Integer, ByRef Shift As Integer, ByRef x As Single, ByRef y As Single)
+  Static x0 As Single, y0 As Single: If Button = 0 Then x0 = x: y0 = y 'just store the offsets when no button is down
   
    On Error GoTo licenceForm_MouseMove_Error
     
@@ -412,8 +412,8 @@ Private Sub licenceForm_MouseMove(ByRef Button As Integer, ByRef Shift As Intege
     End If
     If Button = vbLeftButton And Not licenceForm.ActiveWidget Is Nothing Then 'Form-Dragging (under certain conditions)
 
-      licenceFormX = (X - x0) * licenceForm.WidgetRoot.Zoom + licenceForm.Left
-      licenceFormY = (Y - y0) * licenceForm.WidgetRoot.Zoom + licenceForm.Top
+      licenceFormX = (x - x0) * licenceForm.WidgetRoot.Zoom + licenceForm.Left
+      licenceFormY = (y - y0) * licenceForm.WidgetRoot.Zoom + licenceForm.Top
       licenceForm.Move licenceFormX, licenceFormY
     End If
 

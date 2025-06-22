@@ -307,9 +307,8 @@ Public gblIcao As String
 ' config
 
 Public gblGaugeTooltips As String
-Public gblEnableTooltips As String
-Public gblEnablePrefsTooltips As String
-Public gblEnableBalloonTooltips As String
+Public gblPrefsTooltips As String
+'Public gblEnableBalloonTooltips As String
 
 Public gblShowTaskbar As String
 Public gblDpiAwareness As String
@@ -482,12 +481,21 @@ Public storeThemeColour As Long
 Public windowsVer As String
 
 ' vars to obtain correct screen width (to correct VB6 bug)
-Public screenWidthTwips As Long
-Public screenHeightTwips As Long
-Public screenHeightPixels As Long
-Public screenWidthPixels As Long
-Public oldScreenHeightPixels As Long
-Public oldScreenWidthPixels As Long
+Public gblVirtualScreenWidthPixels As Long
+Public gblPhysicalScreenHeightTwips As Long
+Public gblPhysicalScreenHeightPixels As Long
+Public gblPhysicalScreenWidthPixels As Long
+Public gblOldPhysicalScreenHeightPixels As Long
+Public gblOldPhysicalScreenWidthPixels As Long
+
+' vars to obtain the virtual (multi-monitor) width twips
+Public gblVirtualScreenHeightTwips As Long
+Public gblVirtualScreenWidthTwips As Long
+
+' pixels
+Public gblVirtualScreenHeightPixels As Long
+'Public gblVirtualScreenWidthPixels As Long
+
 
 ' key presses
 Public CTRL_1 As Boolean
@@ -1531,8 +1539,8 @@ Public Sub aboutClickEvent()
     
     ' The RC forms are measured in pixels so the positioning needs to pre-convert the twips into pixels
    
-    fMain.aboutForm.Top = (screenHeightPixels / 2) - (fMain.aboutForm.Height / 2)
-    fMain.aboutForm.Left = (screenWidthPixels / 2) - (fMain.aboutForm.Width / 2)
+    fMain.aboutForm.Top = (gblPhysicalScreenHeightPixels / 2) - (fMain.aboutForm.Height / 2)
+    fMain.aboutForm.Left = (gblPhysicalScreenWidthPixels / 2) - (fMain.aboutForm.Width / 2)
      
     fMain.aboutForm.Load
     fMain.aboutForm.Show
@@ -1573,8 +1581,8 @@ Public Sub helpSplash()
         PlaySound App.path & "\resources\sounds\" & fileToPlay, ByVal 0&, SND_FILENAME Or SND_ASYNC
     End If
 
-    fMain.helpForm.Top = (screenHeightPixels / 2) - (fMain.helpForm.Height / 2)
-    fMain.helpForm.Left = (screenWidthPixels / 2) - (fMain.helpForm.Width / 2)
+    fMain.helpForm.Top = (gblPhysicalScreenHeightPixels / 2) - (fMain.helpForm.Height / 2)
+    fMain.helpForm.Left = (gblPhysicalScreenWidthPixels / 2) - (fMain.helpForm.Width / 2)
      
     helpWidget.ShowMe = True
     helpWidget.Widget.Refresh
@@ -1614,8 +1622,8 @@ Public Sub licenceSplash()
     End If
     
     
-    fMain.licenceForm.Top = (screenHeightPixels / 2) - (fMain.licenceForm.Height / 2)
-    fMain.licenceForm.Left = (screenWidthPixels / 2) - (fMain.licenceForm.Width / 2)
+    fMain.licenceForm.Top = (gblPhysicalScreenHeightPixels / 2) - (fMain.licenceForm.Height / 2)
+    fMain.licenceForm.Left = (gblPhysicalScreenWidthPixels / 2) - (fMain.licenceForm.Width / 2)
      
     'licenceWidget.opacity = 0
     'opacityflag = 0
@@ -1735,7 +1743,7 @@ End Sub
 Public Sub setRCHumidityTooltips()
    On Error GoTo setRCHumidityTooltips_Error
 
-    If gblEnableTooltips = "1" Then
+    If gblGaugeTooltips = "1" Then
 
         overlayHumidWidget.Widget.ToolTip = vbNullString & vbCrLf & "Use CTRL+mouse scrollwheel up/down to resize."
         
@@ -1832,8 +1840,8 @@ Public Sub makeVisibleFormElements()
             fTemperature.temperatureGaugeForm.Top = Val(gblTemperatureFormLowDpiYPos)
         End If
     Else ' by percentage (tablet)
-        fTemperature.temperatureGaugeForm.Left = screenWidthPixels * (gblTemperatureHLocationPerc / 100)
-        fTemperature.temperatureGaugeForm.Top = screenHeightPixels * (gblTemperatureVLocationPerc / 100)
+        fTemperature.temperatureGaugeForm.Left = gblPhysicalScreenWidthPixels * (gblTemperatureHLocationPerc / 100)
+        fTemperature.temperatureGaugeForm.Top = gblPhysicalScreenHeightPixels * (gblTemperatureVLocationPerc / 100)
     End If
     fTemperature.temperatureGaugeForm.Show
     
@@ -1870,8 +1878,8 @@ Public Sub makeVisibleFormElements()
             fAnemometer.anemometerGaugeForm.Top = Val(gblAnemometerFormLowDpiYPos)
         End If
     Else ' by percentage (tablet)
-        fAnemometer.anemometerGaugeForm.Left = screenWidthPixels * (gblAnemometerHLocationPerc / 100)
-        fAnemometer.anemometerGaugeForm.Top = screenHeightPixels * (gblAnemometerVLocationPerc / 100)
+        fAnemometer.anemometerGaugeForm.Left = gblPhysicalScreenWidthPixels * (gblAnemometerHLocationPerc / 100)
+        fAnemometer.anemometerGaugeForm.Top = gblPhysicalScreenHeightPixels * (gblAnemometerVLocationPerc / 100)
     End If
     fAnemometer.anemometerGaugeForm.Show
 
@@ -1886,8 +1894,8 @@ Public Sub makeVisibleFormElements()
             fHumidity.humidityGaugeForm.Top = Val(gblHumidityFormLowDpiYPos)
         End If
     Else ' by percentage (tablet)
-        fHumidity.humidityGaugeForm.Left = screenWidthPixels * (gblHumidityHLocationPerc / 100)
-        fHumidity.humidityGaugeForm.Top = screenHeightPixels * (gblHumidityVLocationPerc / 100)
+        fHumidity.humidityGaugeForm.Left = gblPhysicalScreenWidthPixels * (gblHumidityHLocationPerc / 100)
+        fHumidity.humidityGaugeForm.Top = gblPhysicalScreenHeightPixels * (gblHumidityVLocationPerc / 100)
     End If
     fHumidity.humidityGaugeForm.Show
     
@@ -1902,8 +1910,8 @@ Public Sub makeVisibleFormElements()
             fBarometer.barometerGaugeForm.Top = Val(gblBarometerFormLowDpiYPos)
         End If
     Else ' by percentage (tablet)
-        fBarometer.barometerGaugeForm.Left = screenWidthPixels * (gblBarometerHLocationPerc / 100)
-        fBarometer.barometerGaugeForm.Top = screenHeightPixels * (gblBarometerVLocationPerc / 100)
+        fBarometer.barometerGaugeForm.Left = gblPhysicalScreenWidthPixels * (gblBarometerHLocationPerc / 100)
+        fBarometer.barometerGaugeForm.Top = gblPhysicalScreenHeightPixels * (gblBarometerVLocationPerc / 100)
     End If
     fBarometer.barometerGaugeForm.Show
     
@@ -1918,8 +1926,8 @@ Public Sub makeVisibleFormElements()
             fPictorial.pictorialGaugeForm.Top = Val(gblPictorialFormLowDpiYPos)
         End If
     Else ' by percentage (tablet)
-        fPictorial.pictorialGaugeForm.Left = screenWidthPixels * (gblPictorialHLocationPerc / 100)
-        fPictorial.pictorialGaugeForm.Top = screenHeightPixels * (gblPictorialVLocationPerc / 100)
+        fPictorial.pictorialGaugeForm.Left = gblPhysicalScreenWidthPixels * (gblPictorialHLocationPerc / 100)
+        fPictorial.pictorialGaugeForm.Top = gblPhysicalScreenHeightPixels * (gblPictorialVLocationPerc / 100)
     End If
     fPictorial.pictorialGaugeForm.Show
 
@@ -2077,19 +2085,25 @@ Public Sub determineScreenDimensions()
    On Error GoTo determineScreenDimensions_Error
    
     'If debugflg = 1 Then msgbox "% sub determineScreenDimensions"
-
+    
     ' only calling TwipsPerPixelX/Y functions once on startup
-    screenTwipsPerPixelX = fTwipsPerPixelX
-    screenTwipsPerPixelY = fTwipsPerPixelY
+    gblScreenTwipsPerPixelX = fTwipsPerPixelX
+    gblScreenTwipsPerPixelY = fTwipsPerPixelY
     
-    screenHeightPixels = GetDeviceCaps(menuForm.hdc, VERTRES) ' we use the name of any form that we don't mind being loaded at this point
-    screenWidthPixels = GetDeviceCaps(menuForm.hdc, HORZRES)
+    gblPhysicalScreenHeightPixels = GetDeviceCaps(menuForm.hdc, VERTRES) ' we use the name of any form that we don't mind being loaded at this point
+    gblPhysicalScreenWidthPixels = GetDeviceCaps(menuForm.hdc, HORZRES)
 
-    screenHeightTwips = screenHeightPixels * screenTwipsPerPixelY
-    screenWidthTwips = screenWidthPixels * screenTwipsPerPixelX
+    gblPhysicalScreenHeightTwips = gblPhysicalScreenHeightPixels * gblScreenTwipsPerPixelY
+    gblVirtualScreenWidthPixels = gblPhysicalScreenWidthPixels * gblScreenTwipsPerPixelX
     
-    oldScreenHeightPixels = screenHeightPixels ' will be used to check for orientation changes
-    oldScreenWidthPixels = screenWidthPixels
+    gblVirtualScreenHeightPixels = fVirtualScreenHeight(True)
+    gblVirtualScreenWidthPixels = fVirtualScreenWidth(True)
+
+    gblVirtualScreenHeightTwips = fVirtualScreenHeight(False)
+    gblVirtualScreenWidthTwips = fVirtualScreenWidth(False)
+    
+    gblOldPhysicalScreenHeightPixels = gblPhysicalScreenHeightPixels ' will be used to check for orientation changes
+    gblOldPhysicalScreenWidthPixels = gblPhysicalScreenWidthPixels
     
    On Error GoTo 0
    Exit Sub
@@ -2111,7 +2125,7 @@ Public Sub mainScreen()
    On Error GoTo mainScreen_Error
 
     ' check for aspect ratio and determine whether it is in portrait or landscape mode
-    If screenWidthPixels > screenHeightPixels Then
+    If gblPhysicalScreenWidthPixels > gblPhysicalScreenHeightPixels Then
         aspectRatio = "landscape"
     Else
         aspectRatio = "portrait"
@@ -2140,11 +2154,11 @@ Public Sub mainScreen()
     If fTemperature.temperatureGaugeForm.Top < 0 Then
         fTemperature.temperatureGaugeForm.Top = 0
     End If
-    If fTemperature.temperatureGaugeForm.Left > screenWidthPixels - 50 Then
-        fTemperature.temperatureGaugeForm.Left = screenWidthPixels - 150
+    If fTemperature.temperatureGaugeForm.Left > gblPhysicalScreenWidthPixels - 50 Then
+        fTemperature.temperatureGaugeForm.Left = gblPhysicalScreenWidthPixels - 150
     End If
-    If fTemperature.temperatureGaugeForm.Top > screenHeightPixels - 50 Then
-        fTemperature.temperatureGaugeForm.Top = screenHeightPixels - 150
+    If fTemperature.temperatureGaugeForm.Top > gblPhysicalScreenHeightPixels - 50 Then
+        fTemperature.temperatureGaugeForm.Top = gblPhysicalScreenHeightPixels - 150
     End If
     
 
@@ -2155,47 +2169,47 @@ Public Sub mainScreen()
     If fAnemometer.anemometerGaugeForm.Top < 0 Then
         fAnemometer.anemometerGaugeForm.Top = 0
     End If
-    If fAnemometer.anemometerGaugeForm.Left > screenWidthPixels - 50 Then
-        fAnemometer.anemometerGaugeForm.Left = screenWidthPixels - 150
+    If fAnemometer.anemometerGaugeForm.Left > gblPhysicalScreenWidthPixels - 50 Then
+        fAnemometer.anemometerGaugeForm.Left = gblPhysicalScreenWidthPixels - 150
     End If
-    If fAnemometer.anemometerGaugeForm.Top > screenHeightPixels - 50 Then
-        fAnemometer.anemometerGaugeForm.Top = screenHeightPixels - 150
+    If fAnemometer.anemometerGaugeForm.Top > gblPhysicalScreenHeightPixels - 50 Then
+        fAnemometer.anemometerGaugeForm.Top = gblPhysicalScreenHeightPixels - 150
     End If
     
 
     ' calculate the current hlocation in % of the screen
     ' store the current hlocation in % of the screen
     If gblWidgetPosition = "1" Then
-        gblTemperatureHLocationPerc = CStr(fTemperature.temperatureGaugeForm.Left / screenWidthPixels * 100)
-        gblTemperatureVLocationPerc = CStr(fTemperature.temperatureGaugeForm.Top / screenHeightPixels * 100)
+        gblTemperatureHLocationPerc = CStr(fTemperature.temperatureGaugeForm.Left / gblPhysicalScreenWidthPixels * 100)
+        gblTemperatureVLocationPerc = CStr(fTemperature.temperatureGaugeForm.Top / gblPhysicalScreenHeightPixels * 100)
     End If
     
      ' calculate the current hlocation in % of the screen
     ' store the current hlocation in % of the screen
     If gblWidgetPosition = "1" Then
-        gblAnemometerHLocationPerc = CStr(fAnemometer.anemometerGaugeForm.Left / screenWidthPixels * 100)
-        gblAnemometerVLocationPerc = CStr(fAnemometer.anemometerGaugeForm.Top / screenHeightPixels * 100)
+        gblAnemometerHLocationPerc = CStr(fAnemometer.anemometerGaugeForm.Left / gblPhysicalScreenWidthPixels * 100)
+        gblAnemometerVLocationPerc = CStr(fAnemometer.anemometerGaugeForm.Top / gblPhysicalScreenHeightPixels * 100)
     End If
     
      ' calculate the current hlocation in % of the screen
     ' store the current hlocation in % of the screen
     If gblWidgetPosition = "1" Then
-        gblHumidityHLocationPerc = CStr(fHumidity.humidityGaugeForm.Left / screenWidthPixels * 100)
-        gblHumidityVLocationPerc = CStr(fHumidity.humidityGaugeForm.Top / screenHeightPixels * 100)
+        gblHumidityHLocationPerc = CStr(fHumidity.humidityGaugeForm.Left / gblPhysicalScreenWidthPixels * 100)
+        gblHumidityVLocationPerc = CStr(fHumidity.humidityGaugeForm.Top / gblPhysicalScreenHeightPixels * 100)
     End If
      
      ' calculate the current hlocation in % of the screen
     ' store the current hlocation in % of the screen
     If gblWidgetPosition = "1" Then
-        gblBarometerHLocationPerc = CStr(fBarometer.barometerGaugeForm.Left / screenWidthPixels * 100)
-        gblBarometerVLocationPerc = CStr(fBarometer.barometerGaugeForm.Top / screenHeightPixels * 100)
+        gblBarometerHLocationPerc = CStr(fBarometer.barometerGaugeForm.Left / gblPhysicalScreenWidthPixels * 100)
+        gblBarometerVLocationPerc = CStr(fBarometer.barometerGaugeForm.Top / gblPhysicalScreenHeightPixels * 100)
     End If
    
      ' calculate the current hlocation in % of the screen
     ' store the current hlocation in % of the screen
     If gblWidgetPosition = "1" Then
-        gblPictorialHLocationPerc = CStr(fPictorial.pictorialGaugeForm.Left / screenWidthPixels * 100)
-        gblPictorialVLocationPerc = CStr(fPictorial.pictorialGaugeForm.Top / screenHeightPixels * 100)
+        gblPictorialHLocationPerc = CStr(fPictorial.pictorialGaugeForm.Left / gblPhysicalScreenWidthPixels * 100)
+        gblPictorialVLocationPerc = CStr(fPictorial.pictorialGaugeForm.Top / gblPhysicalScreenHeightPixels * 100)
     End If
    
    On Error GoTo 0
@@ -2258,8 +2272,8 @@ Public Sub unloadAllForms(ByVal endItAll As Boolean)
     
     ' stop all VB6 timers in the prefs form
     
-    panzerPrefs.themeTimer.Enabled = False
-    panzerPrefs.positionTimer.Enabled = False
+    widgetPrefs.themeTimer.Enabled = False
+    widgetPrefs.positionTimer.Enabled = False
     
     ' stop RC timers for playing sounds with delay
     ' these really need to be set to private and properties created to set them enabled or not - later
@@ -2294,7 +2308,7 @@ Public Sub unloadAllForms(ByVal endItAll As Boolean)
     ' unload the native VB6 forms
     
     Unload frmMessage
-    Unload panzerPrefs
+    Unload widgetPrefs
     Unload frmTimer
     Unload menuForm
     
@@ -2325,7 +2339,7 @@ Public Sub unloadAllForms(ByVal endItAll As Boolean)
     
     ' remove all variable references to each VB6 form in turn
     
-    Set panzerPrefs = Nothing
+    Set widgetPrefs = Nothing
     Set frmTimer = Nothing
     Set menuForm = Nothing
     Set frmMessage = Nothing
@@ -2403,8 +2417,8 @@ Public Sub saveTemperatureGaugePosition()
     ' calculate the current hlocation in % of the screen
     ' store the current hlocation in % of the screen
     If gblWidgetPosition = "1" Then
-        gblTemperatureHLocationPerc = CStr(fTemperature.temperatureGaugeForm.Left / screenWidthPixels * 100)
-        gblTemperatureVLocationPerc = CStr(fTemperature.temperatureGaugeForm.Top / screenHeightPixels * 100)
+        gblTemperatureHLocationPerc = CStr(fTemperature.temperatureGaugeForm.Left / gblPhysicalScreenWidthPixels * 100)
+        gblTemperatureVLocationPerc = CStr(fTemperature.temperatureGaugeForm.Top / gblPhysicalScreenHeightPixels * 100)
     End If
 
     Debug.Print "saveTemperatureGaugePosition"
@@ -2447,8 +2461,8 @@ Public Sub saveAnemometerGaugePosition()
     ' calculate the current hlocation in % of the screen
     ' store the current hlocation in % of the screen
     If gblWidgetPosition = "1" Then
-        gblAnemometerHLocationPerc = CStr(fAnemometer.anemometerGaugeForm.Left / screenWidthPixels * 100)
-        gblAnemometerVLocationPerc = CStr(fAnemometer.anemometerGaugeForm.Top / screenHeightPixels * 100)
+        gblAnemometerHLocationPerc = CStr(fAnemometer.anemometerGaugeForm.Left / gblPhysicalScreenWidthPixels * 100)
+        gblAnemometerVLocationPerc = CStr(fAnemometer.anemometerGaugeForm.Top / gblPhysicalScreenHeightPixels * 100)
     End If
 
     
@@ -2490,8 +2504,8 @@ Public Sub saveHumidityGaugePosition()
     ' calculate the current hlocation in % of the screen
     ' store the current hlocation in % of the screen
     If gblWidgetPosition = "1" Then
-        gblHumidityHLocationPerc = CStr(fHumidity.humidityGaugeForm.Left / screenWidthPixels * 100)
-        gblHumidityVLocationPerc = CStr(fHumidity.humidityGaugeForm.Top / screenHeightPixels * 100)
+        gblHumidityHLocationPerc = CStr(fHumidity.humidityGaugeForm.Left / gblPhysicalScreenWidthPixels * 100)
+        gblHumidityVLocationPerc = CStr(fHumidity.humidityGaugeForm.Top / gblPhysicalScreenHeightPixels * 100)
     End If
 
     
@@ -2534,8 +2548,8 @@ Public Sub saveBarometerGaugePosition()
     ' calculate the current hlocation in % of the screen
     ' store the current hlocation in % of the screen
     If gblWidgetPosition = "1" Then
-        gblBarometerHLocationPerc = CStr(fBarometer.barometerGaugeForm.Left / screenWidthPixels * 100)
-        gblBarometerVLocationPerc = CStr(fBarometer.barometerGaugeForm.Top / screenHeightPixels * 100)
+        gblBarometerHLocationPerc = CStr(fBarometer.barometerGaugeForm.Left / gblPhysicalScreenWidthPixels * 100)
+        gblBarometerVLocationPerc = CStr(fBarometer.barometerGaugeForm.Top / gblPhysicalScreenHeightPixels * 100)
     End If
 
     
@@ -2577,8 +2591,8 @@ Public Sub savePictorialGaugePosition()
     ' calculate the current hlocation in % of the screen
     ' store the current hlocation in % of the screen
     If gblWidgetPosition = "1" Then
-        gblPictorialHLocationPerc = CStr(fPictorial.pictorialGaugeForm.Left / screenWidthPixels * 100)
-        gblPictorialVLocationPerc = CStr(fPictorial.pictorialGaugeForm.Top / screenHeightPixels * 100)
+        gblPictorialHLocationPerc = CStr(fPictorial.pictorialGaugeForm.Left / gblPhysicalScreenWidthPixels * 100)
+        gblPictorialVLocationPerc = CStr(fPictorial.pictorialGaugeForm.Top / gblPhysicalScreenHeightPixels * 100)
     End If
 
     
@@ -2673,21 +2687,21 @@ End Sub
 Public Sub makeProgramPreferencesAvailable()
     On Error GoTo makeProgramPreferencesAvailable_Error
     
-    If panzerPrefs.IsVisible = False Then
-        panzerPrefs.Visible = True
-        panzerPrefs.Show  ' show it again
-        panzerPrefs.SetFocus
+    If widgetPrefs.IsVisible = False Then
+        widgetPrefs.Visible = True
+        widgetPrefs.Show  ' show it again
+        widgetPrefs.SetFocus
 
-        If panzerPrefs.WindowState = vbMinimized Then
-            panzerPrefs.WindowState = vbNormal
+        If widgetPrefs.WindowState = vbMinimized Then
+            widgetPrefs.WindowState = vbNormal
         End If
 
         ' set the current position of the utility according to previously stored positions
         
         Call readPrefsPosition
-        Call panzerPrefs.positionPrefsMonitor
+        Call widgetPrefs.positionPrefsMonitor
     Else
-        panzerPrefs.SetFocus
+        widgetPrefs.SetFocus
     End If
     
 
@@ -2717,15 +2731,15 @@ Public Sub readPrefsPosition()
         
 '        ' if a current location not stored then position to the middle of the screen
 '        If gblPrefsFormHighDpiXPosTwips <> vbNullString Then
-'            panzerPrefs.Left = Val(gblPrefsFormHighDpiXPosTwips)
+'            widgetPrefs.Left = Val(gblPrefsFormHighDpiXPosTwips)
 '        Else
-'            panzerPrefs.Left = screenWidthTwips / 2 - panzerPrefs.Width / 2
+'            widgetPrefs.Left = gblVirtualScreenWidthPixels / 2 - widgetPrefs.Width / 2
 '        End If
 '
 '        If gblPrefsFormHighDpiYPosTwips <> vbNullString Then
-'            panzerPrefs.Top = Val(gblPrefsFormHighDpiYPosTwips)
+'            widgetPrefs.Top = Val(gblPrefsFormHighDpiYPosTwips)
 '        Else
-'            panzerPrefs.Top = Screen.Height / 2 - panzerPrefs.Height / 2
+'            widgetPrefs.Top = Screen.Height / 2 - widgetPrefs.Height / 2
 '        End If
     Else
         gblPrefsFormLowDpiXPosTwips = fGetINISetting("Software\PzTemperatureGauge", "prefsFormLowDpiXPosTwips", gblSettingsFile)
@@ -2733,15 +2747,15 @@ Public Sub readPrefsPosition()
         
 '        ' if a current location not stored then position to the middle of the screen
 '        If gblPrefsFormLowDpiXPosTwips <> vbNullString Then
-'            panzerPrefs.Left = Val(gblPrefsFormLowDpiXPosTwips)
+'            widgetPrefs.Left = Val(gblPrefsFormLowDpiXPosTwips)
 '        Else
-'            panzerPrefs.Left = screenWidthTwips / 2 - panzerPrefs.Width / 2
+'            widgetPrefs.Left = gblVirtualScreenWidthPixels / 2 - widgetPrefs.Width / 2
 '        End If
 '
 '        If gblPrefsFormLowDpiYPosTwips <> vbNullString Then
-'            panzerPrefs.Top = Val(gblPrefsFormLowDpiYPosTwips)
+'            widgetPrefs.Top = Val(gblPrefsFormLowDpiYPosTwips)
 '        Else
-'            panzerPrefs.Top = Screen.Height / 2 - panzerPrefs.Height / 2
+'            widgetPrefs.Top = Screen.Height / 2 - widgetPrefs.Height / 2
 '        End If
     End If
    
@@ -2763,17 +2777,17 @@ Public Sub writePrefsPosition()
         
    On Error GoTo writePrefsPosition_Error
 
-    If panzerPrefs.WindowState = vbNormal Then ' when vbMinimised the value = -48000  !
+    If widgetPrefs.WindowState = vbNormal Then ' when vbMinimised the value = -48000  !
         If gblDpiAwareness = "1" Then
-            gblPrefsFormHighDpiXPosTwips = CStr(panzerPrefs.Left)
-            gblPrefsFormHighDpiYPosTwips = CStr(panzerPrefs.Top)
+            gblPrefsFormHighDpiXPosTwips = CStr(widgetPrefs.Left)
+            gblPrefsFormHighDpiYPosTwips = CStr(widgetPrefs.Top)
             
             ' now write those params to the toolSettings.ini
             sPutINISetting "Software\PzTemperatureGauge", "prefsFormHighDpiXPosTwips", gblPrefsFormHighDpiXPosTwips, gblSettingsFile
             sPutINISetting "Software\PzTemperatureGauge", "prefsFormHighDpiYPosTwips", gblPrefsFormHighDpiYPosTwips, gblSettingsFile
         Else
-            gblPrefsFormLowDpiXPosTwips = CStr(panzerPrefs.Left)
-            gblPrefsFormLowDpiYPosTwips = CStr(panzerPrefs.Top)
+            gblPrefsFormLowDpiXPosTwips = CStr(widgetPrefs.Left)
+            gblPrefsFormLowDpiYPosTwips = CStr(widgetPrefs.Top)
             
             ' now write those params to the toolSettings.ini
             sPutINISetting "Software\PzTemperatureGauge", "prefsFormLowDpiXPosTwips", gblPrefsFormLowDpiXPosTwips, gblSettingsFile
@@ -2788,7 +2802,7 @@ Public Sub writePrefsPosition()
 
 writePrefsPosition_Error:
 
-    MsgBox "Error " & Err.Number & " (" & Err.Description & ") in procedure writePrefsPosition of Form panzerPrefs"
+    MsgBox "Error " & Err.Number & " (" & Err.Description & ") in procedure writePrefsPosition of Form widgetPrefs"
 End Sub
 
 
@@ -2989,7 +3003,7 @@ Public Sub hardRestart()
     If fFExists(thisCommand) Then
         
         ' run the selected program
-        Call ShellExecute(panzerPrefs.hwnd, "open", thisCommand, "Panzer Temperature Gauge.exe prefs", "", 1)
+        Call ShellExecute(widgetPrefs.hwnd, "open", thisCommand, "Panzer Temperature Gauge.exe prefs", "", 1)
     Else
         'answer = MsgBox(thisCommand & " is missing", vbOKOnly + vbExclamation)
         answerMsg = thisCommand & " is missing"
@@ -3074,7 +3088,7 @@ Public Sub clearAllMessageBoxRegistryEntries()
     SaveSetting App.EXEName, "Options", "Show message" & "chkDpiAwarenessRestart", 0
     SaveSetting App.EXEName, "Options", "Show message" & "chkDpiAwarenessAbnormal", 0
     SaveSetting App.EXEName, "Options", "Show message" & "optClockTooltipsClick", 0
-    SaveSetting App.EXEName, "Options", "Show message" & "chkEnableTooltipsClick", 0
+    'SaveSetting App.EXEName, "Options", "Show message" & "chkEnableTooltipsClick", 0
     SaveSetting App.EXEName, "Options", "Show message" & "lblGitHubDblClick", 0
     SaveSetting App.EXEName, "Options", "Show message" & "sliOpacityClick", 0
 
@@ -3137,7 +3151,7 @@ Public Function determineIconWidth(ByRef thisForm As Form, ByVal thisDynamicSizi
 
 determineIconWidth_Error:
 
-    MsgBox "Error " & Err.Number & " (" & Err.Description & ") in procedure determineIconWidth of Form panzerPrefs"
+    MsgBox "Error " & Err.Number & " (" & Err.Description & ") in procedure determineIconWidth of Form widgetPrefs"
 
 End Function
 

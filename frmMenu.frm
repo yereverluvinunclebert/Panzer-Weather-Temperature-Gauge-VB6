@@ -195,6 +195,39 @@ Form_Load_Error:
 End Sub
 
 
+
+
+'---------------------------------------------------------------------------------------
+' Procedure : mnuGithubHome_Click
+' Author    : beededea
+' Date      : 18/10/2024
+' Purpose   : menu item to open the github HTML page
+'---------------------------------------------------------------------------------------
+'
+Public Sub mnuGithubHome_Click()
+
+    Dim answer As VbMsgBoxResult: answer = vbNo
+    Dim answerMsg As String: answerMsg = vbNullString
+
+    On Error GoTo mnuGithubHome_Click_Error
+    
+    answer = vbYes
+
+    answerMsg = "This button opens a browser window and connects to the widget's HOME page on github. Proceed?"
+    answer = msgBoxA(answerMsg, vbExclamation + vbYesNo, "Request to Upgrade", True, "mnuGithubHomeClick")
+
+    If answer = vbYes Then
+        Call ShellExecute(Me.hwnd, "Open", "https://github.com/yereverluvinunclebert/Steampunk-clock-calendar-" & gblCodingEnvironment, vbNullString, App.path, 1)
+    End If
+
+   On Error GoTo 0
+   Exit Sub
+
+mnuGithubHome_Click_Error:
+
+    MsgBox "Error " & Err.Number & " (" & Err.Description & ") in procedure mnuGithubHome_Click of Form menuForm"
+End Sub
+
 '---------------------------------------------------------------------------------------
 ' Procedure : menuReload_Click
 ' Author    : Dean Beedell (yereverluvinunclebert)

@@ -317,35 +317,35 @@ Public Property Let Locked(ByVal newValue As Boolean)
 
     If mLocked = True Then
         menuForm.mnuLockHumidityGauge.Checked = True
-        If panzerPrefs.IsVisible = True Then
-             panzerPrefs.cmbGaugeType.ListIndex = 2
-             panzerPrefs.chkPreventDragging.Value = 1
+        If widgetPrefs.IsVisible = True Then
+             widgetPrefs.cmbGaugeType.ListIndex = 2
+             widgetPrefs.chkPreventDragging.Value = 1
         End If
 
         gblPreventDraggingHumidity = "1"
         If aspectRatio = "landscape" Then
             gblHumidityLandscapeLocked = "1"
-            panzerPrefs.cmbLandscapeLocked.ListIndex = 1
+            widgetPrefs.cmbLandscapeLocked.ListIndex = 1
         Else
             gblHumidityPortraitLocked = "1"
-            panzerPrefs.cmbPortraitLocked.ListIndex = 1
+            widgetPrefs.cmbPortraitLocked.ListIndex = 1
         End If
             
         fHumidity.humidityGaugeForm.Widgets("housing/lockbutton").Widget.Alpha = 0
     Else
         menuForm.mnuLockHumidityGauge.Checked = False
-        If panzerPrefs.IsVisible = True Then
-             panzerPrefs.cmbGaugeType.ListIndex = 2
-             panzerPrefs.chkPreventDragging.Value = 0
+        If widgetPrefs.IsVisible = True Then
+             widgetPrefs.cmbGaugeType.ListIndex = 2
+             widgetPrefs.chkPreventDragging.Value = 0
         End If
 
         gblPreventDraggingHumidity = "0"
         If aspectRatio = "landscape" Then
             gblHumidityLandscapeLocked = "0"
-             panzerPrefs.cmbLandscapeLocked.ListIndex = 0
+             widgetPrefs.cmbLandscapeLocked.ListIndex = 0
        Else
             gblHumidityPortraitLocked = "0"
-             panzerPrefs.cmbPortraitLocked.ListIndex = 0
+             widgetPrefs.cmbPortraitLocked.ListIndex = 0
        End If
             
         fHumidity.humidityGaugeForm.Widgets("housing/lockbutton").Widget.Alpha = Val(gblOpacity) / 100

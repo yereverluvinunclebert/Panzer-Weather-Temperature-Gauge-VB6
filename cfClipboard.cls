@@ -114,7 +114,7 @@ Public Sub InitClipBFromPSD(ByRef PSD_FileNameOrByteArray As Variant)
                         
                         ' all non-clickable Layer-Widgets will be -1 or "non-hoverable" and "fully click-through"
                         W.HoverColor = -1 ' task: might change this later when new ver or RC6 arrives
-                        If gblEnableTooltips = "1" Then W.ToolTip = "Ctrl + mouse scrollwheel up/down to resize, you can also drag me to a new position."
+                        If gblGaugeTooltips = "1" Then W.ToolTip = "Ctrl + mouse scrollwheel up/down to resize, you can also drag me to a new position."
                         W.MousePointer = IDC_SIZEALL
 
                     End If
@@ -165,7 +165,7 @@ Private Sub ClipBForm_BubblingEvent(ByRef sender As Object, ByRef EventName As S
     If EventName = "W_MouseMove" Then
         Select Case LCase$(sender.Widget.key)
             Case "clipboard"
-                If gblEnableBalloonTooltips = "1" Then CreateToolTip clipBForm.hwnd, _
+                If gblGaugeTooltips = "0" Then CreateToolTip clipBForm.hwnd, _
                     "This is the Weather Clipboard. It displays the current weather in a text form " _
                     & "interpreted from your chosen METAR data feed. " & vbCrLf & vbCrLf _
                     & "You can copy the contents using the right click menu option, 'Copy Current Weather to Clipboard' - " _
@@ -208,7 +208,7 @@ Private Sub ClipBForm_MouseDown(ByRef Button As Integer, ByRef Shift As Integer,
     
         ' ensure that the associated forms pop to the front when the main gauge receives focus
         If fTemperature.temperatureGaugeForm.Visible = True Then fTemperature.temperatureGaugeForm.SetFocus
-        If panzerPrefs.IsVisible = True Then panzerPrefs.SetFocus
+        If widgetPrefs.IsVisible = True Then widgetPrefs.SetFocus
         If fClipB.clipBForm.Visible = True Then fClipB.clipBForm.SetFocus
         
         If gblIgnoreMouse = "1" Then Exit Sub
@@ -335,7 +335,7 @@ Public Sub ClipBAdjustZoom(ByVal NewZoom As Single)
     
     ' when resized from the gauge scroll up/down it needs to write it back so the size is correct when prefs opened.
     gblClipBSize = LTrim$(Str$(NewZoom * 100))
-    'If panzerPrefs.IsVisible = True Then panzerPrefs.sliTemperatureGaugeSize.Value = val(gblTemperatureGaugeSize)
+    'If widgetPrefs.IsVisible = True Then widgetPrefs.sliTemperatureGaugeSize.Value = val(gblTemperatureGaugeSize)
     
     sPutINISetting "Software\PzClipB", "clipBSize", gblClipBSize, gblSettingsFile
     

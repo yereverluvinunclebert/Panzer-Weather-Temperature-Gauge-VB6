@@ -714,7 +714,7 @@ Private Sub processMetarData()
         
         If answer = vbNo Then
             answer = vbYes ' deanieboy prefs
-            answerMsg = "Rather weird - The supplied ICAO code " & panzerPrefs.txtIcao.Text & " does not seem to providing any valid data, please select another."""
+            answerMsg = "Rather weird - The supplied ICAO code " & widgetPrefs.txtIcao.Text & " does not seem to providing any valid data, please select another."""
             answer = msgBoxA(answerMsg, vbOKOnly, "Polling Warning", True, "processMetarDataStation_id")
             mWeHaveData = False
             Exit Sub ' return

@@ -313,35 +313,35 @@ Public Property Let Locked(ByVal newValue As Boolean)
 
     If mLocked = True Then
         menuForm.mnuLockBarometerGauge.Checked = True
-        If panzerPrefs.IsVisible = True Then
-             panzerPrefs.cmbGaugeType.ListIndex = 3
-             panzerPrefs.chkPreventDragging.Value = 1
+        If widgetPrefs.IsVisible = True Then
+             widgetPrefs.cmbGaugeType.ListIndex = 3
+             widgetPrefs.chkPreventDragging.Value = 1
         End If
 
         gblPreventDraggingBarometer = "1"
         If aspectRatio = "landscape" Then
             gblBarometerLandscapeLocked = "1"
-            panzerPrefs.cmbLandscapeLocked.ListIndex = 1
+            widgetPrefs.cmbLandscapeLocked.ListIndex = 1
         Else
             gblBarometerPortraitLocked = "1"
-            panzerPrefs.cmbPortraitLocked.ListIndex = 1
+            widgetPrefs.cmbPortraitLocked.ListIndex = 1
         End If
             
         fBarometer.barometerGaugeForm.Widgets("housing/lockbutton").Widget.Alpha = 0
     Else
         menuForm.mnuLockBarometerGauge.Checked = False
-        If panzerPrefs.IsVisible = True Then
-             panzerPrefs.cmbGaugeType.ListIndex = 3
-             panzerPrefs.chkPreventDragging.Value = 0
+        If widgetPrefs.IsVisible = True Then
+             widgetPrefs.cmbGaugeType.ListIndex = 3
+             widgetPrefs.chkPreventDragging.Value = 0
         End If
 
         gblPreventDraggingBarometer = "0"
         If aspectRatio = "landscape" Then
             gblBarometerLandscapeLocked = "0"
-            panzerPrefs.cmbLandscapeLocked.ListIndex = 0
+            widgetPrefs.cmbLandscapeLocked.ListIndex = 0
        Else
             gblBarometerPortraitLocked = "0"
-            panzerPrefs.cmbPortraitLocked.ListIndex = 0
+            widgetPrefs.cmbPortraitLocked.ListIndex = 0
         End If
             
         fBarometer.barometerGaugeForm.Widgets("housing/lockbutton").Widget.Alpha = Val(gblOpacity) / 100
@@ -393,8 +393,8 @@ Public Property Let thisFace(ByVal newValue As Integer)
 
     If mThisFace <> newValue Then mThisFace = newValue Else Exit Property
     
-    If panzerPrefs.IsVisible = True Then
-        panzerPrefs.cmbPressureScale.ListIndex = mThisFace
+    If widgetPrefs.IsVisible = True Then
+        widgetPrefs.cmbPressureScale.ListIndex = mThisFace
     End If
     
     gblPressureScale = mThisFace
@@ -470,7 +470,7 @@ End Property
 '             For this Overlay-Widget alone, we make everything "fully click-through"
 '---------------------------------------------------------------------------------------------
 '
-Private Sub W_HitTest(ByVal X As Single, ByVal Y As Single, HitResultHit As Boolean) 'ensure ClickThrough-behaviour in ImagePixels which are "fully Alpha"
+Private Sub W_HitTest(ByVal x As Single, ByVal y As Single, HitResultHit As Boolean) 'ensure ClickThrough-behaviour in ImagePixels which are "fully Alpha"
    On Error GoTo W_HitTest_Error
 
    HitResultHit = False
