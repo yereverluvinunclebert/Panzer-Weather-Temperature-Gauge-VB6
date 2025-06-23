@@ -122,18 +122,15 @@ add rainfall indicator lamp to humidity gauge WIP
 add rainfall indicator to pictorial gauge WIP
     if new rain reveal the rainfall ticker tape
 
-clipboard not reflecting current barometer scale
-clipboard not reflecting current anemometer scale
-clipboard not reflecting current temperature scale
-Barometer reading in Millibar is incorrect
-Barometer reading in HPa is incorrect
-Barometer reading in inches HG is incorrect
-Barometer reading in mm HG is incorrect
+barometer readings in all scales were incorrect
+clipboard readings in all scales were incorrect
+switching faces triggers a re-GET of META data
 
 TODO:
 
 barometer face incorrect for in HG - recalc the values on the face
 barometer face incorrect for mm HG - recalc the values on the face
+the correct gauge faces are on the G5
 
 Barometer display not showing 23-31 inches of Hg face
 
@@ -157,7 +154,7 @@ tiny tooltips resolve this with Olaf?, the width of the tooltips should expand w
 
 refactor to use just one cwOverlay file instead of one overlay per each gauge - analyse
 
-refactor to creata 'gauge' class instead of a specific gauge form per type
+refactor to create a 'gauge' class instead of a specific gauge form per type
 
 ' test usage of RC6 for monitor awareness - wip
 '      adjust Form Position on startup placing form onto Correct Monitor when placed off screen due to

@@ -499,7 +499,7 @@ Private Sub W_Paint(CC As RC6.cCairoContext, ByVal xAbs As Single, ByVal yAbs As
     Dim someOpacity As Double: someOpacity = 0
     Dim boxLeft As Integer: boxLeft = 0
     Dim cream As String: cream = vbNullString
-    Dim myPressure As Integer: myPressure = 0
+    Dim myPressure As Single: myPressure = 0
     Dim scaleString As String: scaleString = vbNullString
        
     On Error GoTo W_Paint_Error
@@ -605,7 +605,7 @@ Private Sub W_Paint(CC As RC6.cCairoContext, ByVal xAbs As Single, ByVal yAbs As
                  Case "pointerShadow", "pointer"
                  
                     myPressure = mThisPressure
-                    ' convert for the digital indicators
+                    ' convert for the digital indicators from millibars to mercury
                     If mThisFace = 1 Then
                         myPressure = myPressure * 0.0295 ' inches of mercury
                     ElseIf mThisFace = 2 Then

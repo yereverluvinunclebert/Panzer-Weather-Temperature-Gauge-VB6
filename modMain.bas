@@ -6,7 +6,7 @@ Option Explicit
 
 '------------------------------------------------------ STARTS
 ' for SetWindowPos z-ordering
-Public Declare Function SetWindowPos Lib "user32" (ByVal hwnd As Long, ByVal hWndInsertAfter As Long, ByVal x As Long, ByVal y As Long, ByVal cx As Long, ByVal cy As Long, ByVal wFlags As Long) As Long
+Public Declare Function SetWindowPos Lib "user32" (ByVal hWnd As Long, ByVal hWndInsertAfter As Long, ByVal x As Long, ByVal y As Long, ByVal cx As Long, ByVal cy As Long, ByVal wFlags As Long) As Long
 
 Public Const HWND_TOP As Long = 0 ' for SetWindowPos z-ordering
 Public Const HWND_TOPMOST As Long = -1
@@ -144,8 +144,8 @@ Public Sub mainRoutine(ByVal restart As Boolean)
     widgetName7 = "Pictorial Gauge"
     pictorialPSDFullPath = App.path & "\Res\Panzer Weather Pictorial Gauge VB6.psd"
     
-    prefsCurrentWidth = 9075
-    prefsCurrentHeight = 16450
+    gblPrefsStartWidth = 9075
+    gblPrefsStartHeight = 16450
     
     gblOriginatingForm = "temperatureForm"
     
@@ -525,6 +525,8 @@ Private Sub initialiseGlobalVars()
     
     gblVirtualScreenHeightPixels = 0
     gblVirtualScreenWidthPixels = 0
+    
+    gblPrefsPrimaryHeightTwips = vbNullString
     
     ' key presses
     CTRL_1 = False
@@ -1560,26 +1562,26 @@ Public Sub setAlphaFormZordering()
    On Error GoTo setAlphaFormZordering_Error
 
     If Val(gblWindowLevel) = 0 Then
-        Call SetWindowPos(fTemperature.temperatureGaugeForm.hwnd, HWND_BOTTOM, 0&, 0&, 0&, 0&, OnTopFlags)
-        Call SetWindowPos(fAnemometer.anemometerGaugeForm.hwnd, HWND_BOTTOM, 0&, 0&, 0&, 0&, OnTopFlags)
-        Call SetWindowPos(fHumidity.humidityGaugeForm.hwnd, HWND_BOTTOM, 0&, 0&, 0&, 0&, OnTopFlags)
-        Call SetWindowPos(fBarometer.barometerGaugeForm.hwnd, HWND_BOTTOM, 0&, 0&, 0&, 0&, OnTopFlags)
-        Call SetWindowPos(fPictorial.pictorialGaugeForm.hwnd, HWND_BOTTOM, 0&, 0&, 0&, 0&, OnTopFlags)
-        Call SetWindowPos(fClipB.clipBForm.hwnd, HWND_BOTTOM, 0&, 0&, 0&, 0&, OnTopFlags)
+        Call SetWindowPos(fTemperature.temperatureGaugeForm.hWnd, HWND_BOTTOM, 0&, 0&, 0&, 0&, OnTopFlags)
+        Call SetWindowPos(fAnemometer.anemometerGaugeForm.hWnd, HWND_BOTTOM, 0&, 0&, 0&, 0&, OnTopFlags)
+        Call SetWindowPos(fHumidity.humidityGaugeForm.hWnd, HWND_BOTTOM, 0&, 0&, 0&, 0&, OnTopFlags)
+        Call SetWindowPos(fBarometer.barometerGaugeForm.hWnd, HWND_BOTTOM, 0&, 0&, 0&, 0&, OnTopFlags)
+        Call SetWindowPos(fPictorial.pictorialGaugeForm.hWnd, HWND_BOTTOM, 0&, 0&, 0&, 0&, OnTopFlags)
+        Call SetWindowPos(fClipB.clipBForm.hWnd, HWND_BOTTOM, 0&, 0&, 0&, 0&, OnTopFlags)
     ElseIf Val(gblWindowLevel) = 1 Then
-        Call SetWindowPos(fTemperature.temperatureGaugeForm.hwnd, HWND_TOP, 0&, 0&, 0&, 0&, OnTopFlags)
-        Call SetWindowPos(fAnemometer.anemometerGaugeForm.hwnd, HWND_TOP, 0&, 0&, 0&, 0&, OnTopFlags)
-        Call SetWindowPos(fHumidity.humidityGaugeForm.hwnd, HWND_TOP, 0&, 0&, 0&, 0&, OnTopFlags)
-        Call SetWindowPos(fBarometer.barometerGaugeForm.hwnd, HWND_TOP, 0&, 0&, 0&, 0&, OnTopFlags)
-        Call SetWindowPos(fPictorial.pictorialGaugeForm.hwnd, HWND_TOP, 0&, 0&, 0&, 0&, OnTopFlags)
-        Call SetWindowPos(fClipB.clipBForm.hwnd, HWND_TOP, 0&, 0&, 0&, 0&, OnTopFlags)
+        Call SetWindowPos(fTemperature.temperatureGaugeForm.hWnd, HWND_TOP, 0&, 0&, 0&, 0&, OnTopFlags)
+        Call SetWindowPos(fAnemometer.anemometerGaugeForm.hWnd, HWND_TOP, 0&, 0&, 0&, 0&, OnTopFlags)
+        Call SetWindowPos(fHumidity.humidityGaugeForm.hWnd, HWND_TOP, 0&, 0&, 0&, 0&, OnTopFlags)
+        Call SetWindowPos(fBarometer.barometerGaugeForm.hWnd, HWND_TOP, 0&, 0&, 0&, 0&, OnTopFlags)
+        Call SetWindowPos(fPictorial.pictorialGaugeForm.hWnd, HWND_TOP, 0&, 0&, 0&, 0&, OnTopFlags)
+        Call SetWindowPos(fClipB.clipBForm.hWnd, HWND_TOP, 0&, 0&, 0&, 0&, OnTopFlags)
     ElseIf Val(gblWindowLevel) = 2 Then
-        Call SetWindowPos(fTemperature.temperatureGaugeForm.hwnd, HWND_TOPMOST, 0&, 0&, 0&, 0&, OnTopFlags)
-        Call SetWindowPos(fAnemometer.anemometerGaugeForm.hwnd, HWND_TOPMOST, 0&, 0&, 0&, 0&, OnTopFlags)
-        Call SetWindowPos(fHumidity.humidityGaugeForm.hwnd, HWND_TOPMOST, 0&, 0&, 0&, 0&, OnTopFlags)
-        Call SetWindowPos(fBarometer.barometerGaugeForm.hwnd, HWND_TOPMOST, 0&, 0&, 0&, 0&, OnTopFlags)
-        Call SetWindowPos(fPictorial.pictorialGaugeForm.hwnd, HWND_TOPMOST, 0&, 0&, 0&, 0&, OnTopFlags)
-        Call SetWindowPos(fClipB.clipBForm.hwnd, HWND_TOPMOST, 0&, 0&, 0&, 0&, OnTopFlags)
+        Call SetWindowPos(fTemperature.temperatureGaugeForm.hWnd, HWND_TOPMOST, 0&, 0&, 0&, 0&, OnTopFlags)
+        Call SetWindowPos(fAnemometer.anemometerGaugeForm.hWnd, HWND_TOPMOST, 0&, 0&, 0&, 0&, OnTopFlags)
+        Call SetWindowPos(fHumidity.humidityGaugeForm.hWnd, HWND_TOPMOST, 0&, 0&, 0&, 0&, OnTopFlags)
+        Call SetWindowPos(fBarometer.barometerGaugeForm.hWnd, HWND_TOPMOST, 0&, 0&, 0&, 0&, OnTopFlags)
+        Call SetWindowPos(fPictorial.pictorialGaugeForm.hWnd, HWND_TOPMOST, 0&, 0&, 0&, 0&, OnTopFlags)
+        Call SetWindowPos(fClipB.clipBForm.hWnd, HWND_TOPMOST, 0&, 0&, 0&, 0&, OnTopFlags)
     End If
 
    On Error GoTo 0
@@ -2581,7 +2583,7 @@ Private Sub loadPreferenceForm()
 
     If widgetPrefs.IsLoaded = False Then
         Load widgetPrefs
-        'gblPrefsFormResizedInCode = True
+        gblPrefsFormResizedInCode = True
         Call widgetPrefs.PrefsForm_Resize_Event
     End If
 

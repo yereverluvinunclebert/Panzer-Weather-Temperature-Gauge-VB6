@@ -49,8 +49,8 @@ End Type
 
 Private Type FONTSTRUC
   lStructSize As Long
-  hwnd As Long
-  hdc As Long
+  hWnd As Long
+  hDC As Long
   lpLogFont As Long
   iPointSize As Long
   Flags As Long
@@ -142,7 +142,7 @@ End Enum
 
 '------------------------------------------------------ STARTS
 ' APIs for useful functions START
-Public Declare Function ShellExecute Lib "Shell32.dll" Alias "ShellExecuteA" (ByVal hwnd As Long, ByVal lpOperation As String, ByVal lpFile As String, ByVal lpParameters As String, ByVal lpDirectory As String, ByVal nShowCmd As Long) As Long
+Public Declare Function ShellExecute Lib "Shell32.dll" Alias "ShellExecuteA" (ByVal hWnd As Long, ByVal lpOperation As String, ByVal lpFile As String, ByVal lpParameters As String, ByVal lpDirectory As String, ByVal nShowCmd As Long) As Long
 ' APIs for useful functions END
 '------------------------------------------------------ ENDS
 
@@ -457,9 +457,9 @@ Public gblUnhide As String
 ' vars stored for positioning the prefs form
 Public gblPrefsFormHighDpiXPosTwips As String
 Public gblPrefsFormHighDpiYPosTwips As String
-
 Public gblPrefsFormLowDpiXPosTwips As String
 Public gblPrefsFormLowDpiYPosTwips As String
+Public gblPrefsPrimaryHeightTwips As String
 
 Public gblLastUpdated As String
 Public gblMetarPref As String
@@ -488,9 +488,13 @@ Public gblPhysicalScreenWidthPixels As Long
 Public gblOldPhysicalScreenHeightPixels As Long
 Public gblOldPhysicalScreenWidthPixels As Long
 
+Public widgetPrefsOldHeight As Long
+Public widgetPrefsOldWidth As Long
+
 ' vars to obtain the virtual (multi-monitor) width twips
 Public gblVirtualScreenHeightTwips As Long
 Public gblVirtualScreenWidthTwips As Long
+Public gblPrefsFormResizedInCode As Boolean
 
 ' pixels
 Public gblVirtualScreenHeightPixels As Long
@@ -1669,7 +1673,7 @@ Public Sub mnuCoffee_ClickEvent()
     answer = msgBoxA(answerMsg, vbExclamation + vbYesNo, "Request to Donate a Kofi", True, "mnuCoffeeClickEvent")
 
     If answer = vbYes Then
-        Call ShellExecute(menuForm.hwnd, "Open", "https://www.ko-fi.com/yereverluvinunclebert", vbNullString, App.path, 1)
+        Call ShellExecute(menuForm.hWnd, "Open", "https://www.ko-fi.com/yereverluvinunclebert", vbNullString, App.path, 1)
     End If
 
    On Error GoTo 0
@@ -1699,7 +1703,7 @@ Public Sub mnuSupport_ClickEvent()
     answer = msgBoxA(answerMsg, vbExclamation + vbYesNo, "Request to Contact Support", True, "mnuSupportClickEvent")
 
     If answer = vbYes Then
-        Call ShellExecute(menuForm.hwnd, "Open", "https://github.com/yereverluvinunclebert/Panzer-Temperature-Gauge-" & gblCodingEnvironment & "/issues", vbNullString, App.path, 1)
+        Call ShellExecute(menuForm.hWnd, "Open", "https://github.com/yereverluvinunclebert/Panzer-Temperature-Gauge-" & gblCodingEnvironment & "/issues", vbNullString, App.path, 1)
     End If
 
    On Error GoTo 0
@@ -2090,8 +2094,8 @@ Public Sub determineScreenDimensions()
     gblScreenTwipsPerPixelX = fTwipsPerPixelX
     gblScreenTwipsPerPixelY = fTwipsPerPixelY
     
-    gblPhysicalScreenHeightPixels = GetDeviceCaps(menuForm.hdc, VERTRES) ' we use the name of any form that we don't mind being loaded at this point
-    gblPhysicalScreenWidthPixels = GetDeviceCaps(menuForm.hdc, HORZRES)
+    gblPhysicalScreenHeightPixels = GetDeviceCaps(menuForm.hDC, VERTRES) ' we use the name of any form that we don't mind being loaded at this point
+    gblPhysicalScreenWidthPixels = GetDeviceCaps(menuForm.hDC, HORZRES)
 
     gblPhysicalScreenHeightTwips = gblPhysicalScreenHeightPixels * gblScreenTwipsPerPixelY
     gblVirtualScreenWidthPixels = gblPhysicalScreenWidthPixels * gblScreenTwipsPerPixelX
@@ -2758,7 +2762,12 @@ Public Sub readPrefsPosition()
 '            widgetPrefs.Top = Screen.Height / 2 - widgetPrefs.Height / 2
 '        End If
     End If
+    
+    gblPrefsPrimaryHeightTwips = fGetINISetting("Software\PzTemperatureGauge", "prefsPrimaryHeightTwips", gblSettingsFile)
    
+    ' on very first install this will be zero, then size of the prefs as a proportion of the screen size
+    If gblPrefsPrimaryHeightTwips = "" Then gblPrefsPrimaryHeightTwips = CStr(1000 * gblScreenTwipsPerPixelY)
+  
    On Error GoTo 0
    Exit Sub
 
@@ -2794,6 +2803,9 @@ Public Sub writePrefsPosition()
             sPutINISetting "Software\PzTemperatureGauge", "prefsFormLowDpiYPosTwips", gblPrefsFormLowDpiYPosTwips, gblSettingsFile
             
         End If
+        
+        gblPrefsPrimaryHeightTwips = Trim$(CStr(widgetPrefs.Height))
+        sPutINISetting "Software\SteampunkClockCalendar", "prefsPrimaryHeightTwips", gblPrefsPrimaryHeightTwips, gblSettingsFile
         
     End If
     
@@ -3003,7 +3015,7 @@ Public Sub hardRestart()
     If fFExists(thisCommand) Then
         
         ' run the selected program
-        Call ShellExecute(widgetPrefs.hwnd, "open", thisCommand, "Panzer Temperature Gauge.exe prefs", "", 1)
+        Call ShellExecute(widgetPrefs.hWnd, "open", thisCommand, "Panzer Temperature Gauge.exe prefs", "", 1)
     Else
         'answer = MsgBox(thisCommand & " is missing", vbOKOnly + vbExclamation)
         answerMsg = thisCommand & " is missing"
