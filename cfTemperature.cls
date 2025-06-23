@@ -144,28 +144,28 @@ Private Sub temperatureGaugeForm_BubblingEvent(ByRef sender As Object, ByRef Eve
     If EventName = "W_MouseMove" Then
         Select Case LCase$(sender.Widget.key)
             Case "housing/lockbutton"
-                If gblGaugeTooltips = "0" Then CreateToolTip temperatureGaugeForm.hwnd, "Click me to lock the widget in place. This lock can be released by clicking again on the lock button, or in the preferences. A locking sound will denote the button's operation.", _
+                If gblGaugeTooltips = "0" Then CreateToolTip temperatureGaugeForm.hWnd, "Click me to lock the widget in place. This lock can be released by clicking again on the lock button, or in the preferences. A locking sound will denote the button's operation.", _
                      TTIconInfo, widgetName1 & " Lock Button Help", , , , True
             Case "housing/prefsbutton"
-                If gblGaugeTooltips = "0" Then CreateToolTip temperatureGaugeForm.hwnd, "Click me to open the preferences utility. All advanced configuration of the widget is performed using the preference utility.", _
+                If gblGaugeTooltips = "0" Then CreateToolTip temperatureGaugeForm.hWnd, "Click me to open the preferences utility. All advanced configuration of the widget is performed using the preference utility.", _
                      TTIconInfo, widgetName1 & " Prefs Button Help", , , , True
             Case "housing/tickbutton"
-                If gblGaugeTooltips = "0" Then CreateToolTip temperatureGaugeForm.hwnd, "This button is non-functional in this gauge.", _
+                If gblGaugeTooltips = "0" Then CreateToolTip temperatureGaugeForm.hWnd, "This button is non-functional in this gauge.", _
                      TTIconInfo, widgetName1 & " Tick Button Help", , , , True
             Case "housing/switchfacesbutton"
-                If gblGaugeTooltips = "0" Then CreateToolTip temperatureGaugeForm.hwnd, "Click here to select between different faces showing alternative temperature scales, celsius/fahrenheit or kelvin.", _
+                If gblGaugeTooltips = "0" Then CreateToolTip temperatureGaugeForm.hWnd, "Click here to select between different faces showing alternative temperature scales, celsius/fahrenheit or kelvin.", _
                      TTIconInfo, widgetName1 & " Switch Faces Button Help", , , , True
             Case "housing/stopbutton"
-                If gblGaugeTooltips = "0" Then CreateToolTip temperatureGaugeForm.hwnd, "This button stops all animated gauge functions for this widget, pointer movement, digital displays &c .", _
+                If gblGaugeTooltips = "0" Then CreateToolTip temperatureGaugeForm.hWnd, "This button stops all animated gauge functions for this widget, pointer movement, digital displays &c .", _
                      TTIconInfo, widgetName1 & " Stop Button Help", , , , True
             Case "housing/startbutton"
-                If gblGaugeTooltips = "0" Then CreateToolTip temperatureGaugeForm.hwnd, "This button restarts all stopped animated gauge functions for this widget, pointer movement &c .", _
+                If gblGaugeTooltips = "0" Then CreateToolTip temperatureGaugeForm.hWnd, "This button restarts all stopped animated gauge functions for this widget, pointer movement &c .", _
                      TTIconInfo, widgetName1 & " Start Button Help", , , , True
             Case "housing/helpbutton"
-                If gblGaugeTooltips = "0" Then CreateToolTip temperatureGaugeForm.hwnd, "This button opens the one-page help file for this widget. There is a further detailed CHM help file available from the right-click menu that contains all the information that you need to run this widget.", _
+                If gblGaugeTooltips = "0" Then CreateToolTip temperatureGaugeForm.hWnd, "This button opens the one-page help file for this widget. There is a further detailed CHM help file available from the right-click menu that contains all the information that you need to run this widget.", _
                      TTIconInfo, widgetName1 & " Help Button Help", , , , True
             Case Else
-                If gblGaugeTooltips = "0" Then CreateToolTip temperatureGaugeForm.hwnd, " " & WeatherMeteo.WeatherDetails _
+                If gblGaugeTooltips = "0" Then CreateToolTip temperatureGaugeForm.hWnd, " " & WeatherMeteo.WeatherDetails _
                     & vbCrLf & "" _
                     & vbCrLf & "Right Click to open the menu and the preferences. CTRL+ Mouse scrollwheel UP/DOWN to resize." _
                     , TTIconInfo, widgetName1 & " METAR summary Information.", , , , True
@@ -371,6 +371,8 @@ Private Sub switchfacesbutton_mouseUp(ByRef sender As Object)
     If currFace > 2 Then currFace = 0
     gblTemperatureScale = LTrim$(Str$(currFace))
     
+    WeatherMeteo.ProcessMetar = True
+    
     overlayTemperatureWidget.thisFace = Val(gblTemperatureScale)
     
     If gblEnableSounds = "1" And fFExists(App.path & "\resources\sounds\" & fileToPlay) Then
@@ -524,9 +526,9 @@ Private Sub temperatureGaugeForm_DblClick()
     
     If SHIFT_1 = True Then
         SHIFT_1 = False
-        Call ShellExecute(fTemperature.temperatureGaugeForm.hwnd, "Open", gblOpenFile, vbNullString, App.path, 1)
+        Call ShellExecute(fTemperature.temperatureGaugeForm.hWnd, "Open", gblOpenFile, vbNullString, App.path, 1)
     Else
-        Call ShellExecute(fTemperature.temperatureGaugeForm.hwnd, "runas", thisCommand, vbNullString, App.path, 1)
+        Call ShellExecute(fTemperature.temperatureGaugeForm.hWnd, "runas", thisCommand, vbNullString, App.path, 1)
     End If
 
     On Error GoTo 0

@@ -109,25 +109,41 @@ tooltips RC style
 reloadProgram
 
 test the sleep functionality
-
-TODO:
-
 new print-out for the new rainfall indicator
 
 prefs balloon tooltips on all controls
-
 preferences window positioning as per the clock/cal
-
-pictorial gauge time to next update rotator
 
 add a rainfall alarm, ie, if it wasn't raining but in now is then raise an alarm
 
 add rainfall indicator lamp to humidity gauge WIP
-    if new rain, flash using timers
-    if storm, flash using timers
+    if new rain, light lamp flash
 
 add rainfall indicator to pictorial gauge WIP
     if new rain reveal the rainfall ticker tape
+
+clipboard not reflecting current barometer scale
+clipboard not reflecting current anemometer scale
+clipboard not reflecting current temperature scale
+Barometer reading in Millibar is incorrect
+Barometer reading in HPa is incorrect
+Barometer reading in inches HG is incorrect
+Barometer reading in mm HG is incorrect
+
+TODO:
+
+barometer face incorrect for in HG - recalc the values on the face
+barometer face incorrect for mm HG - recalc the values on the face
+
+Barometer display not showing 23-31 inches of Hg face
+
+hiding for 1 minute does not work for all gauges
+
+rainfall indicator lamp & print out - test
+
+pictorial gauge time to next update rotator
+
+if storm, flash lamp using timers
 
 pressure drop alarm - test
 
@@ -137,9 +153,11 @@ think about removing some global vars and changing them to properties in the new
 
 update html code documentation using MZTools code documenter
 
-tiny tooltips resove this with Olaf?
+tiny tooltips resolve this with Olaf?, the width of the tooltips should expand with the font size and the width not be limited to one font size
 
-refactor to use just one cwOverlay file
+refactor to use just one cwOverlay file instead of one overlay per each gauge - analyse
+
+refactor to creata 'gauge' class instead of a specific gauge form per type
 
 ' test usage of RC6 for monitor awareness - wip
 '      adjust Form Position on startup placing form onto Correct Monitor when placed off screen due to

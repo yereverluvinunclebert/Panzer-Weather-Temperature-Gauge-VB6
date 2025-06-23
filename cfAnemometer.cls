@@ -147,28 +147,28 @@ Private Sub anemometerGaugeForm_BubblingEvent(ByRef sender As Object, ByRef Even
     If EventName = "W_MouseMove" Then
         Select Case LCase$(sender.Widget.key)
             Case "housing/lockbutton"
-                If gblGaugeTooltips = "0" Then CreateToolTip anemometerGaugeForm.hwnd, "Click me to lock the widget in place. This lock can be released by clicking again on the lock button, or in the preferences. A locking sound will denote the button's operation.", _
+                If gblGaugeTooltips = "0" Then CreateToolTip anemometerGaugeForm.hWnd, "Click me to lock the widget in place. This lock can be released by clicking again on the lock button, or in the preferences. A locking sound will denote the button's operation.", _
                      TTIconInfo, widgetName4 & " Lock Button Help", , , , True
             Case "housing/prefsbutton"
-                If gblGaugeTooltips = "0" Then CreateToolTip anemometerGaugeForm.hwnd, "Click me to open the preferences utility. All advanced configuration of the widget is performed using the preference utility.", _
+                If gblGaugeTooltips = "0" Then CreateToolTip anemometerGaugeForm.hWnd, "Click me to open the preferences utility. All advanced configuration of the widget is performed using the preference utility.", _
                      TTIconInfo, widgetName4 & " Prefs Button Help", , , , True
             Case "housing/tickbutton"
-                If gblGaugeTooltips = "0" Then CreateToolTip anemometerGaugeForm.hwnd, "This button is non-functional in this gauge.", _
+                If gblGaugeTooltips = "0" Then CreateToolTip anemometerGaugeForm.hWnd, "This button is non-functional in this gauge.", _
                      TTIconInfo, widgetName4 & " Tick Button Help", , , , True
             Case "housing/switchfacesbutton"
-                If gblGaugeTooltips = "0" Then CreateToolTip anemometerGaugeForm.hwnd, "Click here to select between different faces showing alternative scales, ie. knots or metres per second.", _
+                If gblGaugeTooltips = "0" Then CreateToolTip anemometerGaugeForm.hWnd, "Click here to select between different faces showing alternative scales, ie. knots or metres per second.", _
                      TTIconInfo, widgetName4 & " Switch Faces Button Help", , , , True
             Case "housing/stopbutton"
-                If gblGaugeTooltips = "0" Then CreateToolTip anemometerGaugeForm.hwnd, "This button stops all animated gauge functions for this widget, pointer movement, digital displays &c .", _
+                If gblGaugeTooltips = "0" Then CreateToolTip anemometerGaugeForm.hWnd, "This button stops all animated gauge functions for this widget, pointer movement, digital displays &c .", _
                      TTIconInfo, widgetName4 & " Stop Button Help", , , , True
             Case "housing/startbutton"
-                If gblGaugeTooltips = "0" Then CreateToolTip anemometerGaugeForm.hwnd, "This button restarts all stopped animated gauge functions for this widget, pointer movement &c .", _
+                If gblGaugeTooltips = "0" Then CreateToolTip anemometerGaugeForm.hWnd, "This button restarts all stopped animated gauge functions for this widget, pointer movement &c .", _
                      TTIconInfo, widgetName4 & " Start Button Help", , , , True
             Case "housing/helpbutton"
-                If gblGaugeTooltips = "0" Then CreateToolTip anemometerGaugeForm.hwnd, "This button opens the one-page help file for this widget. There is a further detailed CHM help file available from the right-click menu that contains all the information that you need to run this widget.", _
+                If gblGaugeTooltips = "0" Then CreateToolTip anemometerGaugeForm.hWnd, "This button opens the one-page help file for this widget. There is a further detailed CHM help file available from the right-click menu that contains all the information that you need to run this widget.", _
                      TTIconInfo, widgetName4 & " Help Button Help", , , , True
             Case Else
-                If gblGaugeTooltips = "0" Then CreateToolTip anemometerGaugeForm.hwnd, " " & WeatherMeteo.WeatherDetails _
+                If gblGaugeTooltips = "0" Then CreateToolTip anemometerGaugeForm.hWnd, " " & WeatherMeteo.WeatherDetails _
                     & vbCrLf & "" _
                     & vbCrLf & "Right Click to open the menu and the preferences. CTRL+ Mouse scrollwheel UP/DOWN to resize." _
                     , TTIconInfo, widgetName4 & " METAR summary Information.", , , , True
@@ -375,6 +375,8 @@ Private Sub switchfacesbutton_mouseUp(ByRef sender As Object)
     If currFace > 1 Then currFace = 0
     gblWindSpeedScale = LTrim$(Str$(currFace))
     
+    WeatherMeteo.ProcessMetar = True
+    
     overlayAnemoWidget.thisFace = Val(gblWindSpeedScale)
     
     If gblEnableSounds = "1" And fFExists(App.path & "\resources\sounds\" & fileToPlay) Then
@@ -485,9 +487,9 @@ Private Sub anemometerGaugeForm_DblClick()
     
     If SHIFT_1 = True Then
         SHIFT_1 = False
-        Call ShellExecute(fAnemometer.anemometerGaugeForm.hwnd, "Open", gblOpenFile, vbNullString, App.path, 1)
+        Call ShellExecute(fAnemometer.anemometerGaugeForm.hWnd, "Open", gblOpenFile, vbNullString, App.path, 1)
     Else
-        Call ShellExecute(fAnemometer.anemometerGaugeForm.hwnd, "runas", thisCommand, vbNullString, App.path, 1)
+        Call ShellExecute(fAnemometer.anemometerGaugeForm.hWnd, "runas", thisCommand, vbNullString, App.path, 1)
     End If
 
     On Error GoTo 0

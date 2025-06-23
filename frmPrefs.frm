@@ -5412,6 +5412,10 @@ End Sub
 
 
 
+Private Sub Image_Click()
+
+End Sub
+
 Private Sub imgGeneral_Click()
     imgGeneral.Visible = False
     imgGeneralClicked.Visible = True
@@ -5700,6 +5704,10 @@ optPrefsTooltips_MouseMove_Error:
 End Sub
 
 
+
+Private Sub Picture_Click()
+
+End Sub
 
 ' ----------------------------------------------------------------
 ' Procedure Name: sliErrorInterval_Click

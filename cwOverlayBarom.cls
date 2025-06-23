@@ -394,7 +394,7 @@ Public Property Let thisFace(ByVal newValue As Integer)
     If mThisFace <> newValue Then mThisFace = newValue Else Exit Property
     
     If widgetPrefs.IsVisible = True Then
-        widgetPrefs.cmbPressureScale.ListIndex = mThisFace
+        widgetPrefs.cmbPressureScale.ListIndex = mThisFace - 1
     End If
     
     gblPressureScale = mThisFace
@@ -683,7 +683,7 @@ Private Sub obtainPressure()
         pressurePercent = a
     End If
         
-    ' calculate the new cpu amount in degrees
+    ' calculate the new amount in degrees
     If mThisPressure = 0 Then
         pressureSDeg = 30
     Else

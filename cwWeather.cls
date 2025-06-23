@@ -29,7 +29,7 @@ Public WithEvents tmrSampler As cTimer
 Attribute tmrSampler.VB_VarHelpID = -1
 
 Private mTestPressureDrop As Long       ' property
-Private mGetMetar As Boolean            ' property GetMetar
+Private mProcessMetar As Boolean            ' property ProcessMetar
 Private mSamplerEnabled As Boolean      ' property GetMetar
 Private mSamplingInterval As Long    ' property GetMetar
 Private mValidICAO As Boolean             ' property
@@ -297,54 +297,70 @@ TestPressureDropLet_Error:
 End Property
 
 
-''---------------------------------------------------------------------------------------
-'' Property  : GetMetar
-'' Author    :
-'' Date      : 09/05/2023
-'' Purpose   :
-''---------------------------------------------------------------------------------------
-''
-'Public Property Let GetMetar(ByVal newValue As Boolean)
+'---------------------------------------------------------------------------------------
+' Property  : ProcessMetar
+' Author    :
+' Date      : 09/05/2023
+' Purpose   :
+'---------------------------------------------------------------------------------------
 '
-'    On Error GoTo GetMetarLet_Error
-'
-'    If mGetMetar <> newValue Then mGetMetar = newValue Else Exit Property
-'
-'    call WeatherMeteo.getdata
-'
-'    mGetMetar = False
-'
-'   On Error GoTo 0
-'   Exit Property
-'
-'GetMetarLet_Error:
-'
-'    MsgBox "Error " & Err.Number & " (" & Err.Description & ") in Property GetMetar of Class Module cwoverlaytemp"
-'End Property
-'
-'
-''---------------------------------------------------------------------------------------
-'' Property : GetMetar
-'' Author    : Dean Beedell (yereverluvinunclebert)
-'' Date      : 17/05/2023
-'' Purpose   :
-''---------------------------------------------------------------------------------------
-''
-'Public Property Get GetMetar() As Boolean
-'   On Error GoTo GetMetarGet_Error
-'
-'   GetMetar = mGetMetar
-'
-'   On Error GoTo 0
-'   Exit Property
-'
-'GetMetarGet_Error:
-'
-'    MsgBox "Error " & Err.Number & " (" & Err.Description & ") in Property GetMetar of Class Module cwoverlaytemp"
-'End Property
+Public Property Let ProcessMetar(ByVal newValue As Boolean)
 
+    On Error GoTo ProcessMetarLet_Error
+
+    If mProcessMetar <> newValue Then mProcessMetar = newValue Else Exit Property
+
+    Call getData
+
+    mProcessMetar = False
+
+   On Error GoTo 0
+   Exit Property
+
+ProcessMetarLet_Error:
+
+    MsgBox "Error " & Err.Number & " (" & Err.Description & ") in Property ProcessMetar of Class Module cwoverlaytemp"
+End Property
+
+
+'---------------------------------------------------------------------------------------
+' Property : ProcessMetar
+' Author    : Dean Beedell (yereverluvinunclebert)
+' Date      : 17/05/2023
+' Purpose   :
+'---------------------------------------------------------------------------------------
+'
+Public Property Get ProcessMetar() As Boolean
+   On Error GoTo ProcessMetarGet_Error
+
+   ProcessMetar = mProcessMetar
+
+   On Error GoTo 0
+   Exit Property
+
+ProcessMetarGet_Error:
+
+    MsgBox "Error " & Err.Number & " (" & Err.Description & ") in Property ProcessMetar of Class Module cwoverlaytemp"
+End Property
+
+'---------------------------------------------------------------------------------------
+' Procedure : tmrPressureDrop_Timer
+' Author    : beededea
+' Date      : 23/06/2025
+' Purpose   :
+'---------------------------------------------------------------------------------------
+'
 Private Sub tmrPressureDrop_Timer()
+   On Error GoTo tmrPressureDrop_Timer_Error
+
     Call TestPressureDropRoutine
+
+   On Error GoTo 0
+   Exit Sub
+
+tmrPressureDrop_Timer_Error:
+
+    MsgBox "Error " & Err.Number & " (" & Err.Description & ") in procedure tmrPressureDrop_Timer of Class Module cwWeatherMeteo"
 End Sub
 
     
@@ -511,7 +527,7 @@ End Sub
 Private Sub processMetarData()
 
     Dim HumidityValue  As Long: HumidityValue = 0
-    Dim pressureValue As Double: pressureValue = 0
+    Dim pressureValueMillibars As Double: pressureValueMillibars = 0
     Dim TheDate As Date: TheDate = #1/1/2000 12:00:00 PM#
     Dim secsDif As Double: secsDif = 0
     Dim lastUpdateString As String: lastUpdateString = vbNullString
@@ -576,7 +592,7 @@ Private Sub processMetarData()
     ' pause the sampling timer whilst the data is processed
     SamplerEnabled = False ' property
     
-    pressureValue = 0
+    pressureValueMillibars = 0
     
     objxmldoc.async = True
     objxmldoc.LoadXML (XMLHttpRequest.responseText)
@@ -722,11 +738,11 @@ Private Sub processMetarData()
     End If
     
     ' get pressure
-    pressureValue = fGetPressure(altim_in_hg)
+    pressureValueMillibars = fPressureMillibars(altim_in_hg)
     
     'write the current pressure value so that it can be made available to the storm checker timer, straight away.
-    gblCurrentPressureValue = pressureValue
-    overlayBaromWidget.thisPressure = pressureValue
+    gblCurrentPressureValue = pressureValueMillibars
+    overlayBaromWidget.thisPressure = pressureValueMillibars
 
     sPutINISetting "Software\PzTemperatureGauge", "currentPressureValue", gblCurrentPressureValue, gblSettingsFile
 
@@ -796,7 +812,7 @@ Private Sub processMetarData()
     windIconSrc = fWindIconSrc(force, isday)
 
     ' set the hover-over tooltips on the gauges
-    thisToolTip = setHoverTooltip(force, precipitationDepth, visibilityDistance, skyClarityString, HumidityValue, mTemperatureValue, pressureValue, weekDayDate, wind_dir_degrees, wind_speed_kt, precip_in, wx_string)
+    thisToolTip = setHoverTooltip(altim_in_hg, force, precipitationDepth, visibilityDistance, skyClarityString, HumidityValue, mTemperatureValue, pressureValueMillibars, weekDayDate, wind_dir_degrees, wind_speed_kt, precip_in, wx_string)
     thisToolTip = thisToolTip & vbCrLf & raw_text
     
     ' pass the current tooltip to the clipboard widget
@@ -1094,7 +1110,7 @@ End Function
 
 
 ' ----------------------------------------------------------------
-' Procedure Name: fGetPressure
+' Procedure Name: fPressureMillibars
 ' Purpose:
 ' Procedure Kind: Function
 ' Procedure Access: Public
@@ -1103,28 +1119,28 @@ End Function
 ' Author: Dean Beedell (yereverluvinunclebert)
 ' Date: 29/01/2024
 ' ----------------------------------------------------------------
-Private Function fGetPressure(ByVal altim_in_hg As String) As Integer
+Private Function fPressureMillibars(ByVal altim_in_hg As String) As Integer
 
-    On Error GoTo fGetPressure_Error
+    On Error GoTo fPressureMillibars_Error
     
     debugFlg = 0
 
     Dim thisPressureValue As Double: thisPressureValue = 0
     Dim strPressureValue As String: strPressureValue = vbNullString
     
-    thisPressureValue = Round(CDbl(altim_in_hg) * 25.3999)
+    thisPressureValue = Round(1.3333 * (CDbl(altim_in_hg) * 25.3999))
     strPressureValue = Str$(thisPressureValue) & "(" & CStr(Round(1.3333 * thisPressureValue)) & ")"
     
-    If debugFlg = 1 Then Debug.Print ("fGetPressure - Pressure = " & strPressureValue)
+    If debugFlg = 1 Then Debug.Print ("fPressureMillibars - Pressure = " & strPressureValue)
 
-    fGetPressure = thisPressureValue ' return
+    fPressureMillibars = thisPressureValue ' return
     
     On Error GoTo 0
     Exit Function
 
-fGetPressure_Error:
+fPressureMillibars_Error:
 
-    MsgBox "Error " & Err.Number & " (" & Err.Description & ") in procedure fGetPressure, line " & Erl & "."
+    MsgBox "Error " & Err.Number & " (" & Err.Description & ") in procedure fPressureMillibars, line " & Erl & "."
 
 End Function
 
@@ -1643,7 +1659,7 @@ End Function
 ' Author: Dean Beedell (yereverluvinunclebert)
 ' Date: 17/03/2024
 ' ----------------------------------------------------------------
-Private Function setHoverTooltip(ByVal force As Integer, ByVal precipitationDepth As String, ByVal visibilityDistance As String, ByVal skyClarityString As String, ByVal HumidityValue As Double, ByVal thisTemperatureValue As Single, ByVal pressureValue As Double, ByVal weekDayDate As String, ByVal wind_dir_degrees As String, ByVal wind_speed_kt As String, ByVal precip_in As String, ByVal wx_string As String) As String
+Private Function setHoverTooltip(ByVal thisAltim_in_hg As Double, ByVal force As Integer, ByVal precipitationDepth As String, ByVal visibilityDistance As String, ByVal skyClarityString As String, ByVal HumidityValue As Double, ByVal thisTemperatureValue As Single, ByVal pressureValueMillibars As Double, ByVal weekDayDate As String, ByVal wind_dir_degrees As String, ByVal wind_speed_kt As String, ByVal precip_in As String, ByVal wx_string As String) As String
     
     Dim windSpeedTooltip As String: windSpeedTooltip = vbNullString
     Dim tooltipString As String: tooltipString = vbNullString
@@ -1661,27 +1677,27 @@ Private Function setHoverTooltip(ByVal force As Integer, ByVal precipitationDept
     tooltipString = tooltipString & gblIcao & " " & icaoLocation1 & ", " & vbCrLf & icaoLocation2 & ", " & icaoLocation3 & " " & vbCrLf
 
     If (gblPressureScale = "0") Then ' "millibars") Then
-        tooltipString = tooltipString & "Pressure" & ": " & Int(pressureValue * 1.33322) & " mb " & vbCrLf
+        tooltipString = tooltipString & "Pressure" & ": " & CStr(Int(pressureValueMillibars)) & " mb " & vbCrLf
      ElseIf (gblPressureScale = "1") Then '"hg") Then
-        tooltipString = tooltipString & "Pressure" & ": " & Int(pressureValue / 25.399999704976) & " inHg " & vbCrLf
-     ElseIf (gblPressureScale = "2") Then '"hpa") Then
-        tooltipString = tooltipString & "Pressure" & ": " & Int(pressureValue * 1.33322) & " hpa " & vbCrLf
-     ElseIf (gblPressureScale = "3") Then '"mmhg") Then
-        tooltipString = tooltipString & "Pressure" & ": " & pressureValue & " mmHg " & vbCrLf
+        tooltipString = tooltipString & "Pressure" & ": " & CStr(thisAltim_in_hg) & " inHg " & vbCrLf
+     ElseIf (gblPressureScale = "2") Then '"mmhg") Then
+        tooltipString = tooltipString & "Pressure" & ": " & CStr(thisAltim_in_hg * 25.4) & " mmHg " & vbCrLf
+     ElseIf (gblPressureScale = "3") Then '"hpa") Then
+        tooltipString = tooltipString & "Pressure" & ": " & CStr(Int(pressureValueMillibars)) & " hpa " & vbCrLf
     End If
 
     If gblTemperatureScale = "1" Then '"fahrenheit"
-        tooltipString = tooltipString & "Temperature" & ": " & Round(thisTemperatureValue * 1.8 + 32, 2) & " F " & vbCrLf
+        tooltipString = tooltipString & "Temperature" & ": " & CStr(Round(thisTemperatureValue * 1.8 + 32, 2)) & " F " & vbCrLf
     End If
     If gblTemperatureScale = "0" Then ' "celsius"
-        tooltipString = tooltipString & "Temperature" & ": " & Round(thisTemperatureValue, 2) & " C " & vbCrLf
+        tooltipString = tooltipString & "Temperature" & ": " & CStr(Round(thisTemperatureValue, 2)) & " C " & vbCrLf
     End If
     
     If gblTemperatureScale = "2" Then '"kelvin"
-        tooltipString = tooltipString & "Temperature" & ": " & Round(Int(thisTemperatureValue + 273.15), 2) & " K " & vbCrLf
+        tooltipString = tooltipString & "Temperature" & ": " & CStr(Round(Int(thisTemperatureValue + 273.15), 2)) & " K " & vbCrLf
     End If
     
-    tooltipString = tooltipString & "Humidity : " & HumidityValue & " % " & vbCrLf
+    tooltipString = tooltipString & "Humidity : " & CStr(HumidityValue) & " % " & vbCrLf
     tooltipString = tooltipString & "Clouds : " & skyClarityString & " " & vbCrLf
     tooltipString = tooltipString & "Visibility : " & visibilityDistance & vbCrLf
     
@@ -1692,7 +1708,7 @@ Private Function setHoverTooltip(ByVal force As Integer, ByVal precipitationDept
         If gblWindSpeedScale = "0" Then  ' knots
             tooltipString = tooltipString & "Wind : " & windSpeedTooltip & ", speed " & wind_speed_kt & " knots "
         Else
-            tooltipString = tooltipString & "Wind : " & windSpeedTooltip & ", speed " & Int(wind_speed_kt * 0.51444) & " m/sec "
+            tooltipString = tooltipString & "Wind : " & windSpeedTooltip & ", speed " & Int(Val(wind_speed_kt) * 0.51444) & " m/sec "
         End If
         tooltipString = tooltipString & vbCrLf & "Direction : " & compassDirection & vbCrLf
     End If

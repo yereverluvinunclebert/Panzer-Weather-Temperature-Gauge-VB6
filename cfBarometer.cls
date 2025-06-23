@@ -143,28 +143,28 @@ Private Sub barometerGaugeForm_BubblingEvent(ByRef sender As Object, ByRef Event
     If EventName = "W_MouseMove" Then
         Select Case LCase$(sender.Widget.key)
             Case "housing/lockbutton"
-                If gblGaugeTooltips = "0" Then CreateToolTip barometerGaugeForm.hwnd, "Click me to lock the widget in place. This lock can be released by clicking again on the lock button, or in the preferences. A locking sound will denote the button's operation.", _
+                If gblGaugeTooltips = "0" Then CreateToolTip barometerGaugeForm.hWnd, "Click me to lock the widget in place. This lock can be released by clicking again on the lock button, or in the preferences. A locking sound will denote the button's operation.", _
                      TTIconInfo, widgetName6 & " Lock Button Help", , , , True
             Case "housing/prefsbutton"
-                If gblGaugeTooltips = "0" Then CreateToolTip barometerGaugeForm.hwnd, "Click me to open the preferences utility. All advanced configuration of the widget is performed using the preference utility.", _
+                If gblGaugeTooltips = "0" Then CreateToolTip barometerGaugeForm.hWnd, "Click me to open the preferences utility. All advanced configuration of the widget is performed using the preference utility.", _
                      TTIconInfo, widgetName6 & " Prefs Button Help", , , , True
             Case "housing/tickbutton"
-                If gblGaugeTooltips = "0" Then CreateToolTip barometerGaugeForm.hwnd, "This button is non-functional in this gauge.", _
+                If gblGaugeTooltips = "0" Then CreateToolTip barometerGaugeForm.hWnd, "This button is non-functional in this gauge.", _
                      TTIconInfo, widgetName6 & " Tick Button Help", , , , True
             Case "housing/switchfacesbutton"
-                If gblGaugeTooltips = "0" Then CreateToolTip barometerGaugeForm.hwnd, "Click here to select between different pressure faces showing alternative scales, ie. millibars, inches of mercury, mm of mercury or hectopascals.", _
+                If gblGaugeTooltips = "0" Then CreateToolTip barometerGaugeForm.hWnd, "Click here to select between different pressure faces showing alternative scales, ie. millibars, inches of mercury, mm of mercury or hectopascals.", _
                      TTIconInfo, widgetName6 & " Switch Faces Button Help", , , , True
             Case "housing/stopbutton"
-                If gblGaugeTooltips = "0" Then CreateToolTip barometerGaugeForm.hwnd, "This button stops all animated gauge functions for this widget, pointer movement, digital displays &c .", _
+                If gblGaugeTooltips = "0" Then CreateToolTip barometerGaugeForm.hWnd, "This button stops all animated gauge functions for this widget, pointer movement, digital displays &c .", _
                      TTIconInfo, widgetName6 & " Stop Button Help", , , , True
             Case "housing/startbutton"
-                If gblGaugeTooltips = "0" Then CreateToolTip barometerGaugeForm.hwnd, "This button restarts all stopped animated gauge functions for this widget, pointer movement &c .", _
+                If gblGaugeTooltips = "0" Then CreateToolTip barometerGaugeForm.hWnd, "This button restarts all stopped animated gauge functions for this widget, pointer movement &c .", _
                      TTIconInfo, widgetName6 & " Start Button Help", , , , True
             Case "housing/helpbutton"
-                If gblGaugeTooltips = "0" Then CreateToolTip barometerGaugeForm.hwnd, "This button opens the one-page help file for this widget. There is a further detailed CHM help file available from the right-click menu that contains all the information that you need to run this widget.", _
+                If gblGaugeTooltips = "0" Then CreateToolTip barometerGaugeForm.hWnd, "This button opens the one-page help file for this widget. There is a further detailed CHM help file available from the right-click menu that contains all the information that you need to run this widget.", _
                      TTIconInfo, widgetName6 & " Help Button Help", , , , True
             Case Else
-                If gblGaugeTooltips = "0" Then CreateToolTip barometerGaugeForm.hwnd, " " & WeatherMeteo.WeatherDetails _
+                If gblGaugeTooltips = "0" Then CreateToolTip barometerGaugeForm.hWnd, " " & WeatherMeteo.WeatherDetails _
                     & vbCrLf & "" _
                     & vbCrLf & "Right Click to open the menu and the preferences. CTRL+ Mouse scrollwheel UP/DOWN to resize." _
                     , TTIconInfo, widgetName6 & " METAR summary Information.", , , , True
@@ -370,6 +370,8 @@ Private Sub switchfacesbutton_mouseUp(ByRef sender As Object)
     If currFace > 3 Then currFace = 0
     gblPressureScale = LTrim$(Str$(currFace))
     
+    WeatherMeteo.ProcessMetar = True
+    
     overlayBaromWidget.thisFace = Val(gblPressureScale)
     
     If gblEnableSounds = "1" And fFExists(App.path & "\resources\sounds\" & fileToPlay) Then
@@ -482,9 +484,9 @@ Private Sub barometerGaugeForm_DblClick()
     
     If SHIFT_1 = True Then
         SHIFT_1 = False
-        Call ShellExecute(fBarometer.barometerGaugeForm.hwnd, "Open", gblOpenFile, vbNullString, App.path, 1)
+        Call ShellExecute(fBarometer.barometerGaugeForm.hWnd, "Open", gblOpenFile, vbNullString, App.path, 1)
     Else
-        Call ShellExecute(fBarometer.barometerGaugeForm.hwnd, "runas", thisCommand, vbNullString, App.path, 1)
+        Call ShellExecute(fBarometer.barometerGaugeForm.hWnd, "runas", thisCommand, vbNullString, App.path, 1)
     End If
 
     On Error GoTo 0
