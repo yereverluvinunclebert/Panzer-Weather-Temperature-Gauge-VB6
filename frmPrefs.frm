@@ -5217,7 +5217,7 @@ Public Sub PrefsForm_Resize_Event()
         Call makeFramesInvisible
         Call resizeControls(Me, prefsControlPositions(), gblPrefsStartWidth, gblPrefsStartHeight, currentFontSize)
 
-        'Call tweakPrefsControlPositions(Me, gblPrefsStartWidth, gblPrefsStartHeight)
+        Call tweakPrefsControlPositions(Me, gblPrefsStartWidth, gblPrefsStartHeight)
         'Call loadHigherResPrefsImages ' if you want higher res icons then load them here, current max. is 1010 twips or 67 pixels
         Call makeFramesVisible
         
