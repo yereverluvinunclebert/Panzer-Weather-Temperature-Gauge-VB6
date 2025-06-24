@@ -126,10 +126,12 @@ barometer readings in all scales were incorrect
 clipboard readings in all scales were incorrect
 switching faces triggers a re-GET of META data
 
+resizing using subclassing
+
 hiding for 1 minute does not work for all gauges
 rainfall indicator lamp & print out - test
-
-resizing using subclassing
+update html help documentation
+update html code documentation using MZTools code documenter
 
 TODO:
 
@@ -141,8 +143,8 @@ Barometer display not showing 23-31 inches of Hg face
 
 rainfall indicator lamp & print out - cater for recent restart and current rain
 
-update html help documentation
-update html code documentation using MZTools code documenter
+
+
 
 pictorial gauge time to next update rotator - get it to rotate as per one of the other gauge pointers
 
