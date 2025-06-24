@@ -5203,12 +5203,6 @@ Public Sub PrefsForm_Resize_Event()
     ' When minimised and a resize is called then simply exit.
     If Me.WindowState = vbMinimized Then Exit Sub
     
-    btnSave.Enabled = True ' enable the save button
-    
-    ' move the drag corner label along with the form's bottom right corner
-    lblDragCorner.Move Me.ScaleLeft + Me.ScaleWidth - (lblDragCorner.Width + 40), _
-               Me.ScaleTop + Me.ScaleHeight - (lblDragCorner.Height + 40)
-    
     If pvtPrefsDynamicSizingFlg = True And pvtPrefsFormResizedByDrag = True Then
     
         widgetPrefs.Width = widgetPrefs.Height / gblConstraintRatio ' maintain the aspect ratio, note: this change calls this routine again...
@@ -5223,8 +5217,8 @@ Public Sub PrefsForm_Resize_Event()
         Call makeFramesInvisible
         Call resizeControls(Me, prefsControlPositions(), gblPrefsStartWidth, gblPrefsStartHeight, currentFontSize)
 
-        Call tweakPrefsControlPositions(Me, gblPrefsStartWidth, gblPrefsStartHeight)
-        'Call loadHigherResPrefsImages
+        'Call tweakPrefsControlPositions(Me, gblPrefsStartWidth, gblPrefsStartHeight)
+        'Call loadHigherResPrefsImages ' if you want higher res icons then load them here, current max. is 1010 twips or 67 pixels
         Call makeFramesVisible
         
     Else
@@ -5241,10 +5235,6 @@ Public Sub PrefsForm_Resize_Event()
     gblPrefsFormResizedInCode = False
     pvtPrefsFormResizedByDrag = False
     
-    Call writePrefsPosition
-    
-    'lblSize.Caption = "topIconWidth = " & topIconWidth & " imgGeneral width = " & imgGeneral.Width
-
    On Error GoTo 0
    Exit Sub
 

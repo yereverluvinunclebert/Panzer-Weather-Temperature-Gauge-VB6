@@ -27,11 +27,9 @@ Public msgBoxACurrentHeight As Double
 '
 Public Sub resizeControls(ByRef thisForm As Form, ByRef m_ControlPositions() As ControlPositionType, ByVal m_FormWid As Double, ByVal m_FormHgt As Double, ByVal formFontSize As Long)
     
-    Dim i As Integer: i = 0
+    Dim I As Integer: I = 0
     Dim Ctrl As Control
-    
     Dim x_scale As Single: x_scale = 0
-    
     Dim y_scale As Single: y_scale = 0
         
     On Error GoTo ResizeControls_Error
@@ -39,53 +37,38 @@ Public Sub resizeControls(ByRef thisForm As Form, ByRef m_ControlPositions() As 
     ' Get the form's current scale factors.
     x_scale = thisForm.ScaleWidth / m_FormWid
     y_scale = thisForm.ScaleHeight / m_FormHgt
-    
-    i = 1
+
+    ' Position the controls.
+    I = 1
 
     For Each Ctrl In thisForm.Controls
-        With m_ControlPositions(i)
+        With m_ControlPositions(I)
             If (TypeOf Ctrl Is CommandButton) Or (TypeOf Ctrl Is ListBox) Or (TypeOf Ctrl Is TextBox) Or (TypeOf Ctrl Is FileListBox) Or (TypeOf Ctrl Is Label) Or (TypeOf Ctrl Is ComboBox) Or (TypeOf Ctrl Is CheckBox) Or (TypeOf Ctrl Is OptionButton) Or (TypeOf Ctrl Is Frame) Or (TypeOf Ctrl Is Image) Or (TypeOf Ctrl Is PictureBox) Or (TypeOf Ctrl Is Slider) Then
-
-                If (TypeOf Ctrl Is Image) Then
-
-                    '@Ignore MemberNotOnInterface
-                    Ctrl.Stretch = True
-                    '@Ignore MemberNotOnInterface
                     Ctrl.Left = x_scale * .Left
-                    '@Ignore MemberNotOnInterface
                     Ctrl.Top = y_scale * .Top
-                    '@Ignore MemberNotOnInterface
-                    Ctrl.Width = x_scale * .Width
-                    '@Ignore MemberNotOnInterface
-                    '@Ignore MemberNotOnInterface
-                    Ctrl.Height = Ctrl.Width ' always square in our case
-
-                    '@Ignore MemberNotOnInterface
-                    Ctrl.Refresh
-                Else
-                    '@Ignore MemberNotOnInterface
-                    Ctrl.Left = x_scale * .Left
-                    '@Ignore MemberNotOnInterface
-                    Ctrl.Top = y_scale * .Top
-                    '@Ignore MemberNotOnInterface
                     Ctrl.Width = x_scale * .Width
                     If Not (TypeOf Ctrl Is ComboBox) Then
                         ' Cannot change height of ComboBoxes.
-                        '@Ignore MemberNotOnInterface
                         Ctrl.Height = y_scale * .Height
                     End If
                     On Error Resume Next
-                    '@Ignore MemberNotOnInterface
                     Ctrl.Font.Size = y_scale * formFontSize
-                    '@Ignore MemberNotOnInterface
                     Ctrl.Refresh
                     On Error GoTo 0
+                ElseIf (TypeOf Ctrl Is Image) Then
+                    'Ctrl.Visible = False
+                    Ctrl.Stretch = True
+                    Ctrl.Left = x_scale * .Left
+                    Ctrl.Top = y_scale * .Top
+                    Ctrl.Width = x_scale * .Width
+                    Ctrl.Height = Ctrl.Width ' always square in our case
+                    'Ctrl.Visible = True
+                    Ctrl.Refresh
                 End If
-            End If
         End With
-        i = i + 1
+        I = I + 1
     Next Ctrl
-        
+    
    On Error GoTo 0
    Exit Sub
 
@@ -108,16 +91,16 @@ End Sub
 '
 Public Sub SaveSizes(ByVal thisForm As Form, ByRef m_ControlPositions() As ControlPositionType, ByRef m_FormWid As Double, ByRef m_FormHgt As Double)
     
-    Dim i As Integer: i = 0
+    Dim I As Integer: I = 0
     Dim Ctrl As Control
 
     ' Save the controls' positions and sizes.
     On Error GoTo SaveSizes_Error
 
     ReDim m_ControlPositions(1 To thisForm.Controls.Count)
-    i = 1
+    I = 1
     For Each Ctrl In thisForm.Controls
-        With m_ControlPositions(i)
+        With m_ControlPositions(I)
         
             If (TypeOf Ctrl Is CommandButton) Or (TypeOf Ctrl Is ListBox) Or (TypeOf Ctrl Is TextBox) Or (TypeOf Ctrl Is FileListBox) Or (TypeOf Ctrl Is Label) Or (TypeOf Ctrl Is ComboBox) Or (TypeOf Ctrl Is CheckBox) Or (TypeOf Ctrl Is OptionButton) Or (TypeOf Ctrl Is Frame) Or (TypeOf Ctrl Is Image) Or (TypeOf Ctrl Is PictureBox) Or (TypeOf Ctrl Is Slider) Then
                 '@Ignore MemberNotOnInterface
@@ -134,7 +117,7 @@ Public Sub SaveSizes(ByVal thisForm As Form, ByRef m_ControlPositions() As Contr
                 On Error GoTo 0
             End If
         End With
-        i = i + 1
+        I = I + 1
     Next Ctrl
 
     ' Save the form's size.
