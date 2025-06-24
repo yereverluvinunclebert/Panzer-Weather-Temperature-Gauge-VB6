@@ -101,8 +101,14 @@ Private Sub revealWidgetTimer_Timer()
     revealWidgetTimerCount = revealWidgetTimerCount + 1
     If revealWidgetTimerCount >= (minutesToHide * 12) Then
         revealWidgetTimerCount = 0
-
+        
         fTemperature.temperatureGaugeForm.Visible = True
+        fAnemometer.anemometerGaugeForm.Visible = True
+        fHumidity.humidityGaugeForm.Visible = True
+        fBarometer.barometerGaugeForm.Visible = True
+        fPictorial.pictorialGaugeForm.Visible = True
+        fClipB.clipBForm.Visible = True
+    
         revealWidgetTimer.Enabled = False
         gblWidgetHidden = "0"
         sPutINISetting "Software\PzTemperatureGauge", "widgetHidden", gblWidgetHidden, gblSettingsFile
@@ -132,8 +138,8 @@ End Sub
 Private Sub rotationTimer_Timer()
     On Error GoTo rotationTimer_Timer_Error
 
-    gblPhysicalScreenHeightPixels = GetDeviceCaps(menuForm.hdc, VERTRES) ' we use the name of any form currently loaded
-    gblPhysicalScreenWidthPixels = GetDeviceCaps(menuForm.hdc, HORZRES)
+    gblPhysicalScreenHeightPixels = GetDeviceCaps(menuForm.hDC, VERTRES) ' we use the name of any form currently loaded
+    gblPhysicalScreenWidthPixels = GetDeviceCaps(menuForm.hDC, HORZRES)
     
     ' will be used to check for orientation changes
     If (gblOldPhysicalScreenHeightPixels <> gblPhysicalScreenHeightPixels) Or (gblOldPhysicalScreenWidthPixels <> gblPhysicalScreenWidthPixels) Then

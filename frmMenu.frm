@@ -217,7 +217,7 @@ Public Sub mnuGithubHome_Click()
     answer = msgBoxA(answerMsg, vbExclamation + vbYesNo, "Request to Upgrade", True, "mnuGithubHomeClick")
 
     If answer = vbYes Then
-        Call ShellExecute(Me.hwnd, "Open", "https://github.com/yereverluvinunclebert/Steampunk-clock-calendar-" & gblCodingEnvironment, vbNullString, App.path, 1)
+        Call ShellExecute(Me.hWnd, "Open", "https://github.com/yereverluvinunclebert/Steampunk-clock-calendar-" & gblCodingEnvironment, vbNullString, App.path, 1)
     End If
 
    On Error GoTo 0
@@ -275,7 +275,7 @@ Private Sub mnuAppFolder_Click()
     folderPath = App.path
     If fDirExists(folderPath) Then ' if it is a folder already
 
-        execStatus = ShellExecute(Me.hwnd, "open", folderPath, vbNullString, vbNullString, 1)
+        execStatus = ShellExecute(Me.hWnd, "open", folderPath, vbNullString, vbNullString, 1)
         If execStatus <= 32 Then MsgBox "Attempt to open folder failed."
     Else
         MsgBox "Having a bit of a problem opening a folder for this widget - " & folderPath & " It doesn't seem to have a valid working directory set.", "Panzer Earth Gauge Confirmation Message", vbOKOnly + vbExclamation
@@ -399,7 +399,7 @@ Private Sub mnuEditWidget_Click()
         '''If debugflg = 1  Then msgBox "ShellExecute " & sCommand
         
         ' run the selected program
-        execStatus = ShellExecute(Me.hwnd, "open", editorPath, vbNullString, vbNullString, 1)
+        execStatus = ShellExecute(Me.hWnd, "open", editorPath, vbNullString, vbNullString, 1)
         If execStatus <= 32 Then MsgBox "Attempt to open the IDE for this widget failed."
     Else
         MsgBox "Having a bit of a problem opening an IDE for this widget - " & editorPath & " It doesn't seem to have a valid working directory set."
@@ -428,7 +428,7 @@ Private Sub mnuHelpHTM_Click()
     On Error GoTo mnuHelpHTM_Click_Error
 
     If fFExists(App.path & "\help\Help.chm") Then
-        Call ShellExecute(Me.hwnd, "Open", App.path & "\help\Help.chm", vbNullString, App.path, 1)
+        Call ShellExecute(Me.hWnd, "Open", App.path & "\help\Help.chm", vbNullString, App.path, 1)
     Else
         MsgBox ("The help file - Help.chm - is missing from the help folder.")
     End If
@@ -478,9 +478,14 @@ End Sub
 '
 Private Sub mnuHideWidget_Click()
     On Error GoTo mnuHideWidget_Click_Error
-       
-    'overlayTemperatureWidget.Hidden = True
+
     fTemperature.temperatureGaugeForm.Visible = False
+    fAnemometer.anemometerGaugeForm.Visible = False
+    fHumidity.humidityGaugeForm.Visible = False
+    fBarometer.barometerGaugeForm.Visible = False
+    fPictorial.pictorialGaugeForm.Visible = False
+    fClipB.clipBForm.Visible = False
+    
     frmTimer.revealWidgetTimer.Enabled = True
     gblWidgetHidden = "1"
     ' we have to save the value here
@@ -734,7 +739,7 @@ Public Sub mnuFacebook_Click()
     answer = msgBoxA(answerMsg, vbExclamation + vbYesNo, "Visit Facebook Request", True, "mnuFacebookClick")
     'answer = MsgBox("Visiting the Facebook chat page - this button opens a browser window and connects to our Facebook chat page. Proceed?", vbExclamation + vbYesNo)
     If answer = vbYes Then
-        Call ShellExecute(Me.hwnd, "Open", "http://www.facebook.com/profile.php?id=100012278951649", vbNullString, App.path, 1)
+        Call ShellExecute(Me.hWnd, "Open", "http://www.facebook.com/profile.php?id=100012278951649", vbNullString, App.path, 1)
     End If
 
     On Error GoTo 0
@@ -770,7 +775,7 @@ Public Sub mnuLatest_Click()
     answer = msgBoxA(answerMsg, vbExclamation + vbYesNo, "Request to Upgrade", True, "mnuLatestClick")
 
     If answer = vbYes Then
-        Call ShellExecute(Me.hwnd, "Open", "https://github.com/yereverluvinunclebert/Panzer-Temperature-Gauge-" & gblCodingEnvironment & "/releases", vbNullString, App.path, 1)
+        Call ShellExecute(Me.hWnd, "Open", "https://github.com/yereverluvinunclebert/Panzer-Temperature-Gauge-" & gblCodingEnvironment & "/releases", vbNullString, App.path, 1)
     End If
 
 
@@ -1091,7 +1096,7 @@ Private Sub mnuWidgets_Click()
     'answer = MsgBox(" This button opens a browser window and connects to the Steampunk widgets page on my site. Do you wish to proceed?", vbExclamation + vbYesNo)
 
     If answer = vbYes Then
-        Call ShellExecute(Me.hwnd, "Open", "https://www.deviantart.com/yereverluvinuncleber/gallery/59981269/yahoo-widgets", vbNullString, App.path, 1)
+        Call ShellExecute(Me.hWnd, "Open", "https://www.deviantart.com/yereverluvinuncleber/gallery/59981269/yahoo-widgets", vbNullString, App.path, 1)
     End If
 
     On Error GoTo 0
