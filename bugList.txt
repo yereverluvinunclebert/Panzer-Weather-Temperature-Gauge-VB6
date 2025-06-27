@@ -135,6 +135,8 @@ update html code documentation using MZTools code documenter
 
 TODO:
 
+pictorial gauge time to next update rotator - get it to rotate as per one of the other gauge pointers
+
 barometer face incorrect for in HG - recalc the values on the face
 barometer face incorrect for mm HG - recalc the values on the face
 the correct gauge faces are on the G5
@@ -142,11 +144,6 @@ the correct gauge faces are on the G5
 Barometer display not showing 23-31 inches of Hg face
 
 rainfall indicator lamp & print out - cater for recent restart and current rain
-
-
-
-
-pictorial gauge time to next update rotator - get it to rotate as per one of the other gauge pointers
 
 if storm, flash lamp using timers
 

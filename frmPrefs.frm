@@ -2963,9 +2963,6 @@ End Sub
 Private Sub setPrefsHeight()
 
    On Error GoTo setPrefsHeight_Error
-   
-    ' constrain the height/width ratio
-    gblConstraintRatio = pvtcPrefsFormHeight / pvtcPrefsFormWidth
 
     If gblDpiAwareness = "1" Then
         gblPrefsFormResizedInCode = True
@@ -4177,6 +4174,10 @@ Private Sub positionPrefsFramesButtons()
     Dim rightHandAlignment As Long: rightHandAlignment = 0
     
     Dim leftHandGutterWidth As Long: leftHandGutterWidth = 0
+    
+       
+    ' constrain the height/width ratio
+    gblConstraintRatio = pvtcPrefsFormHeight / pvtcPrefsFormWidth
     
     ' align frames rightmost and leftmost to the buttons at the top
     buttonTop = -15
