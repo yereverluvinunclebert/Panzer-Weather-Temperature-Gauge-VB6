@@ -528,6 +528,9 @@ Private Sub initialiseGlobalVars()
     
     gblPrefsPrimaryHeightTwips = vbNullString
     
+    gblMessageAHeightTwips = vbNullString
+    gblMessageAWidthTwips = vbNullString
+    
     ' key presses
     CTRL_1 = False
     SHIFT_1 = False
@@ -1771,6 +1774,9 @@ Public Sub readSettingsFile(ByVal location As String, ByVal gblSettingsFile As S
          
         gblFirstTimeRun = fGetINISetting(location, "firstTimeRun", gblSettingsFile)
         
+        gblMessageAHeightTwips = fGetINISetting(location, "messageAHeightTwips", gblSettingsFile)
+        gblMessageAWidthTwips = fGetINISetting(location, "messageAWidthTwips ", gblSettingsFile)
+        
     End If
 
    On Error GoTo 0
@@ -2170,9 +2176,6 @@ Private Sub loadTemperatureExcludePathCollection()
         
         .Add Empty, "faceweathering"
 
-        .Add Empty, "bigreflection"     'all reflections
-        .Add Empty, "windowreflection"
-
         .Add Empty, "bluelamptrue"
         .Add Empty, "bluelampfalse"
 
@@ -2181,6 +2184,9 @@ Private Sub loadTemperatureExcludePathCollection()
         
         .Add Empty, "secondshadow" 'clock-hand-seconds-shadow
         .Add Empty, "secondhand"   'clock-hand-seconds
+        
+        .Add Empty, "bigreflection"     'all reflections
+        .Add Empty, "windowreflection"
 
     End With
 
@@ -2276,9 +2282,6 @@ Private Sub loadAnemometerExcludePathCollection()
 
         .Add Empty, "anemometerknotsface"
         .Add Empty, "anemometermetresface"
-        
-        .Add Empty, "bigreflection"     'all reflections
-        .Add Empty, "windowreflection"
 
         .Add Empty, "amberlamp"
         .Add Empty, "purplelamp"
@@ -2291,6 +2294,8 @@ Private Sub loadAnemometerExcludePathCollection()
         .Add Empty, "pointershadow"
         .Add Empty, "pointer"
        
+        .Add Empty, "bigreflection"     'all reflections
+        .Add Empty, "windowreflection"
         
     End With
 
@@ -2322,14 +2327,13 @@ Private Sub loadHumidityExcludePathCollection()
 
         .Add Empty, "Humidityface"
         
-        .Add Empty, "bigreflection"     'all reflections
-        .Add Empty, "windowreflection"
         .Add Empty, "redlamptrue"
         .Add Empty, "redlampfalse"
         .Add Empty, "pointerShadow"
         .Add Empty, "pointer"
-       
         
+        .Add Empty, "bigreflection"     'all reflections
+        .Add Empty, "windowreflection"
     End With
 
    On Error GoTo 0
@@ -2368,15 +2372,13 @@ Private Sub loadBarometerExcludePathCollection()
         .Add Empty, "greenlamp"
         .Add Empty, "redlamp"
         
-        .Add Empty, "bigreflection"     'all reflections
-        .Add Empty, "windowreflection"
-        
         .Add Empty, "manualpointer"
        
         .Add Empty, "pointerShadow"
         .Add Empty, "pointer"
        
-        
+        .Add Empty, "bigreflection"     'all reflections
+        .Add Empty, "windowreflection"
     End With
 
    On Error GoTo 0
@@ -2408,7 +2410,6 @@ Private Sub loadPictorialExcludePathCollection()
         .Add Empty, "greenlampfalse"
 
         .Add Empty, "bigreflection"     'all reflections
-        .Add Empty, "manualpointer"
         
     End With
 

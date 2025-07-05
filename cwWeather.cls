@@ -1568,63 +1568,63 @@ Private Function fWindIconSrc(ByVal force As Integer, ByVal thisIsDay As Boolean
     End If
     If force = 3 Then
         'force = 3 ' 7-10  Gentle breeze     Large wavelets (0.6 m), crests begin to break.
-        thisWindIconSrc = "nowind"
+        thisWindIconSrc = "windy01"
     End If
     If force = 4 Then
         'force = 4 ' 11-16  Moderate breeze  Small waves (1 m), some whitecaps
-        thisWindIconSrc = "windy01"
+        thisWindIconSrc = "windy02"
     End If
     If force = 5 Then
         'force = 5 '  17-21 Fresh breeze
-        thisWindIconSrc = "windy02"
+        thisWindIconSrc = "windy03"
     End If
     If force = 6 Then
          ' 22-27 Strong breeze
-        thisWindIconSrc = "windy03"
+        thisWindIconSrc = "windy04"
     End If
     If force = 7 Then
          ' 28-33 Near gale
-        thisWindIconSrc = "windy04"
+        thisWindIconSrc = "windy05"
     End If
     If force = 8 Then
         ' 34-40 Gale
-        thisWindIconSrc = "windy05"
+        thisWindIconSrc = "windy06"
     End If
     If force = 9 Then
          ' 41-47 Strong gale
-        thisWindIconSrc = "windy05"
+        thisWindIconSrc = "windy06"
     End If
     If force = 10 Then
          ' 48-55 Storm
-        thisWindIconSrc = "windy05"
+        thisWindIconSrc = "windy07"
     End If
     If force = 11 Then
         ' 56-63 Violent storm
-        thisWindIconSrc = "windy05"
+        thisWindIconSrc = "windy07"
     End If
     If force = 12 Then
         ' 64+ Hurricane
-        thisWindIconSrc = "windy05"
+        thisWindIconSrc = "windy08"
     End If
     If force = 13 Then
          ' 80+ Typhoon
-        thisWindIconSrc = "windy05"
+        thisWindIconSrc = "windy09"
     End If
     If force = 14 Then
         'force = 14 ' 80+ Typhoon
-        thisWindIconSrc = "windy05"
+        thisWindIconSrc = "windy09"
     End If
     If force = 15 Then
         'force = 15 ' 80+ Typhoon
-        thisWindIconSrc = "windy05"
+        thisWindIconSrc = "windy09"
     End If
     If force = 16 Then
         'force = 16 ' 80+ Severe Typhoon
-        thisWindIconSrc = "windy05"
+        thisWindIconSrc = "windy09"
     End If
     If force = 17 Then
-       'force = 17 ' 80+ Severe Typhoon
-       thisWindIconSrc = "windy05"
+       'force = 17 ' 80+ Very Severe Typhoon
+       thisWindIconSrc = "windy09"
      End If
      
     ' turn the image from day to night

@@ -3910,7 +3910,7 @@ Private Sub cmbDebug_Click()
 
     btnSave.Enabled = True ' enable the save button
     If cmbDebug.ListIndex = 0 Then
-        txtDefaultEditor.Text = "eg. E:\vb6\Panzer Earth gauge VB6\Panzer Earth Gauge.vbp"
+        txtDefaultEditor.Text = "eg. E:\vb6\Steampunk-clock-calendar-vb6\Steampunk Clock Calendar.vbp"
         txtDefaultEditor.Enabled = False
         
         lblDebug(7).Enabled = False
@@ -4268,6 +4268,8 @@ End Sub
 '
 Private Sub btnClose_Click()
    On Error GoTo btnClose_Click_Error
+   
+   ' here we normally stop all the gauges but there is no real need as the polling interval is quite large
 
     btnSave.Enabled = False ' disable the save button
     Me.Hide
@@ -7418,7 +7420,7 @@ Private Sub setModernThemeColours()
     
     On Error GoTo setModernThemeColours_Error
     
-    'Pz EarthPrefs.mnuAuto.Caption = "Auto Theme Selection Cannot be Enabled"
+    'Pz Weather TemperaturePrefs.mnuAuto.Caption = "Auto Theme Selection Cannot be Enabled"
 
     'MsgBox "Windows Alternate Theme detected"
     SysClr = GetSysColor(COLOR_BTNFACE)

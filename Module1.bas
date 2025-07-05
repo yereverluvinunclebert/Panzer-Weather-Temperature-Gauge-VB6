@@ -468,7 +468,8 @@ Public gblOldPressureStorage As String
 Public gblPressureStorageDate As String
 Public gblCurrentPressureValue As String
 
-
+Public gblMessageAHeightTwips  As String
+Public gblMessageAWidthTwips   As String
 
 '------------------------------------------------------ ENDS
 
@@ -545,7 +546,7 @@ Private mbDebugMode As Boolean ' .30 DAEB 03/03/2021 frmMain.frm replaced the in
 'Public tzDelta As Long
 'Public tzDelta1 As Long
 
-Public msgBoxADynamicSizingFlg As Boolean
+Public gblMsgBoxADynamicSizingFlg As Boolean
 'Public gblValidLocations() As String
 
 ' dictionary
@@ -679,12 +680,12 @@ Public Sub setDPIaware()
     On Error GoTo setDPIaware_Error
     
 '    Cairo.SetDPIAwareness ' for debugging
-'    msgBoxADynamicSizingFlg = True
+'    gblMsgBoxADynamicSizingFlg = True
     
     If gblDpiAwareness = "1" Then
         If Not InIDE Then
             Cairo.SetDPIAwareness ' this way avoids the VB6 IDE shrinking (sadly, VB6 has a high DPI unaware IDE)
-            msgBoxADynamicSizingFlg = True
+            gblMsgBoxADynamicSizingFlg = True
         End If
     End If
 
@@ -1703,7 +1704,7 @@ Public Sub mnuSupport_ClickEvent()
     answer = msgBoxA(answerMsg, vbExclamation + vbYesNo, "Request to Contact Support", True, "mnuSupportClickEvent")
 
     If answer = vbYes Then
-        Call ShellExecute(menuForm.hWnd, "Open", "https://github.com/yereverluvinunclebert/Panzer-Temperature-Gauge-" & gblCodingEnvironment & "/issues", vbNullString, App.path, 1)
+        Call ShellExecute(menuForm.hWnd, "Open", "https://github.com/yereverluvinunclebert/Panzer-Weather-Temperature-Gauge-" & gblCodingEnvironment & "/issues", vbNullString, App.path, 1)
     End If
 
    On Error GoTo 0
