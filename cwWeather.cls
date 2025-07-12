@@ -93,7 +93,7 @@ Private Sub Class_Initialize()
     tmrPressureDrop.Enabled = True
     
     Set tmrAsyncResponse = Nothing
-    Set tmrAsyncResponse = New_c.Timer(1000, False)
+    Set tmrAsyncResponse = New_c.Timer(2000, False)
     
     Set tmrSleepTester = Nothing
     Set tmrSleepTester = New_c.Timer(2500, True)  ' two seconds, should start automatically but it doesn't
@@ -491,11 +491,13 @@ End Sub
 '
 Private Sub tmrAsyncResponse_Timer()
     
-    On Error GoTo tmrAsyncResponse_Timer_Error
+    On Error Resume Next
     
-    Debug.Print XMLHttpRequest.readyState
+    'Debug.Print XMLHttpRequest.readyState
 
     If XMLHttpRequest.readyState = 4 Then ' asynchronous xml request complete
+    
+        On Error GoTo tmrAsyncResponse_Timer_Error
     
         ' as soon as the the ready state is complete we stop the response timer
         tmrAsyncResponse.Enabled = False
@@ -1564,7 +1566,7 @@ Private Function fWindIconSrc(ByVal force As Integer, ByVal thisIsDay As Boolean
     End If
     If force = 2 Then
         'force = 2 ' 4-6 Light breeze    Small wavelets (0.2 m). Crests have a glassy appearance.
-        thisWindIconSrc = "nowind"
+        thisWindIconSrc = "windy01"
     End If
     If force = 3 Then
         'force = 3 ' 7-10  Gentle breeze     Large wavelets (0.6 m), crests begin to break.
