@@ -84,7 +84,7 @@ Begin VB.Form menuForm
          Caption         =   ""
       End
       Begin VB.Menu menuReload 
-         Caption         =   "Reload Widget (F5)"
+         Caption         =   "Reload Widget (F5 or Shift+F5 for hard restart)"
       End
       Begin VB.Menu mnuEditWidget 
          Caption         =   "Edit Widget using..."
