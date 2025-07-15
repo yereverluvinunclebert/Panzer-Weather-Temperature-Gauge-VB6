@@ -329,6 +329,313 @@ Begin VB.Form widgetPrefs
          Width           =   600
       End
    End
+   Begin VB.Frame fraConfig 
+      Caption         =   "Configuration"
+      Height          =   6405
+      Left            =   240
+      TabIndex        =   8
+      Top             =   1185
+      Width           =   7140
+      Begin VB.Frame fraConfigInner 
+         BorderStyle     =   0  'None
+         Height          =   5745
+         Left            =   435
+         TabIndex        =   34
+         Top             =   435
+         Width           =   6450
+         Begin VB.Frame fraPrefsTooltips 
+            BorderStyle     =   0  'None
+            Height          =   1125
+            Index           =   0
+            Left            =   1845
+            TabIndex        =   183
+            Top             =   2310
+            Width           =   3150
+            Begin VB.OptionButton optPrefsTooltips 
+               Caption         =   "Prefs - Enable SquareTooltips *"
+               Height          =   195
+               Index           =   1
+               Left            =   135
+               TabIndex        =   186
+               Top             =   450
+               Width           =   2970
+            End
+            Begin VB.OptionButton optPrefsTooltips 
+               Caption         =   "Prefs - Enable Balloon Tooltips *"
+               Height          =   195
+               Index           =   0
+               Left            =   135
+               TabIndex        =   185
+               Top             =   120
+               Width           =   2760
+            End
+            Begin VB.OptionButton optPrefsTooltips 
+               Caption         =   "Disable Prefs Tooltips *"
+               Height          =   195
+               Index           =   2
+               Left            =   135
+               TabIndex        =   184
+               Top             =   750
+               Width           =   2970
+            End
+         End
+         Begin VB.Frame fraClockTooltips 
+            BorderStyle     =   0  'None
+            Height          =   1110
+            Left            =   1755
+            TabIndex        =   179
+            Top             =   1140
+            Width           =   3345
+            Begin VB.OptionButton optClockTooltips 
+               Caption         =   "Gauges - Enable Balloon Tooltips *"
+               Height          =   315
+               Index           =   0
+               Left            =   225
+               TabIndex        =   182
+               Top             =   120
+               Width           =   3060
+            End
+            Begin VB.OptionButton optClockTooltips 
+               Caption         =   "Gauges - Enable Square Tooltips"
+               Height          =   300
+               Index           =   1
+               Left            =   225
+               TabIndex        =   181
+               Top             =   450
+               Width           =   2790
+            End
+            Begin VB.OptionButton optClockTooltips 
+               Caption         =   "Disable Gauge Tooltips *"
+               Height          =   300
+               Index           =   2
+               Left            =   225
+               TabIndex        =   180
+               Top             =   780
+               Width           =   2790
+            End
+         End
+         Begin VB.CheckBox chkGenStartup 
+            Caption         =   "Run the Temperature Widget at Windows Startup "
+            Height          =   465
+            Left            =   1995
+            TabIndex        =   133
+            ToolTipText     =   "Check this box to enable the automatic start of the program when Windows is started."
+            Top             =   4875
+            Width           =   4020
+         End
+         Begin VB.CheckBox chkDpiAwareness 
+            Caption         =   "DPI Awareness Enable *"
+            Height          =   225
+            Left            =   1995
+            TabIndex        =   105
+            ToolTipText     =   "Check the box to make the program DPI aware. RESTART required."
+            Top             =   3885
+            Width           =   3405
+         End
+         Begin VB.CheckBox chkShowTaskbar 
+            Caption         =   "Show Gauges in Taskbar"
+            Height          =   225
+            Left            =   1995
+            TabIndex        =   103
+            ToolTipText     =   "Check the box to show the widget in the taskbar"
+            Top             =   3495
+            Width           =   3405
+         End
+         Begin VB.ComboBox cmbScrollWheelDirection 
+            Height          =   315
+            Left            =   1995
+            Style           =   2  'Dropdown List
+            TabIndex        =   61
+            ToolTipText     =   "To change the direction of the mouse scroll wheel when resiziing the globe gauge."
+            Top             =   120
+            Width           =   2490
+         End
+         Begin VB.Label lblGeneral 
+            Caption         =   "Auto Start :"
+            Height          =   375
+            Index           =   11
+            Left            =   960
+            TabIndex        =   134
+            Tag             =   "lblRefreshInterval"
+            Top             =   4995
+            Width           =   1740
+         End
+         Begin VB.Label lblConfiguration 
+            Caption         =   $"frmPrefs.frx":5A2C
+            Height          =   930
+            Index           =   0
+            Left            =   1965
+            TabIndex        =   106
+            Top             =   4215
+            Width           =   4335
+         End
+         Begin VB.Label lblConfiguration 
+            Caption         =   "The scroll-wheel resizing direction can be determined here. The direction chosen causes the gauge to grow. *"
+            Height          =   690
+            Index           =   6
+            Left            =   2025
+            TabIndex        =   86
+            Top             =   540
+            Width           =   3930
+         End
+         Begin VB.Label lblConfiguration 
+            Caption         =   "Mouse Wheel Resize :"
+            Height          =   345
+            Index           =   3
+            Left            =   255
+            TabIndex        =   62
+            ToolTipText     =   "To change the direction of the mouse scroll wheel when resiziing the globe gauge."
+            Top             =   165
+            Width           =   2055
+         End
+      End
+   End
+   Begin VB.Frame fraFonts 
+      Caption         =   "Fonts"
+      Height          =   4320
+      Left            =   255
+      TabIndex        =   9
+      Top             =   1230
+      Width           =   7335
+      Begin VB.Frame fraFontsInner 
+         BorderStyle     =   0  'None
+         Height          =   3855
+         Left            =   690
+         TabIndex        =   26
+         Top             =   360
+         Width           =   6105
+         Begin VB.CommandButton btnResetMessages 
+            Caption         =   "Reset"
+            Height          =   300
+            Left            =   1710
+            Style           =   1  'Graphical
+            TabIndex        =   109
+            Top             =   3405
+            Width           =   885
+         End
+         Begin VB.TextBox txtPrefsFontCurrentSize 
+            Height          =   315
+            Left            =   4200
+            Locked          =   -1  'True
+            TabIndex        =   96
+            ToolTipText     =   "Disabled for manual input. Shows the current font size when form resizing is enabled."
+            Top             =   1065
+            Visible         =   0   'False
+            Width           =   600
+         End
+         Begin VB.TextBox txtPrefsFontSize 
+            Height          =   315
+            Left            =   1710
+            Locked          =   -1  'True
+            TabIndex        =   29
+            Text            =   "8"
+            ToolTipText     =   "Disabled for manual input. Choose a font size using the font selector to be used within this preferences window only"
+            Top             =   1065
+            Width           =   510
+         End
+         Begin VB.CommandButton btnPrefsFont 
+            Caption         =   "Font"
+            Height          =   300
+            Left            =   5025
+            Style           =   1  'Graphical
+            TabIndex        =   28
+            ToolTipText     =   "The Font Selector."
+            Top             =   75
+            Width           =   585
+         End
+         Begin VB.TextBox txtPrefsFont 
+            Height          =   315
+            Left            =   1710
+            Locked          =   -1  'True
+            TabIndex        =   27
+            Text            =   "Times New Roman"
+            ToolTipText     =   "Disabled for manual input. Choose a font via the font selector to be used only for this preferences window"
+            Top             =   90
+            Width           =   3285
+         End
+         Begin VB.Label lblFontsTab 
+            Caption         =   "Hidden message boxes can be reactivated by pressing this reset button."
+            Height          =   480
+            Index           =   4
+            Left            =   2700
+            TabIndex        =   110
+            ToolTipText     =   "We suggest Centurion Light SF at 8pt - which you will find in the FCW program folder"
+            Top             =   3345
+            Width           =   3360
+         End
+         Begin VB.Label lblFontsTab 
+            Caption         =   "Reset Pop ups :"
+            Height          =   300
+            Index           =   1
+            Left            =   435
+            TabIndex        =   108
+            Tag             =   "lblPrefsFont"
+            Top             =   3450
+            Width           =   1470
+         End
+         Begin VB.Label lblCurrentFontsTab 
+            Caption         =   "Resized Font"
+            Height          =   315
+            Left            =   4950
+            TabIndex        =   97
+            ToolTipText     =   "Disabled for manual input. Shows the current font size when form resizing is enabled."
+            Top             =   1110
+            Visible         =   0   'False
+            Width           =   2400
+         End
+         Begin VB.Label lblFontsTab 
+            Caption         =   $"frmPrefs.frx":5AE0
+            Height          =   1710
+            Index           =   0
+            Left            =   1725
+            TabIndex        =   64
+            ToolTipText     =   "We suggest Centurion Light SF at 8pt - which you will find in the FCW program folder"
+            Top             =   1455
+            Width           =   4455
+         End
+         Begin VB.Label lblFontsTab 
+            Caption         =   "The chosen font size *"
+            Height          =   480
+            Index           =   7
+            Left            =   2370
+            TabIndex        =   33
+            ToolTipText     =   "Choose a font size that fits the text boxes"
+            Top             =   1095
+            Width           =   2400
+         End
+         Begin VB.Label lblFontsTab 
+            Caption         =   "Base Font Size :"
+            Height          =   330
+            Index           =   3
+            Left            =   435
+            TabIndex        =   32
+            Tag             =   "lblPrefsFontSize"
+            Top             =   1095
+            Width           =   1230
+         End
+         Begin VB.Label lblFontsTab 
+            Caption         =   "Prefs Window Font:"
+            Height          =   300
+            Index           =   2
+            Left            =   15
+            TabIndex        =   31
+            Tag             =   "lblPrefsFont"
+            ToolTipText     =   "We suggest Centurion Light SF at 8pt - which you will find in the FCW program folder"
+            Top             =   120
+            Width           =   1665
+         End
+         Begin VB.Label lblFontsTab 
+            Caption         =   "Choose a font to be used for the text in this preferences window, gauge tooltips and message boxes *"
+            Height          =   480
+            Index           =   6
+            Left            =   1695
+            TabIndex        =   30
+            ToolTipText     =   "We suggest Centurion Light SF at 8pt - which you will find in the FCW program folder"
+            Top             =   480
+            Width           =   4035
+         End
+      End
+   End
    Begin VB.Frame fraSounds 
       Caption         =   "Sounds"
       Height          =   1965
@@ -422,7 +729,7 @@ Begin VB.Form widgetPrefs
                Width           =   720
             End
             Begin VB.Label lblWindowLevel 
-               Caption         =   $"frmPrefs.frx":5A2C
+               Caption         =   $"frmPrefs.frx":5C1E
                Height          =   975
                Index           =   1
                Left            =   855
@@ -798,7 +1105,7 @@ Begin VB.Form widgetPrefs
             Width           =   2355
          End
          Begin VB.Label lblPosition 
-            Caption         =   $"frmPrefs.frx":5ACF
+            Caption         =   $"frmPrefs.frx":5CC1
             Height          =   705
             Index           =   10
             Left            =   2250
@@ -873,7 +1180,7 @@ Begin VB.Form widgetPrefs
          MultiLine       =   -1  'True
          ScrollBars      =   2  'Vertical
          TabIndex        =   80
-         Text            =   "frmPrefs.frx":5B75
+         Text            =   "frmPrefs.frx":5D67
          Top             =   2205
          Width           =   8010
       End
@@ -1211,7 +1518,7 @@ Begin VB.Form widgetPrefs
                Width           =   3660
             End
             Begin VB.Label lblGitHub 
-               Caption         =   $"frmPrefs.frx":6B2C
+               Caption         =   $"frmPrefs.frx":6D1E
                ForeColor       =   &H8000000D&
                Height          =   915
                Left            =   1560
@@ -1221,7 +1528,7 @@ Begin VB.Form widgetPrefs
                Width           =   4935
             End
             Begin VB.Label lblDebug 
-               Caption         =   $"frmPrefs.frx":6BC5
+               Caption         =   $"frmPrefs.frx":6DB7
                Height          =   930
                Index           =   9
                Left            =   1545
@@ -1268,9 +1575,9 @@ Begin VB.Form widgetPrefs
          End
          Begin VB.ComboBox cmbDebug 
             Height          =   315
-            ItemData        =   "frmPrefs.frx":6C69
+            ItemData        =   "frmPrefs.frx":6E5B
             Left            =   1530
-            List            =   "frmPrefs.frx":6C6B
+            List            =   "frmPrefs.frx":6E5D
             Style           =   2  'Dropdown List
             TabIndex        =   50
             ToolTipText     =   "Choose to set debug mode."
@@ -1383,9 +1690,9 @@ Begin VB.Form widgetPrefs
          End
          Begin VB.ComboBox cmbMetricImperial 
             Height          =   315
-            ItemData        =   "frmPrefs.frx":6C6D
+            ItemData        =   "frmPrefs.frx":6E5F
             Left            =   2010
-            List            =   "frmPrefs.frx":6C6F
+            List            =   "frmPrefs.frx":6E61
             Style           =   2  'Dropdown List
             TabIndex        =   127
             Top             =   2880
@@ -1393,9 +1700,9 @@ Begin VB.Form widgetPrefs
          End
          Begin VB.ComboBox cmbWindSpeedScale 
             Height          =   315
-            ItemData        =   "frmPrefs.frx":6C71
+            ItemData        =   "frmPrefs.frx":6E63
             Left            =   2010
-            List            =   "frmPrefs.frx":6C73
+            List            =   "frmPrefs.frx":6E65
             Style           =   2  'Dropdown List
             TabIndex        =   125
             Top             =   2370
@@ -1403,9 +1710,9 @@ Begin VB.Form widgetPrefs
          End
          Begin VB.ComboBox cmbPressureScale 
             Height          =   315
-            ItemData        =   "frmPrefs.frx":6C75
+            ItemData        =   "frmPrefs.frx":6E67
             Left            =   2010
-            List            =   "frmPrefs.frx":6C77
+            List            =   "frmPrefs.frx":6E69
             Style           =   2  'Dropdown List
             TabIndex        =   123
             Top             =   1830
@@ -1422,9 +1729,9 @@ Begin VB.Form widgetPrefs
          End
          Begin VB.ComboBox cmbTemperatureScale 
             Height          =   315
-            ItemData        =   "frmPrefs.frx":6C79
+            ItemData        =   "frmPrefs.frx":6E6B
             Left            =   2010
-            List            =   "frmPrefs.frx":6C7B
+            List            =   "frmPrefs.frx":6E6D
             Style           =   2  'Dropdown List
             TabIndex        =   118
             Top             =   1260
@@ -1532,7 +1839,7 @@ Begin VB.Form widgetPrefs
             Width           =   945
          End
          Begin VB.Label lblGeneral 
-            Caption         =   $"frmPrefs.frx":6C7D
+            Caption         =   $"frmPrefs.frx":6E6F
             Height          =   1005
             Index           =   12
             Left            =   3900
@@ -1713,313 +2020,6 @@ Begin VB.Form widgetPrefs
             TabIndex        =   113
             Top             =   4230
             Width           =   345
-         End
-      End
-   End
-   Begin VB.Frame fraConfig 
-      Caption         =   "Configuration"
-      Height          =   6405
-      Left            =   240
-      TabIndex        =   8
-      Top             =   1185
-      Width           =   7140
-      Begin VB.Frame fraConfigInner 
-         BorderStyle     =   0  'None
-         Height          =   5745
-         Left            =   435
-         TabIndex        =   34
-         Top             =   435
-         Width           =   6450
-         Begin VB.Frame fraPrefsTooltips 
-            BorderStyle     =   0  'None
-            Height          =   1125
-            Index           =   0
-            Left            =   1845
-            TabIndex        =   183
-            Top             =   2310
-            Width           =   3150
-            Begin VB.OptionButton optPrefsTooltips 
-               Caption         =   "Prefs - Enable SquareTooltips *"
-               Height          =   195
-               Index           =   1
-               Left            =   135
-               TabIndex        =   186
-               Top             =   450
-               Width           =   2970
-            End
-            Begin VB.OptionButton optPrefsTooltips 
-               Caption         =   "Prefs - Enable Balloon Tooltips *"
-               Height          =   195
-               Index           =   0
-               Left            =   135
-               TabIndex        =   185
-               Top             =   120
-               Width           =   2760
-            End
-            Begin VB.OptionButton optPrefsTooltips 
-               Caption         =   "Disable Prefs Tooltips *"
-               Height          =   195
-               Index           =   2
-               Left            =   135
-               TabIndex        =   184
-               Top             =   750
-               Width           =   2970
-            End
-         End
-         Begin VB.Frame fraClockTooltips 
-            BorderStyle     =   0  'None
-            Height          =   1110
-            Left            =   1755
-            TabIndex        =   179
-            Top             =   1140
-            Width           =   3345
-            Begin VB.OptionButton optClockTooltips 
-               Caption         =   "Gauges - Enable Balloon Tooltips *"
-               Height          =   315
-               Index           =   0
-               Left            =   225
-               TabIndex        =   182
-               Top             =   120
-               Width           =   3060
-            End
-            Begin VB.OptionButton optClockTooltips 
-               Caption         =   "Gauges - Enable Square Tooltips"
-               Height          =   300
-               Index           =   1
-               Left            =   225
-               TabIndex        =   181
-               Top             =   450
-               Width           =   2790
-            End
-            Begin VB.OptionButton optClockTooltips 
-               Caption         =   "Disable Gauge Tooltips *"
-               Height          =   300
-               Index           =   2
-               Left            =   225
-               TabIndex        =   180
-               Top             =   780
-               Width           =   2790
-            End
-         End
-         Begin VB.CheckBox chkGenStartup 
-            Caption         =   "Run the Temperature Widget at Windows Startup "
-            Height          =   465
-            Left            =   1995
-            TabIndex        =   133
-            ToolTipText     =   "Check this box to enable the automatic start of the program when Windows is started."
-            Top             =   4875
-            Width           =   4020
-         End
-         Begin VB.CheckBox chkDpiAwareness 
-            Caption         =   "DPI Awareness Enable *"
-            Height          =   225
-            Left            =   1995
-            TabIndex        =   105
-            ToolTipText     =   "Check the box to make the program DPI aware. RESTART required."
-            Top             =   3885
-            Width           =   3405
-         End
-         Begin VB.CheckBox chkShowTaskbar 
-            Caption         =   "Show Gauges in Taskbar"
-            Height          =   225
-            Left            =   1995
-            TabIndex        =   103
-            ToolTipText     =   "Check the box to show the widget in the taskbar"
-            Top             =   3495
-            Width           =   3405
-         End
-         Begin VB.ComboBox cmbScrollWheelDirection 
-            Height          =   315
-            Left            =   1995
-            Style           =   2  'Dropdown List
-            TabIndex        =   61
-            ToolTipText     =   "To change the direction of the mouse scroll wheel when resiziing the globe gauge."
-            Top             =   120
-            Width           =   2490
-         End
-         Begin VB.Label lblGeneral 
-            Caption         =   "Auto Start :"
-            Height          =   375
-            Index           =   11
-            Left            =   960
-            TabIndex        =   134
-            Tag             =   "lblRefreshInterval"
-            Top             =   4995
-            Width           =   1740
-         End
-         Begin VB.Label lblConfiguration 
-            Caption         =   $"frmPrefs.frx":6D1B
-            Height          =   930
-            Index           =   0
-            Left            =   1965
-            TabIndex        =   106
-            Top             =   4215
-            Width           =   4335
-         End
-         Begin VB.Label lblConfiguration 
-            Caption         =   "The scroll-wheel resizing direction can be determined here. The direction chosen causes the gauge to grow. *"
-            Height          =   690
-            Index           =   6
-            Left            =   2025
-            TabIndex        =   86
-            Top             =   540
-            Width           =   3930
-         End
-         Begin VB.Label lblConfiguration 
-            Caption         =   "Mouse Wheel Resize :"
-            Height          =   345
-            Index           =   3
-            Left            =   255
-            TabIndex        =   62
-            ToolTipText     =   "To change the direction of the mouse scroll wheel when resiziing the globe gauge."
-            Top             =   165
-            Width           =   2055
-         End
-      End
-   End
-   Begin VB.Frame fraFonts 
-      Caption         =   "Fonts"
-      Height          =   4320
-      Left            =   255
-      TabIndex        =   9
-      Top             =   1230
-      Width           =   7335
-      Begin VB.Frame fraFontsInner 
-         BorderStyle     =   0  'None
-         Height          =   3855
-         Left            =   690
-         TabIndex        =   26
-         Top             =   360
-         Width           =   6105
-         Begin VB.CommandButton btnResetMessages 
-            Caption         =   "Reset"
-            Height          =   300
-            Left            =   1710
-            Style           =   1  'Graphical
-            TabIndex        =   109
-            Top             =   3405
-            Width           =   885
-         End
-         Begin VB.TextBox txtPrefsFontCurrentSize 
-            Height          =   315
-            Left            =   4200
-            Locked          =   -1  'True
-            TabIndex        =   96
-            ToolTipText     =   "Disabled for manual input. Shows the current font size when form resizing is enabled."
-            Top             =   1065
-            Visible         =   0   'False
-            Width           =   600
-         End
-         Begin VB.TextBox txtPrefsFontSize 
-            Height          =   315
-            Left            =   1710
-            Locked          =   -1  'True
-            TabIndex        =   29
-            Text            =   "8"
-            ToolTipText     =   "Disabled for manual input. Choose a font size using the font selector to be used within this preferences window only"
-            Top             =   1065
-            Width           =   510
-         End
-         Begin VB.CommandButton btnPrefsFont 
-            Caption         =   "Font"
-            Height          =   300
-            Left            =   5025
-            Style           =   1  'Graphical
-            TabIndex        =   28
-            ToolTipText     =   "The Font Selector."
-            Top             =   75
-            Width           =   585
-         End
-         Begin VB.TextBox txtPrefsFont 
-            Height          =   315
-            Left            =   1710
-            Locked          =   -1  'True
-            TabIndex        =   27
-            Text            =   "Times New Roman"
-            ToolTipText     =   "Disabled for manual input. Choose a font via the font selector to be used only for this preferences window"
-            Top             =   90
-            Width           =   3285
-         End
-         Begin VB.Label lblFontsTab 
-            Caption         =   "Hidden message boxes can be reactivated by pressing this reset button."
-            Height          =   480
-            Index           =   4
-            Left            =   2700
-            TabIndex        =   110
-            ToolTipText     =   "We suggest Centurion Light SF at 8pt - which you will find in the FCW program folder"
-            Top             =   3345
-            Width           =   3360
-         End
-         Begin VB.Label lblFontsTab 
-            Caption         =   "Reset Pop ups :"
-            Height          =   300
-            Index           =   1
-            Left            =   435
-            TabIndex        =   108
-            Tag             =   "lblPrefsFont"
-            Top             =   3450
-            Width           =   1470
-         End
-         Begin VB.Label lblCurrentFontsTab 
-            Caption         =   "Resized Font"
-            Height          =   315
-            Left            =   4950
-            TabIndex        =   97
-            ToolTipText     =   "Disabled for manual input. Shows the current font size when form resizing is enabled."
-            Top             =   1110
-            Visible         =   0   'False
-            Width           =   2400
-         End
-         Begin VB.Label lblFontsTab 
-            Caption         =   $"frmPrefs.frx":6DCF
-            Height          =   1710
-            Index           =   0
-            Left            =   1725
-            TabIndex        =   64
-            ToolTipText     =   "We suggest Centurion Light SF at 8pt - which you will find in the FCW program folder"
-            Top             =   1455
-            Width           =   4455
-         End
-         Begin VB.Label lblFontsTab 
-            Caption         =   "The chosen font size *"
-            Height          =   480
-            Index           =   7
-            Left            =   2370
-            TabIndex        =   33
-            ToolTipText     =   "Choose a font size that fits the text boxes"
-            Top             =   1095
-            Width           =   2400
-         End
-         Begin VB.Label lblFontsTab 
-            Caption         =   "Base Font Size :"
-            Height          =   330
-            Index           =   3
-            Left            =   435
-            TabIndex        =   32
-            Tag             =   "lblPrefsFontSize"
-            Top             =   1095
-            Width           =   1230
-         End
-         Begin VB.Label lblFontsTab 
-            Caption         =   "Prefs Window Font:"
-            Height          =   300
-            Index           =   2
-            Left            =   15
-            TabIndex        =   31
-            Tag             =   "lblPrefsFont"
-            ToolTipText     =   "We suggest Centurion Light SF at 8pt - which you will find in the FCW program folder"
-            Top             =   120
-            Width           =   1665
-         End
-         Begin VB.Label lblFontsTab 
-            Caption         =   "Choose a font to be used for the text in this preferences window, gauge tooltips and message boxes *"
-            Height          =   480
-            Index           =   6
-            Left            =   1695
-            TabIndex        =   30
-            ToolTipText     =   "We suggest Centurion Light SF at 8pt - which you will find in the FCW program folder"
-            Top             =   480
-            Width           =   4035
          End
       End
    End
@@ -2854,6 +2854,9 @@ Private Sub Form_Load()
       
     ' read the last saved position from the settings.ini
     Call readPrefsPosition
+     
+    ' size and position the frames and buttons
+    Call positionPrefsFramesButtons
         
     ' determine the frame heights in dynamic sizing or normal mode
     Call setframeHeights
@@ -2872,10 +2875,7 @@ Private Sub Form_Load()
     
     ' adjust the theme used by the prefs alone
     Call adjustPrefsTheme
-    
-    ' size and position the frames and buttons
-    Call positionPrefsFramesButtons
-    
+   
     ' make the last used tab appear on startup
     Call showLastTab
     
@@ -7573,7 +7573,7 @@ Private Sub setframeHeights()
         'End If
     Else
         fraGeneral.Height = 9096
-        fraConfig.Height = 5354
+        fraConfig.Height = 6495
         fraSounds.Height = 1992
         fraPosition.Height = 8472
         fraFonts.Height = 4481

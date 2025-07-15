@@ -2767,7 +2767,7 @@ Public Sub readPrefsPosition()
     gblPrefsPrimaryHeightTwips = fGetINISetting("Software\PzTemperatureGauge", "prefsPrimaryHeightTwips", gblSettingsFile)
    
     ' on very first install this will be zero, then size of the prefs as a proportion of the screen size
-    If gblPrefsPrimaryHeightTwips = "" Then gblPrefsPrimaryHeightTwips = CStr(1000 * gblScreenTwipsPerPixelY)
+    If gblPrefsPrimaryHeightTwips = "" Then gblPrefsPrimaryHeightTwips = Screen.Height / 3
   
    On Error GoTo 0
    Exit Sub

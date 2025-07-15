@@ -535,7 +535,6 @@ Private Sub processMetarData()
     Dim lastUpdateString As String: lastUpdateString = vbNullString
     Dim num_results As Integer: num_results = 0
     Dim observation_time As String: observation_time = vbNullString
-    
     Dim raw_text As String: raw_text = vbNullString
     Dim station_id As String: station_id = vbNullString
     Dim temp_c As String: temp_c = vbNullString
@@ -569,7 +568,6 @@ Private Sub processMetarData()
     Set objxmldoc = New MSXML2.DOMDocument
     
     Dim node As MSXML2.IXMLDOMNode
-    
     Dim MetarNode As MSXML2.IXMLDOMNode
     Dim SkyCondition As MSXML2.IXMLDOMNode
     Dim SkyConditions As MSXML2.IXMLDOMNodeList
@@ -582,12 +580,13 @@ Private Sub processMetarData()
     Dim usableObsTime As Date: usableObsTime = #1/1/2000 12:00:00 PM#
     Dim weekDayDate As String: weekDayDate = vbNullString
     Dim thisToolTip As String: thisToolTip = vbNullString
-    'Dim weatherIconToolTip As String: weatherIconToolTip = vbNullString
-    
     Dim force As Integer: force = 0
     Dim windIconSrc As String: windIconSrc = vbNullString
     
     On Error GoTo processMetarData_Error
+    
+    'if the timer is caught mid-way paused in a system sleep, the httprequest may be bad
+    If XMLHttpRequest Is Nothing Then Exit Sub
     
     debugFlg = 0
     
@@ -857,7 +856,12 @@ Private Sub processMetarData()
 
 processMetarData_Error:
 
-    MsgBox "Error " & Err.Number & " (" & Err.Description & ") in procedure processMetarData, line " & Erl & "."
+    'if the timer is caught mid-way paused in a system sleep, the httprequest may be bad
+    If XMLHttpRequest Is Nothing Then
+        ' no error message
+    Else
+        MsgBox "Error " & Err.Number & " (" & Err.Description & ") in procedure processMetarData, line " & Erl & "."
+    End If
 
 End Sub
 
