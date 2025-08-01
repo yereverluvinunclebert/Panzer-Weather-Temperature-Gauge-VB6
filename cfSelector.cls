@@ -134,7 +134,9 @@ Public Sub InitSelectorFromPSD(ByRef PSD_FileNameOrByteArray As Variant)
     Set overlaySelectorWidget = SelectorForm.Widgets.Add(New cwOverlaySelect, "Selector", 0, 0, PSDWidth, PSDHeight)
     Set overlaySelectorWidget.cCollOverlaySelectorImages = collSelectorPSDNonUIElements 'make the excluded PSD-Surface-Paths known to the Overlay-Widget
 
-    Set sTxtICAOInput = fSelector.SelectorForm.Widgets.Add(New_W("cwTextBox"), "sTxtICAOInput", 195, 20, 118, 30)
+    On Error Resume Next ' required when running in the IDE due to weird type mismatch at this point but only in the IDE
+    
+    Set sTxtICAOInput = SelectorForm.Widgets.Add(New_W("cwTextBox"), "sTxtICAOInput", 195, 20, 118, 30)
     sTxtICAOInput.MultiLine = False
     sTxtICAOInput.Widget.FontSize = 15
     sTxtICAOInput.Widget.FontName = "courier new"
@@ -146,7 +148,7 @@ Public Sub InitSelectorFromPSD(ByRef PSD_FileNameOrByteArray As Variant)
 
 ' Cairo.ImageList.AddIconFromResourceFile "btnIco", "shell32", 167 'load some resource-Icon
 
-    Set sCmbMatchingLocations = fSelector.SelectorForm.Widgets.Add(New_W("cwDropDownList"), "sCmbMatchingLocations", 110, 58, 235, 28)
+    Set sCmbMatchingLocations = SelectorForm.Widgets.Add(New_W("cwDropDownList"), "sCmbMatchingLocations", 110, 58, 235, 28)
     sCmbMatchingLocations.Widget.FontSize = 15
     sCmbMatchingLocations.Widget.FontName = "times new roman"
     sCmbMatchingLocations.Widget.Alpha = 0.5
@@ -235,28 +237,28 @@ Private Sub SelectorForm_BubblingEvent(ByRef sender As Object, ByRef EventName A
     If EventName = "W_MouseMove" Then
         Select Case LCase$(sender.Widget.key)
             Case "sbtnselect"
-                If gblGaugeTooltips = "0" Then CreateToolTip SelectorForm.hwnd, "Click me to select the currently displayed ICAO location.", _
+                If gblGaugeTooltips = "0" Then CreateToolTip SelectorForm.hWnd, "Click me to select the currently displayed ICAO location.", _
                      TTIconInfo, widgetName2 & " Select Button Help", , , , True
             Case "sbtnexit"
-                If gblGaugeTooltips = "0" Then CreateToolTip SelectorForm.hwnd, "Click me to close the ICAO selection utility.", _
+                If gblGaugeTooltips = "0" Then CreateToolTip SelectorForm.hWnd, "Click me to close the ICAO selection utility.", _
                      TTIconInfo, widgetName2 & " Exit Button Help", , , , True
             Case "optlocationgreen"
-                If gblGaugeTooltips = "0" Then CreateToolTip SelectorForm.hwnd, "The selector utility is now searching by location name only.", _
+                If gblGaugeTooltips = "0" Then CreateToolTip SelectorForm.hWnd, "The selector utility is now searching by location name only.", _
                      TTIconInfo, widgetName2 & " Location Button Help", , , , True
             Case "optlocationred"
-                If gblGaugeTooltips = "0" Then CreateToolTip SelectorForm.hwnd, "Click here to enable the option to search by location name (airport).", _
+                If gblGaugeTooltips = "0" Then CreateToolTip SelectorForm.hWnd, "Click here to enable the option to search by location name (airport).", _
                      TTIconInfo, widgetName2 & " Location Button Help", , , , True
             Case "opticaored"
-                If gblGaugeTooltips = "0" Then CreateToolTip SelectorForm.hwnd, "Click here to enable the option to search by ICAO code.", _
+                If gblGaugeTooltips = "0" Then CreateToolTip SelectorForm.hWnd, "Click here to enable the option to search by ICAO code.", _
                      TTIconInfo, widgetName2 & " ICAO Button Help", , , , True
             Case "sbtnsearch"
-                If gblGaugeTooltips = "0" Then CreateToolTip SelectorForm.hwnd, "Click here to search using your supplied airport name or ICAO code.", _
+                If gblGaugeTooltips = "0" Then CreateToolTip SelectorForm.hWnd, "Click here to search using your supplied airport name or ICAO code.", _
                      TTIconInfo, widgetName2 & " Search Button Help", , , , True
             Case "opticaogreen"
-                If gblGaugeTooltips = "0" Then CreateToolTip SelectorForm.hwnd, "The selector utility is now searching by ICAO code only.", _
+                If gblGaugeTooltips = "0" Then CreateToolTip SelectorForm.hWnd, "The selector utility is now searching by ICAO code only.", _
                      TTIconInfo, widgetName2 & " ICAO Button Help", , , , True
             Case "radiobody"
-                If gblGaugeTooltips = "0" Then CreateToolTip SelectorForm.hwnd, " " _
+                If gblGaugeTooltips = "0" Then CreateToolTip SelectorForm.hWnd, " " _
                     & "This is the Airport Selector utility. Use this tool to select a nearby airport with a valid ICAO code. Any airport of this type will be able to supply " _
                     & "valid and up-to-date METAR weather data. Start by selecting the ICAO or Location option buttons below. This will allow you to search the supplied airports data " _
                     & "file for either an ICAO code or search for the airport by name, for example: HEATHROW." & vbCrLf & vbCrLf _

@@ -128,6 +128,8 @@ Public Sub InitPictorialFromPSD(ByRef PSD_FileNameOrByteArray As Variant)
         overlayPictorialWidget.cxPerc = 0.4940476 'define the relative center (within cwOverlayPict, which has the same size as the Form and the PSD...) this is used for clock-hand-positioning
         overlayPictorialWidget.cyPerc = 0.4727272
         
+    On Error Resume Next ' required when running in the IDE due to weird type mismatch at this point but only in the IDE
+        
     ' add a RC label widget to the pictorial gauge to display rainfall alarm text information
     Set sLblPrecipitationText = pictorialGaugeForm.Widgets.Add(New_W("cwLabel"), "sLblPrecipitationText", 185, 630, 295, 450)
     sLblPrecipitationText.Widget.FontSize = 15
@@ -166,31 +168,31 @@ Private Sub pictorialGaugeForm_BubblingEvent(ByRef sender As Object, ByRef Event
     If EventName = "W_MouseMove" Then
         Select Case LCase$(sender.Widget.key)
             Case "housing/lockbutton"
-                If gblGaugeTooltips = "0" Then CreateToolTip pictorialGaugeForm.hwnd, "Click me to lock the widget in place. This lock can be released by clicking again on the lock button, or in the preferences. A locking sound will denote the button's operation.", _
+                If gblGaugeTooltips = "0" Then CreateToolTip pictorialGaugeForm.hWnd, "Click me to lock the widget in place. This lock can be released by clicking again on the lock button, or in the preferences. A locking sound will denote the button's operation.", _
                      TTIconInfo, widgetName7 & " Lock Button Help", , , , True
             Case "housing/prefsbutton"
-                If gblGaugeTooltips = "0" Then CreateToolTip pictorialGaugeForm.hwnd, "Click me to open the preferences utility. All advanced configuration of the widget is performed using the preference utility.", _
+                If gblGaugeTooltips = "0" Then CreateToolTip pictorialGaugeForm.hWnd, "Click me to open the preferences utility. All advanced configuration of the widget is performed using the preference utility.", _
                      TTIconInfo, widgetName7 & " Prefs Button Help", , , , True
             Case "housing/tickbutton"
-                If gblGaugeTooltips = "0" Then CreateToolTip pictorialGaugeForm.hwnd, "This button is non-functional in this gauge.", _
+                If gblGaugeTooltips = "0" Then CreateToolTip pictorialGaugeForm.hWnd, "This button is non-functional in this gauge.", _
                      TTIconInfo, widgetName7 & " Button Help", , , , True
             Case "housing/switchfacesbutton"
-                If gblGaugeTooltips = "0" Then CreateToolTip pictorialGaugeForm.hwnd, "This button tests the weather data precipitation alert system, raising the humidity red lamp and displaying the precipitation alarm print-out..", _
+                If gblGaugeTooltips = "0" Then CreateToolTip pictorialGaugeForm.hWnd, "This button tests the weather data precipitation alert system, raising the humidity red lamp and displaying the precipitation alarm print-out..", _
                      TTIconInfo, widgetName7 & " Button Help", , , , True
             Case "housing/stopbutton"
-                If gblGaugeTooltips = "0" Then CreateToolTip pictorialGaugeForm.hwnd, "This button is non-functional in this gauge.", _
+                If gblGaugeTooltips = "0" Then CreateToolTip pictorialGaugeForm.hWnd, "This button is non-functional in this gauge.", _
                      TTIconInfo, widgetName7 & " Button Help", , , , True
             Case "housing/startbutton"
-                If gblGaugeTooltips = "0" Then CreateToolTip pictorialGaugeForm.hwnd, "This button is non-functional in this gauge..", _
+                If gblGaugeTooltips = "0" Then CreateToolTip pictorialGaugeForm.hWnd, "This button is non-functional in this gauge..", _
                      TTIconInfo, widgetName7 & " Button Help", , , , True
             Case "housing/helpbutton"
-                If gblGaugeTooltips = "0" Then CreateToolTip pictorialGaugeForm.hwnd, "This button opens the one-page help file for this widget. There is a further detailed CHM help file available from the right-click menu that contains all the information that you need to run this widget.", _
+                If gblGaugeTooltips = "0" Then CreateToolTip pictorialGaugeForm.hWnd, "This button opens the one-page help file for this widget. There is a further detailed CHM help file available from the right-click menu that contains all the information that you need to run this widget.", _
                      TTIconInfo, widgetName7 & " Help Button Help", , , , True
             Case "precipitationprintout"
-                If gblGaugeTooltips = "0" Then CreateToolTip pictorialGaugeForm.hwnd, " This print-out appears when the gauge notices newly-falling precipitation, if it rains, snows or hails after a dry period it will appear.", _
+                If gblGaugeTooltips = "0" Then CreateToolTip pictorialGaugeForm.hWnd, " This print-out appears when the gauge notices newly-falling precipitation, if it rains, snows or hails after a dry period it will appear.", _
                      TTIconInfo, widgetName7 & " Button Help", , , , True
             Case Else
-                If gblGaugeTooltips = "0" Then CreateToolTip pictorialGaugeForm.hwnd, " " & WeatherMeteo.WeatherDetails _
+                If gblGaugeTooltips = "0" Then CreateToolTip pictorialGaugeForm.hWnd, " " & WeatherMeteo.WeatherDetails _
                     & vbCrLf & "" _
                     & vbCrLf & "Right Click to open the menu and the preferences. CTRL+ Mouse scrollwheel UP/DOWN to resize." _
                     , TTIconInfo, widgetName7 & " METAR summary Information.", , , , True
@@ -644,9 +646,9 @@ Private Sub pictorialGaugeForm_DblClick()
     
     If SHIFT_1 = True Then
         SHIFT_1 = False
-        Call ShellExecute(fPictorial.pictorialGaugeForm.hwnd, "Open", gblOpenFile, vbNullString, App.path, 1)
+        Call ShellExecute(fPictorial.pictorialGaugeForm.hWnd, "Open", gblOpenFile, vbNullString, App.path, 1)
     Else
-        Call ShellExecute(fPictorial.pictorialGaugeForm.hwnd, "runas", thisCommand, vbNullString, App.path, 1)
+        Call ShellExecute(fPictorial.pictorialGaugeForm.hWnd, "runas", thisCommand, vbNullString, App.path, 1)
     End If
 
     On Error GoTo 0

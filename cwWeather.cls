@@ -236,11 +236,6 @@ Public Property Let PrecipitationWasFalling(ByVal newValue As Boolean)
 
     If mPrecipitationWasFalling <> newValue Then mPrecipitationWasFalling = newValue Else Exit Property
     
-    If mPrecipitationWasFalling = True Then
-        tmrSampler.Enabled = True
-    Else
-        tmrSampler.Enabled = False
-    End If
 
    On Error GoTo 0
    Exit Property
@@ -816,8 +811,12 @@ Private Sub processMetarData()
     thisToolTip = setHoverTooltip(altim_in_hg, force, precipitationDepth, visibilityDistance, skyClarityString, HumidityValue, mTemperatureValue, pressureValueMillibars, weekDayDate, wind_dir_degrees, wind_speed_kt, precip_in, wx_string)
     thisToolTip = thisToolTip & vbCrLf & raw_text
     
+    On Error Resume Next ' required when running in the IDE due to weird type mismatch at this point but only in the IDE
+    
     ' pass the current tooltip to the clipboard widget
     fClipB.sLblMETARText.Caption = thisToolTip
+    
+    On Error GoTo processMetarData_Error ' restart error trapping
     
     ' add the last updated time to the end of the gauge tooltip
     thisToolTip = thisToolTip & vbCrLf & vbCrLf & lastUpdateString
@@ -1768,23 +1767,24 @@ Private Sub determineWeatherConditionIcon(ByRef skyClarity As String, ByVal this
    'thisWxString = "+PRFG" 'testing string
    'sky_cover(0) = "BKN"
 
-   Dim wSeverity As String: wSeverity = vbNullString
-   Dim wModifier As String: wModifier = vbNullString
-   Dim skycover1 As String: skycover1 = vbNullString
-   Dim skycover2 As String: skycover2 = vbNullString
-   Dim skycover3 As String: skycover3 = vbNullString
-   Dim presentConditions As String: presentConditions = vbNullString
-   Dim weatherIconSrc As String: weatherIconSrc = vbNullString
-   Dim showersIconSrc As String: showersIconSrc = vbNullString
-   Dim fogIconSrc As String: fogIconSrc = vbNullString
-   Dim windIconSrc As String: windIconSrc = vbNullString
-   Dim exoticIconSrc As String: exoticIconSrc = vbNullString
-   Dim iconSrc As String: iconSrc = vbNullString
-   Dim weatherType As String: weatherType = vbNullString
-   Dim precedingSrc As String: precedingSrc = vbNullString
-   Dim followingSrc As String: followingSrc = vbNullString
-   
-    Static precipitationIsFalling As Boolean
+    Dim wSeverity As String: wSeverity = vbNullString
+    Dim wModifier As String: wModifier = vbNullString
+    Dim skycover1 As String: skycover1 = vbNullString
+    Dim skycover2 As String: skycover2 = vbNullString
+    Dim skycover3 As String: skycover3 = vbNullString
+    Dim presentConditions As String: presentConditions = vbNullString
+    Dim weatherIconSrc As String: weatherIconSrc = vbNullString
+    Dim showersIconSrc As String: showersIconSrc = vbNullString
+    Dim fogIconSrc As String: fogIconSrc = vbNullString
+    Dim windIconSrc As String: windIconSrc = vbNullString
+    Dim exoticIconSrc As String: exoticIconSrc = vbNullString
+    Dim iconSrc As String: iconSrc = vbNullString
+    Dim weatherType As String: weatherType = vbNullString
+    Dim precedingSrc As String: precedingSrc = vbNullString
+    Dim followingSrc As String: followingSrc = vbNullString
+    Dim sPrecipitationText As String: sPrecipitationText = vbNullString
+    Dim wx_str As String: wx_str = vbNullString
+    Dim precipitationIsFalling As Boolean: precipitationIsFalling = False
       
     weatherIconSrc = "globe"
     precipitationIsFalling = False
@@ -2148,13 +2148,22 @@ Private Sub determineWeatherConditionIcon(ByRef skyClarity As String, ByVal this
              
         ' humidity gauge to light the new rain warning lamp
         'overlayHumidWidget.precipitationRedLamp = True
-             
+        
+        thisWxString = "RA"
+        
+        wx_str = fGetMetarDescription(thisWxString)    ' get the interpreted wx string data
+        wx_str = UCase$(Left$(wx_str, 1)) & Mid$(wx_str, 2, Len(wx_str))
+        sPrecipitationText = "Weather Data Precipitation Alert System " & vbCrLf & "Weather data indicates imminent rainfall" & vbCrLf & wx_str & "  "
+        
         ' pictorial gauge to show the new precipitation print out
         fPictorial.newPrecipitation = True
     
-        fPictorial.pictorialGaugeForm.Widgets("sLblPrecipitationText").Caption = "Weather Data Precipitation Alert System " & vbCrLf & "Weather data indicates imminent rainfall"
+        fPictorial.pictorialGaugeForm.Widgets("sLblPrecipitationText").Caption = sPrecipitationText
             
     End If
+    
+    
+    
                
     If (debugFlg = 1) Then Debug.Print ("%determineWeatherCondition - iconSrc " & iconSrc)
     
@@ -2172,6 +2181,63 @@ determineWeatherConditionIcon_Error:
     MsgBox "Error " & Err.Number & " (" & Err.Description & ") in procedure determineWeatherConditionIcon, line " & Erl & "."
 
 End Sub
+
+
+
+
+'' ----------------------------------------------------------------
+'' Procedure Name: checkForNewPrecipitation
+'' Purpose: function to decode_weather when a wx field found and set the icon accordingly
+'' Procedure Kind: sub
+'' Procedure Access: Private
+'' Parameter SkyClarity (String):
+'' Parameter thisWxString (String):
+'' Parameter sky_cover (String):
+'' Parameter thisIsDay (Boolean):
+'' Return Type: String, ByVal thisIsDay As Boolean)
+'' Author: Dean Beedell (yereverluvinunclebert)
+'' Date: 14\03\2024
+'' ----------------------------------------------------------------
+'Private Sub checkForNewPrecipitation(ByVal thisWxString As String)
+'    On Error GoTo checkForNewPrecipitation_Error
+'
+'    Dim precipitationIsFalling As Boolean: precipitationIsFalling = False
+'    Dim wx_str As String: wx_str = vbNullString
+'    Dim sPrecipitationText As String: sPrecipitationText = vbNullString
+'
+'    'type of weather - rain
+'    If (InStr(thisWxString, "RA") <> 0) Then
+'        precipitationIsFalling = True ' rain
+'    End If
+'
+'    ' if it is raining now and it is new rain ie. it was not previously raining nor any other form of precipitation
+'    If precipitationIsFalling = True And mPrecipitationWasFalling = False Then
+'
+'        ' now we set the flag that lets the program know NOT to raise a precipitation alarm again
+'        PrecipitationWasFalling = True
+'
+'    Dim sPrecipitationText As String: sPrecipitationText = vbNullString
+'        wx_str = fGetMetarDescription(thisWxString)    ' get the interpreted wx string data
+'        wx_str = UCase$(Left$(wx_str, 1)) & Mid$(wx_str, 2, Len(wx_str))
+'        sPrecipitationText = "Weather Data Precipitation Alert System " & vbCrLf & "Weather data indicates imminent rainfall" & vbCrLf & wx_str & "  "
+'
+'
+'        ' humidity gauge to light the new rain warning lamp
+'        'overlayHumidWidget.precipitationRedLamp = True
+'
+'        ' pictorial gauge to show the new precipitation print out
+'        fPictorial.newPrecipitation = True
+'        fPictorial.pictorialGaugeForm.Widgets("sLblPrecipitationText").Caption = sPrecipitationText
+'    End If
+'
+'    On Error GoTo 0
+'    Exit Sub
+'
+'checkForNewPrecipitation_Error:
+'
+'    MsgBox "Error " & Err.Number & " (" & Err.Description & ") in procedure checkForNewPrecipitation, line " & Erl & "."
+'
+'End Sub
 
 ' ----------------------------------------------------------------
 ' Procedure Name: fGetMetarDescription

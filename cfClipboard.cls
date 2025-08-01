@@ -126,7 +126,9 @@ Public Sub InitClipBFromPSD(ByRef PSD_FileNameOrByteArray As Variant)
     Set overlayClipbWidget = clipBForm.Widgets.Add(New cwOverlayClipb, "ClipB", 0, 0, PSDWidth, PSDHeight)
     Set overlayClipbWidget.cCollOverlayClipBImages = collClipBPSDNonUIElements 'make the excluded PSD-Surface-Paths known to the Overlay-Widget
 
-    Set sLblMETARText = fClipB.clipBForm.Widgets.Add(New_W("cwLabel"), "sLblMETARText", 185, 145, 295, 450)
+    On Error Resume Next ' required when running in the IDE due to weird type mismatch at this point but only in the IDE
+    
+    Set sLblMETARText = clipBForm.Widgets.Add(New_W("cwLabel"), "sLblMETARText", 185, 145, 295, 450)
     sLblMETARText.Widget.FontSize = 13
     sLblMETARText.Widget.FontName = "courier new"
     sLblMETARText.Widget.FontBold = True
@@ -165,7 +167,7 @@ Private Sub ClipBForm_BubblingEvent(ByRef sender As Object, ByRef EventName As S
     If EventName = "W_MouseMove" Then
         Select Case LCase$(sender.Widget.key)
             Case "clipboard"
-                If gblGaugeTooltips = "0" Then CreateToolTip clipBForm.hwnd, _
+                If gblGaugeTooltips = "0" Then CreateToolTip clipBForm.hWnd, _
                     "This is the Weather Clipboard. It displays the current weather in a text form " _
                     & "interpreted from your chosen METAR data feed. " & vbCrLf & vbCrLf _
                     & "You can copy the contents using the right click menu option, 'Copy Current Weather to Clipboard' - " _

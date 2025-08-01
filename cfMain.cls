@@ -251,6 +251,9 @@ Public Sub initAndShowLicenceForm(Optional ByVal Caption As String)
     End If
 
     ' add two RC predefined button controls to the licence form
+    
+    On Error Resume Next ' required when running in the IDE due to weird type mismatch at this point but only in the IDE
+    
     If gblDpiAwareness = "1" Then
         Set btnDecline = licenceForm.Widgets.Add(New_W("cwButton"), "btnDecline", 352, 397, 70, 29)
         Set btnAccept = licenceForm.Widgets.Add(New_W("cwButton"), "btnAccept", 428, 397, 70, 29)
