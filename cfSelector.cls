@@ -133,28 +133,32 @@ Public Sub InitSelectorFromPSD(ByRef PSD_FileNameOrByteArray As Variant)
     
     Set overlaySelectorWidget = SelectorForm.Widgets.Add(New cwOverlaySelect, "Selector", 0, 0, PSDWidth, PSDHeight)
     Set overlaySelectorWidget.cCollOverlaySelectorImages = collSelectorPSDNonUIElements 'make the excluded PSD-Surface-Paths known to the Overlay-Widget
-
-    On Error Resume Next ' required when running in the IDE due to weird type mismatch at this point but only in the IDE
+    
+    ' When running in the IDE the RC6 DLLs are required to be registered. If for some reason they become unregistered then
+    ' the following 'set' commands will generate an error, to handle this we have a temporary error trap for the IDE only.
+    
+    If InIDE Then On Error GoTo RC6NotRegistered_Error
     
     Set sTxtICAOInput = SelectorForm.Widgets.Add(New_W("cwTextBox"), "sTxtICAOInput", 195, 20, 118, 30)
-    sTxtICAOInput.MultiLine = False
-    sTxtICAOInput.Widget.FontSize = 15
-    sTxtICAOInput.Widget.FontName = "courier new"
-    sTxtICAOInput.Widget.FontBold = True
-    sTxtICAOInput.Widget.Alpha = 0.6
-
-    sTxtICAOInput.TextShadowColor = &H80000010
-    sTxtICAOInput.Widget.BackColor = -1
-
-' Cairo.ImageList.AddIconFromResourceFile "btnIco", "shell32", 167 'load some resource-Icon
-
     Set sCmbMatchingLocations = SelectorForm.Widgets.Add(New_W("cwDropDownList"), "sCmbMatchingLocations", 110, 58, 235, 28)
-    sCmbMatchingLocations.Widget.FontSize = 15
-    sCmbMatchingLocations.Widget.FontName = "times new roman"
-    sCmbMatchingLocations.Widget.Alpha = 0.5
-    sCmbMatchingLocations.DropDown.Caption = "ICAO"
-    sCmbMatchingLocations.Widget.Visible = False ' dropdown is not visible
+    
+    On Error GoTo InitSelectorFromPSD_Error
 
+    SelectorForm.Widgets("sTxtICAOInput").MultiLine = False
+    SelectorForm.Widgets("sTxtICAOInput").Widget.FontSize = 15
+    SelectorForm.Widgets("sTxtICAOInput").Widget.FontName = "courier new"
+    SelectorForm.Widgets("sTxtICAOInput").Widget.FontBold = True
+    SelectorForm.Widgets("sTxtICAOInput").Widget.Alpha = 0.6
+    SelectorForm.Widgets("sTxtICAOInput").TextShadowColor = &H80000010
+    SelectorForm.Widgets("sTxtICAOInput").Widget.BackColor = -1
+
+    ' Cairo.ImageList.AddIconFromResourceFile "btnIco", "shell32", 167 'load some resource-Icon
+
+    SelectorForm.Widgets("sCmbMatchingLocations").Widget.FontSize = 15
+    SelectorForm.Widgets("sCmbMatchingLocations").Widget.FontName = "times new roman"
+    SelectorForm.Widgets("sCmbMatchingLocations").Widget.Alpha = 0.5
+    SelectorForm.Widgets("sCmbMatchingLocations").DropDown.Caption = "ICAO"
+    SelectorForm.Widgets("sCmbMatchingLocations").Widget.Visible = False ' dropdown is not visible
 
    On Error GoTo 0
    Exit Sub
@@ -162,6 +166,13 @@ Public Sub InitSelectorFromPSD(ByRef PSD_FileNameOrByteArray As Variant)
 InitSelectorFromPSD_Error:
 
     MsgBox "Error " & Err.Number & " (" & Err.Description & ") in procedure InitSelectorFromPSD of Class Module cfSelector"
+    
+    Exit Sub
+   
+RC6NotRegistered_Error:
+    
+    MsgBox "Error in procedure InitSelectorFromPSD of Class Module cfSelector. RC6.DLL is NOT registered, use the registration script to register RC6.DLL."
+    
 End Sub
 ' ----------------------------------------------------------------
 ' Procedure Name: sCmbMatchingLocations_Click

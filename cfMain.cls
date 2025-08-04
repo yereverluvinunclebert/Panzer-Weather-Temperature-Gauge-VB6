@@ -197,11 +197,8 @@ Public Sub initAndShowLicenceForm(Optional ByVal Caption As String)
     
     Dim licenceFormWidth As Long: licenceFormWidth = 0
     Dim licenceFormHeight As Long: licenceFormHeight = 0
-    
     Dim licenceWidgetWidth As Long: licenceWidgetWidth = 0
-    
     Dim licenceWidgetHeight As Long: licenceWidgetHeight = 0
-    
     Dim licenceWidgetZoomValue As Double: licenceWidgetZoomValue = 1
     
     Const WFFStyleTool As Integer = 7 ' additional styles above the normal five  WFFStyleTool = 7 makes the taskbar button go away
@@ -249,49 +246,57 @@ Public Sub initAndShowLicenceForm(Optional ByVal Caption As String)
     Else
         licenceWidget.Zoom = licenceWidgetZoomValue
     End If
+        
+    ' When running in the IDE the RC6 DLLs are required to be registered. If for some reason they become unregistered then
+    ' the following 'set' commands will generate an error, to handle this we have a temporary error trap for the IDE only.
+    
+    If InIDE Then On Error GoTo RC6NotRegistered_Error
 
     ' add two RC predefined button controls to the licence form
-    
-    On Error Resume Next ' required when running in the IDE due to weird type mismatch at this point but only in the IDE
-    
     If gblDpiAwareness = "1" Then
         Set btnDecline = licenceForm.Widgets.Add(New_W("cwButton"), "btnDecline", 352, 397, 70, 29)
         Set btnAccept = licenceForm.Widgets.Add(New_W("cwButton"), "btnAccept", 428, 397, 70, 29)
         Set TextBox = licenceForm.Widgets.Add(New_W("cwTextBox"), "textBox", 50, 60, 440, 280)
         Set lblDeclineOrNot = licenceForm.Widgets.Add(New_W("cwLabel"), "lblDeclineOrNot", 50, 345, 440, 35)
-        TextBox.Widget.FontSize = 11
-        btnDecline.Widget.FontSize = 10
-        btnAccept.Widget.FontSize = 10
-        lblDeclineOrNot.Widget.FontSize = 8
     Else
         Set btnDecline = licenceForm.Widgets.Add(New_W("cwButton"), "btnDecline", 189, 210, 40, 18)
         Set btnAccept = licenceForm.Widgets.Add(New_W("cwButton"), "btnAccept", 228, 210, 40, 18)
         Set TextBox = licenceForm.Widgets.Add(New_W("cwTextBox"), "textBox", 25, 30, 240, 155)
         Set lblDeclineOrNot = licenceForm.Widgets.Add(New_W("cwLabel"), "lblDeclineOrNot", 25, 188, 240, 20)
-        TextBox.Widget.FontSize = 8
-        btnDecline.Widget.FontSize = 7
-        btnAccept.Widget.FontSize = 7
-        lblDeclineOrNot.Widget.FontSize = 6
     End If
     
-    btnDecline.Caption = "Decline"
-    btnDecline.Widget.ForeColor = vbWhite
-    btnDecline.Widget.Alpha = 0.05
-    btnDecline.Widget.ToolTip = "Press this button to decline the terms of the GPL licence."
+    On Error GoTo initAndShowLicenceForm_Error
     
-    btnAccept.Caption = "Accept"
-    btnAccept.Widget.ForeColor = vbWhite
-    btnAccept.Widget.Alpha = 0.05
-    btnAccept.Widget.ToolTip = "Press this button to accept the terms of the GPL licence."
+    If gblDpiAwareness = "1" Then
+        licenceForm.Widgets("TextBox").Widget.FontSize = 11
+        licenceForm.Widgets("btnDecline").Widget.FontSize = 10
+        licenceForm.Widgets("btnAccept").Widget.FontSize = 10
+        licenceForm.Widgets("lblDeclineOrNot").Widget.FontSize = 8
+    Else
+        licenceForm.Widgets("TextBox").Widget.FontSize = 8
+        licenceForm.Widgets("btnDecline").Widget.FontSize = 7
+        licenceForm.Widgets("btnAccept").Widget.FontSize = 7
+        licenceForm.Widgets("lblDeclineOrNot").Widget.FontSize = 6
+    End If
     
-    TextBox.MultiLine = True
-    TextBox.ScrollBars = vbVertical
-    TextBox.Widget.BackColor = &H4000&
-    TextBox.Widget.ForeColor = vbWhite
+    licenceForm.Widgets("btnDecline").Caption = "Decline"
+    licenceForm.Widgets("btnDecline").Widget.ForeColor = vbWhite
+    licenceForm.Widgets("btnDecline").Widget.Alpha = 0.05
+    licenceForm.Widgets("btnDecline").Widget.ToolTip = "Press this button to decline the terms of the GPL licence."
+        
+    licenceForm.Widgets("btnAccept").Caption = "Accept"
+    licenceForm.Widgets("btnAccept").Widget.ForeColor = vbWhite
+    licenceForm.Widgets("btnAccept").Widget.Alpha = 0.05
+    licenceForm.Widgets("btnAccept").Widget.ToolTip = "Press this button to accept the terms of the GPL licence."
+    
+    licenceForm.Widgets("TextBox").MultiLine = True
+    licenceForm.Widgets("TextBox").ScrollBars = vbVertical
+    licenceForm.Widgets("TextBox").Widget.BackColor = &H4000&
+    licenceForm.Widgets("TextBox").Widget.ForeColor = vbWhite
     
     Call LoadFileToTB(TextBox, App.path & "\resources\txt\licence.txt", False)
 
-    TextBox.Text = widgetName1 & vbCrLf & vbCrLf & _
+    licenceForm.Widgets("TextBox").Text = widgetName1 & vbCrLf & vbCrLf & _
     "Copyright © 1992-2023 Dean Beedell" & vbCrLf & vbCrLf & _
     "This program is free software; you can redistribute it and/or modify it under the terms of the GNU General Public Licence as published by the Free Software Foundation; either version 2 of the License, or (at your option) any later version." & vbCrLf & vbCrLf & _
         "This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more details." & vbCrLf & vbCrLf & _
@@ -299,13 +304,13 @@ Public Sub initAndShowLicenceForm(Optional ByVal Caption As String)
         "If you use this software in any way whatsoever then that implies acceptance of the licence. If you do not wish to comply with the licence terms then please remove the download, binary and source code from your systems immediately." & vbCrLf & vbCrLf & _
         "You may use any of my own imagery in your own creations but commercially only with my permission. In all other non-commercial cases I require a credit to the original artist using my name or one of my pseudonyms and a link to my site. With regard to the commercial use of incorporated images, permission and a licence would need to be obtained from the original owner and creator, ie. me."
 
-    lblDeclineOrNot.borderWidth = 0
-    lblDeclineOrNot.WordWrap = True
-    lblDeclineOrNot.Alignment = vbCenter
-    lblDeclineOrNot.Widget.BackColor = -1
-    lblDeclineOrNot.Widget.ForeColor = vbWhite
+    licenceForm.Widgets("lblDeclineOrNot").borderWidth = 0
+    licenceForm.Widgets("lblDeclineOrNot").WordWrap = True
+    licenceForm.Widgets("lblDeclineOrNot").Alignment = vbCenter
+    licenceForm.Widgets("lblDeclineOrNot").Widget.BackColor = -1
+    licenceForm.Widgets("lblDeclineOrNot").Widget.ForeColor = vbWhite
     
-    lblDeclineOrNot.Caption = "If you do not agree with the terms set forth above, please click the " & _
+    licenceForm.Widgets("lblDeclineOrNot").Caption = "If you do not agree with the terms set forth above, please click the " & _
         "Decline button below and destroy this widget and its documentation"
         
    On Error GoTo 0
@@ -315,6 +320,12 @@ initAndShowLicenceForm_Error:
 
     MsgBox "Error " & Err.Number & " (" & Err.Description & ") in procedure initAndShowLicenceForm of Class Module cfMain"
     
+    Exit Sub
+   
+RC6NotRegistered_Error:
+    
+    MsgBox "Error in procedure initAndShowLicenceForm of Class Module cfMain. RC6.DLL is NOT registered, use the registration script to register RC6.DLL."
+
 End Sub
 '---------------------------------------------------------------------------------------
 ' Procedure : btnAccept_Click

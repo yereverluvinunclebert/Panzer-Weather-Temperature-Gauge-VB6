@@ -128,7 +128,10 @@ Public Sub InitPictorialFromPSD(ByRef PSD_FileNameOrByteArray As Variant)
         overlayPictorialWidget.cxPerc = 0.4940476 'define the relative center (within cwOverlayPict, which has the same size as the Form and the PSD...) this is used for clock-hand-positioning
         overlayPictorialWidget.cyPerc = 0.4727272
         
-    On Error Resume Next ' required when running in the IDE due to weird type mismatch at this point but only in the IDE
+    ' When running in the IDE the RC6 DLLs are required to be registered. If for some reason they become unregistered then
+    ' the following 'set' commands will generate an error, to handle this we have a temporary error trap for the IDE only.
+    
+    If InIDE Then On Error GoTo RC6NotRegistered_Error
         
     ' add a RC label widget to the pictorial gauge to display rainfall alarm text information
     Set sLblPrecipitationText = pictorialGaugeForm.Widgets.Add(New_W("cwLabel"), "sLblPrecipitationText", 185, 630, 295, 450)
@@ -151,6 +154,12 @@ Public Sub InitPictorialFromPSD(ByRef PSD_FileNameOrByteArray As Variant)
 InitPictorialFromPSD_Error:
 
     MsgBox "Error " & Err.Number & " (" & Err.Description & ") in procedure InitPictorialFromPSD of Class Module cfPictorial"
+    
+    Exit Sub
+   
+RC6NotRegistered_Error:
+    
+    MsgBox "Error in procedure InitPictorialFromPSD of Class Module cfPictorial. RC6.DLL is NOT registered, use the registration script to register RC6.DLL."
 End Sub
 '
 '---------------------------------------------------------------------------------------
@@ -366,7 +375,7 @@ Private Sub switchfacesbutton_mouseDown(ByRef sender As Object)
     sender.Widget.Alpha = 0
     sender.Widget.Refresh
     
-    fPictorial.pictorialGaugeForm.Widgets("sLblPrecipitationText").Caption = "Testing the Weather Data Precipitation Alert System " & vbCrLf & vbCrLf & "Testing Successful." & vbCrLf & vbCrLf & vbCrLf & vbCrLf & "Press here to close."
+    sLblPrecipitationText.Caption = "Testing the Weather Data Precipitation Alert System " & vbCrLf & vbCrLf & "Testing Successful." & vbCrLf & vbCrLf & vbCrLf & vbCrLf & "Press here to close."
 
     Call showPrecipitationPrintOut
     
@@ -447,8 +456,13 @@ Private Sub hidePrecipitationPrintOut()
     
     ' remove the precipitation text
     'sLblPrecipitationText.Widget.Alpha = 0 ' this does not work
-    sLblPrecipitationText.Caption = "" ' instead we remove the caption altogether manually
-    sLblPrecipitationText.Widget.Refresh
+'    pictorialGaugeForm.Widgets("sLblPrecipitationText").Widget.Alpha = 0 ' this does not work
+'    pictorialGaugeForm.Widgets("sLblPrecipitationText").Widget.Refresh ' this does not work
+    
+'    ' instead we remove the caption altogether manually
+    pictorialGaugeForm.Widgets("sLblPrecipitationText").Caption = ""
+    pictorialGaugeForm.Widgets("sLblPrecipitationText").Widget.Refresh
+    pictorialGaugeForm.Widgets("sLblPrecipitationText").Widget.Visible = False
 
     ' now remove the printout widget
     pictorialGaugeForm.Widgets("precipitationprintout").Widget.Alpha = 0
@@ -490,7 +504,10 @@ Private Sub showPrecipitationPrintOut()
     pictorialGaugeForm.Widgets("precipitationprintout").Widget.Alpha = Val(gblOpacity) / 100
     pictorialGaugeForm.Widgets("precipitationprintout").Widget.Refresh
     
-    sLblPrecipitationText.Widget.Refresh
+    pictorialGaugeForm.Widgets("sLblPrecipitationText").Widget.Visible = True
+    pictorialGaugeForm.Widgets("sLblPrecipitationText").Widget.Refresh
+    
+    'sLblPrecipitationText.Widget.Refresh
     
     fileToPlay = "shredder.wav"
     If gblEnableSounds = "1" And fFExists(App.path & "\resources\sounds\" & fileToPlay) Then

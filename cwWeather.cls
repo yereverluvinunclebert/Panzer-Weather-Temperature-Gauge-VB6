@@ -811,10 +811,14 @@ Private Sub processMetarData()
     thisToolTip = setHoverTooltip(altim_in_hg, force, precipitationDepth, visibilityDistance, skyClarityString, HumidityValue, mTemperatureValue, pressureValueMillibars, weekDayDate, wind_dir_degrees, wind_speed_kt, precip_in, wx_string)
     thisToolTip = thisToolTip & vbCrLf & raw_text
     
-    On Error Resume Next ' required when running in the IDE due to weird type mismatch at this point but only in the IDE
+    ' When running in the IDE the RC6 DLLs are required to be registered. If for some reason they become unregistered then
+    ' the following 'set' commands will generate an error, to handle this we have a temporary error trap for the IDE only.
     
+    If InIDE Then On Error GoTo RC6NotRegistered_Error
+    
+    fClipB.clipBForm.Widgets("sLblMETARText").Caption = thisToolTip
     ' pass the current tooltip to the clipboard widget
-    fClipB.sLblMETARText.Caption = thisToolTip
+    'fClipB.clipBForm.sLblMETARText.Caption = thisToolTip
     
     On Error GoTo processMetarData_Error ' restart error trapping
     
@@ -861,6 +865,12 @@ processMetarData_Error:
     Else
         MsgBox "Error " & Err.Number & " (" & Err.Description & ") in procedure processMetarData, line " & Erl & "."
     End If
+    
+    Exit Sub
+   
+RC6NotRegistered_Error:
+    
+    MsgBox "Error in procedure processMetarData of Class Module cwWeatherMeteo. RC6.DLL is NOT registered, use the registration script to register RC6.DLL."
 
 End Sub
 

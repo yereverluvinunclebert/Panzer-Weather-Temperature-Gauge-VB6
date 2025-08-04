@@ -4448,13 +4448,11 @@ Private Sub btnSave_Click()
     gblWidgetHidden = LTrim$(Str$(chkWidgetHidden.Value))
     gblHidingTime = LTrim$(Str$(cmbHidingTime.ListIndex))
     gblIgnoreMouse = LTrim$(Str$(chkIgnoreMouse.Value))
-            
-
-            
+                    
     If gblStartup = "1" Then
-        Call savestring(HKEY_CURRENT_USER, "SOFTWARE\Microsoft\Windows\CurrentVersion\Run", "PzTemperatureGaugeWidget", """" & App.path & "\" & "Panzer-Weather-Gauge-VB6.exe""")
+        Call savestring(HKEY_CURRENT_USER, "SOFTWARE\Microsoft\Windows\CurrentVersion\Run", "PzWeatherGauge", """" & App.path & "\" & "Panzer-Weather-Gauge-VB6.exe""")
     Else
-        Call savestring(HKEY_CURRENT_USER, "SOFTWARE\Microsoft\Windows\CurrentVersion\Run", "PzTemperatureGaugeWidget", vbNullString)
+        Call savestring(HKEY_CURRENT_USER, "SOFTWARE\Microsoft\Windows\CurrentVersion\Run", "PzWeatherGauge", vbNullString)
     End If
 
     ' save the values from the general tab

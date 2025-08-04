@@ -126,7 +126,10 @@ Public Sub InitClipBFromPSD(ByRef PSD_FileNameOrByteArray As Variant)
     Set overlayClipbWidget = clipBForm.Widgets.Add(New cwOverlayClipb, "ClipB", 0, 0, PSDWidth, PSDHeight)
     Set overlayClipbWidget.cCollOverlayClipBImages = collClipBPSDNonUIElements 'make the excluded PSD-Surface-Paths known to the Overlay-Widget
 
-    On Error Resume Next ' required when running in the IDE due to weird type mismatch at this point but only in the IDE
+    ' When running in the IDE the RC6 DLLs are required to be registered. If for some reason they become unregistered then
+    ' the following 'set' commands will generate an error, to handle this we have a temporary error trap for the IDE only.
+    
+    If InIDE Then On Error GoTo RC6NotRegistered_Error
     
     Set sLblMETARText = clipBForm.Widgets.Add(New_W("cwLabel"), "sLblMETARText", 185, 145, 295, 450)
     sLblMETARText.Widget.FontSize = 13
@@ -148,6 +151,13 @@ Public Sub InitClipBFromPSD(ByRef PSD_FileNameOrByteArray As Variant)
 InitClipBFromPSD_Error:
 
     MsgBox "Error " & Err.Number & " (" & Err.Description & ") in procedure InitClipBFromPSD of Class Module cfClipB"
+    
+    Exit Sub
+   
+RC6NotRegistered_Error:
+    
+    MsgBox "Error in procedure InitClipBFromPSD of Class Module cfClipB. RC6.DLL is NOT registered, use the registration script to register RC6.DLL."
+
 End Sub
 ' ----------------------------------------------------------------
 
