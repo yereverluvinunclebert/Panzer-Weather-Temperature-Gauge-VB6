@@ -1,6 +1,6 @@
 modMain = 26, 26, 1178, 843, 
 cfTemperature = 42, 11, 965, 909, 
-modRegFree = 78, 78, 1364, 901, I
+modRegFree = 78, 78, 1364, 901, 
 cwOverlayTemp = 58, 62, 695, 691, 
 frmTimer = 57, 72, 1501, 957, , 52, 52, 975, 681, C
 modTooltips = 260, 260, 897, 845, 
@@ -27,7 +27,7 @@ cwOverlayHumid = 764, 48, 1548, 716,
 cfBarometer = 130, 130, 1037, 884, 
 cwOverlayBarom = 599, 67, 1506, 821, 
 cwOverlayGeneral = 260, 260, 1167, 1015, 
-cwWeatherMeteo = 707, 119, 1843, 850, 
+cwWeatherMeteo = 707, 119, 1843, 850, Z
 cfPictorial = 52, 52, 1119, 805, 
 cwOverlayPict = 104, 104, 1171, 857, 
 Subclasser = 156, 156, 1175, 1033, 

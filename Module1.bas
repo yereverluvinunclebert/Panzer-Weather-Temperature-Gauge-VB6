@@ -3011,7 +3011,7 @@ Public Sub hardRestart()
     
     On Error GoTo hardRestart_Error
 
-    thisCommand = App.path & "\restart.exe"
+    thisCommand = App.path & "\stopProcessRestart.exe"
     
     If fFExists(thisCommand) Then
         
