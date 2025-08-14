@@ -96,7 +96,7 @@ Private Sub Class_Initialize()
     Set tmrAsyncResponse = New_c.Timer(2000, False)
     
     Set tmrSleepTester = Nothing
-    Set tmrSleepTester = New_c.Timer(2500, True)  ' two seconds, should start automatically but it doesn't
+    Set tmrSleepTester = New_c.Timer(2500, True)  ' two and a half seconds, should start automatically
     
     icaoLocation1 = vbNullString
     icaoLocation2 = vbNullString
@@ -942,9 +942,9 @@ Private Sub tmrSleepTester_TimerCode()
         fClipB.clipBForm.Refresh
         fPictorial.pictorialGaugeForm.Refresh
         
-        ' trigger another poll 2.5 seconds after the system has awoken to give it time to wake up and re-poll!
-        tmrSampler.Interval = 2500 ' this abnormal interval will be reset to the sampling interval by the timer itself
-        tmrSleepTester.Enabled = True
+        ' trigger another poll 10 seconds after the system has awoken to give it time to wake up and re-poll!
+        tmrSampler.Interval = 10000 ' this abnormal interval will be reset to the sampling interval by the timer itself
+        'tmrSleepTester.Enabled = True
     End If
     
     strTimeThen = Now()

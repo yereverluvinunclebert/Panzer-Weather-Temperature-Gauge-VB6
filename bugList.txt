@@ -133,13 +133,82 @@ rainfall indicator lamp & print out - test
 update html help documentation
 update html code documentation using MZTools code documenter
 
+' renamed the restart.exe to make it less generically-named and worrying to a/v tools
+' add the test and error message for RC6 DLL registration
+
 TODO:
+
+Coreaudiowatch provides the functionality to watch the current volume
+
+CoreAudioDemo provides the functionality to mute the audio
+
+Changing system volume from VB6
+
+Private mDefRenderMM As IMMDevice
+Private mDeviceEnum As MMDeviceEnumerator
+Private pEPVolMM As IAudioEndpointVolume
+
+Private Sub Slider1_Change()
+
+If (pEPVolMM Is Nothing) Then
+    Set mDeviceEnum = New MMDeviceEnumerator
+    mDeviceEnum.GetDefaultAudioEndpoint eRender, eMultimedia, mDefRenderMM
+
+    If (mDefRenderMM Is Nothing) = False Then
+        mDefRenderMM.Activate IID_IAudioEndpointVolume, CLSCTX_INPROC_SERVER, CVar(0), pEPVolMM
+    End If
+End If
+
+If (pEPVolMM Is Nothing) = False Then
+    pEPVolMM.SetMasterVolumeLevelScalar CSng(Slider1.Value / 100), UUID_NULL
+End If
+
+End Sub
+
+
+Set mDeviceEnum = New MMDeviceEnumerator
+
+mDeviceEnum.GetDefaultAudioEndpoint eRender, eMultimedia, mDefRenderMM
+
+If (mDefRenderMM Is Nothing) = False Then
+    
+    mDefRenderMM.Activate IID_IAudioEndpointVolume, CLSCTX_INPROC_SERVER, CVar(0), pEPVolMM
+    If (pEPVolMM Is Nothing) = False Then
+        Dim sngVol As Single
+        pEPVolMM.GetMasterVolumeLevelScalar sngVol
+        Slider1.Value = CLng(sngVol * 100)
+    End If
+End If
+
+Private mDefRenderMM As IMMDevice
+Private mDeviceEnum As MMDeviceEnumerator
+Private pEPVolMM As IAudioEndpointVolume
+
+Private Function Muted() As Boolean
+
+If (pEPVolMM Is Nothing) Then
+    Set mDeviceEnum = New MMDeviceEnumerator
+    mDeviceEnum.GetDefaultAudioEndpoint eRender, eMultimedia, mDefRenderMM
+
+    If (mDefRenderMM Is Nothing) = False Then
+        mDefRenderMM.Activate IID_IAudioEndpointVolume, CLSCTX_INPROC_SERVER, CVar(0), pEPVolMM
+    End If
+End If
+Dim fMuted As BOOL
+If (pEPVolMM Is Nothing) = False Then
+    pEPVolMM.GetMute fMuted
+    If fMuted Then Muted = True
+End If
+
+End Sub
+
 
 pictorial gauge time to next update rotator - get it to rotate as per one of the other gauge pointers
 
 barometer face incorrect for in HG - recalc the values on the face
 barometer face incorrect for mm HG - recalc the values on the face
 the correct gauge faces are on the G5
+barometer pointer totally wrong! 767mmHg and reading way off the scale
 
 Barometer display not showing 23-31 inches of Hg face
 

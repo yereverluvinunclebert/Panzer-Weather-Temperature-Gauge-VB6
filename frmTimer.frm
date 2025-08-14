@@ -14,7 +14,7 @@ Begin VB.Form frmTimer
    Begin VB.Timer sleepTimer 
       Enabled         =   0   'False
       Left            =   120
-      Tag             =   "stores and compares the last time to see if the PC has slept"
+      Tag             =   "sleepTimer is not used. Instead tmrSleepTester_Timer in cwWeatherMeteo.cls"
       Top             =   1590
    End
    Begin VB.Timer settingsTimer 

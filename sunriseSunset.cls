@@ -164,7 +164,7 @@ End Property
 ' Purpose   :
 '---------------------------------------------------------------------------------------
 '
-Public Property Get Latitude() As String
+Public Property Get Latitude() As Double
    On Error GoTo LatitudeGet_Error
 
    Latitude = mLatitude
@@ -183,7 +183,7 @@ End Property
 ' Purpose   :
 '---------------------------------------------------------------------------------------
 '
-Public Property Let Latitude(ByVal newValue As String)
+Public Property Let Latitude(ByVal newValue As Double)
    On Error GoTo LatitudeLet_Error
 
    If mLatitude <> newValue Then mLatitude = newValue Else Exit Property
@@ -203,7 +203,7 @@ End Property
 ' Purpose   :
 '---------------------------------------------------------------------------------------
 '
-Public Property Get Longitude() As String
+Public Property Get Longitude() As Double
    On Error GoTo LongitudeGet_Error
 
    Longitude = mLongitude
@@ -222,7 +222,7 @@ End Property
 ' Purpose   :
 '---------------------------------------------------------------------------------------
 '
-Public Property Let Longitude(ByVal newValue As String)
+Public Property Let Longitude(ByVal newValue As Double)
    On Error GoTo LongitudeLet_Error
 
    If mLongitude <> newValue Then mLongitude = newValue Else Exit Property
@@ -435,7 +435,7 @@ Private Sub calcSunPosition(ByVal rising As Boolean, ByVal dateInput As Date, By
     N3 = (1 + Fix((thisYear - 4 * Fix(thisYear / 4) + 2) / 3))
     If debugFlg = 1 Then Debug.Print ("%SFN-I N3 " & N3)
     
-    N = N1 - (N2 * N3) + val(thisDay) - 30
+    N = N1 - (N2 * N3) + Val(thisDay) - 30
     If debugFlg = 1 Then Debug.Print ("%SFN-I N " & N)
     
     ' convert the longitude to hour value and calculate an approximate time
