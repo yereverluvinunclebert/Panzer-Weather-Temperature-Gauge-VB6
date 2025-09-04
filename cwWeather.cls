@@ -460,10 +460,10 @@ Public Sub getData()
     thisURL = "https://aviationweather.gov/api/data/dataserver?requestType=retrieve&dataSource=metars&stationString=" & icaoToFind & "&hoursBeforeNow=6&format=xml&mostRecent=true"
     
     Set XMLHttpRequest = CreateObject("Microsoft.XmlHttp")
-    XMLHttpRequest.open "POST", thisURL, True
-    XMLHttpRequest.setRequestHeader "Content-Type", "application/x-www-form-urlencoded"
-    XMLHttpRequest.setRequestHeader "User-Agent", "Firefox 3.6.4"
-    XMLHttpRequest.send "param1=value2&param2=value2"
+    XMLHttpRequest.open "GET", thisURL, True
+    XMLHttpRequest.setRequestHeader "User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:142.0) Gecko/20100101 Firefox/142.0"
+    XMLHttpRequest.setRequestHeader "Accept", "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8"
+    XMLHttpRequest.send
     
     tmrAsyncResponse.Enabled = True
     
