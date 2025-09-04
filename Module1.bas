@@ -2284,7 +2284,7 @@ Public Sub unloadAllForms(ByVal endItAll As Boolean)
     ' these really need to be set to private and properties created to set them enabled or not - later
     
     WeatherMeteo.tmrPressureDrop.Enabled = False
-    WeatherMeteo.tmrAsyncResponse.Enabled = False
+    'WeatherMeteo.tmrAsyncResponse.Enabled = False
     WeatherMeteo.tmrSleepTester.Enabled = False
     WeatherMeteo.tmrSampler.Enabled = False
 

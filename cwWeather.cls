@@ -21,8 +21,7 @@ Private Declare Function URLDownloadToFile Lib "urlmon" _
 
 Public WithEvents tmrPressureDrop As cTimer
 Attribute tmrPressureDrop.VB_VarHelpID = -1
-Public WithEvents tmrAsyncResponse As cTimer
-Attribute tmrAsyncResponse.VB_VarHelpID = -1
+'Public WithEvents tmrAsyncResponse As cTimer
 Public WithEvents tmrSleepTester As cTimer
 Attribute tmrSleepTester.VB_VarHelpID = -1
 Public WithEvents tmrSampler As cTimer
@@ -47,8 +46,8 @@ Private mPrecipitationWasFalling As Boolean
 Public Event OnChange(ByVal wehavedata As Boolean)
 
 
-Private XMLHttpRequest As MSXML2.XMLHTTP
-'Private weHaveData As Boolean
+'Private XMLHttpRequest As MSXML2.XMLHTTP60 ' no
+
 
 Private icaoLocation1 As String
 Private icaoLocation2 As String
@@ -92,8 +91,8 @@ Private Sub Class_Initialize()
     Set tmrPressureDrop = New_c.Timer(Val(gblStormTestInterval) * 1000, False) ' one hour
     tmrPressureDrop.Enabled = True
     
-    Set tmrAsyncResponse = Nothing
-    Set tmrAsyncResponse = New_c.Timer(2000, False)
+'    Set tmrAsyncResponse = Nothing
+'    Set tmrAsyncResponse = New_c.Timer(2000, False)
     
     Set tmrSleepTester = Nothing
     Set tmrSleepTester = New_c.Timer(2500, True)  ' two and a half seconds, should start automatically
@@ -453,20 +452,22 @@ Public Sub getData()
 
     Dim icaoToFind As String: icaoToFind = vbNullString
     Dim thisURL As String: thisURL = vbNullString
-    
+    Dim oSink As XHRSink
+
     On Error GoTo getData_Error
     
     icaoToFind = gblIcao ' eg. "EGSH"
     thisURL = "https://aviationweather.gov/api/data/dataserver?requestType=retrieve&dataSource=metars&stationString=" & icaoToFind & "&hoursBeforeNow=6&format=xml&mostRecent=true"
     
-    Set XMLHttpRequest = CreateObject("Microsoft.XmlHttp")
-    XMLHttpRequest.open "GET", thisURL, True
-    XMLHttpRequest.setRequestHeader "User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:142.0) Gecko/20100101 Firefox/142.0"
-    XMLHttpRequest.setRequestHeader "Accept", "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8"
-    XMLHttpRequest.send
+    Set XMLHttpRequest2 = New MSXML2.XMLHTTP60
+    Set oSink = New XHRSink
     
-    tmrAsyncResponse.Enabled = True
-    
+    XMLHttpRequest2.open "GET", thisURL, True
+    XMLHttpRequest2.setRequestHeader "User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:142.0) Gecko/20100101 Firefox/142.0"
+    XMLHttpRequest2.setRequestHeader "Accept", "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8"
+    XMLHttpRequest2.OnReadyStateChange = oSink ' use the XHRsink.cls for the OnReadyStateChange event capture, you can't just point it to a local sub...
+    XMLHttpRequest2.send
+
     On Error GoTo 0
     Exit Sub
 
@@ -480,38 +481,39 @@ End Sub
 ' Procedure : tmrAsyncResponse_Timer
 ' Author    :
 ' Date      : 30/07/2023
-' Purpose   : to replicate VB6's missing asynch/wait functionality, this timer only runs subsequent to a data request being initiated.
-'             running on a one second interval
+' Purpose   : Note:
+'             This timer previously existed running on a one second interval to intercept a ready state of 4 from the XMLHttpRequest.
+'             it was previously initiated just after the send. It was done this way to replicate VB6's missing asynch/wait functionality
+'             in the form of a OnReadyStateChange event. Using MS XML 6, the OnReadyStateChange now calls a class
+'
 '---------------------------------------------------------------------------------------
 '
-Private Sub tmrAsyncResponse_Timer()
-    
-    On Error Resume Next
-    
-    'Debug.Print XMLHttpRequest.readyState
-
-    If XMLHttpRequest.readyState = 4 Then ' asynchronous xml request complete
-    
-        On Error GoTo tmrAsyncResponse_Timer_Error
-    
-        ' as soon as the the ready state is complete we stop the response timer
-        tmrAsyncResponse.Enabled = False
-        
-        ' now we process the found data
-        Call processMetarData
-        
-        ' data processed, we remove the XML request and that will reset the readystate
-        If Not XMLHttpRequest Is Nothing Then Set XMLHttpRequest = Nothing
-
-    End If
-
-   On Error GoTo 0
-   Exit Sub
-
-tmrAsyncResponse_Timer_Error:
-
-    MsgBox "Error " & Err.Number & " (" & Err.Description & ") in procedure tmrAsyncResponse_Timer of Class Module cwOverlayTemp"
-End Sub
+'Private Sub tmrAsyncResponse_Timer()
+'
+'    On Error Resume Next
+'
+'    If XMLHttpRequest2.readyState = 4 Then ' asynchronous xml request complete
+'
+'        On Error GoTo tmrAsyncResponse_Timer_Error
+'
+'        ' as soon as the the ready state is complete we stop the response timer
+'        tmrAsyncResponse.Enabled = False
+'
+'        ' now we process the found data
+'        Call processMetarData
+'
+'        ' data processed, we remove the XML request and that will reset the readystate
+'        If Not XMLHttpRequest2 Is Nothing Then Set XMLHttpRequest2 = Nothing
+'
+'    End If
+'
+'   On Error GoTo 0
+'   Exit Sub
+'
+'tmrAsyncResponse_Timer_Error:
+'
+'    MsgBox "Error " & Err.Number & " (" & Err.Description & ") in procedure tmrAsyncResponse_Timer of Class Module cwOverlayTemp"
+'End Sub
 
 ' ----------------------------------------------------------------
 ' Procedure Name: processMetarData
@@ -521,7 +523,7 @@ End Sub
 ' Author: Dean Beedell (yereverluvinunclebert)
 ' Date: 27/01/2024
 ' ----------------------------------------------------------------
-Private Sub processMetarData()
+Public Sub processMetarData()
 
     Dim HumidityValue  As Long: HumidityValue = 0
     Dim pressureValueMillibars As Double: pressureValueMillibars = 0
@@ -559,8 +561,8 @@ Private Sub processMetarData()
     
     Dim nodeList As MSXML2.IXMLDOMNodeList
     
-    Dim objxmldoc As MSXML2.DOMDocument
-    Set objxmldoc = New MSXML2.DOMDocument
+    Dim objxmldoc As MSXML2.DOMDocument60
+    Set objxmldoc = New MSXML2.DOMDocument60
     
     Dim node As MSXML2.IXMLDOMNode
     Dim MetarNode As MSXML2.IXMLDOMNode
@@ -581,7 +583,7 @@ Private Sub processMetarData()
     On Error GoTo processMetarData_Error
     
     'if the timer is caught mid-way paused in a system sleep, the httprequest may be bad
-    If XMLHttpRequest Is Nothing Then Exit Sub
+    If XMLHttpRequest2 Is Nothing Then Exit Sub
     
     debugFlg = 0
     
@@ -591,7 +593,7 @@ Private Sub processMetarData()
     pressureValueMillibars = 0
     
     objxmldoc.async = True
-    objxmldoc.LoadXML (XMLHttpRequest.responseText)
+    objxmldoc.LoadXML (XMLHttpRequest2.responseText)
     
     ' get the values from the XML data response, the num results should be non-zero
     Set nodeList = objxmldoc.selectNodes("response/data/METAR")
@@ -860,7 +862,7 @@ Private Sub processMetarData()
 processMetarData_Error:
 
     'if the timer is caught mid-way paused in a system sleep, the httprequest may be bad
-    If XMLHttpRequest Is Nothing Then
+    If XMLHttpRequest2 Is Nothing Then
         ' no error message
     Else
         MsgBox "Error " & Err.Number & " (" & Err.Description & ") in procedure processMetarData, line " & Erl & "."

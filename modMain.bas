@@ -73,7 +73,7 @@ Public widgetName7 As String
 Public firstPoll As Boolean
 
     
-
+Public XMLHttpRequest2 As MSXML2.XMLHTTP60
 
 
 
