@@ -27,27 +27,25 @@ Attribute tmrSleepTester.VB_VarHelpID = -1
 Public WithEvents tmrSampler As cTimer
 Attribute tmrSampler.VB_VarHelpID = -1
 
-Private mTestPressureDrop As Long       ' property
-Private mProcessMetar As Boolean            ' property ProcessMetar
-Private mSamplerEnabled As Boolean      ' property GetMetar
-Private mSamplingInterval As Long    ' property GetMetar
-Private mValidICAO As Boolean             ' property
-Private mIcaoToTest As String             ' property
+Private mTestPressureDrop As Long       '
+Private mProcessMetar As Boolean        '
+Private mSamplerEnabled As Boolean      '
+Private mSamplingInterval As Long       '
+Private mValidICAO As Boolean           '
+Private mIcaoToTest As String
 Private mStringToTest As String
-Private mIcaoLocation As String             ' property
-Private mValidLocationCount As Long             ' property
-Private mWindSpeed As Long             ' property
-Private mWeatherDetails As String ' property
-Private mWeHaveData As Boolean ' property
-Private mTicking As Boolean ' property Ticking
-Private mTemperatureValue As Single ' property Ticking
+Private mIcaoLocation As String             '
+Private mValidLocationCount As Long             '
+Private mWindSpeed As Long             '
+Private mWeatherDetails As String '
+Private mWeHaveData As Boolean '
+Private mTicking As Boolean '
+Private mTemperatureValue As Single '
 Private mPrecipitationWasFalling As Boolean
 
 Public Event OnChange(ByVal wehavedata As Boolean)
 
-
-'Private XMLHttpRequest As MSXML2.XMLHTTP60 ' no
-
+'Private XMLHttpRequest As MSXML2.XMLHTTP60 ' now public
 
 Private icaoLocation1 As String
 Private icaoLocation2 As String
@@ -367,7 +365,7 @@ End Sub
 ' Author: beededea
 ' Date: 22/04/2024
 ' ----------------------------------------------------------------
-Sub TestPressureDropRoutine()
+Private Sub TestPressureDropRoutine()
 
     On Error GoTo TestPressureDropRoutine_Error
     
@@ -442,7 +440,7 @@ End Sub
 
 ' ----------------------------------------------------------------
 ' Procedure Name: getData
-' Purpose: this function obtains data from the chosen icaoLocation using an httpXMLrequest. Requires a Project Reference to Microsoft XML library.
+' Purpose: this function obtains data from the chosen icaoLocation using an httpXMLrequest. Requires a Project Reference to Microsoft XML 6 library.
 ' Procedure Kind: Sub
 ' Procedure Access: Private
 ' Author: Dean Beedell (yereverluvinunclebert)
