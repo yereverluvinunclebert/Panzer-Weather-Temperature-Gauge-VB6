@@ -39,6 +39,8 @@ Attribute OnReadyStateChange.VB_UserMemId = 0
         
         WeatherMeteo.processMetarData
     End If
+    
+    ' <The data necessary to complete this operation is not yet available.
 
     On Error GoTo 0
     Exit Sub

@@ -546,7 +546,6 @@ Public Sub processMetarData()
     Dim attributeCounter As Integer: attributeCounter = 0
     Dim SkyConditionCounter As Integer: SkyConditionCounter = 0
     Dim skyClarity As String: skyClarity = vbNullString
-    Dim baseCloud As Integer: baseCloud = 0
     Dim skyClarityString As String: skyClarityString = vbNullString
     Dim cloud_base_ft_agl() As String ' array
     Dim sky_cover() As String ' array
@@ -658,6 +657,7 @@ Public Sub processMetarData()
             If debugFlg = 1 Then Debug.Print ("%processMetarData - wind_dir_degrees " + wind_dir_degrees)
         
             wind_speed_kt = node.selectSingleNode("wind_speed_kt").Text
+            If wind_speed_kt = vbNullString Then wind_speed_kt = "0"
             overlayAnemoWidget.windSpeed = wind_speed_kt
             If debugFlg = 1 Then Debug.Print ("%processMetarData - wind_speed_kt " + wind_speed_kt)
         
@@ -759,7 +759,7 @@ Public Sub processMetarData()
     skyClarity = getCloudCover(sky_condition_items(), uboundSkyConditions)
 
     ' add two of the base cloud values to the visibility string
-    skyClarityString = fAddBaseCloudToSkyClarity(baseCloud, skyClarity, cloud_base_ft_agl())
+    skyClarityString = fAddBaseCloudToSkyClarity(skyClarity, cloud_base_ft_agl())
     
     ' get the current decimalTime and use it to test for sunrise or sunset
     sunriseSunset.Longitude = Longitude
@@ -1205,7 +1205,7 @@ End Function
 ' Author: Dean Beedell (yereverluvinunclebert)
 ' Date: 30/01/2024
 ' ----------------------------------------------------------------
-Private Function fAddBaseCloudToSkyClarity(ByVal baseCloud As Integer, ByVal skyClarity As String, ByRef cloud_base_ft_agl() As String) As String
+Private Function fAddBaseCloudToSkyClarity(ByVal skyClarity As String, ByRef cloud_base_ft_agl() As String) As String
     
     Dim skyClarityString As String: skyClarityString = vbNullString
     Dim thisSkyClarity As String: thisSkyClarity = vbNullString
@@ -1217,11 +1217,12 @@ Private Function fAddBaseCloudToSkyClarity(ByVal baseCloud As Integer, ByVal sky
     debugFlg = 0
     
     thisSkyClarity = skyClarity
-    thisBaseCloud = baseCloud
     
+    ' deal with potential errors with incoming variables
+    If UBound(cloud_base_ft_agl) < LBound(cloud_base_ft_agl) Then Exit Function
     If thisSkyClarity = vbNullString Then Exit Function
     
-    If UBound(cloud_base_ft_agl()) >= 0 Then
+    If UBound(cloud_base_ft_agl) >= 0 Then
         If (cloud_base_ft_agl(0) <> vbNullString) Then thisBaseCloud = Val(cloud_base_ft_agl(0))
         If (thisBaseCloud <> 0) Then
             If gblMetricImperial = "1" Then ' "metric"
@@ -1232,7 +1233,7 @@ Private Function fAddBaseCloudToSkyClarity(ByVal baseCloud As Integer, ByVal sky
         End If
     End If
     
-   If UBound(cloud_base_ft_agl()) >= 1 Then
+   If UBound(cloud_base_ft_agl) >= 1 Then
         If (cloud_base_ft_agl(1) <> vbNullString) Then thisBaseCloud = Val(cloud_base_ft_agl(UBound(cloud_base_ft_agl())))
         If (thisBaseCloud <> 0) Then
             If gblMetricImperial = "1" Then ' "metric"
